@@ -1,247 +1,120 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Audilix — La conformité simplifiée par l'intelligence</title>
-  <meta name="description" content="Audilix automatise vos audits de conformité (RGPD, cybersécurité, ISO...) et génère des rapports clairs en quelques minutes." />
-
-  <!-- Google fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Audilix Technologies — Audit et conformité automatisés</title>
+  <meta name="description" content="Audilix Technologies automatise vos audits de conformité (RGPD, cybersécurité, ISO) grâce à l’intelligence artificielle.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --primary:#2563EB; /* bleu confiance */
-      --accent:#10B981;  /* vert action */
-      --text:#1E293B;
-      --muted:#6B7280;
-      --bg:#F8FAFC;
-      --card:#ffffff;
-      --radius:12px;
-      --maxw:1100px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
     body{
-      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
       margin:0;
-      background:linear-gradient(180deg,#FBFDFF 0%, #F8FAFC 100%);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.5;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
+      background:#fafbff;
+      color:#0f172a;
+      transition:background .4s,color .4s;
     }
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:36px;}
-    header{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-    .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-family:Poppins;color:var(--primary);font-size:20px}
-    .logo img{height:40px;border-radius:8px;object-fit:cover}
-    nav{display:flex;gap:18px;align-items:center}
-    nav a{color:var(--text);text-decoration:none;font-weight:500}
-    .cta{background:var(--primary);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:600}
-    .secondary{border:1px solid rgba(34,41,58,0.06);padding:8px 12px;border-radius:10px;color:var(--text);text-decoration:none}
-
-    /* Hero */
-    .hero{display:flex;gap:40px;align-items:center;padding:60px 0}
-    .hero-left{flex:1}
-    .eyebrow{display:inline-block;background:rgba(37,99,235,0.08);color:var(--primary);padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px}
-    h1{font-family:Poppins;font-size:40px;margin:18px 0;color:var(--text);line-height:1.05}
-    p.lead{color:var(--muted);font-size:18px;margin-bottom:22px}
-    .hero-ctas{display:flex;gap:12px}
-    .hero-right{flex:1;display:flex;justify-content:center}
-    .mock{width:100%;max-width:520px;border-radius:18px;background:linear-gradient(180deg,#fff,#f7fbff);box-shadow:0 10px 30px rgba(20,30,60,0.08);padding:18px}
-
-    /* features */
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:40px 0}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(20,30,60,0.03)}
-    .card h3{margin:6px 0 8px}
-    .muted{color:var(--muted);font-size:14px}
-
-    /* How it works */
-    .how{display:flex;gap:18px;align-items:flex-start;margin:40px 0}
-    .steps{display:flex;flex-direction:column;gap:12px}
-    .step{display:flex;gap:12px;align-items:flex-start}
-    .badge{width:44px;height:44px;border-radius:10px;background:#F1F9FF;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700}
-
-    /* Pricing */
-    .pricing{display:flex;gap:18px;margin:36px 0}
-    .plan{flex:1;padding:22px;border-radius:14px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 8px 30px rgba(22,28,45,0.04);border:1px solid rgba(37,99,235,0.04)}
-    .plan .price{font-size:28px;color:var(--primary);font-weight:700}
-    .plan ul{padding-left:18px;color:var(--muted);margin-top:12px}
-
-    footer{padding:30px 0;border-top:1px solid rgba(20,30,60,0.04);margin-top:40px;color:var(--muted);font-size:14px}
-
-    /* responsive */
-    @media(max-width:900px){
-      .hero{flex-direction:column;align-items:flex-start}
-      .features{grid-template-columns:1fr}
-      .pricing{flex-direction:column}
-      nav{display:none}
+    [data-theme="dark"] body{
+      background:#0f172a;
+      color:#e2e8f0;
     }
-
-    /* small utilities */
-    .center{text-align:center}
-    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(16,185,129,0.08);color:var(--accent);font-weight:700;font-size:13px}
-    a.btn-white{background:white;border:1px solid rgba(34,41,58,0.06);padding:10px 14px;border-radius:10px;text-decoration:none;color:var(--text)}
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:1rem 2rem;
+      position:sticky;top:0;
+      backdrop-filter:blur(6px);
+    }
+    header img{height:44px}
+    a.button{
+      background:#0b3b70;
+      color:#fff;
+      padding:.7rem 1.4rem;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:700;
+    }
+    section{max-width:1080px;margin:auto;padding:4rem 1.5rem}
+    .hero h1{font-size:2.4rem;margin-bottom:.4rem}
+    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+    .plan{background:#fff;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.06);padding:1.5rem}
+    .plan h3{margin-top:0}
+    footer{padding:2rem 1.5rem;text-align:center;font-size:.9rem;color:#6b7280}
+    @media(prefers-color-scheme:dark){
+      body{background:#0f172a;color:#e2e8f0}
+      .plan{background:#1e293b;color:#f1f5f9}
+    }
   </style>
+  <script>
+    // bascule clair/sombre manuelle
+    function toggleTheme(){
+      document.documentElement.dataset.theme =
+        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    }
+  </script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logo">
-        <!-- Replace YOUR_LOGO_URL or keep text -->
-        <!-- <img src="YOUR_LOGO_URL" alt="Audilix logo"> -->
-        Audilix
+  <header>
+    <div style="display:flex;align-items:center;gap:.6rem">
+      <img src="logo.png" alt="Logo Audilix">
+      <strong>Audilix Technologies</strong>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:center">
+      <button onclick="toggleTheme()" style="border:none;background:none;font-size:1.2rem;cursor:pointer">🌗</button>
+      <a href="TALLY_LINK" class="button">Faire un audit gratuit</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Automatisez la conformité de votre entreprise avec l’intelligence artificielle</h1>
+    <p>Vos documents sont vérifiés automatiquement et vos risques de non-conformité disparaissent, sans stress.</p>
+  </section>
+
+  <section id="assistant">
+    <h2>Assistant IA Audilix</h2>
+    <p>Posez vos questions de conformité (RGPD, sécurité, ISO) et recevez des réponses instantanées grâce à notre assistant IA.</p>
+  </section>
+
+  <section id="features">
+    <h2>Fonctionnalités clés</h2>
+    <ul>
+      <li>Audit automatisé et rapports instantanés ;</li>
+      <li>Suivi continu de la conformité ;</li>
+      <li>Alertes et recommandations intelligentes ;</li>
+      <li>Assistance IA 24 h/24.</li>
+    </ul>
+  </section>
+
+  <section id="pricing">
+    <h2>Nos offres</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Standard</h3>
+        <p><strong>69 €/mois</strong></p>
+        <p>Audit automatisé + rapport mensuel</p>
       </div>
-
-      <nav>
-        <a href="#how">Comment ça marche</a>
-        <a href="#features">Avantages</a>
-        <a href="#pricing">Tarifs</a>
-        <a class="cta" href="TALLY_LINK" id="auditBtn">Faire un audit gratuit</a>
-      </nav>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="hero-left">
-        <span class="eyebrow">La conformité, simplifiée</span>
-        <h1>Automatisez la conformité de votre entreprise avec l’intelligence artificielle</h1>
-        <p class="lead">“Vos documents sont vérifiés automatiquement et vos risques de non-conformité disparaissent, sans stress.”</p>
-        <div class="hero-ctas">
-          <a class="cta" href="TALLY_LINK">Faire un audit gratuit</a>
-          <a class="secondary" href="#pricing">Découvrir les tarifs</a>
-        </div>
-        <p style="margin-top:18px;color:var(--muted)">Promesse : audits RGPD, cybersécurité et conformité automatisés. Rapport clair & plan d’action.</p>
+      <div class="plan">
+        <h3>Premium</h3>
+        <p><strong>149 €/mois</strong></p>
+        <p>Audits illimités + Assistant IA</p>
       </div>
-
-      <div class="hero-right">
-        <div class="mock" role="img" aria-label="Mockup tableau de bord">
-          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f7103b2f3aefcb4a0c222e2f6f5a0b7" alt="dashboard" style="width:100%;border-radius:10px;display:block">
-        </div>
+      <div class="plan">
+        <h3>Entreprise</h3>
+        <p><strong>299 €/mois</strong></p>
+        <p>Intégrations, IA avancée, support prioritaire</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Features -->
-    <section id="features">
-      <h2>Pourquoi choisir Audilix</h2>
-      <div class="features">
-        <div class="card">
-          <h3>Confidentialité garantie</h3>
-          <p class="muted">Vos données restent privées. Nous stockons uniquement ce qui est nécessaire, et nous utilisons des clés sécurisées côté serveur.</p>
-        </div>
-        <div class="card">
-          <h3>Rapidité & simplicité</h3>
-          <p class="muted">Obtenez un rapport complet en quelques minutes, sans besoin d’un consultant externe.</p>
-        </div>
-        <div class="card">
-          <h3>Recommandations exploitables</h3>
-          <p class="muted">Un plan d’action priorisé, étape par étape, pour corriger vos non-conformités.</p>
-        </div>
-      </div>
-    </section>
+  <section id="cta" style="text-align:center">
+    <h2>Prêt à simplifier votre conformité ?</h2>
+    <a href="TALLY_LINK" class="button">Faire un audit gratuit</a>
+  </section>
 
-    <!-- How it works -->
-    <section id="how">
-      <h2>Comment ça marche</h2>
-      <div class="how">
-        <div class="steps">
-          <div class="step">
-            <div class="badge">1</div>
-            <div>
-              <strong>Répondez à un court audit</strong>
-              <div class="muted">En 5 minutes, répondez à quelques questions sur vos pratiques.</div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="badge">2</div>
-            <div>
-              <strong>L’IA analyse vos réponses</strong>
-              <div class="muted">Notre moteur génère un score de conformité et identifie les risques.</div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="badge">3</div>
-            <div>
-              <strong>Recevez un rapport clair</strong>
-              <div class="muted">Un rapport PDF téléchargeable + plan d’action priorisé.</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="flex:1;margin-left:18px">
-          <div class="card">
-            <h3>Problème</h3>
-            <p class="muted">Les PME font face à une complexité réglementaire croissante (RGPD, ISO, cybersécurité, RSE...). Les audits manuels sont coûteux et incomplets.</p>
-            <hr style="border:none;border-top:1px solid rgba(20,30,60,0.04);margin:12px 0">
-            <h3>Solution</h3>
-            <p class="muted">Audilix automatise l’audit et la gestion de la conformité. Détecte les écarts et fournit des actions claires.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing">
-      <h2>Tarifs simples</h2>
-      <div class="pricing">
-        <div class="plan">
-          <h3>Standard</h3>
-          <div class="price">49 €/mois</div>
-          <p class="muted">2 audits mensuels • Rapports PDF • Support par e-mail</p>
-          <ul>
-            <li>2 audits/mois</li>
-            <li>Rapport PDF</li>
-            <li>Support standard</li>
-          </ul>
-          <div style="margin-top:12px">
-            <a class="cta" href="STRIPE_LINK_STANDARD">S’abonner (49€)</a>
-          </div>
-        </div>
-
-        <div class="plan">
-          <h3>Premium</h3>
-          <div class="price">99 €/mois</div>
-          <p class="muted">Audits illimités • Suivi automatisé • Support prioritaire</p>
-          <ul>
-            <li>Audits illimités</li>
-            <li>Suivi automatisé</li>
-            <li>Support prioritaire</li>
-          </ul>
-          <div style="margin-top:12px">
-            <a class="cta" href="STRIPE_LINK_PREMIUM">S’abonner (99€)</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="center">
-      <div style="max-width:700px;margin:0 auto">
-        <p style="margin:6px 0"><strong>Audilix</strong> — La conformité, simplifiée par l’intelligence</p>
-        <p class="muted">© 2025 Audilix. Tous droits réservés. <a href="#" style="color:var(--primary);text-decoration:none">Politique de confidentialité</a> • <a href="#" style="color:var(--primary);text-decoration:none">Mentions légales</a></p>
-      </div>
-    </footer>
-  </div>
-
-  <!-- small JS for smooth scroll -->
-  <script>
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        e.preventDefault();
-        const id = a.getAttribute('href').slice(1);
-        const el = document.getElementById(id);
-        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-      });
-    });
-    // open audit form in new tab if TALLY_LINK not replaced
-    document.getElementById('auditBtn')?.addEventListener('click', (e)=>{
-      const href = e.currentTarget.getAttribute('href');
-      if(href === 'TALLY_LINK' || !href) {
-        e.preventDefault();
-        window.open('https://tally.so', '_blank');
-      }
-    });
-  </script>
+  <footer>
+    © 2025 Audilix Technologies — Tous droits réservés.<br>
+    <a href="mentions.html">Mentions légales et confidentialité</a>
+  </footer>
 </body>
 </html>
