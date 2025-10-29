@@ -1,120 +1,74 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Audilix Technologies — Audit et conformité automatisés</title>
-  <meta name="description" content="Audilix Technologies automatise vos audits de conformité (RGPD, cybersécurité, ISO) grâce à l’intelligence artificielle.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Audilix — Conformité automatisée & Assistant IA</title>
+  <meta name="description" content="Audilix automatise vos audits RGPD, cybersécurité et ISO avec un assistant IA. Rapports exploitables, suivi continu et alertes." />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Audilix — Conformité automatisée & Assistant IA" />
+  <meta property="og:description" content="Automatisez vos audits et réduisez le risque de non-conformité grâce à l'intelligence." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/logo.png" />
+  <meta property="og:url" content="https://audilix.onrender.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Inline favicon (simple SVG, fallback to /logo.png) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230B3B70'/><circle cx='50' cy='50' r='30' fill='%23B98B2B'/></svg>">
+
   <style>
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
-      background:#fafbff;
-      color:#0f172a;
-      transition:background .4s,color .4s;
+    /* ---------- Design tokens ---------- */
+    :root{
+      --bg-light: #FBFDFF;
+      --bg-dark: linear-gradient(180deg,#031028 0%, #061025 100%);
+      --card: #FFFFFF;
+      --muted: #6B7280;
+      --text: #0F1724;
+      --primary: #0B3B70;    /* deep navy */
+      --accent: #B98B2B;     /* gold */
+      --glass: rgba(255,255,255,0.6);
+      --radius: 14px;
+      --shadow-1: 0 10px 30px rgba(15,23,36,0.06);
+      --shadow-2: 0 18px 50px rgba(15,23,36,0.08);
+      --maxw: 1200px;
     }
-    [data-theme="dark"] body{
-      background:#0f172a;
-      color:#e2e8f0;
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);background:var(--bg-light);-webkit-font-smoothing:antialiased}
+    /* Dark theme */
+    @media (prefers-color-scheme: dark){
+      html{background:var(--bg-dark);color:#E6EEF6}
+      :root{--card:#071026;--muted:#9AA6B2;--text:#E6EEF6;--shadow-1:0 10px 30px rgba(2,6,23,0.7)}
     }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:1rem 2rem;
-      position:sticky;top:0;
-      backdrop-filter:blur(6px);
-    }
-    header img{height:44px}
-    a.button{
-      background:#0b3b70;
-      color:#fff;
-      padding:.7rem 1.4rem;
-      border-radius:8px;
-      text-decoration:none;
-      font-weight:700;
-    }
-    section{max-width:1080px;margin:auto;padding:4rem 1.5rem}
-    .hero h1{font-size:2.4rem;margin-bottom:.4rem}
-    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
-    .plan{background:#fff;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.06);padding:1.5rem}
-    .plan h3{margin-top:0}
-    footer{padding:2rem 1.5rem;text-align:center;font-size:.9rem;color:#6b7280}
-    @media(prefers-color-scheme:dark){
-      body{background:#0f172a;color:#e2e8f0}
-      .plan{background:#1e293b;color:#f1f5f9}
-    }
-  </style>
-  <script>
-    // bascule clair/sombre manuelle
-    function toggleTheme(){
-      document.documentElement.dataset.theme =
-        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    }
-  </script>
-</head>
-<body>
-  <header>
-    <div style="display:flex;align-items:center;gap:.6rem">
-      <img src="logo.png" alt="Logo Audilix">
-      <strong>Audilix Technologies</strong>
-    </div>
-    <div style="display:flex;gap:1rem;align-items:center">
-      <button onclick="toggleTheme()" style="border:none;background:none;font-size:1.2rem;cursor:pointer">🌗</button>
-      <a href="https://tally.so/r/mVRNrl" class="button">Faire un audit gratuit</a>
-    </div>
-  </header>
 
-  <section class="hero">
-    <h1>Automatisez la conformité de votre entreprise avec l’intelligence artificielle</h1>
-    <p>Vos documents sont vérifiés automatiquement et vos risques de non-conformité disparaissent, sans stress.</p>
-  </section>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 0;position:sticky;top:0;background:transparent;z-index:60}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo img{height:48px;width:auto;border-radius:8px;object-fit:contain}
+    .brand{font-family:Poppins;font-weight:700;color:var(--primary);font-size:18px}
+    nav{display:flex;gap:16px;align-items:center}
+    nav a{color:var(--text);text-decoration:none;font-weight:600;padding:8px;border-radius:8px}
+    .cta{background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:700;box-shadow:var(--shadow-1)}
+    .ghost{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(15,23,36,0.06);color:var(--text)}
 
-  <section id="assistant">
-    <h2>Assistant IA Audilix</h2>
-    <p>Posez vos questions de conformité (RGPD, sécurité, ISO) et recevez des réponses instantanées grâce à notre assistant IA.</p>
-  </section>
+    /* Hero */
+    .hero{display:flex;gap:36px;align-items:center;padding:56px 0}
+    .hero-left{flex:1;min-width:280px}
+    .eyebrow{display:inline-block;background:rgba(11,59,112,0.06);color:var(--primary);padding:6px 12px;border-radius:999px;font-weight:700;font-size:13px}
+    h1{font-family:Poppins;font-size:40px;margin:18px 0 10px;line-height:1.02}
+    p.lead{color:var(--muted);font-size:17px;margin-bottom:18px}
+    .hero-ctas{display:flex;gap:12px;align-items:center;margin-top:12px}
 
-  <section id="features">
-    <h2>Fonctionnalités clés</h2>
-    <ul>
-      <li>Audit automatisé et rapports instantanés ;</li>
-      <li>Suivi continu de la conformité ;</li>
-      <li>Alertes et recommandations intelligentes ;</li>
-      <li>Assistance IA 24 h/24.</li>
-    </ul>
-  </section>
+    /* 3D mock */
+    .hero-right{flex:1;display:flex;justify-content:center;perspective:1200px}
+    .mock-3d{width:100%;max-width:560px;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.9,.2,1);will-change:transform}
+    .mock-card{border-radius:18px;background:var(--card);padding:18px;box-shadow:var(--shadow-2);transform:translateZ(30px) rotateX(6deg);border:1px solid rgba(15,23,36,0.04);overflow:hidden}
+    .mock-3d:hover{transform:rotateX(6deg) rotateY(8deg) translateY(-8px)}
+    .mock-left{background:linear-gradient(180deg,#fff,#f6fbff);padding:12px;border-radius:12px}
+    .float{position:absolute;right:-36px;top:8px;width:140px;height:140px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--accent));opacity:.12;filter:blur(8px);transform:rotate(22deg)}
 
-  <section id="pricing">
-    <h2>Nos offres</h2>
-    <div class="plans">
-      <div class="plan">
-        <h3>Standard</h3>
-        <p><strong>69 €/mois</strong></p>
-        <p>Audit automatisé + rapport mensuel</p>
-      </div>
-      <div class="plan">
-        <h3>Premium</h3>
-        <p><strong>149 €/mois</strong></p>
-        <p>Audits illimités + Assistant IA</p>
-      </div>
-      <div class="plan">
-        <h3>Entreprise</h3>
-        <p><strong>299 €/mois</strong></p>
-        <p>Intégrations, IA avancée, support prioritaire</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="cta" style="text-align:center">
-    <h2>Prêt à simplifier votre conformité ?</h2>
-    <a href="https://tally.so/r/mVRNrl" class="button">Faire un audit gratuit</a>
-  </section>
-
-  <footer>
-    © 2025 Audilix Technologies — Tous droits réservés.<br>
-    <a href="mentions.html">Mentions légales et confidentialité</a>
-  </footer>
-</body>
-</html>
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:40px 0}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow-1);border:1px solid rgba(11,59,112,0.03)}
+    .card h3{margin:6px 0 8px}
