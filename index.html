@@ -1,154 +1,459 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Audilix — Conformité automatisée & Assistant IA</title>
-  <meta name="description" content="Audilix automatise vos audits RGPD, ISO et cybersécurité grâce à l’intelligence artificielle. Simplifiez la conformité et gagnez du temps." />
-  <link rel="icon" type="image/png" href="logo.png" />
+  <meta name="description" content="Audilix automatise vos audits RGPD, cybersécurité et ISO grâce à l'intelligence artificielle. Tests gratuits, rapports exploitables et assistant IA." />
+  <meta property="og:title" content="Audilix — Conformité automatisée & Assistant IA" />
+  <meta property="og:description" content="Automatisez vos audits et réduisez le risque de non-conformité grâce à l'intelligence." />
+  <meta property="og:image" content="/logo.png" />
+  <meta property="og:url" content="https://audilix.onrender.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon inline -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230B3B70'/><circle cx='50' cy='50' r='28' fill='%23B98B2B'/></svg>">
+
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
-      color: #1E293B;
-      overflow-x: hidden;
+    /* ---------- Design tokens ---------- */
+    :root{
+      --bg:#FBFDFF;
+      --card:#FFFFFF;
+      --text:#0F1724;
+      --muted:#6B7280;
+      --primary:#0B3B70;
+      --accent:#B98B2B;
+      --radius:14px;
+      --maxw:1200px;
+      --glass: rgba(255,255,255,0.6);
+      --shadow-1: 0 10px 30px rgba(15,23,36,0.06);
+      --shadow-2: 0 18px 50px rgba(15,23,36,0.08);
+      --ease: cubic-bezier(.2,.9,.2,1);
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+
+    /* Dark theme */
+    html.dark{
+      --bg: linear-gradient(180deg,#031028 0%, #061025 100%);
+      --card: #071026;
+      --text: #E6EEF6;
+      --muted: #9AA6B2;
+      --shadow-1: 0 10px 30px rgba(2,6,23,0.7);
     }
-    header img {
-      height: 45px;
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 0;position:sticky;top:0;background:rgba(255,255,255,0.4);backdrop-filter:blur(6px);z-index:90}
+    html.dark header{background:rgba(7,18,38,0.3)}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo img{height:48px;width:auto;border-radius:8px;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(11,59,112,0.06))}
+    .brand{font-family:Poppins;font-weight:700;color:var(--primary);font-size:18px}
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{color:var(--text);text-decoration:none;font-weight:600;padding:8px;border-radius:8px;transition:background .2s var(--ease)}
+    nav a:hover{background:rgba(11,59,112,0.05)}
+    .cta{background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:700;box-shadow:var(--shadow-1)}
+    .ghost{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(15,23,36,0.06);color:var(--text)}
+    .controls{display:flex;gap:10px;align-items:center}
+
+    /* Hero */
+    .hero{display:flex;gap:36px;align-items:center;padding:56px 0}
+    .hero-left{flex:1;min-width:300px}
+    .eyebrow{display:inline-block;background:rgba(11,59,112,0.06);color:var(--primary);padding:6px 12px;border-radius:999px;font-weight:700;font-size:13px}
+    h1{font-family:Poppins;font-size:40px;margin:18px 0 10px;line-height:1.02}
+    p.lead{color:var(--muted);font-size:17px;margin-bottom:18px}
+    .hero-ctas{display:flex;gap:12px;align-items:center;margin-top:12px}
+
+    /* 3D mock (subtle) */
+    .hero-right{flex:1;display:flex;justify-content:center;perspective:1200px}
+    .mock-3d{width:100%;max-width:560px;transform-style:preserve-3d;transition:transform .9s var(--ease);will-change:transform}
+    .mock-card{border-radius:18px;background:var(--card);padding:18px;box-shadow:var(--shadow-2);transform:translateZ(18px) rotateX(4deg);border:1px solid rgba(15,23,36,0.04);overflow:hidden}
+    .mock-3d:hover{transform:rotateX(6deg) rotateY(8deg) translateY(-8px)}
+    .mock-left{background:linear-gradient(180deg,#fff,#f6fbff);padding:12px;border-radius:12px}
+    .float{position:absolute;right:-36px;top:8px;width:140px;height:140px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--accent));opacity:.12;filter:blur(8px);transform:rotate(22deg)}
+    .mock-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:700}
+
+    /* Features grid */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:40px 0}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow-1);border:1px solid rgba(11,59,112,0.03);transition:transform .25s var(--ease)}
+    .card:hover{transform:translateY(-8px)}
+    .card h3{margin:6px 0 8px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Pricing */
+    .pricing{display:flex;gap:18px;margin:36px 0;align-items:stretch}
+    .plan{flex:1;padding:22px;border-radius:14px;background:linear-gradient(180deg,var(--card),#fbfdff);box-shadow:var(--shadow-1);border:1px solid rgba(15,23,36,0.04);display:flex;flex-direction:column;justify-content:space-between;transition:transform .25s var(--ease)}
+    .plan:hover{transform:translateY(-10px)}
+    .plan .price{font-size:28px;color:var(--primary);font-weight:800;margin-top:6px}
+    .plan ul{padding-left:18px;color:var(--muted);margin-top:12px}
+    .badge-prem{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;font-weight:700;font-size:13px}
+
+    /* Assistant floating */
+    .assistant-floating{
+      position:fixed;right:22px;bottom:22px;z-index:1000;
     }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #1E293B;
-      font-weight: 600;
+    .assistant-btn{
+      width:56px;height:56px;border-radius:999px;background:linear-gradient(90deg,var(--primary),#2f64b3);display:flex;align-items:center;justify-content:center;color:white;border:none;box-shadow:0 12px 30px rgba(11,59,112,0.18);cursor:pointer;font-size:20px;
     }
-    .cta {
-      background: linear-gradient(90deg, #0B3B70, #1D65A6);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
+    .assistant-panel{position:fixed;right:22px;bottom:92px;width:360px;border-radius:12px;background:var(--card);box-shadow:var(--shadow-2);overflow:hidden;display:none;flex-direction:column}
+    .assistant-header{padding:12px;border-bottom:1px solid rgba(15,23,36,0.04);display:flex;justify-content:space-between;align-items:center}
+    .assistant-body{padding:12px;min-height:140px;max-height:320px;overflow:auto}
+    .assistant-input{display:flex;padding:12px;border-top:1px solid rgba(15,23,36,0.04);gap:8px}
+    .assistant-input input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,36,0.06)}
+
+    /* CTA band */
+    .cta-band{margin:28px 0;padding:20px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(11,59,112,0.04),rgba(11,59,112,0.02));box-shadow:var(--shadow-1)}
+
+    /* Footer */
+    footer{padding:36px 0;border-top:1px solid rgba(15,23,36,0.04);margin-top:40px;color:var(--muted);font-size:14px;text-align:center}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{flex-direction:column;align-items:flex-start}
+      .features{grid-template-columns:1fr}
+      .pricing{flex-direction:column}
+      nav{display:none}
+      .assistant-panel{right:12px;left:12px;width:auto}
     }
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 100px 20px;
-      background: linear-gradient(180deg, #E8EEF8 0%, #FFFFFF 100%);
-    }
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      color: #0B3B70;
-    }
-    .hero p {
-      font-size: 18px;
-      max-width: 700px;
-      margin-bottom: 25px;
-    }
-    .hero a {
-      font-size: 18px;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      max-width: 1100px;
-      margin: 80px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-      transition: transform .3s;
-    }
-    .card:hover {
-      transform: translateY(-8px);
-    }
-    .card h3 {
-      color: #0B3B70;
-    }
-    footer {
-      background: #0B3B70;
-      color: #fff;
-      text-align: center;
-      padding: 40px 20px;
-    }
-    footer a {
-      color: #fff;
-      text-decoration: underline;
-    }
+
+    /* small utilities */
+    .small{font-size:13px;color:var(--muted)}
+    .fade-up{opacity:0;transform:translateY(8px);animation:fadeUp .7s var(--ease) forwards}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+    a:focus,button:focus{outline:3px solid rgba(11,59,112,0.12);outline-offset:3px}
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="logo.png" alt="Audilix Logo" />
-    </div>
-    <nav>
-      <a href="#features">Fonctionnalités</a>
-      <a href="#pricing">Tarifs</a>
-      <a href="mentions.html">Mentions légales</a>
-      <a href="#contact" class="cta">Faire un audit gratuit</a>
-    </nav>
-  </header>
+  <div class="wrap" id="app">
+    <header>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="logo" aria-hidden="false">
+          <img src="logo.png" alt="Audilix logo" id="logoImg" onerror="this.style.display='none'">
+          <div class="brand">Audilix Technologies</div>
+        </div>
+      </div>
 
-  <section class="hero">
-    <h1>La conformité, simplifiée par l’intelligence</h1>
-    <p>Audilix automatise vos audits RGPD, ISO et cybersécurité avec un assistant IA qui détecte les écarts et génère vos rapports instantanément.</p>
-    <a href="#pricing" class="cta">Découvrir nos offres</a>
-  </section>
+      <div class="controls">
+        <nav aria-label="Navigation principale">
+          <a href="#how" aria-label="Comment ça marche">Comment ça marche</a>
+          <a href="#features" aria-label="Avantages">Avantages</a>
+          <a href="#pricing" aria-label="Tarifs">Tarifs</a>
+        </nav>
 
-  <section id="features" class="features">
-    <div class="card">
-      <h3>Audit automatisé</h3>
-      <p>Analysez vos processus et documents en quelques minutes grâce à notre moteur IA.</p>
-    </div>
-    <div class="card">
-      <h3>Suivi en temps réel</h3>
-      <p>Recevez des alertes proactives sur vos écarts de conformité avant qu’ils ne deviennent critiques.</p>
-    </div>
-    <div class="card">
-      <h3>Rapports exploitables</h3>
-      <p>Générez des rapports clairs, exportables et prêts à présenter à vos partenaires et auditeurs.</p>
-    </div>
-  </section>
+        <!-- language small selector -->
+        <div style="display:flex;align-items:center;gap:8px;margin-left:8px">
+          <button id="langBtn" class="ghost" aria-label="Changer la langue">FR / EN</button>
+        </div>
 
-  <section id="pricing" class="features">
-    <div class="card">
-      <h3>Standard — 49€/mois</h3>
-      <p>Audit automatisé + rapport mensuel.</p>
-    </div>
-    <div class="card">
-      <h3>Premium — 99€/mois</h3>
-      <p>Audit continu + alertes IA + assistance prioritaire.</p>
-    </div>
-    <div class="card">
-      <h3>Entreprise — 199€/mois</h3>
-      <p>Tableau de bord avancé + API + support dédié.</p>
-    </div>
-  </section>
+        <!-- theme toggle -->
+        <button id="themeToggle" class="ghost" aria-label="Changer le thème">🌗</button>
 
-  <footer>
-    <p>© 2025 Audilix — Tous droits réservés</p>
-    <p><a href="mentions.html">Mentions légales</a></p>
-  </footer>
+        <a class="cta" id="ctaMain" href="https://tally.so/r/mVRNrl" target="_blank" rel="noopener">Faire un audit gratuit</a>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-left fade-up" style="animation-delay:.05s">
+        <span class="eyebrow">La conformité, simplifiée</span>
+        <h1 data-i18n="hero_title">Automatisez la conformité de votre entreprise avec l'intelligence artificielle</h1>
+        <p class="lead" data-i18n="hero_sub">Vos documents sont vérifiés automatiquement et vos risques de non-conformité diminuent — sans stress.</p>
+
+        <div class="hero-ctas">
+          <a class="cta" id="primaryBtn" href="https://tally.so/r/mVRNrl" target="_blank">Faire un audit gratuit</a>
+          <a class="ghost" href="#pricing" id="seePricing">Découvrir les tarifs</a>
+        </div>
+
+        <p class="small" style="margin-top:14px">Audit RGPD, cybersécurité & conformité. Rapport clair et plan d'action priorisé.</p>
+      </div>
+
+      <div class="hero-right fade-up" style="animation-delay:.12s;position:relative">
+        <div class="mock-3d" role="img" aria-label="Aperçu du tableau de bord Audilix">
+          <div class="mock-card">
+            <div class="mock-meta"><div>Score de conformité</div><div style="font-weight:800;color:var(--primary)">72%</div></div>
+            <div style="height:120px;background:linear-gradient(90deg,#e9f2ff,#fff);border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--muted)">
+              Aperçu — tableau de bord
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:12px">
+              <div style="font-size:13px;color:var(--muted)">Risques critiques</div>
+              <div style="font-weight:700;color:#D9534F">3</div>
+            </div>
+          </div>
+          <div class="float" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assistant -->
+    <section class="assistant fade-up" id="how" style="animation-delay:.14s">
+      <h2 data-i18n="assistant_title">Assistant Audilix (IA)</h2>
+      <p class="muted" data-i18n="assistant_desc">Posez une question rapide sur la conformité (RGPD, sécurité, normes) — réponses instantanées.</p>
+
+      <div style="display:flex;gap:12px;margin-top:12px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px">
+          <div class="chatbox" id="chatbox"><div class="small muted">Ex: "Quels documents RGPD dois-je conserver ?"</div></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="chatInput" placeholder="Écrire une question…" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,36,0.06)">
+            <button class="cta" id="chatSend">Poser</button>
+          </div>
+          <div class="small muted" style="margin-top:8px">Simulation: connectez OpenAI pour des réponses réelles (voir documentation).</div>
+        </div>
+
+        <div style="width:320px">
+          <div class="card">
+            <h3>Gain de temps</h3>
+            <p class="muted">Réponses rapides, recommandations exploitables et sources liées.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="fade-up" style="animation-delay:.16s">
+      <h2 data-i18n="why_title">Pourquoi choisir Audilix</h2>
+      <div class="features">
+        <div class="card">
+          <h3>Audit automatisé</h3>
+          <p class="muted">Analyse rapide et complète de vos documents et processus.</p>
+        </div>
+        <div class="card">
+          <h3>Surveillance continue</h3>
+          <p class="muted">Alertes en temps réel et priorisation des actions.</p>
+        </div>
+        <div class="card">
+          <h3>Rapports actionnables</h3>
+          <p class="muted">Plans d’action clairs, export PDF et partageable avec les auditeurs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="fade-up" style="animation-delay:.18s">
+      <h2 data-i18n="pricing_title">Tarifs</h2>
+      <div class="pricing">
+        <div class="plan">
+          <div>
+            <h3 data-i18n="plan_standard">Standard</h3>
+            <div class="price">69 € / mois</div>
+            <p class="muted">2 audits / mois • Rapport PDF • Support par email</p>
+            <ul>
+              <li>2 audits / mois</li>
+              <li>Rapport PDF</li>
+              <li>Support par e-mail</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px">
+            <a class="cta" href="https://buy.stripe.com/test_3cIdRbdvTar32Rv3HzeUU00" target="_blank" rel="noopener">S’abonner</a>
+          </div>
+        </div>
+
+        <div class="plan">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="plan_premium">Premium</h3><span class="badge-prem">Le plus populaire</span></div>
+            <div class="price">149 € / mois</div>
+            <p class="muted">Audits illimités • Assistant IA • Alertes</p>
+            <ul>
+              <li>Audits illimités</li>
+              <li>Assistant IA basique</li>
+              <li>Alertes & priorités</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px">
+            <a class="cta" href="https://buy.stripe.com/test_cNibJ363rbv763HemdeUU01	" target="_blank" rel="noopener">S’abonner</a>
+          </div>
+        </div>
+
+        <div class="plan">
+          <div>
+            <h3 data-i18n="plan_enterprise">Entreprise</h3>
+            <div class="price">299 € / mois</div>
+            <p class="muted">IA avancée • Intégrations • Support prioritaire</p>
+            <ul>
+              <li>Intégrations (Drive, M365)</li>
+              <li>Support prioritaire</li>
+              <li>Onboarding personnalisé</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px">
+            <a class="cta" href="	https://buy.stripe.com/test_28E3cx2Rf1UxfEhguleUU02" target="_blank" rel="noopener">Contact / S’abonner</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-band fade-up" style="animation-delay:.20s">
+      <div><strong>Prêt à simplifier votre conformité ?</strong><div class="small">Testez gratuitement — rapport clair en quelques minutes.</div></div>
+      <div><a class="cta" href="TALLY_LINK" target="_blank" rel="noopener">Faire un audit gratuit</a></div>
+    </div>
+
+    <footer class="fade-up" style="animation-delay:.22s">
+      <div style="max-width:900px;margin:0 auto">
+        <p style="margin:6px 0"><strong>Audilix Technologies</strong> — La conformité, simplifiée par l’intelligence</p>
+        <p class="small">© 2025 Audilix Technologies. Tous droits réservés. • <a href="mentions.html">Mentions légales</a></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Assistant floating button & panel -->
+  <div class="assistant-floating" aria-hidden="false">
+    <button id="assistantBtn" class="assistant-btn" title="Assistant Audilix">💬</button>
+    <div id="assistantPanel" class="assistant-panel" role="dialog" aria-label="Assistant Audilix">
+      <div class="assistant-header">
+        <div><strong>Assistant Audilix</strong><div class="small muted">IA (simulation)</div></div>
+        <button id="assistantClose" style="background:none;border:none;font-size:16px;cursor:pointer">✕</button>
+      </div>
+      <div class="assistant-body" id="assistantBody">
+        <div class="small muted">Posez une question sur la conformité (RGPD, sécurité, normes).</div>
+      </div>
+      <div class="assistant-input">
+        <input id="assistantInput" placeholder="Écrivez une question..." aria-label="Écrivez une question">
+        <button id="assistantSend" class="cta">Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ================ Theme & Language ================ */
+    (function(){
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem('audilix-theme');
+      const savedLang = localStorage.getItem('audilix-lang') || 'fr';
+      function applyTheme(t){
+        if(t === 'dark') html.classList.add('dark'); else html.classList.remove('dark');
+        localStorage.setItem('audilix-theme', t);
+      }
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+      document.getElementById('themeToggle').addEventListener('click', ()=>{
+        const current = html.classList.contains('dark') ? 'dark' : 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+
+      // Language strings
+      const STR = {
+        fr:{
+          hero_title:"Automatisez la conformité de votre entreprise avec l'intelligence artificielle",
+          hero_sub:"Vos documents sont vérifiés automatiquement et vos risques de non-conformité diminuent — sans stress.",
+          assistant_title:"Assistant Audilix (IA)",
+          assistant_desc:"Posez une question rapide sur la conformité (RGPD, sécurité, normes) — réponses instantanées.",
+          why_title:"Pourquoi choisir Audilix",
+          pricing_title:"Tarifs",
+          plan_standard:"Standard",
+          plan_premium:"Premium",
+          plan_enterprise:"Entreprise"
+        },
+        en:{
+          hero_title:"Automate your company's compliance with artificial intelligence",
+          hero_sub:"Your documents are checked automatically and your compliance risks reduce — without stress.",
+          assistant_title:"Audilix Assistant (AI)",
+          assistant_desc:"Ask a quick compliance question (GDPR, security, standards) — instant answers.",
+          why_title:"Why choose Audilix",
+          pricing_title:"Pricing",
+          plan_standard:"Standard",
+          plan_premium:"Premium",
+          plan_enterprise:"Enterprise"
+        }
+      };
+
+      let lang = savedLang;
+      function setLang(l){
+        lang = l;
+        localStorage.setItem('audilix-lang', l);
+        document.querySelector('[data-i18n="hero_title"]').innerText = STR[l].hero_title;
+        document.querySelector('[data-i18n="hero_sub"]').innerText = STR[l].hero_sub;
+        document.querySelector('[data-i18n="assistant_title"]').innerText = STR[l].assistant_title;
+        document.querySelector('[data-i18n="assistant_desc"]').innerText = STR[l].assistant_desc;
+        document.querySelector('[data-i18n="why_title"]').innerText = STR[l].why_title;
+        document.querySelector('[data-i18n="pricing_title"]').innerText = STR[l].pricing_title;
+        document.querySelectorAll('[data-i18n="plan_standard"]').forEach(e=>e.innerText = STR[l].plan_standard);
+        document.querySelectorAll('[data-i18n="plan_premium"]').forEach(e=>e.innerText = STR[l].plan_premium);
+        document.querySelectorAll('[data-i18n="plan_enterprise"]').forEach(e=>e.innerText = STR[l].plan_enterprise);
+      }
+      // attach elements for translation (some exist)
+      // ensure existence
+      if(document.querySelector('[data-i18n="hero_title"]')){
+        setLang(lang);
+      } else {
+        // fallback: set texts directly
+        document.querySelectorAll('[data-i18n]').forEach(el=>{
+          const key = el.getAttribute('data-i18n');
+          if(STR[lang][key]) el.innerText = STR[lang][key];
+        });
+      }
+
+      document.getElementById('langBtn').addEventListener('click', ()=>{
+        setLang(lang === 'fr' ? 'en' : 'fr');
+      });
+    })();
+
+    /* ================ Assistant (simulation) ================ */
+    (function(){
+      const panel = document.getElementById('assistantPanel');
+      const btn = document.getElementById('assistantBtn');
+      const close = document.getElementById('assistantClose');
+      const send = document.getElementById('assistantSend');
+      const body = document.getElementById('assistantBody');
+      const input = document.getElementById('assistantInput');
+
+      function openPanel(){ panel.style.display = 'flex'; input.focus(); }
+      function closePanel(){ panel.style.display = 'none'; }
+      btn.addEventListener('click', ()=>{ panel.style.display === 'flex' ? closePanel() : openPanel(); });
+      close.addEventListener('click', closePanel);
+
+      function pushMessage(who, text){
+        const el = document.createElement('div');
+        el.style.margin = '8px 0';
+        el.style.fontSize = '14px';
+        el.style.lineHeight = '1.4';
+        el.innerHTML = '<strong>'+who+':</strong> '+text;
+        body.appendChild(el);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      send.addEventListener('click', ()=>{
+        const q = input.value.trim();
+        if(!q) return;
+        pushMessage('Vous', q);
+        input.value = '';
+        // simulated reply
+        setTimeout(()=> pushMessage('Audilix (simulation)', 'Réponse (simulation) : vérifiez vos politiques internes, mettez en place MFA et priorisez les actions critiques.'), 800);
+      });
+    })();
+
+    /* ================ Chat area on page ================ */
+    document.getElementById('chatSend').addEventListener('click', ()=>{
+      const q = document.getElementById('chatInput').value.trim();
+      if(!q) return alert('Écris une question');
+      const box = document.getElementById('chatbox');
+      const u = document.createElement('div'); u.style.fontWeight='700'; u.style.margin='6px 0'; u.innerText = 'Vous: ' + q;
+      box.appendChild(u);
+      const r = document.createElement('div'); r.style.margin='6px 0'; r.innerText = "Réponse (simulation) : Audilix recommande de vérifier les politiques internes et prioriser les actions critiques.";
+      box.appendChild(r);
+      document.getElementById('chatInput').value='';
+      box.scrollTop = box.scrollHeight;
+    });
+
+    /* ================ Small helpers ================ */
+    // smooth reveal
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.fade-up').forEach((el,i)=> el.style.animationDelay = (i*80)+'ms');
+      // add data-i18n placeholders if missing (so setLang doesn't fail)
+      if(!document.querySelector('[data-i18n="hero_title"]')) {
+        const ht = document.querySelector('h1'); if(ht) ht.setAttribute('data-i18n','hero_title');
+        const hs = document.querySelector('.lead'); if(hs) hs.setAttribute('data-i18n','hero_sub');
+        const at = document.querySelector('#how h2'); if(at) at.setAttribute('data-i18n','assistant_title');
+        const ad = document.querySelector('#how p.muted'); if(ad) ad.setAttribute('data-i18n','assistant_desc');
+        const wy = document.querySelector('#features h2'); if(wy) wy.setAttribute('data-i18n','why_title');
+        const pr = document.querySelector('#pricing h2'); if(pr) pr.setAttribute('data-i18n','pricing_title');
+        const ps = document.querySelectorAll('.plan h3'); if(ps.length>=3){
+          ps[0].setAttribute('data-i18n','plan_standard'); ps[1].setAttribute('data-i18n','plan_premium'); ps[2].setAttribute('data-i18n','plan_enterprise');
+        }
+      }
+    });
+  </script>
 </body>
 </html>
