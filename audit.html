@@ -1,213 +1,119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Audit IA — Audilix</title>
-  <meta name="description" content="Audit automatisé multi-conformités (RGPD, cybersécurité, RSE, ISO) — Audilix" />
-  <link rel="icon" href="logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#FBFDFF;--card:#fff;--text:#0F1724;--muted:#6B7280;--primary:#0B3B70;--accent:#B98B2B;--radius:12px}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-    .wrap{max-width:980px;margin:28px auto;padding:20px}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    header img{height:44px}
-    h1{font-family:Poppins;font-size:28px;margin:8px 0}
-    .lead{color:var(--muted);margin-bottom:20px}
-    form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-    form .row-1{grid-template-columns:1fr}
-    label{font-weight:600;font-size:14px;margin-bottom:6px;display:block}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,36,0.06);font-size:14px}
-    textarea{min-height:120px;resize:vertical}
-    .actions{display:flex;gap:12px;align-items:center;margin-top:10px}
-    .btn{background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-    .btn.ghost{background:transparent;color:var(--primary);border:1px solid rgba(11,59,112,0.08)}
-    .result{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 40px rgba(15,23,36,0.06);margin-top:22px}
-    .score{font-size:20px;font-weight:800;color:var(--primary)}
-    .section-title{font-weight:700;margin-top:14px}
-    .small{color:var(--muted);font-size:13px}
-    @media(max-width:720px){form .row{grid-template-columns:1fr}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Audit IA — Audilix</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f7f9fc; margin:0; padding:0; }
+.container { max-width: 720px; margin: auto; padding: 32px; }
+h1 { text-align:center; margin-bottom:18px; }
+label { font-weight: bold; margin-top:18px; display:block; }
+input, textarea, select {
+  width:100%; padding:12px; margin-top:6px; border-radius:6px;
+  border:1px solid #dcdfe6; font-size:16px;
+}
+button {
+  width:100%; background:#0049ff; border:none; color:white;
+  padding:16px; border-radius:8px; font-size:18px;
+  margin-top:20px; cursor:pointer; transition:0.2s;
+}
+button:hover { background:#0034bd; }
+#loader { display:none; text-align:center; margin-top:26px; font-size:18px; }
+#auditResult { display:none; background:white; padding:26px;
+  border-radius:12px; margin-top:28px; border:1px solid #e0e6ef; }
+.score { font-size:34px; font-weight:900; text-align:center; margin-bottom:14px; }
+.risks, .reco { margin-top:16px; }
+ul { margin:0; padding-left:22px; }
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <img src="logo.png" alt="Audilix logo">
-      <div>
-        <div style="font-weight:700">Audilix Technologies</div>
-        <div class="small">Audit IA — RGPD · Cybersécurité · RSE · ISO</div>
-      </div>
-    </header>
+<div class="container">
+<h1>Audit de conformité IA</h1>
+<p>Répondez aux questions ci-dessous. Le rapport sera généré automatiquement par l’intelligence artificielle.</p>
 
-    <main>
-      <h1>Audit automatisé — Obtenez un rapport IA immédiat</h1>
-      <p class="lead">Répondez à ces quelques questions ; notre IA génère un score de conformité, les risques principaux et un plan d’action priorisé.</p>
+<form id="auditForm">
+  <label>Nom de l’entreprise</label>
+  <input type="text" id="company" required />
 
-      <form id="auditForm">
-        <div class="row row-1">
-          <div>
-            <label>Nom de l'entreprise</label>
-            <input name="company" placeholder="Ex. : Entreprise SA" required>
-          </div>
-        </div>
+  <label>Secteur d’activité</label>
+  <input type="text" id="sector" required />
 
-        <div class="row">
-          <div>
-            <label>Secteur d'activité</label>
-            <select name="sector">
-              <option>Technologie</option><option>Santé</option><option>Finance</option>
-              <option>Éducation</option><option>Industrie</option><option>Services</option><option>Autre</option>
-            </select>
-          </div>
-          <div>
-            <label>Taille de l'entreprise</label>
-            <select name="size">
-              <option>1-10</option><option>11-50</option><option>51-250</option><option>250+</option>
-            </select>
-          </div>
-        </div>
+  <label>Taille de l’entreprise</label>
+  <select id="size">
+    <option>1–10 employés</option>
+    <option>11–50 employés</option>
+    <option>51–250 employés</option>
+    <option>250+ employés</option>
+  </select>
 
-        <div class="row">
-          <div>
-            <label>Domaines à auditer (cochez)</label>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label><input type="checkbox" name="domains" value="RGPD"> RGPD / Protection des données</label>
-              <label><input type="checkbox" name="domains" value="Cybersécurité"> Cybersécurité</label>
-              <label><input type="checkbox" name="domains" value="RSE"> RSE / Environnement</label>
-              <label><input type="checkbox" name="domains" value="ISO"> ISO / Certifications</label>
-            </div>
-          </div>
+  <label>Domaines à analyser</label>
+  <select id="domains" multiple>
+    <option>RGPD</option>
+    <option>Cybersécurité</option>
+    <option>ISO 27001</option>
+    <option>RSE</option>
+    <option>Gestion des données</option>
+  </select>
 
-          <div>
-            <label>Avez-vous un DPO/responsable conformité ?</label>
-            <select name="has_dpo"><option>Oui</option><option>Non</option><option>Partiellement</option></select>
-          </div>
-        </div>
+  <label>L’entreprise dispose-t-elle d’un DPO ?</label>
+  <select id="dpo">
+    <option>Oui</option>
+    <option>Non</option>
+  </select>
 
-        <div>
-          <label>Décrivez brièvement vos principales inquiétudes (optionnel)</label>
-          <textarea name="notes" placeholder="Ex. : Nous avons plusieurs formulaires en ligne et craignons des problèmes de consentement..."></textarea>
-        </div>
+  <label>Commentaires supplémentaires</label>
+  <textarea id="notes" rows="4" placeholder="Informations utiles (facultatif)"></textarea>
 
-        <div class="row row-1">
-          <div>
-            <label>E-mail professionnel (où recevoir le rapport)</label>
-            <input type="email" name="email" placeholder="prenom@entreprise.com" required>
-          </div>
-        </div>
+  <button type="submit">Générer mon audit</button>
+</form>
 
-        <div class="actions">
-          <button type="submit" class="btn">Analyser avec l'IA</button>
-          <button type="button" id="clearBtn" class="btn ghost">Réinitialiser</button>
-          <div class="small" style="margin-left:auto">Rapport instantané • Confidentialité garantie</div>
-        </div>
-      </form>
+<div id="loader">⏳ Analyse IA en cours…</div>
 
-      <div id="resultWrap" class="result" style="display:none">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="section-title">Rapport IA — Résumé</div>
-            <div class="small">Généré automatiquement par Audilix</div>
-          </div>
-          <div class="score" id="score">--%</div>
-        </div>
+<div id="auditResult"></div>
 
-        <div id="reportContent" style="margin-top:12px"></div>
+</div>
 
-        <div style="display:flex;gap:10px;margin-top:14px">
-          <button id="downloadPdf" class="btn">Télécharger PDF</button>
-          <button id="upgradeBtn" class="btn ghost">Passer au Premium</button>
-        </div>
-      </div>
-    </main>
-  </div>
+<script>
+document.getElementById("auditForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-  <script>
-    // UTIL — convert form to JSON
-    function formToJson(form){
-      const fd = new FormData(form);
-      const obj = {};
-      for(const [k,v] of fd.entries()){
-        if(k === 'domains'){
-          obj.domains = obj.domains || []; obj.domains.push(v);
-        } else obj[k]=v;
-      }
-      return obj;
-    }
+  const data = {
+    company: document.getElementById("company").value,
+    sector: document.getElementById("sector").value,
+    size: document.getElementById("size").value,
+    domains: Array.from(document.getElementById("domains").selectedOptions).map(o => o.value),
+    has_dpo: document.getElementById("dpo").value,
+    notes: document.getElementById("notes").value,
+  };
 
-    // Helper: safe POST to backend /api/audit
-    async function callAuditAPI(payload){
-      const res = await fetch('/api/audit', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      if(!res.ok){
-        const txt = await res.text();
-        throw new Error(txt || 'Erreur serveur');
-      }
-      return res.json();
-    }
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("auditResult").style.display = "none";
 
-    // render report on page
-    function renderReport(json){
-      document.getElementById('score').innerText = json.score + '%';
-      const el = document.getElementById('reportContent');
-      el.innerHTML = `
-        <h3>Principaux risques</h3>
-        <ul>${json.risks.map(r=>`<li>${r}</li>`).join('')}</ul>
-        <h3>Recommandations immédiates</h3>
-        <ol>${json.recommendations.map(r=>`<li>${r}</li>`).join('')}</ol>
-        <h3>Détails</h3>
-        <pre style="white-space:pre-wrap;background:#f7f9fb;padding:12px;border-radius:8px">${json.details}</pre>
-      `;
-      document.getElementById('resultWrap').style.display='block';
-    }
-
-    // PDF simple: open print dialog with the result content
-    document.getElementById('downloadPdf').addEventListener('click',()=>{
-      // open new window with report html
-      const content = document.getElementById('resultWrap').innerHTML;
-      const win = window.open('','_blank');
-      win.document.write('<html><head><title>Rapport Audilix</title><meta charset="utf-8"></head><body>');
-      win.document.write('<h1>Rapport Audilix</h1>');
-      win.document.write(content);
-      win.document.write('</body></html>');
-      win.document.close();
-      win.focus();
-      setTimeout(()=> win.print(),600);
+  try {
+    const res = await fetch("https://audilix-2.onrender.com/api/audit", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(data)
     });
 
-    // Upgrade button => go to stripe link (replace in index later)
-    document.getElementById('upgradeBtn').addEventListener('click',()=>{
-      // open pricing page / stripe (placeholder)
-      window.open('/','_blank');
-    });
+    const out = await res.json();
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("auditResult").style.display = "block";
 
-    // Form submit
-    document.getElementById('auditForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const form = e.target;
-      const payload = formToJson(form);
-      // UI lock
-      const btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true; btn.innerText = 'Analyse en cours…';
-      try{
-        const json = await callAuditAPI(payload);
-        renderReport(json);
-        // send confirmation email/message handled by backend
-      }catch(err){
-        alert('Erreur : ' + err.message);
-      }finally{
-        btn.disabled=false; btn.innerText = "Analyser avec l'IA";
-      }
-    });
+    document.getElementById("auditResult").innerHTML = `
+      <div class="score">${out.score}/100</div>
+      <div class="summary">${out.summary}</div>
+      <div class="risks"><h3>Risques identifiés</h3><ul>${out.risks.map(r => `<li>${r}</li>`).join("")}</ul></div>
+      <div class="reco"><h3>Recommandations</h3><ul>${out.recommendations.map(r => `<li>${r}</li>`).join("")}</ul></div>
+    `;
+  } catch (err) {
+    document.getElementById("loader").style.display = "none";
+    alert("Erreur IA — réessayez dans 1 minute");
+  }
+});
+</script>
 
-    document.getElementById('clearBtn').addEventListener('click',()=>{
-      document.getElementById('auditForm').reset();
-      document.getElementById('resultWrap').style.display='none';
-    });
-  </script>
 </body>
 </html>
