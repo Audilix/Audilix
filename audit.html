@@ -1,119 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Audit IA — Audilix</title>
+<link rel="icon" href="logo.png">
 <style>
-body { font-family: Arial, sans-serif; background:#f7f9fc; margin:0; padding:0; }
-.container { max-width: 720px; margin: auto; padding: 32px; }
-h1 { text-align:center; margin-bottom:18px; }
-label { font-weight: bold; margin-top:18px; display:block; }
-input, textarea, select {
-  width:100%; padding:12px; margin-top:6px; border-radius:6px;
-  border:1px solid #dcdfe6; font-size:16px;
-}
-button {
-  width:100%; background:#0049ff; border:none; color:white;
-  padding:16px; border-radius:8px; font-size:18px;
-  margin-top:20px; cursor:pointer; transition:0.2s;
-}
-button:hover { background:#0034bd; }
-#loader { display:none; text-align:center; margin-top:26px; font-size:18px; }
-#auditResult { display:none; background:white; padding:26px;
-  border-radius:12px; margin-top:28px; border:1px solid #e0e6ef; }
-.score { font-size:34px; font-weight:900; text-align:center; margin-bottom:14px; }
-.risks, .reco { margin-top:16px; }
-ul { margin:0; padding-left:22px; }
+  :root{--primary:#0B3B70;--bg:#F7FBFF;--card:#fff;--muted:#6B7280}
+  body{font-family:Inter,system-ui;margin:0;background:var(--bg);color:#071224;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:32px auto;padding:20px}
+  h1{font-family:Poppins;margin:0 0 8px}
+  label{display:block;margin-top:12px;font-weight:700}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef7;margin-top:6px}
+  button{background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;padding:12px 16px;border:none;border-radius:10px;margin-top:14px;cursor:pointer}
+  #loader{display:none;margin-top:14px}
+  #result{display:none;margin-top:18px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 30px rgba(11,59,112,0.06)}
+  pre{white-space:pre-wrap;background:#f7fbff;padding:12px;border-radius:8px}
+  .small{color:var(--muted);font-size:13px}
 </style>
 </head>
-
 <body>
-<div class="container">
-<h1>Audit de conformité IA</h1>
-<p>Répondez aux questions ci-dessous. Le rapport sera généré automatiquement par l’intelligence artificielle.</p>
+  <div class="wrap">
+    <a href="index.html" class="small">← Retour</a>
+    <h1>Audit de conformité IA</h1>
+    <p class="small">Répondez à quelques questions — votre rapport est généré immédiatement.</p>
 
-<form id="auditForm">
-  <label>Nom de l’entreprise</label>
-  <input type="text" id="company" required />
+    <form id="auditForm">
+      <label>Nom de l'entreprise</label>
+      <input id="company" required>
 
-  <label>Secteur d’activité</label>
-  <input type="text" id="sector" required />
+      <label>Secteur</label>
+      <input id="sector" placeholder="Ex. Technologie, Finance">
 
-  <label>Taille de l’entreprise</label>
-  <select id="size">
-    <option>1–10 employés</option>
-    <option>11–50 employés</option>
-    <option>51–250 employés</option>
-    <option>250+ employés</option>
-  </select>
+      <label>Taille</label>
+      <select id="size"><option>1–10</option><option>11–50</option><option>51–250</option><option>250+</option></select>
 
-  <label>Domaines à analyser</label>
-  <select id="domains" multiple>
-    <option>RGPD</option>
-    <option>Cybersécurité</option>
-    <option>ISO 27001</option>
-    <option>RSE</option>
-    <option>Gestion des données</option>
-  </select>
+      <label>Domaines (Ctrl/Cmd + click pour sélectionner plusieurs)</label>
+      <select id="domains" multiple size="5">
+        <option>RGPD</option><option>Cybersécurité</option><option>RSE</option><option>ISO</option><option>Gestion des données</option>
+      </select>
 
-  <label>L’entreprise dispose-t-elle d’un DPO ?</label>
-  <select id="dpo">
-    <option>Oui</option>
-    <option>Non</option>
-  </select>
+      <label>Avez-vous un DPO ?</label>
+      <select id="dpo"><option>Oui</option><option>Non</option></select>
 
-  <label>Commentaires supplémentaires</label>
-  <textarea id="notes" rows="4" placeholder="Informations utiles (facultatif)"></textarea>
+      <label>Commentaires (optionnel)</label>
+      <textarea id="notes" rows="4"></textarea>
 
-  <button type="submit">Générer mon audit</button>
-</form>
+      <label>E-mail pour recevoir le rapport</label>
+      <input id="email" type="email" required placeholder="prenom@entreprise.com">
 
-<div id="loader">⏳ Analyse IA en cours…</div>
+      <button type="submit">Analyser avec l'IA</button>
+    </form>
 
-<div id="auditResult"></div>
+    <div id="loader">⏳ Analyse en cours… veuillez patienter</div>
 
-</div>
+    <div id="result">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Résumé IA</strong><div class="small">Score & recommandations</div></div>
+        <div id="score" style="font-size:22px;font-weight:800;color:var(--primary)">--%</div>
+      </div>
+      <div id="bodyReport" style="margin-top:12px"></div>
+      <div style="margin-top:12px"><button id="download">Télécharger PDF</button></div>
+    </div>
+  </div>
 
 <script>
-document.getElementById("auditForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+const backendUrl = "https://audilix-2.onrender.com/api/audit"; // <-- si tu déploies backend ailleurs, remplace ici
 
-  const data = {
-    company: document.getElementById("company").value,
-    sector: document.getElementById("sector").value,
-    size: document.getElementById("size").value,
-    domains: Array.from(document.getElementById("domains").selectedOptions).map(o => o.value),
-    has_dpo: document.getElementById("dpo").value,
-    notes: document.getElementById("notes").value,
+function formToObj(){
+  const domains = Array.from(document.getElementById('domains').selectedOptions).map(o=>o.value);
+  return {
+    company: document.getElementById('company').value,
+    sector: document.getElementById('sector').value,
+    size: document.getElementById('size').value,
+    domains,
+    has_dpo: document.getElementById('dpo').value,
+    notes: document.getElementById('notes').value,
+    email: document.getElementById('email').value
   };
+}
 
-  document.getElementById("loader").style.display = "block";
-  document.getElementById("auditResult").style.display = "none";
-
-  try {
-    const res = await fetch("https://audilix-2.onrender.com/api/audit", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify(data)
+document.getElementById('auditForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const payload = formToObj();
+  document.getElementById('loader').style.display='block';
+  document.getElementById('result').style.display='none';
+  try{
+    const res = await fetch(backendUrl, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
     });
+    if(!res.ok) throw new Error(await res.text());
+    const json = await res.json();
 
-    const out = await res.json();
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("auditResult").style.display = "block";
+    document.getElementById('loader').style.display='none';
+    document.getElementById('result').style.display='block';
 
-    document.getElementById("auditResult").innerHTML = `
-      <div class="score">${out.score}/100</div>
-      <div class="summary">${out.summary}</div>
-      <div class="risks"><h3>Risques identifiés</h3><ul>${out.risks.map(r => `<li>${r}</li>`).join("")}</ul></div>
-      <div class="reco"><h3>Recommandations</h3><ul>${out.recommendations.map(r => `<li>${r}</li>`).join("")}</ul></div>
+    document.getElementById('score').innerText = (json.score || '--') + '%';
+    const report = `
+      <h3>Principaux risques</h3>
+      <ul>${(json.risks || []).map(r=>`<li>${r}</li>`).join('')}</ul>
+      <h3>Recommandations</h3>
+      <ol>${(json.recommendations || []).map(r=>`<li>${r}</li>`).join('')}</ol>
+      <h3>Détails</h3>
+      <pre>${(json.details || 'Aucun détail')}</pre>
     `;
-  } catch (err) {
-    document.getElementById("loader").style.display = "none";
-    alert("Erreur IA — réessayez dans 1 minute");
+    document.getElementById('bodyReport').innerHTML = report;
+
+    // Optionnel : sauvegarder / envoyer email via backend (à ajouter)
+  }catch(err){
+    document.getElementById('loader').style.display='none';
+    alert('Erreur : ' + (err.message || err));
   }
 });
-</script>
 
+document.getElementById('download').addEventListener('click', ()=>{
+  const node = document.getElementById('result').innerHTML;
+  const win = window.open('','_blank');
+  win.document.write('<html><head><title>Rapport Audilix</title><meta charset="utf-8"></head><body>');
+  win.document.write('<h1>Rapport Audilix</h1>');
+  win.document.write(node);
+  win.document.write('</body></html>');
+  win.document.close();
+  setTimeout(()=>win.print(),300);
+});
+</script>
 </body>
 </html>
