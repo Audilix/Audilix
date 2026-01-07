@@ -3,40 +3,38 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Audilix — Conformité automatisée & Assistant IA</title>
-<meta name="description" content="Audilix automatise vos audits RGPD, cybersécurité et ISO grâce à l'intelligence artificielle. Audit gratuit, rapports exploitables, assistant IA." />
+<title>Audilix — Audit de conformité automatisé & IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<script async defer src="https://tally.so/widgets/embed.js"></script>
 
 <style>
-:root{
- --bg:#FBFDFF;--card:#FFFFFF;--text:#0F1724;--muted:#6B7280;
- --primary:#0B3B70;--accent:#B98B2B;--radius:14px;--maxw:1180px;
-}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:26px}
+:root{--primary:#0B3B70;--accent:#B98B2B;--text:#0F1724;--muted:#6b7280;--card:#fff;}
+body{margin:0;font-family:Inter;background:#f6f8ff;color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:26px}
 header{display:flex;align-items:center;justify-content:space-between}
 nav{display:flex;gap:12px}
-nav a{font-weight:600;text-decoration:none;color:var(--text)}
+nav a{text-decoration:none;font-weight:600;color:var(--text)}
 .cta{background:linear-gradient(90deg,var(--primary),#2f64b3);color:#fff;
- padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:700}
-.ghost{border:1px solid #d2d6df;border-radius:10px;padding:8px 10px}
-.hero{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
+padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700}
+.hero{display:flex;gap:24px;flex-wrap:wrap;margin-top:30px}
 .hero-left{flex:1;min-width:300px}
-h1{font-family:Poppins;font-size:38px;margin:8px 0}
+h1{font-family:Poppins;font-size:36px;margin:10px 0}
 .lead{color:var(--muted)}
-.hero-ctas{display:flex;gap:12px;margin-top:12px}
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0}
 .card{background:#fff;border:1px solid #e5e8ef;border-radius:14px;padding:14px}
 .pricing{display:flex;gap:16px;flex-wrap:wrap}
 .plan{flex:1;min-width:280px;background:#fff;border:1px solid #e5e8ef;border-radius:14px;padding:18px}
 .plan .price{font-size:26px;color:var(--primary);font-weight:800}
-.cta-band{margin:30px 0;padding:18px;border-radius:14px;
- background:linear-gradient(180deg,#f3f7ff,#ffffff);display:flex;justify-content:space-between}
-footer{text-align:center;margin-top:34px;color:#6b7280;font-size:14px}
+.cta-band{margin:30px 0;padding:18px;border-radius:14px;background:#eef3ff;display:flex;justify-content:space-between}
+footer{text-align:center;margin-top:30px;color:#6b7280}
 @media(max-width:900px){.features{grid-template-columns:1fr}.pricing{flex-direction:column}}
+/* Assistant bubble */
+#assistantBtn{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border-radius:50%;background:#0B3B70;color:#fff;
+display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+#assistantBox{position:fixed;right:22px;bottom:95px;width:360px;height:420px;border-radius:12px;background:#fff;
+border:1px solid #e5e8ef;display:none;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.2)}
+#assistantMessages{flex:1;overflow:auto;padding:10px;font-size:14px}
 </style>
-
-<script async defer src="https://tally.so/widgets/embed.js"></script>
 </head>
 
 <body>
@@ -44,86 +42,97 @@ footer{text-align:center;margin-top:34px;color:#6b7280;font-size:14px}
 
 <header>
   <div style="display:flex;gap:10px;align-items:center">
-    <img src="logo.png" alt="Audilix" style="height:46px;border-radius:10px">
+    <img src="logo.png" style="height:46px;border-radius:10px">
     <strong>Audilix Technologies</strong>
   </div>
 
   <nav>
     <a href="#features">Avantages</a>
     <a href="#pricing">Tarifs</a>
-    <a href="https://tally.so/r/mVRNrl" class="cta" target="_blank">Faire un audit gratuit</a>
+    <a href="https://tally.so/r/w565kP" class="cta" target="_blank">Faire un audit gratuit</a>
   </nav>
 </header>
 
 <section class="hero">
   <div class="hero-left">
-    <span class="ghost">La conformité, simplifiée</span>
+    <span style="background:#e6edff;padding:6px 10px;border-radius:12px;font-weight:600">La conformité, simplifiée</span>
     <h1>Automatisez vos audits et réduisez vos risques de non-conformité</h1>
-    <p class="lead">Vos documents sont analysés automatiquement par l’IA. Rapport clair, priorisation des risques et plan d’action.</p>
+    <p class="lead">Analyse automatique des documents, score de conformité et plan d’action priorisé — grâce à l’IA.</p>
 
-    <div class="hero-ctas">
-      <a class="cta" href="https://tally.so/r/mVRNrl" target="_blank">Faire un audit gratuit</a>
-      <a class="ghost" href="#pricing">Découvrir les tarifs</a>
+    <div style="display:flex;gap:12px;margin-top:10px">
+      <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Faire un audit gratuit</a>
+      <a class="ghost" href="#pricing" style="border:1px solid #d2d6df;padding:10px 12px;border-radius:12px;text-decoration:none">Voir les tarifs</a>
     </div>
-    <p class="lead" style="font-size:13px;margin-top:6px">RGPD • Cybersécurité • ISO • Conformité PME</p>
   </div>
 </section>
 
 <section id="features">
   <h2>Pourquoi choisir Audilix</h2>
   <div class="features">
-    <div class="card"><h3>Audit automatisé</h3><p>Analyse rapide de vos documents et processus.</p></div>
-    <div class="card"><h3>Surveillance continue</h3><p>Alertes & priorisation des actions critiques.</p></div>
-    <div class="card"><h3>Rapports clairs</h3><p>PDF exportable et partageable.</p></div>
+    <div class="card"><h3>Audit automatisé</h3><p>Analyse IA rapide et fiable.</p></div>
+    <div class="card"><h3>Alertes & priorités</h3><p>Identification des risques critiques.</p></div>
+    <div class="card"><h3>Rapports exploitables</h3><p>PDF clair & plan d’action.</p></div>
   </div>
 </section>
 
 <section id="pricing">
   <h2>Tarifs</h2>
   <div class="pricing">
-
     <div class="plan">
-      <h3>Standard</h3>
-      <div class="price">69 € / mois</div>
-      <ul>
-        <li>2 audits / mois</li><li>Rapport PDF</li><li>Support email</li>
-      </ul>
+      <h3>Standard</h3><div class="price">69 € / mois</div>
+      <ul><li>2 audits / mois</li><li>Rapport PDF</li><li>Support email</li></ul>
       <a class="cta" target="_blank" href="https://buy.stripe.com/test_3cIdRbdvTar32Rv3HzeUU00">S’abonner</a>
     </div>
 
     <div class="plan">
-      <h3>Premium</h3>
-      <div class="price">149 € / mois</div>
-      <ul>
-        <li>Audits illimités</li><li>Assistant IA basique</li><li>Alertes & priorités</li>
-      </ul>
+      <h3>Premium</h3><div class="price">149 € / mois</div>
+      <ul><li>Audits illimités</li><li>Assistant IA</li><li>Alertes avancées</li></ul>
       <a class="cta" target="_blank" href="https://buy.stripe.com/test_cNibJ363rbv763HemdeUU01">S’abonner</a>
     </div>
 
     <div class="plan">
-      <h3>Entreprise</h3>
-      <div class="price">299 € / mois</div>
-      <ul>
-        <li>Intégrations Drive / M365</li><li>Support prioritaire</li><li>Onboarding dédié</li>
-      </ul>
-      <a class="cta" target="_blank" href="https://buy.stripe.com/test_28E3cx2Rf1UxfEhguleUU02">Contact / S’abonner</a>
+      <h3>Entreprise</h3><div class="price">299 € / mois</div>
+      <ul><li>Intégrations</li><li>Support prioritaire</li><li>Onboarding dédié</li></ul>
+      <a class="cta" target="_blank" href="https://buy.stripe.com/test_28E3cx2Rf1UxfEhguleUU02">Contact</a>
     </div>
-
   </div>
 </section>
 
 <div class="cta-band">
   <div>
     <strong>Prêt à simplifier votre conformité ?</strong>
-    <div>Test gratuit — rapport clair en quelques minutes.</div>
+    <div>Audit gratuit — résultat en quelques minutes.</div>
   </div>
-  <a class="cta" href="https://tally.so/r/mVRNrl" target="_blank">Faire un audit gratuit</a>
+  <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Faire un audit gratuit</a>
 </div>
 
 <footer>
-  © 2025 Audilix Technologies • <a href="mentions.html">Mentions légales</a>
+  © 2025 Audilix Technologies — <a href="mentions.html">Mentions légales</a>
 </footer>
 
 </div>
+
+<!-- Assistant IA (simulation) -->
+<div id="assistantBtn">💬</div>
+<div id="assistantBox">
+  <div style="padding:10px;background:#0B3B70;color:#fff;border-radius:12px 12px 0 0;font-weight:700">Assistant Audilix (IA)</div>
+  <div id="assistantMessages"><div>Posez votre question sur la conformité.</div></div>
+  <div style="display:flex;border-top:1px solid #ddd">
+    <input id="assistantInput" style="flex:1;padding:10px;border:none" placeholder="Écrire une question…">
+    <button id="assistantSend" style="padding:10px 14px;background:#0B3B70;color:#fff;border:none">Envoyer</button>
+  </div>
+</div>
+
+<script>
+const btn=document.getElementById("assistantBtn");
+const box=document.getElementById("assistantBox");
+btn.onclick=()=>box.style.display=box.style.display==="flex"?"none":"flex";
+const send=document.getElementById("assistantSend");
+const input=document.getElementById("assistantInput");
+const msg=document.getElementById("assistantMessages");
+function push(w,t){let d=document.createElement("div");d.style.margin="6px 0";d.innerHTML="<b>"+w+":</b> "+t;msg.appendChild(d);msg.scrollTop=msg.scrollHeight;}
+send.onclick=()=>{const q=input.value.trim();if(!q)return;push("Vous",q);input.value="";setTimeout(()=>push("Audilix","Recommandation (simulation) : vérifiez vos politiques internes, sécurisez les accès et priorisez les risques critiques."),700);}
+</script>
+
 </body>
 </html>
