@@ -3,37 +3,48 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Audilix — Audit de conformité automatisé & IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-<script async defer src="https://tally.so/widgets/embed.js"></script>
+<title>Audilix — Audit de conformité automatisé pour PME</title>
+<meta name="description" content="Audilix aide les PME à réduire leurs risques de non-conformité grâce à l’automatisation des audits et à l’assistance IA. Outil professionnel, fiable et structuré.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 
 <style>
-:root{--primary:#0B3B70;--accent:#B98B2B;--text:#0F1724;--muted:#6b7280;--card:#fff;}
-body{margin:0;font-family:Inter;background:#f6f8ff;color:var(--text)}
+:root{
+ --bg:#f5f7fc;--text:#0e172a;--muted:#6b7280;
+ --card:#ffffff;--primary:#0B3B70;--accent:#B98B2B;
+ --border:#e2e6ef;--radius:14px;
+}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter}
 .wrap{max-width:1180px;margin:0 auto;padding:26px}
 header{display:flex;align-items:center;justify-content:space-between}
-nav{display:flex;gap:12px}
+nav{display:flex;gap:16px}
 nav a{text-decoration:none;font-weight:600;color:var(--text)}
 .cta{background:linear-gradient(90deg,var(--primary),#2f64b3);color:#fff;
-padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700}
-.hero{display:flex;gap:24px;flex-wrap:wrap;margin-top:30px}
-.hero-left{flex:1;min-width:300px}
-h1{font-family:Poppins;font-size:36px;margin:10px 0}
+ padding:10px 18px;border-radius:14px;text-decoration:none;font-weight:700}
+.ghost{border:1px solid var(--border);padding:10px 12px;border-radius:12px}
+.section{margin-top:42px}
+h1,h2{font-family:"Source Serif 4";font-weight:600}
+h1{font-size:34px;margin:10px 0}
+h2{font-size:24px;margin-bottom:6px}
 .lead{color:var(--muted)}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0}
-.card{background:#fff;border:1px solid #e5e8ef;border-radius:14px;padding:14px}
-.pricing{display:flex;gap:16px;flex-wrap:wrap}
-.plan{flex:1;min-width:280px;background:#fff;border:1px solid #e5e8ef;border-radius:14px;padding:18px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.list-check li{margin:6px 0}
+.pricing{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.plan{flex:1;min-width:280px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px}
 .plan .price{font-size:26px;color:var(--primary);font-weight:800}
-.cta-band{margin:30px 0;padding:18px;border-radius:14px;background:#eef3ff;display:flex;justify-content:space-between}
-footer{text-align:center;margin-top:30px;color:#6b7280}
-@media(max-width:900px){.features{grid-template-columns:1fr}.pricing{flex-direction:column}}
-/* Assistant bubble */
-#assistantBtn{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border-radius:50%;background:#0B3B70;color:#fff;
-display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18)}
-#assistantBox{position:fixed;right:22px;bottom:95px;width:360px;height:420px;border-radius:12px;background:#fff;
-border:1px solid #e5e8ef;display:none;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.2)}
-#assistantMessages{flex:1;overflow:auto;padding:10px;font-size:14px}
+.cta-band{margin:36px 0;padding:18px;border-radius:14px;
+background:#eef2ff;display:flex;justify-content:space-between}
+footer{text-align:center;margin-top:26px;color:#727b88;font-size:14px}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}.pricing{flex-direction:column}}
+/* assistant */
+#assistantBtn{position:fixed;right:22px;bottom:22px;background:#0B3B70;
+color:#fff;width:60px;height:60px;border-radius:50%;display:flex;
+align-items:center;justify-content:center;font-size:24px;cursor:pointer;
+box-shadow:0 8px 20px rgba(0,0,0,.18)}
+#assistantBox{position:fixed;right:22px;bottom:95px;width:360px;height:420px;
+background:#fff;border-radius:12px;border:1px solid #e2e6ef;display:none;
+flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.2)}
 </style>
 </head>
 
@@ -43,56 +54,99 @@ border:1px solid #e5e8ef;display:none;flex-direction:column;box-shadow:0 18px 40
 <header>
   <div style="display:flex;gap:10px;align-items:center">
     <img src="logo.png" style="height:46px;border-radius:10px">
-    <strong>Audilix Technologies</strong>
+    <strong style="font-size:18px">Audilix Technologies</strong>
   </div>
 
   <nav>
-    <a href="#features">Avantages</a>
-    <a href="#pricing">Tarifs</a>
-    <a href="https://tally.so/r/w565kP" class="cta" target="_blank">Faire un audit gratuit</a>
+    <a href="#solution">Solution</a>
+    <a href="#securite">Sécurité</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="https://tally.so/r/w565kP" class="cta" target="_blank">Audit gratuit</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-left">
-    <span style="background:#e6edff;padding:6px 10px;border-radius:12px;font-weight:600">La conformité, simplifiée</span>
-    <h1>Automatisez vos audits et réduisez vos risques de non-conformité</h1>
-    <p class="lead">Analyse automatique des documents, score de conformité et plan d’action priorisé — grâce à l’IA.</p>
+<section class="section grid-2">
+  <div>
+    <span class="ghost">Outil professionnel de conformité pour PME</span>
+    <h1>Réduisez vos risques de non-conformité grâce à l’automatisation et à l’analyse assistée par IA</h1>
+    <p class="lead">Audilix accompagne les PME dans la structuration de leurs audits, la priorisation des risques et la production de rapports clairs et exploitables.</p>
 
-    <div style="display:flex;gap:12px;margin-top:10px">
-      <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Faire un audit gratuit</a>
-      <a class="ghost" href="#pricing" style="border:1px solid #d2d6df;padding:10px 12px;border-radius:12px;text-decoration:none">Voir les tarifs</a>
+    <div style="display:flex;gap:12px;margin-top:14px">
+      <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Lancer un audit gratuit</a>
+      <a class="ghost" href="#tarifs">Voir les offres</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Exemple d’analyse d’audit</h3>
+    <ul class="list-check">
+      <li>Score de conformité global</li>
+      <li>Identification des risques critiques</li>
+      <li>Plan d’action priorisé</li>
+      <li>Recommandations opérationnelles</li>
+    </ul>
+  </div>
+</section>
+
+<section id="solution" class="section grid-2">
+  <div class="card">
+    <h2>Le problème</h2>
+    <p>Les PME doivent faire face à des exigences croissantes : RGPD, sécurité des données, exigences clients, gouvernance interne. Les audits manuels sont chronophages, coûteux et souvent incomplets.</p>
+  </div>
+
+  <div class="card">
+    <h2>La solution Audilix</h2>
+    <p>Une plateforme structurée, assistée par IA, qui simplifie la collecte d’informations, détecte les écarts et génère des rapports clairs pour la direction et les partenaires.</p>
+  </div>
+</section>
+
+<section id="securite" class="section">
+  <h2>Sécurité & fiabilité</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Approche responsable</h3>
+      <p>Traitement minimal des données, confidentialité renforcée, approche pragmatique orientée PME.</p>
+    </div>
+    <div class="card">
+      <h3>Transparence</h3>
+      <p>Les résultats d’audit sont explicables, structurés et consultables par vos équipes internes.</p>
     </div>
   </div>
 </section>
 
-<section id="features">
-  <h2>Pourquoi choisir Audilix</h2>
-  <div class="features">
-    <div class="card"><h3>Audit automatisé</h3><p>Analyse IA rapide et fiable.</p></div>
-    <div class="card"><h3>Alertes & priorités</h3><p>Identification des risques critiques.</p></div>
-    <div class="card"><h3>Rapports exploitables</h3><p>PDF clair & plan d’action.</p></div>
-  </div>
-</section>
-
-<section id="pricing">
+<section id="tarifs" class="section">
   <h2>Tarifs</h2>
   <div class="pricing">
     <div class="plan">
-      <h3>Standard</h3><div class="price">69 € / mois</div>
-      <ul><li>2 audits / mois</li><li>Rapport PDF</li><li>Support email</li></ul>
+      <h3>Standard</h3>
+      <div class="price">69 € / mois</div>
+      <ul>
+        <li>2 audits / mois</li>
+        <li>Rapport PDF</li>
+        <li>Support email</li>
+      </ul>
       <a class="cta" target="_blank" href="https://buy.stripe.com/test_3cIdRbdvTar32Rv3HzeUU00">S’abonner</a>
     </div>
 
     <div class="plan">
-      <h3>Premium</h3><div class="price">149 € / mois</div>
-      <ul><li>Audits illimités</li><li>Assistant IA</li><li>Alertes avancées</li></ul>
+      <h3>Premium</h3>
+      <div class="price">149 € / mois</div>
+      <ul>
+        <li>Audits illimités</li>
+        <li>Assistant IA</li>
+        <li>Alertes & priorités</li>
+      </ul>
       <a class="cta" target="_blank" href="https://buy.stripe.com/test_cNibJ363rbv763HemdeUU01">S’abonner</a>
     </div>
 
     <div class="plan">
-      <h3>Entreprise</h3><div class="price">299 € / mois</div>
-      <ul><li>Intégrations</li><li>Support prioritaire</li><li>Onboarding dédié</li></ul>
+      <h3>Entreprise</h3>
+      <div class="price">299 € / mois</div>
+      <ul>
+        <li>Intégrations & accompagnement</li>
+        <li>Support prioritaire</li>
+        <li>Onboarding dédié</li>
+      </ul>
       <a class="cta" target="_blank" href="https://buy.stripe.com/test_28E3cx2Rf1UxfEhguleUU02">Contact</a>
     </div>
   </div>
@@ -100,10 +154,10 @@ border:1px solid #e5e8ef;display:none;flex-direction:column;box-shadow:0 18px 40
 
 <div class="cta-band">
   <div>
-    <strong>Prêt à simplifier votre conformité ?</strong>
-    <div>Audit gratuit — résultat en quelques minutes.</div>
+    <strong>Prêt à structurer votre conformité ?</strong>
+    <div>Audit gratuit — premiers résultats en quelques minutes.</div>
   </div>
-  <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Faire un audit gratuit</a>
+  <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Démarrer un audit</a>
 </div>
 
 <footer>
@@ -112,11 +166,15 @@ border:1px solid #e5e8ef;display:none;flex-direction:column;box-shadow:0 18px 40
 
 </div>
 
-<!-- Assistant IA (simulation) -->
+<!-- Assistant IA (sobre, professionnel) -->
 <div id="assistantBtn">💬</div>
 <div id="assistantBox">
-  <div style="padding:10px;background:#0B3B70;color:#fff;border-radius:12px 12px 0 0;font-weight:700">Assistant Audilix (IA)</div>
-  <div id="assistantMessages"><div>Posez votre question sur la conformité.</div></div>
+  <div style="padding:10px;background:#0B3B70;color:#fff;border-radius:12px 12px 0 0;font-weight:700">
+    Assistance Audilix — IA (simulation)
+  </div>
+  <div id="assistantMessages" style="flex:1;overflow:auto;padding:10px;font-size:14px">
+    Posez une question liée à la conformité (RGPD, sécurité, organisation).
+  </div>
   <div style="display:flex;border-top:1px solid #ddd">
     <input id="assistantInput" style="flex:1;padding:10px;border:none" placeholder="Écrire une question…">
     <button id="assistantSend" style="padding:10px 14px;background:#0B3B70;color:#fff;border:none">Envoyer</button>
@@ -131,7 +189,7 @@ const send=document.getElementById("assistantSend");
 const input=document.getElementById("assistantInput");
 const msg=document.getElementById("assistantMessages");
 function push(w,t){let d=document.createElement("div");d.style.margin="6px 0";d.innerHTML="<b>"+w+":</b> "+t;msg.appendChild(d);msg.scrollTop=msg.scrollHeight;}
-send.onclick=()=>{const q=input.value.trim();if(!q)return;push("Vous",q);input.value="";setTimeout(()=>push("Audilix","Recommandation (simulation) : vérifiez vos politiques internes, sécurisez les accès et priorisez les risques critiques."),700);}
+send.onclick=()=>{const q=input.value.trim();if(!q)return;push("Vous",q);input.value="";setTimeout(()=>push("Audilix","Recommandation (simulation) : identifiez les écarts prioritaires, formalisez les procédures essentielles et sécurisez les accès sensibles."),700);}
 </script>
 
 </body>
