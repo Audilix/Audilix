@@ -15,6 +15,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
         .nav-blur { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(150,150,150,0.1); }
         .hero-glow { background: radial-gradient(circle at center, rgba(11, 59, 112, 0.1) 0%, transparent 70%); }
+        .glass-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -22,13 +23,16 @@
     <nav class="fixed top-0 w-full z-[100] nav-blur bg-white/80 dark:bg-black/80 transition-colors">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <img src="logo.png" alt="Audilix" class="h-10 w-auto">
-            
+            <div class="hidden md:flex items-center gap-8 text-sm font-bold">
+                <a href="methode.html" class="hover:text-[#0B3B70] transition">Notre Méthode</a>
+                <a href="#services" class="hover:text-[#0B3B70] transition">Solutions</a>
+                <a href="#tarifs" class="hover:text-[#0B3B70] transition">Tarifs</a>
+            </div>
             <div class="flex items-center gap-5">
                 <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-xl">
                     <span id="theme-icon">🌙</span>
                 </button>
-
-                <a href="audit.html" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-[#0B3B70]/20">
+                <a href="audit.html" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all shadow-lg shadow-[#0B3B70]/20">
                     Démarrer l'audit
                 </a>
             </div>
@@ -37,23 +41,81 @@
 
     <main class="relative min-h-screen flex items-center justify-center pt-20 px-6 hero-glow">
         <div class="text-center">
+            <div class="inline-block px-4 py-1.5 mb-6 border border-[#0B3B70]/20 rounded-full bg-[#0B3B70]/5 text-[#0B3B70] dark:text-blue-400 text-xs font-bold tracking-widest uppercase">
+                ⚡ L'audit nouvelle génération
+            </div>
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6">
                 Audilix <br>
                 <span class="text-[#0B3B70] dark:text-blue-400 italic">L'IA de conformité.</span>
             </h1>
             <p class="max-w-xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-10 font-medium leading-relaxed">
-                Identifiez vos risques réglementaires en quelques minutes. Simple, puissant, et en harmonie avec votre entreprise.
+                Identifiez vos risques réglementaires en quelques minutes. Une plateforme puissante conçue pour sécuriser la croissance des PME.
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
                 <a href="audit.html" class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all shadow-xl shadow-[#0B3B70]/30">
                     Essai Gratuit
                 </a>
                 <a href="methode.html" class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
-                    Ma Méthode
+                    Découvrir la méthode
                 </a>
             </div>
         </div>
     </main>
+
+    <section class="py-20 border-y border-gray-100 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-12">Ils nous font confiance</p>
+            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" class="h-8 w-auto" alt="Partner">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" class="h-8 w-auto" alt="Partner">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="h-8 w-auto" alt="Partner">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto" alt="Partner">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
+                    <div class="w-14 h-14 bg-[#0B3B70] rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-[#0B3B70]/20 text-2xl">⚖️</div>
+                    <h3 class="text-2xl font-bold mb-4">RGPD & Data</h3>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Vérification complète de vos traitements de données et mise en conformité automatisée.</p>
+                </div>
+                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-500/20 text-2xl">🛡️</div>
+                    <h3 class="text-2xl font-bold mb-4">Cyber-sécurité</h3>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Analyse des vulnérabilités critiques et recommandations basées sur les standards ISO.</p>
+                </div>
+                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
+                    <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-emerald-500/20 text-2xl">📈</div>
+                    <h3 class="text-2xl font-bold mb-4">RSE & Social</h3>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Mesurez votre impact environnemental et social en accord avec les nouvelles directives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#0B3B70] text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center relative z-10">
+            <div><div class="text-5xl font-extrabold mb-2">98%</div><div class="text-blue-200 text-sm font-bold">Satisfaction Client</div></div>
+            <div><div class="text-5xl font-extrabold mb-2">2.5k</div><div class="text-blue-200 text-sm font-bold">Audits Réalisés</div></div>
+            <div><div class="text-5xl font-extrabold mb-2">15min</div><div class="text-blue-200 text-sm font-bold">Temps de Diagnostic</div></div>
+            <div><div class="text-5xl font-extrabold mb-2">0€</div><div class="text-blue-200 text-sm font-bold">Amende RGPD</div></div>
+        </div>
+    </section>
+
+    <footer class="py-20 px-6 border-t border-gray-100 dark:border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+            <img src="logo.png" alt="Audilix" class="h-8 opacity-50">
+            <div class="flex gap-8 text-sm font-medium text-gray-500">
+                <a href="#" class="hover:text-black dark:hover:text-white transition">Mentions légales</a>
+                <a href="#" class="hover:text-black dark:hover:text-white transition">Confidentialité</a>
+                <a href="mailto:contact@audilix.fr" class="hover:text-black dark:hover:text-white transition">Contact</a>
+            </div>
+            <p class="text-sm text-gray-400">© 2024 Audilix. Tous droits réservés.</p>
+        </div>
+    </footer>
 
     <script>
         const btn = document.getElementById('theme-toggle');
@@ -74,8 +136,7 @@
 
         btn.onclick = () => {
             html.classList.toggle('dark');
-            const isNowDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
             updateUI();
         };
     </script>
