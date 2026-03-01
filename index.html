@@ -5,39 +5,42 @@
     <title>Audilix — L'IA de conformité</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Configuration indispensable pour que Tailwind comprenne le mode dark
         tailwind.config = { darkMode: 'class' }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.4s ease; }
-        /* Couleurs du mode clair */
-        .light { background-color: #ffffff; color: #0f172a; }
-        /* Couleurs du mode sombre */
-        .dark { background-color: #050505; color: #ffffff; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
         
+        /* On définit les couleurs manuellement pour être sûr que ça change */
+        .dark body { background-color: #050505; color: #ffffff; }
+        body { background-color: #ffffff; color: #0f172a; }
+
         .nav-blur { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(150,150,150,0.1); }
-        .hero-gradient { background: radial-gradient(circle at center, rgba(11, 59, 112, 0.15) 0%, transparent 70%); }
+        .hero-glow { 
+            background: radial-gradient(circle at center, rgba(11, 59, 112, 0.15) 0%, transparent 70%); 
+        }
     </style>
 </head>
-<body class="antialiased dark">
+<body class="antialiased">
 
     <nav class="fixed top-0 w-full z-[100] nav-blur bg-white/70 dark:bg-black/70">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <img src="logo.png" alt="Audilix" class="h-10 w-auto">
             
             <div class="flex items-center gap-5">
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
-                    <span id="theme-icon" class="text-lg">🌙</span>
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 transition-all text-xl">
+                    <span id="theme-icon">🌙</span>
                 </button>
 
-                <a href="#" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-[#0B3B70]/20">
+                <a href="https://tally.so/r/yP6AYX" target="_blank" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-[#0B3B70]/20">
                     Démarrer l'audit
                 </a>
             </div>
         </div>
     </nav>
 
-    <main class="relative min-h-screen flex items-center justify-center pt-20 px-6 hero-gradient">
+    <main class="relative min-h-screen flex items-center justify-center pt-20 px-6 hero-glow">
         <div class="text-center">
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6">
                 Audilix <br>
@@ -48,7 +51,7 @@
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
                 <button class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all">Essai Gratuit</button>
-                <button class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-all">Démo</button>
+                <button class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-100 dark:hover:bg-white/5 transition-all">Démo</button>
             </div>
         </div>
     </main>
@@ -58,23 +61,28 @@
         const icon = document.getElementById('theme-icon');
         const html = document.documentElement;
 
-        // On force le démarrage en sombre pour ton design
-        if (!localStorage.getItem('theme')) {
-            localStorage.setItem('theme', 'dark');
-        }
-
-        btn.onclick = () => {
-            html.classList.toggle('dark');
+        // Fonction pour mettre à jour l'icône selon le mode
+        const updateUI = () => {
             const isDark = html.classList.contains('dark');
             icon.innerText = isDark ? '🌙' : '☀️';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         };
 
-        // Appliquer le thème stocké au chargement
-        if (localStorage.getItem('theme') === 'light') {
+        // État initial (Sombre par défaut ou selon mémoire)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
             html.classList.remove('dark');
-            icon.innerText = '☀️';
+        } else {
+            html.classList.add('dark');
         }
+        updateUI();
+
+        // Logique de clic
+        btn.onclick = () => {
+            html.classList.toggle('dark');
+            const isNowDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
+            updateUI();
+        };
     </script>
 </body>
 </html>
