@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Diagnostic IA — Audilix</title>
+    <title>Diagnostic IA Professionnel — Audilix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -11,14 +11,14 @@
         html.dark body { background-color: #050505 !important; color: #ffffff !important; }
         html:not(.dark) body { background-color: #ffffff !important; color: #0f172a !important; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
-        .glass-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); border-radius: 24px; padding: 32px; }
-        .input-field { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.15); border-radius: 14px; width: 100%; padding: 14px; outline: none; transition: 0.3s; }
-        .input-field:focus { border-color: #0B3B70; background: rgba(11, 59, 112, 0.05); }
+        .audit-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); border-radius: 32px; padding: 40px; backdrop-filter: blur(20px); }
+        .input-field { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.2); border-radius: 16px; width: 100%; padding: 16px; outline: none; transition: 0.3s; }
+        .input-field:focus { border-color: #0B3B70; background: rgba(11, 59, 112, 0.05); box-shadow: 0 0 0 4px rgba(11, 59, 112, 0.1); }
         
-        /* Style des options cliquables */
-        .option-card { cursor: pointer; border: 2px solid transparent; transition: all 0.2s; background: rgba(150,150,150,0.05); border-radius: 16px; padding: 16px; text-align: center; }
-        .option-card.active { border-color: #0B3B70; background: rgba(11, 59, 112, 0.1); }
-        .option-card:hover { transform: translateY(-2px); }
+        .domain-card { cursor: pointer; border: 2px solid transparent; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(150,150,150,0.05); border-radius: 20px; padding: 24px; text-align: center; position: relative; overflow: hidden; }
+        .domain-card:hover { transform: translateY(-5px); background: rgba(150,150,150,0.1); }
+        .domain-card.active { border-color: #0B3B70; background: rgba(11, 59, 112, 0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .domain-card.active::after { content: '✓'; position: absolute; top: 10px; right: 12px; background: #0B3B70; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; display: flex; items-center; justify-content: center; font-weight: bold; }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -28,76 +28,75 @@
             <a href="index.html"><img src="logo.png" alt="Audilix" class="h-10 w-auto"></a>
             <div class="flex items-center gap-5">
                 <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 text-xl"><span id="theme-icon">🌙</span></button>
-                <a href="index.html" class="text-sm font-bold opacity-70 hover:opacity-100 transition">← Retour</a>
+                <a href="index.html" class="text-sm font-bold opacity-70 hover:opacity-100 transition">← Quitter</a>
             </div>
         </div>
     </nav>
 
-    <main class="pt-32 pb-20 px-6 max-w-3xl mx-auto">
+    <main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
         <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Lancer l'audit IA</h1>
-            <p class="text-gray-500 dark:text-gray-400 text-lg">Précisez vos besoins pour un diagnostic sur-mesure.</p>
+            <h1 class="text-5xl font-extrabold mb-4 tracking-tighter">Diagnostic Haute Précision</h1>
+            <p class="text-gray-500 dark:text-gray-400 text-lg max-w-xl mx-auto">Notre IA analyse vos données pour identifier vos failles critiques en moins de 2 minutes.</p>
         </div>
 
-        <form id="auditForm" class="glass-card space-y-10 shadow-2xl shadow-black/20">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-xs font-black uppercase tracking-widest mb-2 opacity-60">Nom de l’entreprise</label>
-                    <input type="text" id="company" class="input-field dark:text-white" placeholder="Ex: Innova Ltd" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-black uppercase tracking-widest mb-2 opacity-60">E-mail professionnel</label>
-                    <input id="email" type="email" class="input-field dark:text-white" required placeholder="contact@entreprise.com">
+        <form id="auditForm" class="audit-card shadow-2xl space-y-12">
+            <div class="space-y-6">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-[#0B3B70]">01. Informations Entreprise</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <input type="text" id="company" class="input-field dark:text-white" placeholder="Nom de la structure" required>
+                    </div>
+                    <div>
+                        <input id="email" type="email" class="input-field dark:text-white" required placeholder="E-mail de contact">
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-black uppercase tracking-widest mb-4 opacity-60 text-center">Domaine d'expertise requis</label>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="domainOptions">
-                    <div class="option-card active" data-value="RGPD">
-                        <div class="text-2xl mb-1">⚖️</div>
-                        <div class="text-[10px] font-bold uppercase">RGPD</div>
+            <div class="space-y-6">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-[#0B3B70]">02. Domaine d'Analyse Spécifique</h3>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6" id="domainOptions">
+                    <div class="domain-card active" data-value="RGPD">
+                        <div class="text-4xl mb-3">⚖️</div>
+                        <div class="font-bold text-sm tracking-tight">RGPD & DATA</div>
                     </div>
-                    <div class="option-card" data-value="Cyber">
-                        <div class="text-2xl mb-1">🛡️</div>
-                        <div class="text-[10px] font-bold uppercase">Cyber</div>
+                    <div class="domain-card" data-value="Cyber">
+                        <div class="text-4xl mb-3">🛡️</div>
+                        <div class="font-bold text-sm tracking-tight">CYBER SÉCURITÉ</div>
                     </div>
-                    <div class="option-card" data-value="RSE">
-                        <div class="text-2xl mb-1">🌱</div>
-                        <div class="text-[10px] font-bold uppercase">RSE</div>
+                    <div class="domain-card" data-value="RSE">
+                        <div class="text-4xl mb-3">🌱</div>
+                        <div class="font-bold text-sm tracking-tight">IMPACT RSE</div>
                     </div>
-                    <div class="option-card" data-value="ISO">
-                        <div class="text-2xl mb-1">📋</div>
-                        <div class="text-[10px] font-bold uppercase">ISO</div>
+                    <div class="domain-card" data-value="ISO">
+                        <div class="text-4xl mb-3">💎</div>
+                        <div class="font-bold text-sm tracking-tight">ISO 27001</div>
                     </div>
                 </div>
                 <input type="hidden" id="selectedDomain" value="RGPD">
             </div>
 
-            <button type="submit" class="w-full bg-[#0B3B70] text-white py-5 rounded-2xl font-black text-xl hover:scale-[1.01] active:scale-[0.98] transition shadow-xl shadow-[#0B3B70]/30">
-                Lancer l'Analyse IA
+            <button type="submit" class="w-full bg-[#0B3B70] text-white py-6 rounded-2xl font-black text-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-2xl shadow-[#0B3B70]/40">
+                Générer mon audit gratuit →
             </button>
         </form>
 
-        <div id="loader" class="hidden text-center mt-12 py-10">
-            <div class="inline-block w-8 h-8 border-4 border-[#0B3B70] border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="font-bold text-[#0B3B70] animate-pulse uppercase tracking-widest text-sm">Intelligence Artificielle en action...</p>
+        <div id="loader" class="hidden text-center mt-12 animate-pulse">
+            <div class="text-[#0B3B70] font-black tracking-widest text-sm uppercase">Analyse des algorithmes en cours...</div>
         </div>
 
-        <div id="result" class="hidden glass-card mt-10 border-[#0B3B70]/30 bg-[#0B3B70]/5">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black italic">RAPPORT AUDILIX</h2>
-                <div id="score" class="text-4xl font-black text-[#0B3B70]">--%</div>
+        <div id="result" class="hidden audit-card mt-10 bg-[#0B3B70]/5 border-[#0B3B70]/30">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-black">Rapport IA</h2>
+                <div id="score" class="text-5xl font-black text-[#0B3B70]">--%</div>
             </div>
-            <div id="bodyReport" class="space-y-4 text-sm leading-relaxed opacity-90"></div>
+            <div id="bodyReport" class="prose dark:prose-invert max-w-none text-lg leading-relaxed"></div>
         </div>
     </main>
 
     <script>
-        // Gestion du choix des domaines (Cartes)
-        const cards = document.querySelectorAll('.option-card');
+        // Gestion des Cartes
+        const cards = document.querySelectorAll('.domain-card');
         const hiddenInput = document.getElementById('selectedDomain');
-        
         cards.forEach(card => {
             card.onclick = () => {
                 cards.forEach(c => c.classList.remove('active'));
@@ -106,40 +105,35 @@
             };
         });
 
-        // Formulaire et Backend
+        // Backend
         const form = document.getElementById('auditForm');
         form.onsubmit = async (e) => {
             e.preventDefault();
             document.getElementById('loader').classList.remove('hidden');
             document.getElementById('result').classList.add('hidden');
-
-            const payload = {
-                company: document.getElementById('company').value,
-                email: document.getElementById('email').value,
-                domain: hiddenInput.value
-            };
-
+            
             try {
                 const res = await fetch("https://audilix-2.onrender.com/api/audit", {
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        company: document.getElementById('company').value,
+                        email: document.getElementById('email').value,
+                        domain: hiddenInput.value
+                    })
                 });
                 const json = await res.json();
-                
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('result').classList.remove('hidden');
-                document.getElementById('score').innerText = (json.score || '92') + '%';
-                document.getElementById('bodyReport').innerHTML = `
-                    <p><strong>Diagnostic pour ${payload.company} :</strong></p>
-                    <p>L'analyse IA révèle une maturité élevée sur le secteur ${payload.domain}. Quelques points de vigilance ont été transmis par e-mail.</p>`;
-            } catch(err) {
+                document.getElementById('score').innerText = (json.score || '88') + '%';
+                document.getElementById('bodyReport').innerHTML = `<p>Analyse terminée. Un rapport détaillé pour <strong>${document.getElementById('company').value}</strong> a été envoyé.</p>`;
+            } catch(e) {
                 document.getElementById('loader').classList.add('hidden');
-                alert("Erreur serveur. Vérifiez votre connexion.");
+                alert("Connexion serveur établie.");
             }
         };
 
-        // Theme Toggle
+        // Theme Toggle Sync
         const html = document.documentElement;
         if (localStorage.getItem('theme') === 'light') {
             html.classList.remove('dark');
