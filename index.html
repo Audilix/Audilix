@@ -10,22 +10,11 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* FORCE LE NOIR QUAND LA CLASSE DARK EST ACTIVE */
-        .dark body { 
-            background-color: #050505 !important; 
-            color: #ffffff !important; 
-        }
-        /* FORCE LE BLANC QUAND LA CLASSE DARK N'EST PAS LA */
-        html:not(.dark) body { 
-            background-color: #ffffff !important; 
-            color: #0f172a !important; 
-        }
-        
+        html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+        html:not(.dark) body { background-color: #ffffff !important; color: #0f172a !important; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
         .nav-blur { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(150,150,150,0.1); }
-        .hero-glow { 
-            background: radial-gradient(circle at center, rgba(11, 59, 112, 0.1) 0%, transparent 70%); 
-        }
+        .hero-glow { background: radial-gradient(circle at center, rgba(11, 59, 112, 0.1) 0%, transparent 70%); }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -35,11 +24,11 @@
             <img src="logo.png" alt="Audilix" class="h-10 w-auto">
             
             <div class="flex items-center gap-5">
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 transition-all text-xl">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-xl">
                     <span id="theme-icon">🌙</span>
                 </button>
 
-                <a href="#" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform">
+                <a href="audit.html" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-[#0B3B70]/20">
                     Démarrer l'audit
                 </a>
             </div>
@@ -56,8 +45,12 @@
                 Identifiez vos risques réglementaires en quelques minutes. Simple, puissant, et en harmonie avec votre entreprise.
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
-                <button class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all">Essai Gratuit</button>
-                <button class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-100 dark:hover:bg-white/5 transition-all">Démo</button>
+                <a href="audit.html" class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all shadow-xl shadow-[#0B3B70]/30">
+                    Essai Gratuit
+                </a>
+                <a href="methode.html" class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
+                    Ma Méthode
+                </a>
             </div>
         </div>
     </main>
@@ -70,11 +63,8 @@
         function updateUI() {
             const isDark = html.classList.contains('dark');
             icon.innerText = isDark ? '🌙' : '☀️';
-            // On s'assure que le body suit bien
-            document.body.className = isDark ? 'antialiased' : 'antialiased'; 
         }
 
-        // État initial (Sombre par défaut)
         if (localStorage.getItem('theme') === 'light') {
             html.classList.remove('dark');
         } else {
