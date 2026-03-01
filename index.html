@@ -1,105 +1,80 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
+<html lang="fr" class="dark"> <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — L'Audit IA pour les PME</title>
+    <title>Audilix — L'IA de conformité</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Configuration Tailwind pour supporter le mode dark via la classe 'dark'
         tailwind.config = { darkMode: 'class' }
-
-        // Système de détection automatique ultra-rapide
-        function applyTheme() {
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-        applyTheme();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.5s ease; }
-        .dark body { background-color: #050505; color: #ffffff; }
-        body { background-color: #ffffff; color: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.4s ease; }
+        /* Couleurs du mode clair */
+        .light { background-color: #ffffff; color: #0f172a; }
+        /* Couleurs du mode sombre */
+        .dark { background-color: #050505; color: #ffffff; }
         
-        /* Animation d'apparition */
-        .fade-in { animation: fadeIn 1.2s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .glass-nav { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .btn-primary { background-color: #0B3B70; color: white; transition: transform 0.2s; }
-        .btn-primary:hover { transform: scale(1.05); background-color: #09315d; }
+        .nav-blur { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(150,150,150,0.1); }
+        .hero-gradient { background: radial-gradient(circle at center, rgba(11, 59, 112, 0.15) 0%, transparent 70%); }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased dark">
 
-    <nav class="fixed top-0 w-full z-[100] glass-nav bg-white/70 dark:bg-black/70">
+    <nav class="fixed top-0 w-full z-[100] nav-blur bg-white/70 dark:bg-black/70">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center">
-                <img src="logo.png" alt="Audilix" class="h-10 w-auto">
-            </a>
+            <img src="logo.png" alt="Audilix" class="h-10 w-auto">
             
-            <div class="flex items-center gap-4">
-                <button id="theme-btn" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20">
-                    <span id="theme-icon">🌙</span>
+            <div class="flex items-center gap-5">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
+                    <span id="theme-icon" class="text-lg">🌙</span>
                 </button>
 
-                <a href="https://tally.so/r/yP6AYX" target="_blank" class="btn-primary px-6 py-2.5 rounded-full font-bold text-sm">
+                <a href="#" class="bg-[#0B3B70] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-[#0B3B70]/20">
                     Démarrer l'audit
                 </a>
             </div>
         </div>
     </nav>
 
-    <main class="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[#0B3B70]/10 dark:bg-[#0B3B70]/20 blur-[120px] rounded-full"></div>
-
-        <div class="relative z-10 text-center fade-in">
+    <main class="relative min-h-screen flex items-center justify-center pt-20 px-6 hero-gradient">
+        <div class="text-center">
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6">
                 Audilix <br>
-                <span class="text-[#0B3B70] dark:text-blue-400">L'IA de conformité.</span>
+                <span class="text-[#0B3B70] dark:text-blue-400 italic">L'IA de conformité.</span>
             </h1>
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-10 font-medium">
-                Identifiez vos risques réglementaires en quelques minutes. <br>
-                Simple, puissant, et en harmonie avec votre entreprise.
+            <p class="max-w-xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-10 font-medium leading-relaxed">
+                Identifiez vos risques réglementaires en quelques minutes. Simple, puissant, et en harmonie avec votre entreprise.
             </p>
-            <div class="flex gap-4 justify-center">
-                <button class="btn-primary px-8 py-4 rounded-2xl text-lg font-bold">Essai Gratuit</button>
-                <button class="px-8 py-4 rounded-2xl border border-gray-300 dark:border-white/20 font-medium transition hover:bg-gray-50 dark:hover:bg-white/5">Démo</button>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all">Essai Gratuit</button>
+                <button class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-all">Démo</button>
             </div>
         </div>
     </main>
 
     <script>
-        const themeBtn = document.getElementById('theme-btn');
-        const themeIcon = document.getElementById('theme-icon');
+        const btn = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const html = document.documentElement;
 
-        // Fonction pour mettre à jour l'icône
-        function updateIcon() {
-            if (document.documentElement.classList.contains('dark')) {
-                themeIcon.innerText = '☀️';
-            } else {
-                themeIcon.innerText = '🌙';
-            }
+        // On force le démarrage en sombre pour ton design
+        if (!localStorage.getItem('theme')) {
+            localStorage.setItem('theme', 'dark');
         }
-        updateIcon();
 
-        themeBtn.onclick = () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-            updateIcon();
+        btn.onclick = () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            icon.innerText = isDark ? '🌙' : '☀️';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         };
+
+        // Appliquer le thème stocké au chargement
+        if (localStorage.getItem('theme') === 'light') {
+            html.classList.remove('dark');
+            icon.innerText = '☀️';
+        }
     </script>
 </body>
 </html>
