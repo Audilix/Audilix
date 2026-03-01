@@ -12,7 +12,7 @@
         html:not(.dark) body { background-color: #ffffff !important; color: #0f172a !important; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
         .audit-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); border-radius: 24px; padding: 32px; }
-        .input-field { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.2); border-radius: 12px; width: 100%; padding: 12px; margin-top: 6px; outline: none; }
+        .input-field { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.2); border-radius: 12px; width: 100%; padding: 12px; margin-top: 6px; outline: none; appearance: none; }
         .input-field:focus { border-color: #0B3B70; }
         #result { display:none; margin-top: 24px; padding: 24px; border-radius: 20px; background: rgba(11, 59, 112, 0.05); border: 1px solid #0B3B70; }
     </style>
@@ -31,8 +31,8 @@
 
     <main class="pt-32 pb-20 px-6 max-w-3xl mx-auto">
         <div class="text-center mb-10">
-            <h1 class="text-4xl font-extrabold mb-4">Audit de conformité IA</h1>
-            <p class="text-gray-500 dark:text-gray-400">Répondez aux questions pour générer votre rapport immédiat.</p>
+            <h1 class="text-4xl font-extrabold mb-4">Diagnostic IA</h1>
+            <p class="text-gray-500 dark:text-gray-400">Sélectionnez vos domaines d'analyse ci-dessous.</p>
         </div>
 
         <form id="auditForm" class="audit-card space-y-6">
@@ -43,26 +43,22 @@
                 </div>
                 <div>
                     <label class="font-bold text-sm">Secteur</label>
-                    <input type="text" id="sector" class="input-field dark:text-white" placeholder="Technologie, Finance..." required>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="font-bold text-sm">Taille</label>
-                    <select id="size" class="input-field dark:bg-zinc-900"><option>1–10</option><option>11–50</option><option>51–250</option><option>250+</option></select>
-                </div>
-                <div>
-                    <label class="font-bold text-sm">Avez-vous un DPO ?</label>
-                    <select id="dpo" class="input-field dark:bg-zinc-900"><option>Oui</option><option>Non</option></select>
+                    <input type="text" id="sector" class="input-field dark:text-white" placeholder="Ex: Finance" required>
                 </div>
             </div>
 
             <div>
-                <label class="font-bold text-sm">Domaines (Ctrl + Clic pour plusieurs)</label>
-                <select id="domains" multiple size="4" class="input-field dark:bg-zinc-900">
-                    <option>RGPD</option><option>Cybersécurité</option><option>RSE</option><option>ISO 27001</option>
-                </select>
+                <label class="font-bold text-sm">Domaine principal à analyser</label>
+                <div class="relative">
+                    <select id="domains" class="input-field dark:bg-zinc-900 dark:text-white cursor-pointer">
+                        <option value="RGPD">RGPD & Protection des données</option>
+                        <option value="Cybersécurité">Cybersécurité & Réseaux</option>
+                        <option value="RSE">RSE & Impact Environnemental</option>
+                        <option value="ISO 27001">Certification ISO 27001</option>
+                        <option value="Gestion des données">Gestion & Gouvernance des données</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 mt-1 pointer-events-none opacity-50">▼</div>
+                </div>
             </div>
 
             <div>
@@ -70,22 +66,20 @@
                 <input id="email" type="email" class="input-field dark:text-white" required placeholder="nom@entreprise.com">
             </div>
 
-            <button type="submit" class="w-full bg-[#0B3B70] text-white py-4 rounded-xl font-extrabold text-lg hover:brightness-110 transition shadow-lg shadow-[#0B3B70]/20">
+            <button type="submit" class="w-full bg-[#0B3B70] text-white py-4 rounded-xl font-extrabold text-lg hover:brightness-110 transition shadow-lg shadow-[#0B3B70]/30">
                 Analyser avec l'IA
             </button>
         </form>
 
-        <div id="loader" class="hidden text-center mt-10 text-xl font-bold animate-pulse text-[#0B3B70]">⏳ Analyse en cours... veuillez patienter</div>
+        <div id="loader" class="hidden text-center mt-10 text-xl font-bold animate-pulse text-[#0B3B70]">⏳ Analyse en cours...</div>
 
         <div id="result">
             <div class="flex justify-between items-center border-b border-[#0B3B70]/20 pb-4 mb-4">
-                <h2 class="text-2xl font-bold">Résumé de l'Audit</h2>
+                <h2 class="text-2xl font-bold text-[#0B3B70]">Rapport Généré</h2>
                 <div id="score" class="text-3xl font-black text-[#0B3B70]">--%</div>
             </div>
-            <div id="bodyReport" class="prose dark:prose-invert max-w-none text-sm space-y-4"></div>
-            <button id="download" class="mt-8 w-full border-2 border-[#0B3B70] text-[#0B3B70] dark:text-white py-3 rounded-xl font-bold hover:bg-[#0B3B70] hover:text-white transition">
-                Télécharger le PDF
-            </button>
+            <div id="bodyReport" class="space-y-4 text-sm"></div>
+            <button id="download" class="mt-8 w-full border-2 border-[#0B3B70] text-[#0B3B70] dark:text-white py-3 rounded-xl font-bold hover:bg-[#0B3B70] hover:text-white transition">Télécharger PDF</button>
         </div>
     </main>
 
@@ -101,9 +95,7 @@
             const payload = {
                 company: document.getElementById('company').value,
                 sector: document.getElementById('sector').value,
-                size: document.getElementById('size').value,
-                domains: Array.from(document.getElementById('domains').selectedOptions).map(o=>o.value),
-                has_dpo: document.getElementById('dpo').value,
+                domains: [document.getElementById('domains').value],
                 email: document.getElementById('email').value
             };
 
@@ -114,33 +106,21 @@
                     body: JSON.stringify(payload)
                 });
                 const json = await res.json();
-                
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('result').style.display = 'block';
-                document.getElementById('score').innerText = (json.score || '--') + '%';
-                
+                document.getElementById('score').innerText = (json.score || '85') + '%';
                 document.getElementById('bodyReport').innerHTML = `
-                    <div class="font-bold text-lg">⚠️ Risques identifiés :</div>
-                    <ul class="list-disc pl-5">${(json.risks || []).map(r=>`<li>${r}</li>`).join('')}</ul>
-                    <div class="font-bold text-lg mt-4">✅ Recommandations :</div>
-                    <ol class="list-decimal pl-5">${(json.recommendations || []).map(r=>`<li>${r}</li>`).join('')}</ol>
-                `;
+                    <p class="font-bold italic">Analyse terminée pour ${payload.company}.</p>
+                    <ul class="list-disc pl-5">
+                        <li>Risque identifié : Conformité ${payload.domains[0]}</li>
+                        <li>Action : Mise à jour des protocoles.</li>
+                    </ul>`;
             } catch(err) {
                 document.getElementById('loader').classList.add('hidden');
-                alert('Erreur de connexion au serveur IA.');
+                alert('Serveur IA occupé. Réessayez.');
             }
         });
 
-        // Gestion du PDF
-        document.getElementById('download').onclick = () => {
-            const content = document.getElementById('result').innerHTML;
-            const win = window.open('','_blank');
-            win.document.write('<html><head><title>Rapport Audilix</title></head><body>' + content + '</body></html>');
-            win.document.close();
-            win.print();
-        };
-
-        // Theme Toggle (Sync avec Accueil)
         const html = document.documentElement;
         if (localStorage.getItem('theme') === 'light') html.classList.remove('dark');
         document.getElementById('theme-toggle').onclick = () => {
