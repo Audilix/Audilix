@@ -1,329 +1,125 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audilix — Plateforme d’audit & conformité assistée par IA</title>
-<meta name="description" content="Audilix aide les PME à évaluer leurs risques de conformité (RGPD, sécurité, gouvernance) grâce à des audits structurés et des rapports exploitables.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
-
-<style>
-:root{
- --bg:#F5F7FA;
- --card:#FFFFFF;
- --ink:#0A1324;
- --muted:#6B7280;
- --primary:#0B3B70;
- --accent:#C7A13C;
- --radius:14px;
- --shadow:0 18px 48px rgba(3,15,38,.06);
-}
-body{margin:0;background:var(--bg);font-family:Inter;color:var(--ink)}
-.wrap{max-width:1140px;margin:0 auto;padding:28px}
-header{display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{height:44px;border-radius:10px}
-.brand span{font-weight:700;font-size:18px;color:var(--primary)}
-nav a{margin:0 10px;text-decoration:none;color:var(--ink);font-weight:600}
-.cta{background:linear-gradient(90deg,var(--primary),#2d5ea1);color:#fff;
-padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:700}
-.ghost{padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,.1)}
-.hero{margin-top:48px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
-h1{font-family:"Source Serif 4";font-size:38px;line-height:1.05;margin:6px 0}
-.lead{color:var(--muted);font-size:17px}
-.panel{background:var(--card);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
-.section{margin:56px 0}
-h2{font-size:26px;margin-bottom:8px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{background:var(--card);padding:16px;border-radius:14px;box-shadow:var(--shadow)}
-.badge{background:#E2E8F0;padding:6px 10px;border-radius:999px;font-size:12px}
-footer{margin-top:48px;border-top:1px solid #E5E7EB;padding:24px 0;color:var(--muted);font-size:14px;text-align:center}
-.assist{position:fixed;right:22px;bottom:22px}
-.assbtn{width:56px;height:56px;border-radius:100%;border:none;background:linear-gradient(90deg,var(--primary),#2d5ea1);color:#fff;font-size:22px;cursor:pointer}
-.asspanel{position:fixed;right:22px;bottom:92px;width:360px;background:#fff;border-radius:14px;box-shadow:var(--shadow);display:none;flex-direction:column}
-.asshead{padding:12px 14px;border-bottom:1px solid #E5E7EB;font-weight:700}
-.assbody{padding:12px;height:220px;overflow:auto;font-size:14px}
-.assinput{display:flex;border-top:1px solid #E5E7EB}
-.assinput input{flex:1;border:none;padding:10px}
-.assinput button{background:var(--primary);color:#fff;border:none;padding:10px 14px}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audilix — L'Audit IA pour les PME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #000; color: #fff; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glow { box-shadow: 0 0 80px -20px rgba(59, 130, 246, 0.3); }
+        .text-gradient { background: linear-gradient(to bottom right, #fff 30%, rgba(255,255,255,0.5)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
 </head>
-<body>
+<body class="overflow-x-hidden">
 
-<div class="wrap">
-<header>
-  <div class="brand">
-    <img src="logo.png" alt="Audilix">
-    <span><h1>
-Plateforme d’audit de conformité pour PME<br>
-<span style="color:#0B3B70">structurée, claire et exploitable</span>
-</h1></span>
-  </div>
-  <nav>
-    <a href="#solution">Solution</a>
-    <a href="#method">Méthodologie</a>
-    <a href="#security">Sécurité</a>
-    <a href="#pricing">Tarifs</a>
-  </nav>
-  <a class="cta" href="https://tally.so/r/yP6AYX" target="_blank">Demander un audit</a>
-</header>
+    <nav class="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/60 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center font-bold text-xl">A</div>
+                <span class="text-xl font-bold tracking-tighter uppercase">Audilix</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+                <a href="#solution" class="hover:text-white transition">Solution</a>
+                <a href="#method" class="hover:text-white transition">Méthode</a>
+                <a href="#pricing" class="hover:text-white transition">Tarifs</a>
+            </div>
+            <a href="https://tally.so/r/yP6AYX" class="px-5 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 transition-all">
+                Demander un audit
+            </a>
+        </div>
+    </nav>
 
-<section class="hero">
- <a href="demo.html" class="ghost">Voir un exemple de rapport</a>
-  <div>
-    <span class="badge">Plateforme conformité pour PME</span>
-    <h1>Audits de conformité structurés, clairs et exploitables — assistés par l’IA</h1>
-    <p class="lead">
-Audilix aide les entreprises à identifier leurs risques réglementaires
-et organisationnels grâce à une analyse guidée et un rapport professionnel.
-</p>
-    <div style="display:flex;gap:10px;margin-top:12px">
-      <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Démarrer un audit gratuit</a>
-      <a class="ghost" href="#method">Voir la méthodologie</a>
-    </div>
-  </div>
-  <div class="panel">
-    <strong>Aperçu — Diagnostic de conformité</strong>
-    <p class="muted">Score global, risques critiques, plan d’action priorisé</p>
-    <img src="mock.png" alt="" style="width:100%;border-radius:10px;opacity:.9">
-  </div>
-</section>
-<!-- SECTION — Solution Audilix -->
-<section id="solution" class="section">
-  <h2>Une approche structurée de la conformité</h2>
-  <p class="lead">
-    Audilix ne remplace pas un auditeur — il prépare, structure et fiabilise
-    votre démarche de conformité. La plateforme vous aide à comprendre votre
-    situation, documenter vos pratiques et prioriser les actions essentielles.
-  </p>
+    <section class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-600/20 blur-[120px] rounded-full"></div>
+        
+        <div class="relative z-10 text-center max-w-4xl">
+            <span class="inline-block px-4 py-1.5 mb-6 border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold tracking-widest uppercase rounded-full">
+                Plateforme conformité 2.0
+            </span>
+            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tight mb-8 leading-[1.1] text-gradient">
+                L'Audit assisté par IA. <br> Structuré. Clair.
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                Audilix aide les entreprises à identifier leurs risques réglementaires 
+                grâce à une analyse guidée et des rapports professionnels haute-fidélité.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="https://tally.so/r/w565kP" class="w-full sm:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/20 transition-all">
+                    Démarrer un audit gratuit
+                </a>
+                <a href="demo.html" class="w-full sm:w-auto px-10 py-4 glass hover:bg-white/10 text-white font-medium rounded-2xl transition-all">
+                    Voir un exemple
+                </a>
+            </div>
+        </div>
 
-  <div class="grid3" style="margin-top:14px">
-    <div class="card">
-      <strong>Audit guidé</strong>
-      <p class="muted">Questionnaire structuré adapté aux PME (RGPD, sécurité, organisation).</p>
-    </div>
-    <div class="card">
-      <strong>Analyse assistée par IA</strong>
-      <p class="muted">Synthèse des réponses, risques détectés et plan d’action priorisé.</p>
-    </div>
-    <div class="card">
-      <strong>Rapport exploitable</strong>
-      <p class="muted">Export PDF clair — partageable avec direction, clients ou auditeurs.</p>
-    </div>
-  </div>
-</section>
+        <div class="mt-24 w-full max-w-5xl glass rounded-3xl p-4 glow">
+            <div class="bg-black/50 rounded-2xl border border-white/5 aspect-video flex items-center justify-center overflow-hidden">
+                <img src="mock.png" alt="Dashboard Audilix" class="opacity-80 scale-105 hover:scale-100 transition-transform duration-700">
+            </div>
+        </div>
+    </section>
 
-<!-- SECTION — Méthodologie -->
-<section id="method" class="section">
-  <h2>Méthodologie d’évaluation</h2>
-  <div class="panel">
-    <ul>
-      <li><strong>1. Collecte d’informations :</strong> questions adaptées au contexte de l’entreprise</li>
-      <li><strong>2. Analyse structurée :</strong> classification des risques par criticité</li>
-      <li><strong>3. Recommandations :</strong> mesures organisationnelles et techniques</li>
-      <li><strong>4. Documentation :</strong> rapport horodaté et traçable</li>
-    </ul>
-    <p class="muted" style="margin-top:8px">
-      La plateforme fournit une aide à l’analyse. Les résultats ne constituent pas un audit
-      réglementaire officiel et peuvent être complétés par un expert si nécessaire.
-    </p>
-  </div>
-</section>
+    <section id="solution" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-10 rounded-[32px] hover:border-blue-500/50 transition-colors group">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-2xl mb-6 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">📊</div>
+                <h3 class="text-xl font-bold mb-4">Audit guidé</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Questionnaire structuré adapté aux PME : RGPD, sécurité et organisation.</p>
+            </div>
+            <div class="glass p-10 rounded-[32px] border-blue-500/30">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-2xl mb-6 flex items-center justify-center text-purple-400">✨</div>
+                <h3 class="text-xl font-bold mb-4">Analyse IA</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Synthèse instantanée des réponses et détection automatique des risques critiques.</p>
+            </div>
+            <div class="glass p-10 rounded-[32px] hover:border-blue-500/50 transition-colors group">
+                <div class="w-12 h-12 bg-green-500/20 rounded-2xl mb-6 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">📄</div>
+                <h3 class="text-xl font-bold mb-4">Rapport Premium</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Export PDF professionnel prêt à être partagé avec vos partenaires et auditeurs.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- SECTION — Sécurité & Données -->
-<section id="security" class="section">
-  <h2>Sécurité & protection des données</h2>
-  <div class="grid3">
-    <div class="card">
-      <strong>Respect des bonnes pratiques</strong>
-      <p class="muted">Stockage minimal des informations — aucune donnée inutile conservée.</p>
-    </div>
-    <div class="card">
-      <strong>Confidentialité</strong>
-      <p class="muted">Les données ne sont pas revendues ni utilisées à des fins commerciales.</p>
-    </div>
-    <div class="card">
-      <strong>Droit à l’effacement</strong>
-      <p class="muted">Vous pouvez demander la suppression complète de vos données à tout moment.</p>
-    </div>
-  </div>
-<section class="section">
-  <h2>Confiance & crédibilité</h2>
-
-  <div class="grid3">
-    <div class="card">
-      <strong>Approche pragmatique PME</strong>
-      <p class="muted">Pensé pour les structures sans équipe conformité dédiée.</p>
-    </div>
-    <div class="card">
-      <strong>Méthodologie documentée</strong>
-      <p class="muted">Analyse structurée, traçable et explicable.</p>
-    </div>
-    <div class="card">
-      <strong>Utilisable sans expertise juridique</strong>
-      <p class="muted">Résultats compréhensibles par la direction.</p>
-    </div>
-  </div>
-
-  <p class="muted" style="margin-top:12px">
-    Audilix est conçu comme un <strong>outil d’aide à la conformité</strong>,
-    complémentaire aux experts et auditeurs lorsque nécessaire.
-  </p>
-</section>
-  <div style="margin-top:10px">
-    <a class="ghost" href="securite.html">Voir la page sécurité</a>
-  </div>
-</section>
- <section class="section">
-  <h2>Qui est derrière Audilix</h2>
-  <div class="panel">
-    <p>
-      Audilix est une plateforme conçue pour répondre à un besoin concret des PME :
-      <strong>comprendre leur niveau de conformité sans complexité inutile</strong>.
-    </p>
-    <p class="muted">
-      Le projet est développé avec une approche rigoureuse mêlant bonnes pratiques
-      réglementaires, structuration des risques et automatisation intelligente.
-      Audilix n’est pas un simple questionnaire, mais un outil d’aide à la décision
-      pensé pour les dirigeants et responsables opérationnels.
-    </p>
-  </div>
-</section>
-<!-- SECTION — Tarifs -->
-<section id="pricing" class="section">
-  <h2>Tarification adaptée aux besoins professionnels</h2>
-  <p class="lead">
-    Des offres claires, sans surprise, adaptées à la maturité de votre organisation.
-  </p>
-
-  <div class="grid3">
-    <div class="card">
-      <strong>Standard</strong>
-      <p class="price">69 € / mois</p>
-      <ul>
-        <li>✔ 2 audits par mois</li>
-        <li>✔ Questionnaire structuré</li>
-        <li>✔ Rapport PDF exploitable</li>
-        <li>✔ Support par email</li>
-      </ul>
-      <p class="muted">
-        Idéal pour les petites structures souhaitant un premier niveau d’évaluation.
-      </p>
-      <a class="cta" href="https://buy.stripe.com/test_3cIdRbdvTar32Rv3HzeUU00" target="_blank">
-        Souscrire
-      </a>
+    <div class="fixed bottom-8 right-8 z-[200]">
+        <button id="assistBtn" class="w-16 h-16 bg-blue-600 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 active:scale-95 transition-all">
+            💬
+        </button>
+        <div id="assistPanel" class="hidden absolute bottom-20 right-0 w-80 glass rounded-3xl overflow-hidden flex-col">
+            <div class="p-5 border-b border-white/10 font-bold bg-white/5">Assistant Audilix</div>
+            <div id="assistBody" class="p-5 h-64 overflow-y-auto text-sm text-gray-300 space-y-4">
+                <p class="bg-white/5 p-3 rounded-2xl rounded-tl-none">Bonjour ! Comment puis-je vous aider dans votre démarche de conformité ?</p>
+            </div>
+            <div class="p-4 bg-black/40 flex gap-2">
+                <input id="assistInput" type="text" placeholder="Question..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-blue-500">
+                <button id="assistSend" class="p-2 bg-blue-600 rounded-xl">➔</button>
+            </div>
+        </div>
     </div>
 
-    <div class="card">
-      <strong>Premium</strong>
-      <p class="price">149 € / mois</p>
-      <ul>
-        <li>✔ Audits illimités</li>
-        <li>✔ Assistant IA d’orientation</li>
-        <li>✔ Priorisation des risques</li>
-        <li>✔ Suivi des actions</li>
-      </ul>
-      <p class="muted">
-        Pour les entreprises souhaitant un suivi continu et structuré.
-      </p>
-      <a class="cta" href="https://buy.stripe.com/test_cNibJ363rbv763HemdeUU01" target="_blank">
-        Souscrire
-      </a>
-    </div>
-
-    <div class="card">
-      <strong>Entreprise</strong>
-      <p class="price">299 € / mois</p>
-      <ul>
-        <li>✔ Périmètres multiples</li>
-        <li>✔ Export avancé & historique</li>
-        <li>✔ Personnalisation méthodologique</li>
-        <li>✔ Support prioritaire</li>
-      </ul>
-      <p class="muted">
-        Pour les organisations avec des exigences de gouvernance,
-        de traçabilité ou d’intégration spécifiques.
-      </p>
-      <a class="cta" href="https://buy.stripe.com/test_28E3cx2Rf1UxfEhguleUU02" target="_blank">
-        Souscrire
-      </a>
-    </div>
-  </div>
-</section>
-</section>
-<!-- Bandeau CTA -->
-<section class="section">
-  <div class="panel">
-    <strong>Prêt à réaliser votre premier diagnostic ?</strong>
-    <p class="muted">L’audit d’évaluation est gratuit et sans engagement.</p>
-    <a class="cta" href="https://tally.so/r/w565kP" target="_blank">Démarrer un audit</a>
-  </div>
-</section>
-
-<footer>
-  Audilix Technologies — © 2026<br>
-  <a href="mentions.html">Mentions légales</a> •
-  <a href="confidentialite.html">Politique de confidentialité</a> •
-  <a href="suppression.html">Suppression des données</a>
-</footer>
-
-<!-- Assistant IA — version sobre -->
-<div class="assist">
-  <button class="assbtn" id="assistBtn">💬</button>
-</div>
-
-<div class="asspanel" id="assistPanel">
-  <div class="asshead">Assistant Audilix</div>
-  <div class="assbody" id="assistBody">
-    <p class="muted">Posez une question sur la conformité ou l’audit.</p>
-  </div>
-  <div class="assinput">
-    <input id="assistInput" placeholder="Votre question…">
-    <button id="assistSend">Envoyer</button>
-  </div>
-</div>
-
-<script>
-const panel=document.getElementById("assistPanel");
-document.getElementById("assistBtn").onclick=()=>panel.style.display=panel.style.display==="flex"?"none":"flex";
-document.getElementById("assistSend").onclick=()=>{
- const q=document.getElementById("assistInput").value.trim();
- if(!q)return;
- const b=document.getElementById("assistBody");
- b.innerHTML+=`<p><strong>Vous :</strong> ${q}</p>`;
- setTimeout(()=>b.innerHTML+=`<p><strong>Audilix :</strong> Merci pour votre question. Cet assistant fournit une aide d’orientation. Pour un avis formel, un expert peut compléter l’analyse.</p>`,600);
- document.getElementById("assistInput").value="";
-};
-</script>
-
-</div>
- <!-- Cookie banner RGPD -->
-<div id="cookieBanner" style="
-position:fixed;bottom:0;left:0;right:0;
-background:#0A1324;color:#fff;
-padding:16px;z-index:9999;
-display:none;
-">
-  <div style="max-width:1100px;margin:auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-    <div style="flex:1;font-size:14px">
-      Audilix utilise des cookies strictement nécessaires à son fonctionnement.
-      Aucun cookie publicitaire n’est utilisé.
-      <a href="confidentialite.html" style="color:#C7A13C">En savoir plus</a>
-    </div>
-    <button onclick="acceptCookies()" style="background:#C7A13C;border:none;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer">
-      Accepter
-    </button>
-  </div>
-</div>
-
-<script>
-if(!localStorage.getItem("cookiesAccepted")){
-  document.getElementById("cookieBanner").style.display="block";
-}
-function acceptCookies(){
-  localStorage.setItem("cookiesAccepted","yes");
-  document.getElementById("cookieBanner").style.display="none";
-}
-</script>
+    <script>
+        // Logique de l'assistant
+        const btn = document.getElementById('assistBtn');
+        const panel = document.getElementById('assistPanel');
+        btn.onclick = () => panel.classList.toggle('hidden');
+        
+        document.getElementById('assistSend').onclick = () => {
+            const input = document.getElementById('assistInput');
+            const body = document.getElementById('assistBody');
+            if(!input.value) return;
+            
+            body.innerHTML += `<div class="text-right text-xs text-blue-400 uppercase font-bold">Vous</div>
+                               <div class="bg-blue-600/20 p-3 rounded-2xl rounded-tr-none text-right">${input.value}</div>`;
+            input.value = '';
+            setTimeout(() => {
+                body.innerHTML += `<div class="text-xs text-gray-500 uppercase font-bold">Audilix</div>
+                                   <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none italic text-gray-400">Analyse en cours...</div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 600);
+        };
+    </script>
 </body>
 </html>
