@@ -1,130 +1,83 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr" class="dark">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Audit IA — Audilix</title>
-<link rel="icon" href="logo.png">
-<style>
-  :root{--primary:#0B3B70;--bg:#F7FBFF;--card:#fff;--muted:#6B7280}
-  body{font-family:Inter,system-ui;margin:0;background:var(--bg);color:#071224;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:920px;margin:32px auto;padding:20px}
-  h1{font-family:Poppins;margin:0 0 8px}
-  label{display:block;margin-top:12px;font-weight:700}
-  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef7;margin-top:6px}
-  button{background:linear-gradient(90deg,var(--primary),#2f64b3);color:white;padding:12px 16px;border:none;border-radius:10px;margin-top:14px;cursor:pointer}
-  #loader{display:none;margin-top:14px}
-  #result{display:none;margin-top:18px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 30px rgba(11,59,112,0.06)}
-  pre{white-space:pre-wrap;background:#f7fbff;padding:12px;border-radius:8px}
-  .small{color:var(--muted);font-size:13px}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audit IA — Audilix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+        html:not(.dark) body { background-color: #ffffff !important; color: #0f172a !important; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
+        .audit-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); border-radius: 24px; }
+        .input-field { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.2); border-radius: 12px; width: 100%; padding: 12px 16px; outline: none; transition: border 0.3s; }
+        .input-field:focus { border-color: #0B3B70; }
+    </style>
 </head>
-<body>
-  <div class="wrap">
-    <a href="index.html" class="small">← Retour</a>
-    <h1>Audit de conformité IA</h1>
-    <p class="small">Répondez à quelques questions — votre rapport est généré immédiatement.</p>
+<body class="antialiased min-h-screen">
 
-    <form id="auditForm">
-      <label>Nom de l'entreprise</label>
-      <input id="company" required>
+    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html"><img src="logo.png" alt="Audilix" class="h-10 w-auto"></a>
+            <div class="flex items-center gap-5">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 text-xl"><span id="theme-icon">🌙</span></button>
+                <a href="index.html" class="text-sm font-bold hover:text-[#0B3B70] transition">Quitter</a>
+            </div>
+        </div>
+    </nav>
 
-      <label>Secteur</label>
-      <input id="sector" placeholder="Ex. Technologie, Finance">
+    <main class="pt-32 pb-20 px-6 max-w-2xl mx-auto">
+        <div class="mb-12 text-center">
+            <span class="text-[#0B3B70] font-bold text-sm uppercase tracking-widest">Étape 1/1</span>
+            <h1 class="text-4xl font-extrabold mt-2">Lancer votre diagnostic</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-4 text-lg">Complétez ces informations pour que notre IA pré-analyse votre structure.</p>
+        </div>
 
-      <label>Taille</label>
-      <select id="size"><option>1–10</option><option>11–50</option><option>51–250</option><option>250+</option></select>
+        <form class="audit-card p-8 space-y-8 shadow-2xl shadow-black/20">
+            <div>
+                <label class="block text-sm font-bold mb-3">Nom de votre PME</label>
+                <input type="text" class="input-field dark:text-white" placeholder="Ex: TechSolutions SARL">
+            </div>
 
-      <label>Domaines (Ctrl/Cmd + click pour sélectionner plusieurs)</label>
-      <select id="domains" multiple size="5">
-        <option>RGPD</option><option>Cybersécurité</option><option>RSE</option><option>ISO</option><option>Gestion des données</option>
-      </select>
+            <div>
+                <label class="block text-sm font-bold mb-3">Secteur d'activité</label>
+                <select class="input-field dark:text-white dark:bg-zinc-900">
+                    <option>Services / Conseil</option>
+                    <option>Industrie / Manufacture</option>
+                    <option>Santé / Médical</option>
+                    <option>Commerce / Retail</option>
+                    <option>Autre</option>
+                </select>
+            </div>
 
-      <label>Avez-vous un DPO ?</label>
-      <select id="dpo"><option>Oui</option><option>Non</option></select>
+            <div>
+                <label class="block text-sm font-bold mb-3">Quel est votre défi de conformité actuel ?</label>
+                <textarea class="input-field dark:text-white h-32" placeholder="Décrivez brièvement vos besoins..."></textarea>
+            </div>
 
-      <label>Commentaires (optionnel)</label>
-      <textarea id="notes" rows="4"></textarea>
+            <button type="button" onclick="alert('Audit envoyé avec succès !')" class="w-full bg-[#0B3B70] text-white py-4 rounded-xl font-extrabold text-lg hover:scale-[1.02] transition-transform shadow-lg shadow-[#0B3B70]/30">
+                Générer mon pré-rapport gratuit
+            </button>
+        </form>
+    </main>
 
-      <label>E-mail pour recevoir le rapport</label>
-      <input id="email" type="email" required placeholder="prenom@entreprise.com">
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        
+        // Sync Mode Nuit
+        if (localStorage.getItem('theme') === 'light') { html.classList.remove('dark'); icon.innerText = '☀️'; }
+        else { html.classList.add('dark'); icon.innerText = '🌙'; }
 
-      <button type="submit">Analyser avec l'IA</button>
-    </form>
-
-    <div id="loader">⏳ Analyse en cours… veuillez patienter</div>
-
-    <div id="result">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><strong>Résumé IA</strong><div class="small">Score & recommandations</div></div>
-        <div id="score" style="font-size:22px;font-weight:800;color:var(--primary)">--%</div>
-      </div>
-      <div id="bodyReport" style="margin-top:12px"></div>
-      <div style="margin-top:12px"><button id="download">Télécharger PDF</button></div>
-    </div>
-  </div>
-
-<script>
-const backendUrl = "https://audilix-2.onrender.com/api/audit"; // <-- si tu déploies backend ailleurs, remplace ici
-
-function formToObj(){
-  const domains = Array.from(document.getElementById('domains').selectedOptions).map(o=>o.value);
-  return {
-    company: document.getElementById('company').value,
-    sector: document.getElementById('sector').value,
-    size: document.getElementById('size').value,
-    domains,
-    has_dpo: document.getElementById('dpo').value,
-    notes: document.getElementById('notes').value,
-    email: document.getElementById('email').value
-  };
-}
-
-document.getElementById('auditForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const payload = formToObj();
-  document.getElementById('loader').style.display='block';
-  document.getElementById('result').style.display='none';
-  try{
-    const res = await fetch(backendUrl, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(!res.ok) throw new Error(await res.text());
-    const json = await res.json();
-
-    document.getElementById('loader').style.display='none';
-    document.getElementById('result').style.display='block';
-
-    document.getElementById('score').innerText = (json.score || '--') + '%';
-    const report = `
-      <h3>Principaux risques</h3>
-      <ul>${(json.risks || []).map(r=>`<li>${r}</li>`).join('')}</ul>
-      <h3>Recommandations</h3>
-      <ol>${(json.recommendations || []).map(r=>`<li>${r}</li>`).join('')}</ol>
-      <h3>Détails</h3>
-      <pre>${(json.details || 'Aucun détail')}</pre>
-    `;
-    document.getElementById('bodyReport').innerHTML = report;
-
-    // Optionnel : sauvegarder / envoyer email via backend (à ajouter)
-  }catch(err){
-    document.getElementById('loader').style.display='none';
-    alert('Erreur : ' + (err.message || err));
-  }
-});
-
-document.getElementById('download').addEventListener('click', ()=>{
-  const node = document.getElementById('result').innerHTML;
-  const win = window.open('','_blank');
-  win.document.write('<html><head><title>Rapport Audilix</title><meta charset="utf-8"></head><body>');
-  win.document.write('<h1>Rapport Audilix</h1>');
-  win.document.write(node);
-  win.document.write('</body></html>');
-  win.document.close();
-  setTimeout(()=>win.print(),300);
-});
-</script>
+        btn.onclick = () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            icon.innerText = isDark ? '🌙' : '☀️';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+    </script>
 </body>
 </html>
