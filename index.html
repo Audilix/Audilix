@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <style>
         html.dark body { background-color: #050505 !important; color: #ffffff !important; }
         html:not(.dark) body { background-color: #ffffff !important; color: #0f172a !important; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; scroll-behavior: smooth; }
         .nav-blur { backdrop-filter: blur(12px); border-bottom: 1px solid rgba(150,150,150,0.1); }
         .hero-glow { background: radial-gradient(circle at center, rgba(11, 59, 112, 0.1) 0%, transparent 70%); }
         .glass-card { background: rgba(150,150,150,0.05); border: 1px solid rgba(150,150,150,0.1); backdrop-filter: blur(10px); }
@@ -24,9 +24,8 @@
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <img src="logo.png" alt="Audilix" class="h-10 w-auto">
             <div class="hidden md:flex items-center gap-8 text-sm font-bold">
-                <a href="methode.html" class="hover:text-[#0B3B70] transition">Notre Méthode</a>
-                <a href="#services" class="hover:text-[#0B3B70] transition">Solutions</a>
                 <a href="#tarifs" class="hover:text-[#0B3B70] transition">Tarifs</a>
+                <a href="methode.html" class="hover:text-[#0B3B70] transition">Méthode</a>
             </div>
             <div class="flex items-center gap-5">
                 <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-xl">
@@ -41,126 +40,88 @@
 
     <main class="relative min-h-screen flex items-center justify-center pt-20 px-6 hero-glow">
         <div class="text-center">
-            <div class="inline-block px-4 py-1.5 mb-6 border border-[#0B3B70]/20 rounded-full bg-[#0B3B70]/5 text-[#0B3B70] dark:text-blue-400 text-xs font-bold tracking-widest uppercase">
-                ⚡ L'audit nouvelle génération
-            </div>
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6">
                 Audilix <br>
                 <span class="text-[#0B3B70] dark:text-blue-400 italic">L'IA de conformité.</span>
             </h1>
-            <p class="max-w-xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-10 font-medium leading-relaxed">
-                Identifiez vos risques réglementaires en quelques minutes. Une plateforme puissante conçue pour sécuriser la croissance des PME.
+            <p class="max-w-xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-10 font-medium">
+                Identifiez vos risques réglementaires en quelques minutes. Une plateforme puissante et intuitive conçue pour sécuriser la croissance des PME.
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
                 <a href="audit.html" class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all shadow-xl shadow-[#0B3B70]/30">
-                    Essai Gratuit
-                </a>
-                <a href="methode.html" class="px-10 py-4 rounded-2xl border border-gray-300 dark:border-white/10 font-medium hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
-                    Découvrir la méthode
+                    Générer mon audit gratuit
                 </a>
             </div>
         </div>
     </main>
 
     <section class="py-20 border-y border-gray-100 dark:border-white/5">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-12">Ils nous font confiance</p>
-            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" class="h-8 w-auto" alt="Partner">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" class="h-8 w-auto" alt="Partner">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="h-8 w-auto" alt="Partner">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto" alt="Partner">
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
-                    <div class="w-14 h-14 bg-[#0B3B70] rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-[#0B3B70]/20 text-2xl">⚖️</div>
-                    <h3 class="text-2xl font-bold mb-4">RGPD & Data</h3>
-                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Vérification complète de vos traitements de données et mise en conformité automatisée.</p>
-                </div>
-                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-500/20 text-2xl">🛡️</div>
-                    <h3 class="text-2xl font-bold mb-4">Cyber-sécurité</h3>
-                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Analyse des vulnérabilités critiques et recommandations basées sur les standards ISO.</p>
-                </div>
-                <div class="glass-card p-10 rounded-[32px] hover:translate-y-[-10px] transition-all">
-                    <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-emerald-500/20 text-2xl">📈</div>
-                    <h3 class="text-2xl font-bold mb-4">RSE & Social</h3>
-                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Mesurez votre impact environnemental et social en accord avec les nouvelles directives.</p>
-                </div>
-            </div>
+        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" class="h-8 w-auto" alt="Slack">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" class="h-8 w-auto" alt="LinkedIn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="h-8 w-auto" alt="Amazon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto" alt="Google">
         </div>
     </section>
 
     <section id="tarifs" class="py-32 px-6 border-t border-gray-100 dark:border-white/5">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <h2 class="text-xs font-black uppercase tracking-[0.4em] text-[#0B3B70] mb-4">Plans & Souscriptions</h2>
-                <p class="text-5xl md:text-7xl font-extrabold tracking-tighter italic">L'IA qui sécurise <br>votre futur.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter italic">Des plans adaptés à votre croissance.</h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
-                <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:translate-y-[-10px] duration-500">
-                    <div class="w-16 h-16 bg-gray-100 dark:bg-white/10 rounded-2xl flex items-center justify-center mb-8 shadow-sm">
-                        <img src="logo-starter.png" alt="Starter" class="w-10 h-10"> </div>
-                    <h3 class="text-2xl font-bold mb-2">Starter</h3>
-                    <div class="flex items-baseline gap-1 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:scale-[1.02] duration-500">
+                    <img src="logo-starter.png" alt="Starter Logo" class="w-16 h-16 mb-6"> <h3 class="text-xl font-bold mb-2">Starter</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-5xl font-black">69€</span>
-                        <span class="opacity-50 font-bold text-sm uppercase">/ mois</span>
+                        <span class="opacity-50 font-bold">/mois</span>
                     </div>
-                    <ul class="space-y-5 mb-12 text-sm font-medium opacity-70">
-                        <li class="flex items-center gap-3">✓ 3 diagnostics IA / mois</li>
-                        <li class="flex items-center gap-3">✓ Rapport de score immédiat</li>
-                        <li class="flex items-center gap-3">✓ Analyse RGPD de base</li>
-                        <li class="flex items-center gap-3">✓ Support standard</li>
+                    <ul class="space-y-4 mb-10 text-sm font-medium opacity-80">
+                        <li>✅ 3 diagnostics IA / mois</li>
+                        <li>✅ Rapport de score immédiat</li>
+                        <li>✅ Analyse RGPD standard</li>
+                        <li>✅ Support par ticket</li>
                     </ul>
-                    <a href="audit.html" class="block text-center py-4 rounded-2xl border-2 border-[#0B3B70] text-[#0B3B70] dark:text-white font-black hover:bg-[#0B3B70] hover:text-white transition-all">Démarrer</a>
+                    <a href="audit.html" class="block text-center py-4 rounded-2xl bg-[#0B3B70] text-white font-black shadow-lg shadow-[#0B3B70]/20 hover:brightness-110 transition">Choisir Starter</a>
                 </div>
-                <div class="p-12 rounded-[48px] border-2 border-[#0B3B70] bg-[#0B3B70]/5 backdrop-blur-2xl relative shadow-[0_40px_80px_rgba(11,59,112,0.15)] scale-110 z-10 transition hover:scale-[1.12] duration-500">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#0B3B70] text-white text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest shadow-lg">Recommandé</div>
-                    <div class="w-20 h-20 bg-[#0B3B70] rounded-3xl flex items-center justify-center mb-10 shadow-xl shadow-[#0B3B70]/30">
-                        <img src="logo-business.png" alt="Business" class="w-12 h-12"> </div>
-                    <h3 class="text-2xl font-black mb-2">Business</h3>
-                    <div class="flex items-baseline gap-1 mb-8">
+                <div class="p-12 rounded-[48px] border-2 border-[#0B3B70] bg-[#0B3B70]/5 backdrop-blur-2xl relative shadow-[0_0_60px_rgba(11,59,112,0.2)] scale-110 z-10 transition hover:scale-[1.12] duration-500">
+                    <img src="logo-business.png" alt="Business Logo" class="w-20 h-20 mb-8"> <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#0B3B70] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">Le plus populaire</div>
+                    <h3 class="text-xl font-bold mb-2">Business</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-6xl font-black text-[#0B3B70]">149€</span>
-                        <span class="opacity-50 font-bold text-sm uppercase">/ mois</span>
+                        <span class="opacity-50 font-bold">/mois</span>
                     </div>
-                    <ul class="space-y-5 mb-12 text-sm font-black">
-                        <li class="flex items-center gap-3">🚀 Diagnostics illimités</li>
-                        <li class="flex items-center gap-3">🚀 Plan d'action stratégique</li>
-                        <li class="flex items-center gap-3">🚀 Multi-expertises</li>
-                        <li class="flex items-center gap-3">🚀 Marque Blanche</li>
-                        <li class="flex items-center gap-3">🚀 Support Prioritaire</li>
+                    <ul class="space-y-4 mb-10 text-sm font-black">
+                        <li>🚀 Diagnostics illimités</li>
+                        <li>🚀 Plan d'action détaillé IA</li>
+                        <li>🚀 Cyber + RGPD + RSE</li>
+                        <li>🚀 Export PDF Marque Blanche</li>
+                        <li>🚀 Support Prioritaire</li>
                     </ul>
-                    <a href="audit.html" class="block text-center py-5 rounded-2xl bg-[#0B3B70] text-white font-black shadow-2xl shadow-[#0B3B70]/40 hover:brightness-125 transition-all">Choisir ce plan</a>
+                    <a href="audit.html" class="block text-center py-5 rounded-2xl bg-[#0B3B70] text-white font-black shadow-xl shadow-[#0B3B70]/40 hover:brightness-110 transition">Choisir Business</a>
                 </div>
-                <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:translate-y-[-10px] duration-500">
-                    <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 shadow-sm">
-                        <img src="logo-expert.png" alt="Expert" class="w-10 h-10"> </div>
-                    <h3 class="text-2xl font-bold mb-2">Expert</h3>
-                    <div class="flex items-baseline gap-1 mb-8">
+                <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:scale-[1.02] duration-500">
+                    <img src="logo-expert.png" alt="Expert Logo" class="w-16 h-16 mb-6"> <h3 class="text-xl font-bold mb-2">Expert</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-5xl font-black">299€</span>
-                        <span class="opacity-50 font-bold text-sm uppercase">/ mois</span>
+                        <span class="opacity-50 font-bold">/mois</span>
                     </div>
-                    <ul class="space-y-5 mb-12 text-sm font-medium opacity-70">
-                        <li class="flex items-center gap-3">💎 Tout le plan Business</li>
-                        <li class="flex items-center gap-3">💎 Accès API développeur</li>
-                        <li class="flex items-center gap-3">💎 Gestion d'équipe</li>
-                        <li class="flex items-center gap-3">💎 Consultant dédié</li>
+                    <ul class="space-y-4 mb-10 text-sm font-medium opacity-80">
+                        <li>💎 Tout le plan Business</li>
+                        <li>💎 Accès API développeur</li>
+                        <li>💎 Gestion d'équipe</li>
+                        <li>💎 Consultant dédié (1h/mois)</li>
                     </ul>
-                    <a href="mailto:contact@audilix.fr" class="block text-center py-4 rounded-2xl border-2 border-gray-300 dark:border-white/10 font-black hover:bg-white hover:text-black transition-all">Contacter Sales</a>
+                    <a href="mailto:contact@audilix.fr" class="block text-center py-4 rounded-2xl bg-[#0B3B70] text-white font-black shadow-lg shadow-[#0B3B70]/20 hover:brightness-110 transition">Contacter Sales</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 px-6 border-t border-gray-100 dark:border-white/5">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+    <footer class="py-16 px-6 border-t border-gray-100 dark:border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-sm opacity-60">
             <img src="logo.png" alt="Audilix" class="h-8 opacity-50">
-            <p class="text-sm text-gray-400">© 2026 Audilix. Tous droits réservés.</p>
+            <p>© 2024 Audilix. Tous droits réservés.</p>
         </div>
     </footer>
 
