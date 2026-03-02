@@ -31,31 +31,26 @@
             border-radius: 980px;
             transition: all 0.3s ease;
         }
-        /* Style Questionnaire Corrigé */
-        .audit-title-clean {
-            font-size: 3rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #0B3B70;
-        }
-        .dark .audit-title-clean { color: white; }
+        .btn-apple:hover { transform: scale(1.02); opacity: 0.9; }
         
-        /* Chatbot Style */
+        /* Chatbot Style Robot */
         .chat-trigger {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             background: #0B3B70;
-            border-radius: 30px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(11,59,112,0.3);
+            box-shadow: 0 15px 35px rgba(11,59,112,0.4);
             cursor: pointer;
             z-index: 1000;
+            transition: all 0.3s ease;
         }
+        .chat-trigger:hover { transform: translateY(-5px) rotate(5deg); }
     </style>
 </head>
 <body class="bg-white text-[#1d1d1f]">
@@ -63,7 +58,7 @@
     <nav class="fixed top-0 w-full z-[100] glass-nav">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-12">
-                <img src="logo.png" alt="Audilix" class="h-10 w-auto">
+                <img src="logo.png" alt="Audilix" class="h-10 w-auto scale-110">
                 <div class="hidden md:flex gap-8 text-[13px] font-semibold opacity-70 uppercase tracking-widest">
                     <a href="#vision" class="hover:text-blue-600 transition">Solutions</a>
                     <a href="#tarifs" class="hover:text-blue-600 transition">Tarifs</a>
@@ -91,15 +86,15 @@
 
     <section id="vision" class="py-24 px-6 bg-[#f5f5f7] dark:bg-white/5">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] border border-transparent dark:border-white/5 shadow-sm">
+            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] shadow-sm border border-transparent dark:border-white/5 transition hover:shadow-md">
                 <span class="text-blue-600 font-extrabold uppercase text-[11px] tracking-widest">Technologie</span>
                 <h2 class="text-3xl font-bold mt-6 leading-tight">Analyse de donnée réelle.</h2>
-                <p class="text-gray-500 mt-4 text-lg">Détection automatique des failles et non-conformités.</p>
+                <p class="text-gray-500 mt-4 text-lg">Détection automatique des failles et non-conformités via nos algorithmes propriétaires.</p>
             </div>
-            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] border border-transparent dark:border-white/5 shadow-sm">
+            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] shadow-sm border border-transparent dark:border-white/5 transition hover:shadow-md">
                 <span class="text-[#0B3B70] dark:text-blue-400 font-extrabold uppercase text-[11px] tracking-widest">Protection</span>
                 <h2 class="text-3xl font-bold mt-6 leading-tight">Confidentialité sanctuarisée.</h2>
-                <p class="text-gray-500 mt-4 text-lg">Vos rapports d'audit sont chiffrés et stockés en Europe.</p>
+                <p class="text-gray-500 mt-4 text-lg">Vos rapports d'audit sont chiffrés de bout en bout et stockés sur des serveurs souverains.</p>
             </div>
         </div>
     </section>
@@ -108,43 +103,72 @@
         <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-20">Des plans adaptés à votre croissance.</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px]">
-                    <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8">
-                    <h3 class="text-xl font-bold mb-4">Starter</h3>
-                    <div class="text-5xl font-bold mb-8">69€<span class="text-lg opacity-50 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8">
-                        <li>✅ 3 diagnostics IA / mois</li>
-                        <li>✅ Rapport immédiat</li>
-                    </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold">Choisir</a>
+                
+                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px] flex flex-col justify-between border border-gray-100 dark:border-white/5">
+                    <div>
+                        <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8">
+                        <h3 class="text-xl font-bold mb-4">Starter</h3>
+                        <div class="text-5xl font-bold mb-8">69€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                        <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8 text-sm">
+                            <li>✅ 3 diagnostics IA / mois</li>
+                            <li>✅ Rapport de score immédiat</li>
+                            <li>✅ Analyse RGPD standard</li>
+                            <li>✅ Support par ticket</li>
+                        </ul>
+                    </div>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold hover:bg-gray-50 dark:hover:bg-white/5 transition">Choisir Starter</a>
                 </div>
-                <div class="p-10 bg-white dark:bg-white/10 rounded-[32px] border-2 border-[#0B3B70] scale-105 shadow-xl">
-                    <img src="logo-business.png" alt="Business" class="w-16 h-16 mx-auto mb-8">
-                    <h3 class="text-xl font-bold mb-4">Business</h3>
-                    <div class="text-5xl font-bold mb-8 text-[#0B3B70]">149€<span class="text-lg opacity-50 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 border-t pt-8">
-                        <li class="text-[#0B3B70]">🚀 Diagnostics illimités</li>
-                        <li>🚀 Plan d'action IA</li>
-                    </ul>
-                    <a href="audit.html" class="block py-4 rounded-full btn-apple font-bold">Choisir Business</a>
+
+                <div class="p-10 bg-white dark:bg-white/10 rounded-[32px] border-2 border-[#0B3B70] scale-105 shadow-2xl relative z-10 flex flex-col justify-between">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#0B3B70] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter">Le plus populaire</div>
+                    <div>
+                        <img src="logo-business.png" alt="Business" class="w-16 h-16 mx-auto mb-8">
+                        <h3 class="text-xl font-bold mb-4">Business</h3>
+                        <div class="text-5xl font-bold mb-8 text-[#0B3B70]">149€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                        <ul class="text-left space-y-4 mb-10 border-t pt-8 text-sm font-medium">
+                            <li class="flex items-center gap-2">🚀 <span class="text-[#0B3B70] font-bold">Diagnostics illimités</span></li>
+                            <li class="flex items-center gap-2">🚀 <span class="font-bold">Plan d'action détaillé IA</span></li>
+                            <li class="flex items-center gap-2">🚀 <span class="font-bold">Cyber + RGPD + RSE</span></li>
+                            <li class="flex items-center gap-2">🚀 <span class="font-bold">Export PDF Marque Blanche</span></li>
+                            <li class="flex items-center gap-2">🚀 <span class="font-bold">Support Prioritaire 24/7</span></li>
+                        </ul>
+                    </div>
+                    <a href="audit.html" class="block py-4 rounded-full btn-apple font-bold shadow-lg">Choisir Business</a>
                 </div>
-                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px]">
-                    <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8">
-                    <h3 class="text-xl font-bold mb-4">Expert</h3>
-                    <div class="text-5xl font-bold mb-8">299€<span class="text-lg opacity-50 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8">
-                        <li>💎 Accès API complet</li>
-                        <li>💎 Consultant dédié</li>
-                    </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold">Choisir</a>
+
+                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px] flex flex-col justify-between border border-gray-100 dark:border-white/5">
+                    <div>
+                        <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8">
+                        <h3 class="text-xl font-bold mb-4">Expert</h3>
+                        <div class="text-5xl font-bold mb-8">299€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                        <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8 text-sm">
+                            <li>💎 Tout le plan Business</li>
+                            <li>💎 Accès API développeur</li>
+                            <li>💎 Gestion d'équipe (Admin)</li>
+                            <li>💎 Consultant dédié (1h/mois)</li>
+                        </ul>
+                    </div>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold hover:bg-gray-50 dark:hover:bg-white/5 transition">Choisir Expert</a>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <div class="chat-trigger">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <div class="chat-trigger" title="Besoin d'aide ?">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8V4H8"></path>
+            <rect x="5" y="8" width="14" height="10" rx="2"></rect>
+            <circle cx="9" cy="13" r="1"></circle>
+            <circle cx="15" cy="13" r="1"></circle>
+            <path d="M12 18v2"></path>
+        </svg>
     </div>
+
+    <footer class="py-20 border-t border-gray-100 dark:border-white/5 text-center">
+        <img src="logo.png" alt="Audilix" class="h-6 mx-auto mb-8 opacity-20">
+        <p class="text-[12px] text-gray-400 font-medium uppercase tracking-[0.2em]">© 2026 Audilix — Compliance & Intelligence</p>
+    </footer>
 
     <script>
         const btn = document.getElementById('theme-toggle');
