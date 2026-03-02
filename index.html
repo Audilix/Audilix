@@ -1,160 +1,167 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audilix — La clarté dans la conformité</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --apple-bg: #f5f5f7;
-            --audilix-deep: #0B3B70;
-        }
         body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background-color: white;
-            color: #1d1d1f;
-            scroll-behavior: smooth;
+            font-family: 'Inter', sans-serif; 
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease;
         }
+        .dark body { background-color: #050505; color: white; }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .hero-title {
-            letter-spacing: -0.015em;
-            line-height: 1.05;
-        }
-        .bento-card {
-            background: #fbfbfd;
-            border-radius: 28px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-        }
-        .bento-card:hover {
-            background: #ffffff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
-            border: 1px solid rgba(0,0,0,0.05);
+        .dark .glass-nav {
+            background: rgba(5, 5, 5, 0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .btn-apple {
-            background: var(--audilix-deep);
+            background: #0B3B70;
             color: white;
             border-radius: 980px;
             transition: all 0.3s ease;
         }
-        .section-spacing { padding: 100px 24px; }
+        /* Style Questionnaire Corrigé */
+        .audit-title-clean {
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0B3B70;
+        }
+        .dark .audit-title-clean { color: white; }
         
-        /* Correction Questionnaire */
-        .audit-title {
-            font-size: 2.5rem !important;
-            font-weight: 700 !important;
-            letter-spacing: -0.01em !important;
+        /* Chatbot Style */
+        .chat-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #0B3B70;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(11,59,112,0.3);
+            cursor: pointer;
+            z-index: 1000;
         }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-white text-[#1d1d1f]">
 
     <nav class="fixed top-0 w-full z-[100] glass-nav">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-12">
-                <img src="logo.png" alt="Audilix" class="h-10 w-auto scale-110">
+                <img src="logo.png" alt="Audilix" class="h-10 w-auto">
                 <div class="hidden md:flex gap-8 text-[13px] font-semibold opacity-70 uppercase tracking-widest">
                     <a href="#vision" class="hover:text-blue-600 transition">Solutions</a>
                     <a href="#tarifs" class="hover:text-blue-600 transition">Tarifs</a>
                     <a href="methode.html" class="hover:text-blue-600 transition">Méthode</a>
                 </div>
             </div>
-            <a href="audit.html" class="btn-apple px-6 py-2.5 text-sm font-bold shadow-sm">Démarrer l'audit</a>
+            <div class="flex items-center gap-6">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition">
+                    <span id="theme-icon" class="text-xl">☀️</span>
+                </button>
+                <a href="audit.html" class="btn-apple px-6 py-2.5 text-sm font-bold shadow-sm">Démarrer l'audit</a>
+            </div>
         </div>
     </nav>
 
     <main class="pt-48 pb-24 px-6 text-center max-w-5xl mx-auto">
-        <h1 class="hero-title text-5xl md:text-7xl font-extrabold mb-8 tracking-tighter">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tighter leading-[1.1]">
             L'intelligence au service <br> de votre sécurité.
         </h1>
-        <p class="text-lg md:text-xl text-gray-500 max-w-xl mx-auto mb-10 font-medium leading-snug opacity-90">
+        <p class="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-10 font-medium leading-snug">
             Identifiez vos risques réglementaires avec une précision chirurgicale. Une expérience fluide pour des enjeux complexes.
         </p>
-        <div class="flex gap-6 justify-center items-center">
-            <a href="#tarifs" class="btn-apple text-md px-10 py-4 font-bold shadow-xl shadow-[#0B3B70]/10">Essayer gratuitement</a>
-            <a href="#vision" class="text-blue-600 font-bold hover:underline text-md">Découvrir la vision ></a>
-        </div>
+        <a href="#vision" class="text-blue-600 font-bold hover:underline text-md">Découvrir la vision ></a>
     </main>
 
-    <section id="vision" class="section-spacing bg-[#f5f5f7]">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bento-card p-12 flex flex-col justify-between min-h-[380px]">
-                    <div>
-                        <span class="text-blue-600 font-extrabold uppercase text-[11px] tracking-widest">Technologie</span>
-                        <h2 class="text-3xl font-bold mt-6 leading-tight">Une analyse basée sur la donnée réelle.</h2>
-                    </div>
-                    <p class="text-gray-500 text-lg leading-relaxed">Notre moteur d'audit scanne vos infrastructures pour identifier les vulnérabilités avant qu'elles ne soient exploitées.</p>
-                </div>
-                <div class="bento-card p-12 flex flex-col justify-between min-h-[380px]">
-                    <div>
-                        <span class="text-[#0B3B70] font-extrabold uppercase text-[11px] tracking-widest">Sécurité</span>
-                        <h2 class="text-3xl font-bold mt-6 leading-tight">Chiffrement de classe mondiale.</h2>
-                    </div>
-                    <p class="text-gray-500 text-lg leading-relaxed">Vos données d'audit sont sanctuarisées. Nous utilisons les protocoles les plus stricts pour garantir une confidentialité absolue.</p>
-                </div>
+    <section id="vision" class="py-24 px-6 bg-[#f5f5f7] dark:bg-white/5">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] border border-transparent dark:border-white/5 shadow-sm">
+                <span class="text-blue-600 font-extrabold uppercase text-[11px] tracking-widest">Technologie</span>
+                <h2 class="text-3xl font-bold mt-6 leading-tight">Analyse de donnée réelle.</h2>
+                <p class="text-gray-500 mt-4 text-lg">Détection automatique des failles et non-conformités.</p>
+            </div>
+            <div class="p-12 bg-white dark:bg-black/40 rounded-[32px] border border-transparent dark:border-white/5 shadow-sm">
+                <span class="text-[#0B3B70] dark:text-blue-400 font-extrabold uppercase text-[11px] tracking-widest">Protection</span>
+                <h2 class="text-3xl font-bold mt-6 leading-tight">Confidentialité sanctuarisée.</h2>
+                <p class="text-gray-500 mt-4 text-lg">Vos rapports d'audit sont chiffrés et stockés en Europe.</p>
             </div>
         </div>
     </section>
 
-    <section id="tarifs" class="section-spacing">
+    <section id="tarifs" class="py-32 px-6">
         <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-20">Des plans adaptés à votre croissance.</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-10 bento-card text-center">
+                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px]">
                     <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Starter</h3>
-                    <div class="text-5xl font-bold mb-8">69€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 text-gray-500 font-medium border-t pt-8">
+                    <div class="text-5xl font-bold mb-8">69€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                    <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8">
                         <li>✅ 3 diagnostics IA / mois</li>
-                        <li>✅ Rapport de score immédiat</li>
-                        <li>✅ Analyse RGPD standard</li>
-                        <li>✅ Support par ticket</li>
+                        <li>✅ Rapport immédiat</li>
                     </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-bold">Choisir Starter</a>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold">Choisir</a>
                 </div>
-                <div class="p-10 bento-card text-center border-gray-200 shadow-sm relative overflow-hidden scale-105 z-10 bg-white">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-[#0B3B70]"></div>
-                    <div class="bg-[#0B3B70] text-white text-[9px] font-black px-3 py-1 rounded-full absolute top-4 right-4 uppercase">Populaire</div>
+                <div class="p-10 bg-white dark:bg-white/10 rounded-[32px] border-2 border-[#0B3B70] scale-105 shadow-xl">
                     <img src="logo-business.png" alt="Business" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Business</h3>
-                    <div class="text-5xl font-bold mb-8">149€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 font-medium border-t pt-8">
+                    <div class="text-5xl font-bold mb-8 text-[#0B3B70]">149€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                    <ul class="text-left space-y-4 mb-10 border-t pt-8">
                         <li class="text-[#0B3B70]">🚀 Diagnostics illimités</li>
-                        <li>🚀 Plan d'action détaillé IA</li>
-                        <li>🚀 Cyber + RGPD + RSE</li>
-                        <li>🚀 Export PDF Marque Blanche</li>
-                        <li>🚀 Support Prioritaire</li>
+                        <li>🚀 Plan d'action IA</li>
                     </ul>
-                    <a href="audit.html" class="block py-4 rounded-full btn-apple shadow-xl shadow-[#0B3B70]/20 font-bold">Choisir Business</a>
+                    <a href="audit.html" class="block py-4 rounded-full btn-apple font-bold">Choisir Business</a>
                 </div>
-                <div class="p-10 bento-card text-center">
+                <div class="p-10 bg-[#fbfbfd] dark:bg-white/5 rounded-[32px]">
                     <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Expert</h3>
-                    <div class="text-5xl font-bold mb-8">299€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
-                    <ul class="text-left space-y-4 mb-10 text-gray-500 font-medium border-t pt-8">
-                        <li>💎 Tout le plan Business</li>
-                        <li>💎 Accès API développeur</li>
-                        <li>💎 Gestion d'équipe (Admin)</li>
-                        <li>💎 Consultant dédié (1h/mois)</li>
+                    <div class="text-5xl font-bold mb-8">299€<span class="text-lg opacity-50 font-normal">/mo</span></div>
+                    <ul class="text-left space-y-4 mb-10 text-gray-500 border-t pt-8">
+                        <li>💎 Accès API complet</li>
+                        <li>💎 Consultant dédié</li>
                     </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-bold">Choisir Expert</a>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 dark:border-white/20 font-bold">Choisir</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 border-t border-gray-100 text-center">
-        <img src="logo.png" alt="Audilix" class="h-6 mx-auto mb-8 opacity-20">
-        <p class="text-[12px] text-gray-400 font-medium uppercase tracking-[0.2em]">© 2026 Audilix — Compliance & Intelligence</p>
-    </footer>
+    <div class="chat-trigger">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
 
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        btn.onclick = () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            icon.innerText = isDark ? '🌙' : '☀️';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+            icon.innerText = '🌙';
+        }
+    </script>
 </body>
 </html>
