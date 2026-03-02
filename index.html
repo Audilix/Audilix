@@ -9,7 +9,6 @@
     <style>
         :root {
             --apple-bg: #f5f5f7;
-            --apple-blue: #0071e3;
             --audilix-deep: #0B3B70;
         }
         body { 
@@ -20,13 +19,13 @@
             -webkit-font-smoothing: antialiased;
         }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .hero-title {
-            letter-spacing: -0.022em;
-            line-height: 1.1;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
         }
         .bento-card {
             background: #fbfbfd;
@@ -38,130 +37,123 @@
             background: #ffffff;
             box-shadow: 0 20px 40px rgba(0,0,0,0.04);
             border: 1px solid rgba(0,0,0,0.05);
-            transform: translateY(-5px);
         }
         .btn-apple {
             background: var(--audilix-deep);
             color: white;
             border-radius: 980px;
-            padding: 12px 24px;
-            font-weight: 500;
             transition: all 0.3s ease;
         }
-        .btn-apple:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
+        .section-spacing { padding: 100px 24px; }
+        
+        /* Correction Questionnaire */
+        .audit-title {
+            font-size: 2.5rem !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.01em !important;
         }
-        .section-spacing { padding: 120px 20px; }
     </style>
 </head>
 <body class="bg-white">
 
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-            <div class="flex items-center gap-8">
-                <img src="logo.png" alt="Audilix" class="h-5 w-auto">
-                <div class="hidden md:flex gap-6 text-[12px] font-medium opacity-80 uppercase tracking-wider">
-                    <a href="#vision" class="hover:text-blue-600 transition">Vision</a>
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-12">
+                <img src="logo.png" alt="Audilix" class="h-10 w-auto scale-110">
+                <div class="hidden md:flex gap-8 text-[13px] font-semibold opacity-70 uppercase tracking-widest">
+                    <a href="#vision" class="hover:text-blue-600 transition">Solutions</a>
                     <a href="#tarifs" class="hover:text-blue-600 transition">Tarifs</a>
                     <a href="methode.html" class="hover:text-blue-600 transition">Méthode</a>
                 </div>
             </div>
-            <a href="audit.html" class="text-[12px] btn-apple">Démarrer l'audit</a>
+            <a href="audit.html" class="btn-apple px-6 py-2.5 text-sm font-bold shadow-sm">Démarrer l'audit</a>
         </div>
     </nav>
 
-    <main class="pt-40 pb-20 px-6 text-center max-w-5xl mx-auto">
-        <h1 class="hero-title text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter">
+    <main class="pt-48 pb-24 px-6 text-center max-w-5xl mx-auto">
+        <h1 class="hero-title text-5xl md:text-7xl font-extrabold mb-8 tracking-tighter">
             L'intelligence au service <br> de votre sécurité.
         </h1>
-        <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-12 font-medium leading-tight">
-            Identifiez vos risques réglementaires avec une précision chirurgicale. Une expérience simple, pour des enjeux complexes.
+        <p class="text-lg md:text-xl text-gray-500 max-w-xl mx-auto mb-10 font-medium leading-snug opacity-90">
+            Identifiez vos risques réglementaires avec une précision chirurgicale. Une expérience fluide pour des enjeux complexes.
         </p>
-        <div class="flex gap-4 justify-center items-center">
-            <a href="audit.html" class="btn-apple text-lg px-8 py-4">Essayer gratuitement</a>
-            <a href="#vision" class="text-blue-600 font-semibold hover:underline text-lg ml-4">En savoir plus ></a>
+        <div class="flex gap-6 justify-center items-center">
+            <a href="#tarifs" class="btn-apple text-md px-10 py-4 font-bold shadow-xl shadow-[#0B3B70]/10">Essayer gratuitement</a>
+            <a href="#vision" class="text-blue-600 font-bold hover:underline text-md">Découvrir la vision ></a>
         </div>
     </main>
 
     <section id="vision" class="section-spacing bg-[#f5f5f7]">
         <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bento-card p-12 flex flex-col justify-between min-h-[400px]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bento-card p-12 flex flex-col justify-between min-h-[380px]">
                     <div>
-                        <span class="text-blue-600 font-bold uppercase text-xs tracking-widest">Technologie</span>
-                        <h2 class="text-3xl font-bold mt-4 leading-tight">Une analyse basée sur les données, pas sur les suppositions.</h2>
+                        <span class="text-blue-600 font-extrabold uppercase text-[11px] tracking-widest">Technologie</span>
+                        <h2 class="text-3xl font-bold mt-6 leading-tight">Une analyse basée sur la donnée réelle.</h2>
                     </div>
-                    <p class="text-gray-500 text-lg">Notre IA scanne vos processus pour détecter les failles avant qu'elles ne deviennent des problèmes.</p>
+                    <p class="text-gray-500 text-lg leading-relaxed">Notre moteur d'audit scanne vos infrastructures pour identifier les vulnérabilités avant qu'elles ne soient exploitées.</p>
                 </div>
-                <div class="bento-card p-12 flex flex-col justify-between min-h-[400px]">
+                <div class="bento-card p-12 flex flex-col justify-between min-h-[380px]">
                     <div>
-                        <span class="text-emerald-600 font-bold uppercase text-xs tracking-widest">Honnêteté</span>
-                        <h2 class="text-3xl font-bold mt-4 leading-tight">Pas de chiffres gonflés. Juste de l'expertise.</h2>
+                        <span class="text-[#0B3B70] font-extrabold uppercase text-[11px] tracking-widest">Sécurité</span>
+                        <h2 class="text-3xl font-bold mt-6 leading-tight">Chiffrement de classe mondiale.</h2>
                     </div>
-                    <p class="text-gray-500 text-lg">Nous accompagnons chaque client avec une attention dédiée. Votre conformité est notre seule métrique de succès.</p>
+                    <p class="text-gray-500 text-lg leading-relaxed">Vos données d'audit sont sanctuarisées. Nous utilisons les protocoles les plus stricts pour garantir une confidentialité absolue.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="tarifs" class="section-spacing">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-6xl font-bold tracking-tight">Le bon plan pour chaque étape.</h2>
-            </div>
-            
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-20">Des plans adaptés à votre croissance.</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
                 <div class="p-10 bento-card text-center">
-                    <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8 grayscale hover:grayscale-0 transition duration-500">
+                    <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Starter</h3>
                     <div class="text-5xl font-bold mb-8">69€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
                     <ul class="text-left space-y-4 mb-10 text-gray-500 font-medium border-t pt-8">
-                        <li>• 3 diagnostics IA complets</li>
-                        <li>• Rapport de score immédiat</li>
-                        <li>• Analyse RGPD de base</li>
+                        <li>✅ 3 diagnostics IA / mois</li>
+                        <li>✅ Rapport de score immédiat</li>
+                        <li>✅ Analyse RGPD standard</li>
+                        <li>✅ Support par ticket</li>
                     </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-semibold">Choisir</a>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-bold">Choisir Starter</a>
                 </div>
-
-                <div class="p-10 bento-card text-center border-gray-200 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                <div class="p-10 bento-card text-center border-gray-200 shadow-sm relative overflow-hidden scale-105 z-10 bg-white">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-[#0B3B70]"></div>
+                    <div class="bg-[#0B3B70] text-white text-[9px] font-black px-3 py-1 rounded-full absolute top-4 right-4 uppercase">Populaire</div>
                     <img src="logo-business.png" alt="Business" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Business</h3>
                     <div class="text-5xl font-bold mb-8">149€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
                     <ul class="text-left space-y-4 mb-10 font-medium border-t pt-8">
-                        <li class="text-blue-600">• Diagnostics illimités</li>
-                        <li>• Plan d'action détaillé par IA</li>
-                        <li>• Export PDF Marque Blanche</li>
-                        <li>• Support prioritaire</li>
+                        <li class="text-[#0B3B70]">🚀 Diagnostics illimités</li>
+                        <li>🚀 Plan d'action détaillé IA</li>
+                        <li>🚀 Cyber + RGPD + RSE</li>
+                        <li>🚀 Export PDF Marque Blanche</li>
+                        <li>🚀 Support Prioritaire</li>
                     </ul>
-                    <a href="audit.html" class="block py-3 rounded-full btn-apple shadow-lg">Choisir</a>
+                    <a href="audit.html" class="block py-4 rounded-full btn-apple shadow-xl shadow-[#0B3B70]/20 font-bold">Choisir Business</a>
                 </div>
-
                 <div class="p-10 bento-card text-center">
-                    <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8 grayscale hover:grayscale-0 transition duration-500">
+                    <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8">
                     <h3 class="text-xl font-bold mb-4">Expert</h3>
                     <div class="text-5xl font-bold mb-8">299€<span class="text-lg text-gray-400 font-normal">/mo</span></div>
                     <ul class="text-left space-y-4 mb-10 text-gray-500 font-medium border-t pt-8">
-                        <li>• Accès API complet</li>
-                        <li>• Gestion multi-équipes</li>
-                        <li>• Consultant dédié (1h/mois)</li>
+                        <li>💎 Tout le plan Business</li>
+                        <li>💎 Accès API développeur</li>
+                        <li>💎 Gestion d'équipe (Admin)</li>
+                        <li>💎 Consultant dédié (1h/mois)</li>
                     </ul>
-                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-semibold">Choisir</a>
+                    <a href="audit.html" class="block py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition font-bold">Choisir Expert</a>
                 </div>
             </div>
         </div>
     </section>
 
     <footer class="py-20 border-t border-gray-100 text-center">
-        <img src="logo.png" alt="Audilix" class="h-4 mx-auto mb-6 opacity-30">
-        <div class="flex justify-center gap-8 text-[12px] text-gray-400 font-medium mb-8">
-            <a href="#" class="hover:text-black">Confidentialité</a>
-            <a href="#" class="hover:text-black">Conditions</a>
-            <a href="mailto:contact@audilix.com" class="hover:text-black">Contact</a>
-        </div>
-        <p class="text-[12px] text-gray-300">© 2026 Audilix. Conçu pour la clarté.</p>
+        <img src="logo.png" alt="Audilix" class="h-6 mx-auto mb-8 opacity-20">
+        <p class="text-[12px] text-gray-400 font-medium uppercase tracking-[0.2em]">© 2026 Audilix — Compliance & Intelligence</p>
     </footer>
 
 </body>
