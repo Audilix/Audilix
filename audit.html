@@ -14,144 +14,123 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        .dark body { background-color: #050505; color: white; }
-        .step-card { display: none; animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .step-card.active { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .option-card { cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.05); background: #fbfbfd; }
-        .dark .option-card { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); }
-        .option-card:hover { border-color: #0B3B70; transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
-        .progress-bar { transition: width 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
+        .step-card { display: none; }
+        .step-card.active { display: block; animation: slideIn 0.4s ease-out forwards; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .option-card { cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent; background: #fbfbfd; }
+        .dark .option-card { background: rgba(255,255,255,0.03); }
+        .option-card:hover { border-color: #0B3B70; background: white; transform: scale(1.01); }
     </style>
 </head>
 <body class="bg-white dark:bg-[#050505] min-h-screen flex flex-col">
 
-    <nav class="h-20 flex items-center justify-between px-8 border-b dark:border-white/5 backdrop-blur-md sticky top-0 z-50">
-        <a href="index.html"><img src="logo.png" alt="Audilix" class="h-8"></a>
-        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition">
-            <span id="theme-icon">☀️</span>
-        </button>
+    <nav class="h-20 flex items-center justify-between px-8 border-b dark:border-white/5">
+        <a href="index.html" class="font-black text-xl tracking-tighter text-audilix dark:text-white italic">AUDILIX</a>
+        <div id="progress-text" class="text-[10px] font-black uppercase tracking-widest opacity-40">Étape 1 / 3</div>
     </nav>
 
-    <div class="w-full h-1.5 bg-gray-100 dark:bg-white/5">
-        <div id="progress" class="progress-bar h-full bg-audilix w-0 shadow-[0_0_10px_#0B3B70]"></div>
+    <div class="w-full h-1 bg-gray-100 dark:bg-white/5">
+        <div id="progress-bar" class="h-full bg-audilix transition-all duration-500" style="width: 33%"></div>
     </div>
 
     <main class="flex-grow flex items-center justify-center p-6">
         <div class="max-w-xl w-full">
-            <form id="auditForm" onsubmit="return false;">
+            
+            <div class="step-card active" id="step1">
+                <h1 class="text-4xl font-extrabold mb-10 tracking-tighter text-center">Quel est votre secteur ?</h1>
+                <div class="space-y-3">
+                    <div class="option-card p-6 rounded-3xl font-bold text-lg flex justify-between items-center" onclick="goToStep(2, 60)">
+                        <span>Tech & Digital</span>
+                        <span class="opacity-30">→</span>
+                    </div>
+                    <div class="option-card p-6 rounded-3xl font-bold text-lg flex justify-between items-center" onclick="goToStep(2, 60)">
+                        <span>Industrie & Services</span>
+                        <span class="opacity-30">→</span>
+                    </div>
+                    <div class="option-card p-6 rounded-3xl font-bold text-lg flex justify-between items-center" onclick="goToStep(2, 60)">
+                        <span>Santé & Public</span>
+                        <span class="opacity-30">→</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card" id="step2">
+                <h1 class="text-4xl font-extrabold mb-10 tracking-tighter text-center">Taille de l'entreprise</h1>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="option-card p-8 rounded-[32px] text-center" onclick="goToStep(3, 90)">
+                        <div class="text-3xl mb-3">🌱</div><span class="font-bold text-xs uppercase italic">Startup</span>
+                    </div>
+                    <div class="option-card p-8 rounded-[32px] text-center" onclick="goToStep(3, 90)">
+                        <div class="text-3xl mb-3">🏢</div><span class="font-bold text-xs uppercase italic">PME / ETI</span>
+                    </div>
+                </div>
+                <button onclick="goToStep(1, 33)" class="mt-8 w-full text-xs font-bold uppercase opacity-30 hover:opacity-100">← Retour</button>
+            </div>
+
+            <div class="step-card" id="step3">
+                <h1 class="text-4xl font-extrabold mb-8 tracking-tighter text-center">Points d'attention</h1>
+                <div class="space-y-4 mb-8">
+                    <label class="option-card p-5 rounded-2xl flex items-center gap-4 border-2">
+                        <input type="checkbox" class="w-5 h-5 accent-audilix">
+                        <span class="font-semibold text-sm">Données clients sensibles</span>
+                    </label>
+                    <label class="option-card p-5 rounded-2xl flex items-center gap-4 border-2">
+                        <input type="checkbox" class="w-5 h-5 accent-audilix">
+                        <span class="font-semibold text-sm">Utilisation d'IA générative</span>
+                    </label>
+                </div>
+                <button onclick="runAnalysis()" class="w-full bg-audilix text-white py-5 rounded-3xl font-black text-lg shadow-2xl shadow-audilix/30 active:scale-95 transition">
+                    Analyser mes risques
+                </button>
+            </div>
+
+            <div class="step-card text-center" id="loading">
+                <div class="w-16 h-16 border-4 border-audilix border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
+                <h2 class="text-2xl font-bold mb-2 italic">Analyse par Audilix IA...</h2>
+                <p class="text-gray-400 text-sm">Vérification des protocoles de sécurité...</p>
+            </div>
+
+            <div class="step-card" id="result">
+                <div class="text-center mb-10">
+                    <h2 class="text-[10px] font-black uppercase tracking-widest text-audilix mb-4">Score de Conformité</h2>
+                    <div class="text-9xl font-black tracking-tighter text-audilix mb-4">67<small class="text-2xl">%</small></div>
+                    <p class="text-red-500 font-bold text-sm italic">Attention : 3 failles majeures détectées</p>
+                </div>
                 
-                <div class="step-card active" id="step1">
-                    <h2 class="text-audilix font-black text-xs uppercase tracking-[0.3em] mb-4">Diagnostic 2026</h2>
-                    <h1 class="text-4xl font-extrabold mb-10 tracking-tighter">Votre secteur d'activité ?</h1>
-                    <div class="space-y-3">
-                        <div class="option-card p-6 rounded-3xl font-bold text-lg" onclick="setSector('tech', 88)">Tech & Digital</div>
-                        <div class="option-card p-6 rounded-3xl font-bold text-lg" onclick="setSector('indus', 72)">Industrie & Logistique</div>
-                        <div class="option-card p-6 rounded-3xl font-bold text-lg" onclick="setSector('sante', 58)">Santé & Public</div>
-                    </div>
+                <div class="bg-gray-50 dark:bg-white/5 p-8 rounded-[40px] border dark:border-white/10">
+                    <h3 class="font-bold text-lg mb-4 text-center">Recevoir le rapport de remédiation</h3>
+                    <input type="email" placeholder="votre@email.com" class="w-full p-4 rounded-2xl border dark:bg-black dark:border-white/10 mb-4 outline-none focus:ring-2 focus:ring-audilix transition">
+                    <button class="w-full bg-audilix text-white py-4 rounded-2xl font-bold shadow-lg">Obtenir mon PDF Gratuit</button>
                 </div>
+            </div>
 
-                <div class="step-card" id="step2">
-                    <h1 class="text-4xl font-extrabold mb-10 tracking-tighter text-center">Taille de la structure</h1>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="option-card p-8 rounded-[32px] text-center" onclick="setSize(0)">
-                            <div class="text-3xl mb-3">🌱</div><span class="font-bold text-xs uppercase">1-10</span>
-                        </div>
-                        <div class="option-card p-8 rounded-[32px] text-center" onclick="setSize(-8)">
-                            <div class="text-3xl mb-3">🚀</div><span class="font-bold text-xs uppercase">11-50</span>
-                        </div>
-                        <div class="option-card p-8 rounded-[32px] text-center" onclick="setSize(-15)">
-                            <div class="text-3xl mb-3">🏢</div><span class="font-bold text-xs uppercase">51-250</span>
-                        </div>
-                        <div class="option-card p-8 rounded-[32px] text-center" onclick="setSize(-25)">
-                            <div class="text-3xl mb-3">🌍</div><span class="font-bold text-xs uppercase">250+</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step-card" id="step3">
-                    <h1 class="text-4xl font-extrabold mb-8 tracking-tighter">Points critiques</h1>
-                    <div class="space-y-4">
-                        <label class="option-card p-5 rounded-2xl flex items-center gap-4 border-2">
-                            <input type="checkbox" class="audit-check w-5 h-5 accent-audilix" value="-12">
-                            <span class="font-semibold text-sm">Absence de politique IA interne</span>
-                        </label>
-                        <label class="option-card p-5 rounded-2xl flex items-center gap-4 border-2">
-                            <input type="checkbox" class="audit-check w-5 h-5 accent-audilix" value="-10">
-                            <span class="font-semibold text-sm">Hébergement hors Europe</span>
-                        </label>
-                        <button type="button" onclick="showLoading()" class="w-full bg-audilix text-white py-5 rounded-3xl font-black text-lg mt-6 shadow-2xl shadow-audilix/30 transition active:scale-95">
-                            Générer l'Analyse Premium
-                        </button>
-                    </div>
-                </div>
-
-                <div class="step-card text-center" id="loading">
-                    <div class="relative w-20 h-20 mx-auto mb-10">
-                        <div class="absolute inset-0 border-4 border-audilix/10 rounded-full"></div>
-                        <div class="absolute inset-0 border-4 border-t-audilix rounded-full animate-spin"></div>
-                    </div>
-                    <h2 class="text-2xl font-bold tracking-tight mb-2">Calcul de l'indice de maturité...</h2>
-                    <p class="text-gray-400 text-sm">Comparaison avec les normes ISO/IEC 42001</p>
-                </div>
-
-                <div class="step-card" id="result">
-                    <div class="text-center">
-                        <h2 class="text-xs font-black uppercase tracking-widest text-audilix mb-6">Score Global Audilix</h2>
-                        <div class="text-9xl font-black tracking-tighter text-audilix dark:text-white mb-6" id="finalScore">--</div>
-                        
-                        <div class="bg-[#fbfbfd] dark:bg-white/5 p-8 rounded-[40px] border dark:border-white/10 shadow-sm">
-                            <h3 class="text-xl font-bold mb-4">Recevoir mon rapport complet PDF</h3>
-                            <p class="text-gray-500 text-sm mb-6 font-medium">Nous avons détecté <span class="text-red-500 font-bold">3 failles majeures</span>. Entrez votre email pour recevoir le plan de remédiation détaillé.</p>
-                            
-                            <input type="email" placeholder="nom@entreprise.com" class="w-full p-4 rounded-2xl border dark:bg-black dark:border-white/10 mb-4 focus:ring-2 focus:ring-audilix outline-none transition font-medium">
-                            
-                            <button class="w-full bg-audilix text-white py-4 rounded-2xl font-bold shadow-lg hover:opacity-90 transition">
-                                Envoyer le rapport (Gratuit)
-                            </button>
-                            
-                            <div class="mt-6 flex items-center justify-center gap-2 opacity-30">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                                <span class="text-[10px] font-bold uppercase tracking-widest">RGPD Compliant & Secured</span>
-                            </div>
-                        </div>
-                        
-                        <a href="index.html#tarifs" class="block mt-8 text-audilix font-bold text-sm hover:underline">Découvrir nos offres d'accompagnement ></a>
-                    </div>
-                </div>
-            </form>
         </div>
     </main>
 
     <script>
-        let base = 0; let size = 0;
-        function updateProgress(v) { document.getElementById('progress').style.width = v + '%'; }
-        function setSector(n, b) { base = b; next(2, 33); }
-        function setSize(p) { size = p; next(3, 66); }
-        function next(s, p) {
-            document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('step' + s).classList.add('active');
-            updateProgress(p);
+        function goToStep(stepNumber, progressWidth) {
+            // Masquer toutes les étapes
+            document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+            // Afficher l'étape demandée
+            document.getElementById('step' + stepNumber).classList.add('active');
+            // Mettre à jour la barre
+            document.getElementById('progress-bar').style.width = progressWidth + '%';
+            document.getElementById('progress-text').innerText = 'Étape ' + (stepNumber <= 3 ? stepNumber : 3) + ' / 3';
         }
-        function showLoading() {
-            next('loading', 90);
-            let final = base + size;
-            document.querySelectorAll('.audit-check:checked').forEach(c => final += parseInt(c.value));
-            final += Math.floor(Math.random() * 6) - 3;
-            if (final > 97) final = 97; if (final < 15) final = 15;
 
+        function runAnalysis() {
+            // Masquer l'étape 3
+            document.getElementById('step3').classList.remove('active');
+            // Afficher le chargement
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('progress-bar').style.width = '100%';
+
+            // Après 2.5 secondes, afficher le résultat
             setTimeout(() => {
-                next('result', 100);
-                document.getElementById('finalScore').innerText = final + '%';
-            }, 2800);
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('result').classList.add('active');
+            }, 2500);
         }
-
-        const btn = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        btn.onclick = () => {
-            html.classList.toggle('dark');
-            document.getElementById('theme-icon').innerText = html.classList.contains('dark') ? '🌙' : '☀️';
-        };
     </script>
 </body>
 </html>
