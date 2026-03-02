@@ -1,13 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audilix — L'IA de conformité</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         html.dark body { background-color: #050505 !important; color: #ffffff !important; }
@@ -45,7 +43,7 @@
                 <span class="text-[#0B3B70] dark:text-blue-400 italic">L'IA de conformité.</span>
             </h1>
             <p class="max-w-xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-10 font-medium">
-                Identifiez vos risques réglementaires en quelques minutes. Une plateforme puissante et intuitive conçue pour sécuriser la croissance des PME.
+                Identifiez vos risques réglementaires en quelques minutes avec notre moteur IA Haute Précision.
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
                 <a href="audit.html" class="bg-[#0B3B70] text-white px-10 py-4 rounded-2xl text-lg font-bold hover:brightness-110 transition-all shadow-xl shadow-[#0B3B70]/30">
@@ -55,23 +53,16 @@
         </div>
     </main>
 
-    <section class="py-20 border-y border-gray-100 dark:border-white/5">
-        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" class="h-8 w-auto" alt="Slack">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" class="h-8 w-auto" alt="LinkedIn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="h-8 w-auto" alt="Amazon">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto" alt="Google">
-        </div>
-    </section>
-
     <section id="tarifs" class="py-32 px-6 border-t border-gray-100 dark:border-white/5">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter italic">Des plans adaptés à votre croissance.</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                
                 <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:scale-[1.02] duration-500">
-                    <img src="logo-starter.png" alt="Starter Logo" class="w-16 h-16 mb-6"> <h3 class="text-xl font-bold mb-2">Starter</h3>
+                    <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mb-6">
+                    <h3 class="text-xl font-bold mb-2">Starter</h3>
                     <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-5xl font-black">69€</span>
                         <span class="opacity-50 font-bold">/mois</span>
@@ -84,8 +75,10 @@
                     </ul>
                     <a href="audit.html" class="block text-center py-4 rounded-2xl bg-[#0B3B70] text-white font-black shadow-lg shadow-[#0B3B70]/20 hover:brightness-110 transition">Choisir Starter</a>
                 </div>
+
                 <div class="p-12 rounded-[48px] border-2 border-[#0B3B70] bg-[#0B3B70]/5 backdrop-blur-2xl relative shadow-[0_0_60px_rgba(11,59,112,0.2)] scale-110 z-10 transition hover:scale-[1.12] duration-500">
-                    <img src="logo-business.png" alt="Business Logo" class="w-20 h-20 mb-8"> <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#0B3B70] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">Le plus populaire</div>
+                    <img src="logo-business.png" alt="Business" class="w-20 h-20 mb-8">
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#0B3B70] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">Le plus populaire</div>
                     <h3 class="text-xl font-bold mb-2">Business</h3>
                     <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-6xl font-black text-[#0B3B70]">149€</span>
@@ -100,8 +93,10 @@
                     </ul>
                     <a href="audit.html" class="block text-center py-5 rounded-2xl bg-[#0B3B70] text-white font-black shadow-xl shadow-[#0B3B70]/40 hover:brightness-110 transition">Choisir Business</a>
                 </div>
+
                 <div class="p-10 rounded-[40px] border border-gray-200 dark:border-white/5 bg-white/5 backdrop-blur-xl transition hover:scale-[1.02] duration-500">
-                    <img src="logo-expert.png" alt="Expert Logo" class="w-16 h-16 mb-6"> <h3 class="text-xl font-bold mb-2">Expert</h3>
+                    <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mb-6">
+                    <h3 class="text-xl font-bold mb-2">Expert</h3>
                     <div class="flex items-baseline gap-1 mb-6">
                         <span class="text-5xl font-black">299€</span>
                         <span class="opacity-50 font-bold">/mois</span>
@@ -109,37 +104,30 @@
                     <ul class="space-y-4 mb-10 text-sm font-medium opacity-80">
                         <li>💎 Tout le plan Business</li>
                         <li>💎 Accès API développeur</li>
-                        <li>💎 Gestion d'équipe</li>
+                        <li>💎 Gestion d'équipe (Admin)</li>
                         <li>💎 Consultant dédié (1h/mois)</li>
                     </ul>
-                    <a href="mailto:contact@audilix.fr" class="block text-center py-4 rounded-2xl bg-[#0B3B70] text-white font-black shadow-lg shadow-[#0B3B70]/20 hover:brightness-110 transition">Contacter Sales</a>
+                    <a href="audit.html" class="block text-center py-4 rounded-2xl bg-[#0B3B70] text-white font-black shadow-lg shadow-[#0B3B70]/20 hover:brightness-110 transition">Choisir Expert</a>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <footer class="py-16 px-6 border-t border-gray-100 dark:border-white/5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center text-sm opacity-60">
-            <img src="logo.png" alt="Audilix" class="h-8 opacity-50">
-            <p>© 2024 Audilix. Tous droits réservés.</p>
-        </div>
+    <footer class="py-16 px-6 border-t border-gray-100 dark:border-white/5 text-center">
+        <p class="text-sm opacity-40">© 2026 Audilix. Tous droits réservés.</p>
     </footer>
 
     <script>
         const btn = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-icon');
         const html = document.documentElement;
-        function updateUI() {
-            const isDark = html.classList.contains('dark');
-            icon.innerText = isDark ? '🌙' : '☀️';
-        }
         if (localStorage.getItem('theme') === 'light') html.classList.remove('dark');
         else html.classList.add('dark');
-        updateUI();
         btn.onclick = () => {
             html.classList.toggle('dark');
             localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            updateUI();
+            icon.innerText = html.classList.contains('dark') ? '🌙' : '☀️';
         };
     </script>
 </body>
