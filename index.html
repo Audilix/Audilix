@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — L'Excellence en Conformité IA</title>
+    <title>Audilix — L'Excellence en Conformité Automatisée</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { 
@@ -11,7 +11,11 @@
             theme: {
                 extend: {
                     colors: { audilix: '#0B3B70', apple: '#f5f5f7' },
-                    animation: { 'fade-in': 'fadeIn 0.8s ease-out forwards', 'float': 'float 3s ease-in-out infinite' }
+                    animation: { 
+                        'fade-in': 'fadeIn 0.8s ease-out forwards', 
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-soft': 'pulseSoft 4s ease-in-out infinite'
+                    }
                 }
             }
         }
@@ -20,6 +24,7 @@
     <style>
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulseSoft { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
         .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
@@ -42,50 +47,62 @@
     <nav class="fixed top-0 w-full z-[100] glass-nav">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-10">
-                <img src="logo.png" alt="Audilix" class="h-9 w-auto hover:opacity-80 transition cursor-pointer">
+                <img src="logo.png" alt="Audilix" class="h-9 w-auto cursor-pointer">
                 <div class="hidden lg:flex gap-8 text-[12px] font-bold uppercase tracking-widest opacity-60">
                     <a href="#solutions" class="hover:text-audilix dark:hover:text-blue-400 transition">Solutions</a>
+                    <a href="#methode" class="hover:text-audilix dark:hover:text-blue-400 transition">Méthode</a>
                     <a href="#tarifs" class="hover:text-audilix dark:hover:text-blue-400 transition">Tarifs</a>
-                    <a href="methode.html" class="hover:text-audilix dark:hover:text-blue-400 transition">Méthode</a>
                 </div>
             </div>
             <div class="flex items-center gap-6">
                 <button id="theme-toggle" class="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition">
                     <span id="theme-icon" class="text-xl">☀️</span>
                 </button>
-                <a href="audit.html" class="btn-premium px-7 py-3 text-sm font-bold">Démarrer l'audit</a>
+                <a href="audit.html" class="btn-premium px-7 py-3 text-sm font-bold shadow-lg shadow-audilix/10">Démarrer l'audit</a>
             </div>
         </div>
     </nav>
 
-    <section class="pt-52 pb-32 px-6 text-center max-w-6xl mx-auto animate-fade-in">
-        <span class="px-4 py-1.5 rounded-full bg-audilix/5 text-audilix dark:text-blue-400 text-[11px] font-extrabold uppercase tracking-widest mb-8 inline-block">
-            Technologie Propriétaire IA — 2026
+    <header class="pt-52 pb-32 px-6 text-center max-w-6xl mx-auto animate-fade-in">
+        <span class="px-4 py-1.5 rounded-full bg-audilix/5 text-audilix dark:text-blue-400 text-[11px] font-extrabold uppercase tracking-widest mb-8 inline-block animate-pulse-soft">
+            Audit Intelligent 100% Automatisé
         </span>
-        <h1 class="text-6xl md:text-[90px] font-extrabold tracking-tight leading-[0.95] mb-10">
-            L'intelligence au service <br> de votre sécurité.
+        <h1 class="text-5xl md:text-[85px] font-extrabold tracking-tight leading-[0.95] mb-10">
+            Libérez votre esprit, <br> l'IA gère vos risques.
         </h1>
-        <p class="text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
-            Identifiez vos vulnérabilités réglementaires en quelques minutes avec la précision d'un expert humain, la vitesse de l'IA en plus.
+        <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
+            Identifiez vos failles de sécurité et de conformité en 3 minutes. <br class="hidden md:block"> Précis, souverain et sans effort humain.
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="audit.html" class="btn-premium px-10 py-5 text-lg font-bold">Lancer un diagnostic</a>
-            <a href="#solutions" class="text-audilix dark:text-blue-400 font-bold hover:underline">Voir les capacités techniques ></a>
+            <a href="audit.html" class="btn-premium px-10 py-5 text-lg font-bold">Lancer un diagnostic gratuit</a>
+            <a href="#methode" class="text-audilix dark:text-blue-400 font-bold hover:underline">Découvrir l'automatisation ></a>
         </div>
-    </section>
+    </header>
 
-    <section id="solutions" class="py-24 px-6 bg-[#f5f5f7] dark:bg-white/5 transition-colors">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bento-card p-12">
-                <div class="max-w-md">
-                    <h3 class="text-3xl font-bold mb-6">Analyse de donnée souveraine.</h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">Nos algorithmes scannent vos documents et infrastructures en local. Zéro fuite, une confidentialité totale et une conformité européenne garantie.</p>
-                </div>
+    <section id="methode" class="py-32 px-6 bg-[#f5f5f7] dark:bg-white/5 transition-colors">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">La tranquillité en 3 étapes.</h2>
+                <p class="text-gray-500 font-medium">Zéro intervention humaine, une sécurité totale.</p>
             </div>
-            <div class="bento-card p-12 flex flex-col justify-end text-white bg-audilix relative overflow-hidden">
-                <div class="relative z-10">
-                    <h3 class="text-2xl font-bold mb-2">Score de Risque</h3>
-                    <p class="opacity-80">Obtenez un indice de confiance sur 100 certifié par Audilix.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-white dark:bg-black rounded-3xl shadow-xl flex items-center justify-center mx-auto mb-8 text-2xl font-black text-audilix">1</div>
+                    <h3 class="text-xl font-bold mb-4">Diagnostic Flash</h3>
+                    <p class="text-[15px] text-gray-500 leading-relaxed font-medium">Répondez à notre questionnaire intelligent en 3 minutes. Notre IA détecte immédiatement vos zones de risques critiques.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-white dark:bg-black rounded-3xl shadow-xl flex items-center justify-center mx-auto mb-8 text-2xl font-black text-audilix">2</div>
+                    <h3 class="text-xl font-bold mb-4">Analyse Autonome</h3>
+                    <p class="text-[15px] text-gray-500 leading-relaxed font-medium">L'algorithme scanne vos données et génère un rapport de conformité complet. Aucun effort humain requis, tout est automatique.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-audilix text-white rounded-3xl shadow-xl flex items-center justify-center mx-auto mb-8 text-2xl font-black">3</div>
+                    <h3 class="text-xl font-bold mb-4">Protection Continue</h3>
+                    <p class="text-[15px] text-gray-500 leading-relaxed font-medium">Recevez des alertes si une loi change. Votre esprit est libre, votre structure reste aux normes 24h/24.</p>
                 </div>
             </div>
         </div>
@@ -93,13 +110,12 @@
 
     <section id="tarifs" class="py-32 px-6">
         <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl md:text-7xl font-extrabold tracking-tight mb-6">Un plan pour chaque ambition.</h2>
-            <p class="text-gray-500 mb-16 font-medium italic">Pas de frais cachés. Juste de la puissance.</p>
+            <h2 class="text-4xl md:text-7xl font-extrabold tracking-tight mb-20">Des plans pour tous les besoins.</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                <div class="p-10 bento-card flex flex-col">
-                    <img src="logo-starter.png" alt="Starter" class="w-16 h-16 mx-auto mb-8 animate-float">
-                    <h3 class="text-2xl font-bold mb-4">Starter</h3>
+                <div class="p-10 bento-card flex flex-col border border-gray-100 dark:border-white/5">
+                    <img src="logo-starter.png" alt="Starter" class="w-14 h-14 mx-auto mb-8 opacity-80">
+                    <h3 class="text-xl font-bold mb-4">Starter</h3>
                     <div class="text-5xl font-black mb-10">69€<span class="text-lg opacity-40 font-normal">/mo</span></div>
                     <ul class="text-left space-y-5 mb-12 text-sm font-medium border-t pt-8 opacity-70">
                         <li>✅ 3 diagnostics IA / mois</li>
@@ -111,29 +127,28 @@
                 </div>
 
                 <div class="p-12 bento-card bg-white dark:bg-white/10 border-2 border-audilix scale-105 shadow-2xl relative z-20 flex flex-col">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-audilix text-white text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-tighter">Édition la plus plébiscitée</div>
-                    <img src="logo-business.png" alt="Business" class="w-20 h-20 mx-auto mb-8 animate-float">
-                    <h3 class="text-2xl font-bold mb-4 text-audilix dark:text-blue-400">Business</h3>
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-audilix text-white text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-tighter">Le plus populaire</div>
+                    <img src="logo-business.png" alt="Business" class="w-16 h-16 mx-auto mb-8 animate-float">
+                    <h3 class="text-xl font-bold mb-4 text-audilix dark:text-blue-400">Business</h3>
                     <div class="text-6xl font-black mb-10 text-audilix dark:text-blue-400">149€<span class="text-lg opacity-40 font-normal">/mo</span></div>
                     <ul class="text-left space-y-5 mb-12 text-[15px] font-semibold border-t pt-8">
-                        <li class="flex items-center gap-3">🚀 <span>Diagnostics illimités</span></li>
+                        <li class="flex items-center gap-3 text-audilix dark:text-blue-400">🚀 <span>Diagnostics illimités</span></li>
                         <li class="flex items-center gap-3">🚀 <span>Plan d'action détaillé IA</span></li>
                         <li class="flex items-center gap-3">🚀 <span>Cyber + RGPD + RSE</span></li>
                         <li class="flex items-center gap-3">🚀 <span>Export PDF Marque Blanche</span></li>
-                        <li class="flex items-center gap-3">🚀 <span class="text-audilix dark:text-blue-400 underline decoration-2">Support Prioritaire 24/7</span></li>
                     </ul>
                     <a href="audit.html" class="mt-auto block py-5 rounded-full btn-premium font-black text-lg">Choisir Business</a>
                 </div>
 
-                <div class="p-10 bento-card flex flex-col">
-                    <img src="logo-expert.png" alt="Expert" class="w-16 h-16 mx-auto mb-8 animate-float">
-                    <h3 class="text-2xl font-bold mb-4">Expert</h3>
+                <div class="p-10 bento-card flex flex-col border border-gray-100 dark:border-white/5">
+                    <img src="logo-expert.png" alt="Expert" class="w-14 h-14 mx-auto mb-8 opacity-80">
+                    <h3 class="text-xl font-bold mb-4">Expert</h3>
                     <div class="text-5xl font-black mb-10">299€<span class="text-lg opacity-40 font-normal">/mo</span></div>
                     <ul class="text-left space-y-5 mb-12 text-sm font-medium border-t pt-8 opacity-70">
                         <li>💎 Tout le plan Business</li>
                         <li>💎 Accès API développeur</li>
                         <li>💎 Gestion d'équipe (Admin)</li>
-                        <li>💎 Consultant dédié (1h/mois)</li>
+                        <li>💎 Consultant dédié (IA & Humain)</li>
                     </ul>
                     <a href="audit.html" class="mt-auto block py-4 rounded-full border-2 border-audilix/10 dark:border-white/10 font-bold hover:bg-audilix hover:text-white transition">Choisir Expert</a>
                 </div>
@@ -143,12 +158,12 @@
 
     <div id="chatbot">
         <div id="chat-window" class="fixed bottom-28 right-8 w-80 bg-white dark:bg-black rounded-3xl shadow-2xl border dark:border-white/10 overflow-hidden z-[1000]">
-            <div class="bg-audilix p-6 text-white font-bold flex justify-between">
+            <div class="bg-audilix p-6 text-white font-bold flex justify-between items-center">
                 <span>Assistant Audilix IA</span>
-                <button onclick="toggleChat()">✕</button>
+                <button onclick="toggleChat()" class="opacity-50 hover:opacity-100">✕</button>
             </div>
             <div class="p-6 text-sm text-gray-500">
-                <p class="mb-4">Bonjour ! Je suis l'IA d'Audilix. Comment puis-je vous aider dans votre audit aujourd'hui ?</p>
+                <p class="mb-4">Bonjour ! Je suis l'IA d'Audilix. Je peux automatiser votre mise en conformité dès maintenant.</p>
                 <a href="audit.html" class="text-audilix dark:text-blue-400 font-bold">Lancer un audit rapide →</a>
             </div>
         </div>
@@ -163,12 +178,12 @@
 
     <footer class="py-24 border-t border-gray-100 dark:border-white/5 text-center">
         <img src="logo.png" alt="Audilix" class="h-6 mx-auto mb-8 opacity-20 grayscale">
-        <div class="flex justify-center gap-10 text-[11px] font-extrabold uppercase tracking-widest opacity-40 mb-10">
+        <div class="flex justify-center gap-10 text-[11px] font-extrabold uppercase tracking-widest opacity-40 mb-8">
             <a href="#">Confidentialité</a>
             <a href="#">Mentions Légales</a>
             <a href="mailto:hello@audilix.com">Contact</a>
         </div>
-        <p class="text-[10px] text-gray-300">© 2026 AUDILIX. CONÇU POUR L'EXCELLENCE RÉGLEMENTAIRE.</p>
+        <p class="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em]">© 2026 AUDILIX — TOUT DROIT RÉSERVÉ.</p>
     </footer>
 
     <script>
