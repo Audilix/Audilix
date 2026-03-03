@@ -1,195 +1,158 @@
 <!DOCTYPE html>
-<html lang="fr" class="light">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audit Professionnel — Audilix IA</title>
+    <title>Audilix — Analyse de Conformité en Temps Réel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { 
-            darkMode: 'class',
-            theme: { extend: { colors: { audilix: '#0B3B70' } } }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        .step-card { display: none; opacity: 0; }
-        .step-card.active { display: block; animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .option-btn {
-            width: 100%; text-align: left; padding: 1.5rem; border-radius: 1.5rem;
-            background: #f8f8fa; border: 2px solid transparent; transition: all 0.2s ease;
-            font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #f5f5f7; color: #1d1d1f; }
+        .text-audilix { color: #0B3B70; }
+        .bg-audilix { background-color: #0B3B70; }
+        .audit-card { 
+            background: #ffffff; 
+            border-radius: 32px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            border: 1px solid #e5e5e7;
         }
-        .dark .option-btn { background: rgba(255,255,255,0.03); }
-        .option-btn:hover { border-color: #0B3B70; background: white; transform: translateX(5px); }
-        .dark .option-btn:hover { background: rgba(255,255,255,0.08); }
+        .step-inactive { opacity: 0.3; filter: grayscale(1); transition: all 0.4s; }
+        .step-active { opacity: 1; filter: grayscale(0); transform: scale(1.05); }
+        .progress-bar { transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        .checkbox-card {
-            display: flex; align-items: center; gap: 1rem; padding: 1.25rem;
-            border-radius: 1rem; background: #f8f8fa; cursor: pointer; border: 2px solid transparent;
+        input[type="text"], input[type="url"], select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid #d2d2d7;
+            background: #fbfbfd;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s;
         }
-        .dark .checkbox-card { background: rgba(255,255,255,0.03); }
-        input[type="checkbox"]:checked + span { color: #0B3B70; font-weight: 800; }
+        input:focus { border-color: #0B3B70; background: #ffffff; }
     </style>
 </head>
-<body class="bg-[#fbfbfd] dark:bg-[#050505] min-h-screen text-gray-900 dark:text-white transition-colors duration-500">
+<body class="min-h-screen flex flex-col">
 
-    <nav class="h-20 flex items-center justify-between px-8 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b dark:border-white/5 sticky top-0 z-50">
-        <a href="index.html" class="font-black text-xl tracking-tighter text-audilix dark:text-white italic">AUDILIX</a>
-        <div id="step-counter" class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Section 1 / 5</div>
+    <nav class="p-8">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html"><img src="logo.jpg" alt="Audilix" class="h-8 w-auto"></a>
+            <a href="index.html" class="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-audilix transition">Annuler l'analyse</a>
+        </div>
     </nav>
 
-    <div class="w-full h-1 bg-gray-200 dark:bg-white/5">
-        <div id="progress-bar" class="h-full bg-audilix transition-all duration-500" style="width: 20%"></div>
-    </div>
-
-    <main class="max-w-xl mx-auto pt-16 pb-24 px-6">
-        
-        <div class="step-card active" id="step1">
-            <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Secteur d'activité</h1>
-            <p class="text-gray-500 mb-10 font-medium">L'IA ajuste les protocoles selon votre industrie.</p>
-            <div class="space-y-3">
-                <button onclick="nextStep(1, 2, 40, 0)" class="option-btn">Technologies & Digital <span>→</span></button>
-                <button onclick="nextStep(1, 2, 40, -10)" class="option-btn">Banque & Assurance <span>→</span></button>
-                <button onclick="nextStep(1, 2, 40, -5)" class="option-btn">Services & Industrie <span>→</span></button>
-            </div>
-        </div>
-
-        <div class="step-card" id="step2">
-            <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Infrastructure</h1>
-            <p class="text-gray-500 mb-10 font-medium">Où sont stockées vos données critiques ?</p>
-            <div class="space-y-3">
-                <button onclick="nextStep(2, 3, 60, 0)" class="option-btn">Cloud Souverain (EU) <span>→</span></button>
-                <button onclick="nextStep(2, 3, 60, -15)" class="option-btn">Serveurs Externes (Hors EU) <span>→</span></button>
-                <button onclick="nextStep(2, 3, 60, -20)" class="option-btn">Pas de stockage centralisé <span>→</span></button>
-            </div>
-            <button onclick="prevStep(2, 1, 20)" class="mt-8 text-[10px] font-bold uppercase opacity-30 hover:opacity-100 italic">← Retour</button>
-        </div>
-
-        <div class="step-card" id="step3">
-            <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Usage de l'IA</h1>
-            <p class="text-gray-500 mb-10 font-medium">Comment utilisez-vous l'IA générative ?</p>
-            <div class="space-y-3">
-                <button onclick="nextStep(3, 4, 80, 0)" class="option-btn">Modèles Privés / API <span>→</span></button>
-                <button onclick="nextStep(3, 4, 80, -10)" class="option-btn">ChatGPT / Outils Publics <span>→</span></button>
-                <button onclick="nextStep(3, 4, 80, -5)" class="option-btn">Pas encore d'usage IA <span>→</span></button>
-            </div>
-            <button onclick="prevStep(3, 2, 40)" class="mt-8 text-[10px] font-bold uppercase opacity-30 hover:opacity-100 italic">← Retour</button>
-        </div>
-
-        <div class="step-card" id="step4">
-            <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Points de vigilance</h1>
-            <p class="text-gray-500 mb-10 font-medium">Quels éléments manquent à votre structure ?</p>
-            <div class="space-y-3 mb-10">
-                <label class="checkbox-card group">
-                    <input type="checkbox" class="risk-check w-5 h-5 accent-audilix">
-                    <span class="text-sm font-semibold opacity-70 group-hover:opacity-100">Pas de charte IA officielle</span>
-                </label>
-                <label class="checkbox-card group">
-                    <input type="checkbox" class="risk-check w-5 h-5 accent-audilix">
-                    <span class="text-sm font-semibold opacity-70 group-hover:opacity-100">Pas de registre RGPD à jour</span>
-                </label>
-                <label class="checkbox-card group">
-                    <input type="checkbox" class="risk-check w-5 h-5 accent-audilix">
-                    <span class="text-sm font-semibold opacity-70 group-hover:opacity-100">Équipes non formées aux cyber-risques</span>
-                </label>
-            </div>
-            <button onclick="startFinalAnalysis()" class="w-full bg-audilix text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:shadow-2xl transition-all active:scale-95">
-                Calculer mon indice de sécurité
-            </button>
-        </div>
-
-        <div class="step-card text-center py-20" id="loading">
-            <div class="w-16 h-16 border-4 border-audilix border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
-            <h2 class="text-2xl font-black italic mb-2">Analyse Audilix en cours...</h2>
-            <p id="status-text" class="text-[10px] font-black uppercase tracking-widest text-gray-400">Scan des vecteurs de menaces...</p>
-        </div>
-
-        <div class="step-card" id="result">
-            <div class="text-center mb-16">
-                <h2 class="text-[10px] font-black uppercase tracking-[0.4em] text-audilix mb-8">Score de Conformité</h2>
-                <div class="relative inline-block">
-                    <span id="final-score" class="text-9xl font-black italic tracking-tighter text-audilix">0</span>
-                    <span class="absolute -top-2 -right-8 text-2xl font-black opacity-20">%</span>
-                </div>
-                <p id="score-status" class="mt-8 font-black text-xs uppercase tracking-[0.2em]"></p>
-            </div>
+    <main class="flex-grow flex items-center justify-center px-6 pb-20">
+        <div class="max-w-3xl w-full">
             
-            <div class="bg-white dark:bg-white/5 p-10 rounded-[40px] border shadow-2xl dark:border-white/10">
-                <h3 class="font-black text-xl mb-2 text-center">Rapport Complet Prêt</h3>
-                <p class="text-center text-sm text-gray-500 mb-8">Votre plan d'action personnalisé pour atteindre 100% est prêt à l'envoi.</p>
-                <input type="email" placeholder="votre@email.com" class="w-full p-5 rounded-2xl bg-gray-100 dark:bg-black mb-4 outline-none border-none font-bold">
-                <button onclick="window.location.href='dashboard.html'" class="w-full bg-audilix text-white py-5 rounded-2xl font-black text-lg shadow-lg">Recevoir par Mail</button>
-                <p class="text-[9px] text-center mt-6 opacity-30 font-bold uppercase tracking-widest italic">Analyse certifiée par Audilix Intelligence 2026</p>
+            <div class="mb-12">
+                <div class="flex justify-between mb-4 px-2">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-audilix">Analyse en cours</span>
+                    <span id="progress-text" class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Étape 1 sur 3</span>
+                </div>
+                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="bar" class="progress-bar h-full bg-audilix" style="width: 33.33%"></div>
+                </div>
             </div>
-        </div>
 
+            <div class="audit-card p-10 md:p-16">
+                
+                <div id="step1" class="space-y-8">
+                    <div class="text-center mb-10">
+                        <div class="w-16 h-16 bg-blue-50 text-audilix rounded-2xl mb-6 flex items-center justify-center mx-auto">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-[900] italic tracking-tight uppercase">Identité du Projet</h2>
+                        <p class="text-slate-400 font-medium mt-2">Commençons par les informations de base.</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-500 ml-1">Nom de l'entreprise ou de l'IA</label>
+                        <input type="text" placeholder="Ex: Audilix Core V1">
+                        
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-500 ml-1">URL du système (si applicable)</label>
+                        <input type="url" placeholder="https://votre-ia.com">
+                    </div>
+
+                    <button onclick="nextStep(2)" class="w-full py-5 bg-audilix text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-900/10 hover:scale-[1.02] transition">Continuer</button>
+                </div>
+
+                <div id="step2" class="hidden space-y-8">
+                    <div class="text-center mb-10">
+                        <div class="w-16 h-16 bg-blue-50 text-audilix rounded-2xl mb-6 flex items-center justify-center mx-auto">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-[900] italic tracking-tight uppercase">Niveau de Risque</h2>
+                        <p class="text-slate-400 font-medium mt-2">Selon les critères du EU AI Act.</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-500 ml-1">Domaine d'application</label>
+                        <select>
+                            <option>Santé / Médical</option>
+                            <option>Finance / Crédit</option>
+                            <option>Ressources Humaines</option>
+                            <option>Éducation</option>
+                            <option>Autre / Usage Général</option>
+                        </select>
+
+                        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-4">
+                            <input type="checkbox" id="biometrie" class="w-5 h-5 accent-audilix">
+                            <label for="biometrie" class="text-sm font-bold text-slate-600">Le système utilise des données biométriques</label>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="nextStep(1)" class="w-1/3 py-5 bg-slate-100 text-slate-600 rounded-2xl font-black">Retour</button>
+                        <button onclick="nextStep(3)" class="w-2/3 py-5 bg-audilix text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-900/10">Lancer l'Analyse</button>
+                    </div>
+                </div>
+
+                <div id="step3" class="hidden text-center space-y-8 py-10">
+                    <div class="relative w-24 h-24 mx-auto">
+                        <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-audilix rounded-full border-t-transparent animate-spin"></div>
+                    </div>
+                    <h2 class="text-3xl font-[900] italic tracking-tight uppercase">Audit en cours...</h2>
+                    <p class="text-slate-400 font-medium max-w-xs mx-auto">Notre moteur IA scanne vos vecteurs de conformité. Veuillez patienter.</p>
+                    
+                    <script>
+                        function simulateEnd() {
+                            setTimeout(() => {
+                                window.location.href = "dashboard.html";
+                            }, 3000);
+                        }
+                    </script>
+                </div>
+
+            </div>
+
+            <footer class="mt-12 text-center">
+                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 italic">Secure Tunnel Connection — AES-256</p>
+            </footer>
+        </div>
     </main>
 
     <script>
-        let score = 100;
-
-        function nextStep(current, next, progress, penalty) {
-            score += penalty; // On déduit la pénalité
-            document.getElementById('step' + current).classList.remove('active');
-            document.getElementById('step' + next).classList.add('active');
-            document.getElementById('progress-bar').style.width = progress + '%';
-            document.getElementById('step-counter').innerText = 'Section ' + next + ' / 5';
-        }
-
-        function prevStep(current, prev, progress) {
-            document.getElementById('step' + current).classList.remove('active');
-            document.getElementById('step' + prev).classList.add('active');
-            document.getElementById('progress-bar').style.width = progress + '%';
-        }
-
-        function startFinalAnalysis() {
-            // Déduction des checkboxes
-            const checkboxes = document.querySelectorAll('.risk-check:checked');
-            score -= (checkboxes.length * 15);
-            if (score < 15) score = 18; // Score minimum de sécurité
-
-            document.getElementById('step4').classList.remove('active');
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('progress-bar').style.width = '100%';
-
-            // Simulation du travail de l'IA
-            const status = ["Scan des API...", "Vérification RGPD...", "Détection des failles...", "Génération du PDF..."];
-            let i = 0;
-            const timer = setInterval(() => {
-                document.getElementById('status-text').innerText = status[i];
-                i++;
-                if(i >= status.length) clearInterval(timer);
-            }, 600);
-
-            setTimeout(() => {
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('result').classList.add('active');
-                animateScore(score);
-                setStatusMessage(score);
-            }, 2600);
-        }
-
-        function animateScore(target) {
-            let start = 0;
-            const duration = 1500;
-            const update = (timestamp) => {
-                if (!start) start = timestamp;
-                const progress = Math.min((timestamp - start) / duration, 1);
-                document.getElementById('final-score').innerText = Math.floor(progress * target);
-                if (progress < 1) window.requestAnimationFrame(update);
-            };
-            window.requestAnimationFrame(update);
-        }
-
-        function setStatusMessage(s) {
-            const el = document.getElementById('score-status');
-            if(s > 80) { el.innerText = "Excellent : Risque Minime"; el.className = "mt-8 font-black text-xs uppercase tracking-[0.2em] text-emerald-500"; }
-            else if(s > 50) { el.innerText = "Modéré : Des failles détectées"; el.className = "mt-8 font-black text-xs uppercase tracking-[0.2em] text-amber-500"; }
-            else { el.innerText = "Critique : Action Immédiate Requise"; el.className = "mt-8 font-black text-xs uppercase tracking-[0.2em] text-red-500"; }
+        function nextStep(step) {
+            // Masquer toutes les étapes
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            
+            // Afficher l'étape demandée
+            document.getElementById('step' + step).classList.remove('hidden');
+            
+            // Mettre à jour la barre
+            const bar = document.getElementById('bar');
+            const txt = document.getElementById('progress-text');
+            if(step === 1) { bar.style.width = '33.33%'; txt.innerText = 'Étape 1 sur 3'; }
+            if(step === 2) { bar.style.width = '66.66%'; txt.innerText = 'Étape 2 sur 3'; }
+            if(step === 3) { 
+                bar.style.width = '100%'; 
+                txt.innerText = 'Finalisation'; 
+                simulateEnd(); 
+            }
         }
     </script>
 </body>
