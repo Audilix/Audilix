@@ -2,54 +2,166 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Espace Client — Audilix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audilix — Console de Gestion</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .sidebar { width: 280px; border-right: 1px solid #eee; background: white; height: 100vh; position: sticky; top: 0; }
-        .logo-container { padding: 40px 20px; text-align: center; }
-        /* Logo bien visible */
-        .main-logo { width: 200px; height: auto; margin: 0 auto; display: block; }
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #f5f5f7; }
+        .text-audilix { color: #0B3B70; }
+        .bg-audilix { background-color: #0B3B70; }
+        .sidebar { background: #ffffff; border-right: 1px solid #e5e5e7; }
+        .apple-card-dash { 
+            background: #ffffff; 
+            border-radius: 24px; 
+            border: 1px solid #e5e5e7;
+            transition: all 0.3s ease;
+        }
+        .status-pill {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            color: #86868b;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #f5f5f7;
+            color: #0B3B70;
+        }
     </style>
 </head>
-<body class="bg-[#fcfcfc] flex">
+<body class="flex min-h-screen text-slate-900">
 
-    <nav class="sidebar">
-        <div class="logo-container">
-            <img src="logo.jpg" alt="Logo Audilix" class="main-logo">
+    <aside class="w-72 sidebar flex flex-col p-6 sticky top-0 h-screen">
+        <div class="mb-12 px-2">
+            <img src="logo.jpg" alt="Audilix" class="h-8 w-auto">
         </div>
         
-        <div class="px-6 space-y-2">
-            <div class="p-3 bg-blue-50 text-[#0B3B70] rounded-lg font-bold">Tableau de bord</div>
-            <div class="p-3 text-gray-400">Mes Documents</div>
-            <div class="p-3 text-gray-400">Paramètres</div>
-        </div>
-    </nav>
+        <nav class="flex-grow space-y-2">
+            <a href="#" class="nav-item active">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Vue d'ensemble
+            </a>
+            <a href="#" class="nav-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Rapports PDF
+            </a>
+            <a href="#" class="nav-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                Vigilance IA
+            </a>
+            <a href="#" class="nav-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                Trust Center
+            </a>
+        </nav>
 
-    <main class="flex-grow p-12">
-        <header class="mb-12">
-            <h1 class="text-3xl font-black">Bonjour,</h1>
-            <p class="text-gray-500">Bienvenue sur votre espace de conformité sécurisé.</p>
+        <div class="mt-auto p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Plan Actuel</p>
+            <p class="text-sm font-bold text-audilix">Business — 149€/mo</p>
+            <button class="mt-3 w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-50">Améliorer</button>
+        </div>
+    </aside>
+
+    <main class="flex-grow p-12 overflow-y-auto">
+        
+        <header class="flex justify-between items-start mb-12">
+            <div>
+                <h1 class="text-3xl font-[900] tracking-tight italic">Console Audilix.</h1>
+                <p class="text-slate-400 font-medium">Bienvenue, voici l'état de votre conformité IA.</p>
+            </div>
+            <button class="bg-audilix text-white px-6 py-3 rounded-xl font-bold text-sm shadow-xl shadow-blue-900/10 hover:scale-105 transition">Nouveau Scan</button>
         </header>
 
-        <div class="bg-white border rounded-2xl p-8 shadow-sm">
-            <h2 class="text-xl font-bold mb-6">Vos documents prêts</h2>
-            
-            <div class="flex items-center justify-between p-6 border rounded-xl hover:bg-gray-50 transition">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-red-50 text-red-500 flex items-center justify-center rounded-lg font-bold">PDF</div>
-                    <div>
-                        <p class="font-bold">Rapport d'Audit Initial - Audilix</p>
-                        <p class="text-xs text-gray-400">Généré le 2 mars 2026</p>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="apple-card-dash p-8">
+                <div class="flex justify-between items-center mb-4 text-slate-400">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="status-pill">Actif</span>
                 </div>
-                
-                <a href="rapport.pdf" download class="bg-[#0B3B70] text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-800 transition">
-                    Télécharger
-                </a>
+                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Score Conformité</p>
+                <p class="text-4xl font-[900] italic text-audilix">92%</p>
+            </div>
+
+            <div class="apple-card-dash p-8">
+                <div class="flex justify-between items-center mb-4 text-slate-400">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Dernier Scan</p>
+                <p class="text-2xl font-[900] italic">Il y a 2h</p>
+            </div>
+
+            <div class="apple-card-dash p-8">
+                <div class="flex justify-between items-center mb-4 text-slate-400">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </div>
+                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Alertes Légales</p>
+                <p class="text-2xl font-[900] italic text-red-500">0</p>
             </div>
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <div class="apple-card-dash p-10">
+                <h3 class="text-xl font-black italic mb-8 uppercase tracking-tighter">Matériel de Preuve</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-red-500 font-black text-[10px] border border-slate-200 italic">PDF</div>
+                            <div>
+                                <p class="text-sm font-bold">Rapport Audit Exécutif</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Mars 2026</p>
+                            </div>
+                        </div>
+                        <a href="rapport.pdf" download class="text-audilix font-black text-xs uppercase hover:underline">Download</a>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-audilix font-black text-[10px] border border-slate-200 italic">DOC</div>
+                            <div>
+                                <p class="text-sm font-bold">Smart Policy RGPD/IA</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Généré par IA</p>
+                            </div>
+                        </div>
+                        <a href="#" class="text-audilix font-black text-xs uppercase hover:underline">Editer</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="apple-card-dash p-10 bg-audilix text-white">
+                <h3 class="text-xl font-black italic mb-4 uppercase tracking-tighter">Trust Center Public</h3>
+                <p class="text-sm text-blue-200 mb-8 font-medium">Partagez votre conformité avec vos clients via une page dédiée et sécurisée.</p>
+                
+                <div class="p-6 bg-white/5 rounded-2xl border border-white/10 mb-6">
+                    <p class="text-[10px] font-black uppercase text-blue-300 mb-2 tracking-widest">Statut du Badge</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        <p class="font-bold">Sceau Audilix Certifié</p>
+                    </div>
+                </div>
+
+                <button class="w-full py-4 bg-white text-audilix rounded-xl font-black text-sm hover:scale-105 transition">Gérer les accès API</button>
+            </div>
+
+        </div>
+
+        <footer class="mt-20 text-center">
+            <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 italic">Audilix Management Console — v2.0</p>
+        </footer>
+
     </main>
 
 </body>
