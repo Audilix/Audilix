@@ -3,130 +3,172 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — Conformité IA & Sécurité Réglementaire</title>
+    <title>Audilix — Standard Européen de Conformité IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { 
-            theme: { extend: { colors: { audilix: '#0B3B70', accent: '#3b82f6' } } }
+            darkMode: 'class',
+            theme: { extend: { colors: { audilix: '#0B3B70' } } }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
+        .dark { --bg-main: #050505; --text-main: #ffffff; --card-bg: #111111; --border: #222222; }
+        .light { --bg-main: #ffffff; --text-main: #0f172a; --card-bg: #f9fafb; --border: #e2e8f0; }
         
-        /* Animation d'entrée pour le Hero */
+        body { background-color: var(--bg-main); color: var(--text-main); }
+        .glass-nav { backdrop-filter: blur(12px); background: rgba(var(--bg-main), 0.8); border-bottom: 1px solid var(--border); }
+        
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .reveal { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent),
-                        radial-gradient(circle at bottom left, rgba(11, 59, 112, 0.03), transparent);
-        }
-
-        .btn-premium {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -10px rgba(11, 59, 112, 0.3);
-        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
     </style>
 </head>
-<body class="bg-white text-slate-900 hero-gradient">
+<body class="overflow-x-hidden">
 
-    <nav class="glass-nav fixed top-0 w-full z-50 h-20 flex items-center">
+    <nav class="fixed top-0 w-full z-50 glass-nav h-20 flex items-center border-b border-slate-100 dark:border-white/5">
         <div class="max-w-7xl mx-auto w-full px-6 flex justify-between items-center">
-            <img src="logo.jpg" alt="Audilix" class="h-10 w-auto">
-            <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-slate-500">
-                <a href="#solutions" class="hover:text-audilix transition">Solutions</a>
-                <a href="#stats" class="hover:text-audilix transition">Expertise</a>
+            <div class="flex items-center gap-3">
+                <svg width="35" height="35" viewBox="0 0 100 100" fill="none">
+                    <path d="M50 25C30 25 15 40 10 50C15 60 30 75 50 75C70 75 85 60 90 50C85 40 70 25 50 25Z" stroke="#0B3B70" stroke-width="8" class="dark:stroke-blue-400"/>
+                    <circle cx="50" cy="50" r="15" fill="#0B3B70" class="dark:fill-blue-400"/>
+                </svg>
+                <span class="text-xl font-black italic tracking-tighter uppercase text-audilix dark:text-white">Audilix</span>
             </div>
-            <a href="audit.html" class="bg-audilix text-white px-6 py-3 rounded-xl font-bold text-sm btn-premium">
-                Lancer l'Audit
-            </a>
+            
+            <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest opacity-60">
+                <a href="#expertise" class="hover:text-audilix dark:hover:text-blue-400 transition">Expertise</a>
+                <a href="#tarifs" class="hover:text-audilix dark:hover:text-blue-400 transition">Tarifs</a>
+                <a href="dashboard.html" class="hover:text-audilix dark:hover:text-blue-400 transition">Espace Pro</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition">
+                    <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+                    </svg>
+                </button>
+                <a href="audit.html" class="bg-audilix dark:bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition">Lancer l'Audit</a>
+            </div>
         </div>
     </nav>
 
-    <main class="pt-40 pb-20 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="reveal opacity-0" style="animation-delay: 0.1s;">
-                <span class="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 inline-block">
-                    Standard Européen 2026
-                </span>
-                <h1 class="text-5xl md:text-7xl font-[900] tracking-tighter leading-[0.95] mb-8 italic">
-                    Sécurisez votre IA.<br><span class="text-audilix">Garantissez votre futur.</span>
-                </h1>
-                <p class="text-xl text-slate-500 max-w-2xl mx-auto mb-12 font-medium">
-                    Audilix automatise la mise en conformité réglementaire de vos outils d'intelligence artificielle. Rapide, honnête et certifié.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="audit.html" class="bg-audilix text-white px-10 py-5 rounded-2xl font-black text-lg btn-premium">
-                        Commencer l'Audit Gratuit
-                    </a>
-                    <a href="dashboard.html" class="bg-white border border-slate-200 px-10 py-5 rounded-2xl font-black text-lg hover:bg-slate-50 transition">
-                        Espace Client
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <section id="stats" class="max-w-7xl mx-auto mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 px-6 reveal opacity-0" style="animation-delay: 0.4s;">
-            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm text-center">
-                <p class="text-4xl font-[900] text-audilix mb-2 italic">150+</p>
-                <p class="text-xs font-black uppercase tracking-widest text-slate-400">Points de contrôle RGPD & AI Act</p>
-            </div>
-            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm text-center">
-                <p class="text-4xl font-[900] text-audilix mb-2 italic">24/7</p>
-                <p class="text-xs font-black uppercase tracking-widest text-slate-400">Surveillance des failles IA</p>
-            </div>
-            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm text-center">
-                <p class="text-4xl font-[900] text-audilix mb-2 italic">100%</p>
-                <p class="text-xs font-black uppercase tracking-widest text-slate-400">Conformité Européenne Garantie</p>
-            </div>
-        </section>
-
-        <section id="solutions" class="max-w-7xl mx-auto mt-32 px-6">
-            <h2 class="text-3xl font-[900] italic mb-12 text-center">Nos Protocoles d'Expertise.</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-slate-900 p-12 rounded-[40px] text-white">
-                    <div class="w-12 h-12 bg-audilix rounded-xl mb-6 flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 italic">Scanner Réglementaire</h3>
-                    <p class="text-slate-400 leading-relaxed font-medium">Analyse profonde de vos algorithmes pour détecter tout écart avec le futur règlement européen (EU AI Act).</p>
-                </div>
-                <div class="bg-slate-50 p-12 rounded-[40px] border border-slate-100">
-                    <div class="w-12 h-12 bg-white shadow-md rounded-xl mb-6 flex items-center justify-center text-audilix">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 italic text-audilix">Certificat de Confiance</h3>
-                    <p class="text-slate-500 leading-relaxed font-medium">Générez un rapport officiel pour prouver à vos investisseurs et clients que votre IA est sûre et éthique.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="py-20 border-t border-slate-100 bg-white px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <img src="logo.jpg" alt="Audilix" class="h-8 opacity-50">
-            <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 italic">
-                © 2026 Audilix Technologies — Intelligence Compliance
+    <section class="pt-48 pb-32 px-6 text-center">
+        <div class="max-w-4xl mx-auto reveal opacity-0">
+            <span class="bg-audilix/5 text-audilix dark:bg-white/5 dark:text-blue-400 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 inline-block">Standard Réglementaire 2026</span>
+            <h1 class="text-6xl md:text-8xl font-[900] tracking-tighter leading-[0.9] mb-10 italic">
+                L'IA est puissante.<br><span class="text-audilix dark:text-blue-500 underline decoration-4 underline-offset-8">Rendez-la conforme.</span>
+            </h1>
+            <p class="text-xl text-slate-500 dark:text-slate-400 mb-12 font-medium max-w-2xl mx-auto leading-relaxed">
+                Audilix certifie vos algorithmes face aux exigences du EU AI Act. Protégez votre entreprise et gagnez la confiance de vos clients.
             </p>
-            <div class="flex gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
-                <a href="#" class="hover:text-audilix">Légal</a>
-                <a href="#" class="hover:text-audilix">Contact</a>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="audit.html" class="bg-audilix dark:bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl shadow-audilix/20 hover:-translate-y-1 transition">Audit Immédiat</a>
+                <a href="#expertise" class="bg-slate-100 dark:bg-white/5 px-10 py-5 rounded-2xl font-black text-lg hover:bg-slate-200 dark:hover:bg-white/10 transition">Découvrir la Méthode</a>
             </div>
         </div>
+    </section>
+
+    <section id="expertise" class="py-24 border-y border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 reveal opacity-0 delay-1">
+            <div class="text-center">
+                <p class="text-5xl font-[900] text-audilix dark:text-blue-400 mb-2 italic">150+</p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Points de contrôle EU AI ACT</p>
+            </div>
+            <div class="text-center">
+                <p class="text-5xl font-[900] text-audilix dark:text-blue-400 mb-2 italic">100%</p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Audit sans stockage de données</p>
+            </div>
+            <div class="text-center">
+                <p class="text-5xl font-[900] text-audilix dark:text-blue-400 mb-2 italic">24h</p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Délai de certification moyen</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tarifs" class="py-32 px-6 reveal opacity-0 delay-2">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-[900] italic mb-4">Investissez dans la Confiance.</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-medium italic">Des plans adaptés à chaque niveau de risque IA.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-10 rounded-[40px] border border-slate-100 dark:border-white/5 bg-white dark:bg-white/5 hover:border-audilix transition">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6">Standard</h3>
+                    <p class="text-4xl font-[900] mb-8 italic">99€<small class="text-xs font-medium opacity-50"> / audit</small></p>
+                    <ul class="space-y-4 text-sm font-semibold text-slate-500 mb-10">
+                        <li>✓ Rapport de conformité PDF</li>
+                        <li>✓ Scan de base EU AI Act</li>
+                        <li>✓ Support mail 48h</li>
+                    </ul>
+                    <a href="audit.html" class="block text-center py-4 bg-slate-100 dark:bg-white/10 rounded-xl font-bold hover:bg-audilix hover:text-white transition">Choisir</a>
+                </div>
+
+                <div class="p-10 rounded-[40px] border-2 border-audilix bg-white dark:bg-black shadow-2xl shadow-audilix/10 relative scale-105 z-10">
+                    <span class="absolute top-6 right-8 bg-audilix text-white text-[8px] font-black px-3 py-1 rounded-full uppercase italic">Recommandé</span>
+                    <h3 class="text-xs font-black uppercase tracking-widest text-audilix mb-6">Business</h3>
+                    <p class="text-4xl font-[900] mb-8 italic">499€<small class="text-xs font-medium opacity-50"> / mois</small></p>
+                    <ul class="space-y-4 text-sm font-semibold text-slate-600 dark:text-slate-300 mb-10">
+                        <li>✓ Scans illimités</li>
+                        <li>✓ Trust Center Public</li>
+                        <li>✓ Certificat de conformité officiel</li>
+                        <li>✓ Support juridique prioritaire</li>
+                    </ul>
+                    <a href="audit.html" class="block text-center py-4 bg-audilix text-white rounded-xl font-bold shadow-lg shadow-audilix/20 hover:scale-105 transition">Démarrer</a>
+                </div>
+
+                <div class="p-10 rounded-[40px] border border-slate-100 dark:border-white/5 bg-white dark:bg-white/5 hover:border-audilix transition">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6">Enterprise</h3>
+                    <p class="text-4xl font-[900] mb-8 italic">Custom</p>
+                    <ul class="space-y-4 text-sm font-semibold text-slate-500 mb-10">
+                        <li>✓ Intégration API / SI</li>
+                        <li>✓ Audit On-Premise</li>
+                        <li>✓ Formation des équipes</li>
+                    </ul>
+                    <a href="#" class="block text-center py-4 bg-slate-900 text-white rounded-xl font-bold transition">Contacter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 border-t border-slate-100 dark:border-white/5 text-center">
+        <div class="flex justify-center mb-8 grayscale opacity-50">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+                <path d="M50 25C30 25 15 40 10 50C15 60 30 75 50 75C70 75 85 60 90 50C85 40 70 25 50 25Z" stroke="currentColor" stroke-width="8"/>
+                <circle cx="50" cy="50" r="15" fill="currentColor"/>
+            </svg>
+        </div>
+        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400 italic">Audilix Technologies © 2026 — Integrity in Motion</p>
     </footer>
 
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const icon = document.getElementById('theme-icon');
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('audilix-theme', isDark ? 'dark' : 'light');
+            updateIcon(isDark);
+        });
+
+        function updateIcon(isDark) {
+            icon.innerHTML = isDark 
+                ? '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>' 
+                : '<path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>';
+        }
+
+        if (localStorage.getItem('audilix-theme') === 'dark') {
+            html.classList.add('dark');
+            updateIcon(true);
+        }
+    </script>
 </body>
 </html>
