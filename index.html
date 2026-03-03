@@ -3,157 +3,138 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — Silicon Valley Standard</title>
+    <title>Audilix — Excellence en Conformité IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #ffffff; }
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #ffffff; color: #111111; }
         .text-audilix { color: #0B3B70; }
         .bg-audilix { background-color: #0B3B70; }
         .apple-card { 
-            background: #ffffff; 
             border: 1px solid #f2f2f2; 
-            border-radius: 30px; 
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            border-radius: 24px; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #ffffff;
         }
         .apple-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.08); 
+            transform: translateY(-5px); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
             border-color: #0B3B70;
         }
-        .btn-apple { 
-            transition: all 0.3s; 
-            font-weight: 700; 
-            border-radius: 14px;
+        .icon-box {
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #0B3B70;
+            flex-shrink: 0;
         }
-        .btn-apple:hover { opacity: 0.9; transform: scale(1.02); }
-        .glossy-nav { 
-            backdrop-filter: blur(20px); 
-            background: rgba(255,255,255,0.8); 
-            border-bottom: 1px solid rgba(0,0,0,0.05); 
-        }
+        .btn-sf { border-radius: 12px; transition: all 0.2s; font-weight: 700; }
+        .btn-sf:hover { transform: scale(1.02); opacity: 0.9; }
     </style>
 </head>
-<body class="text-slate-900">
+<body>
 
-    <nav class="glossy-nav fixed top-0 w-full z-50 h-16 flex items-center">
-        <div class="max-w-6xl mx-auto w-full px-6 flex justify-between items-center">
-            <img src="logo.jpg" alt="Audilix" class="h-8 w-auto">
-            <div class="hidden md:flex gap-8 text-[12px] font-bold uppercase tracking-widest text-slate-400">
-                <a href="#tarifs" class="hover:text-audilix">Solutions</a>
-                <a href="dashboard.html" class="hover:text-audilix">Dashboard</a>
-            </div>
-            <a href="audit.html" class="bg-audilix text-white px-5 py-2 text-xs btn-apple uppercase tracking-tighter">Lancer l'audit</a>
+    <nav class="flex justify-between items-center px-10 py-8 max-w-7xl mx-auto">
+        <img src="logo.jpg" alt="Audilix" class="h-10 w-auto">
+        <div class="hidden md:flex gap-10 items-center text-sm font-bold uppercase tracking-[0.2em] text-gray-400">
+            <a href="#tarifs" class="hover:text-audilix">Solutions</a>
+            <a href="dashboard.html" class="hover:text-audilix">Dashboard</a>
+            <a href="audit.html" class="bg-audilix text-white px-6 py-3 btn-sf text-xs">Lancer l'audit</a>
         </div>
     </nav>
 
-    <section class="pt-40 pb-20 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-5xl md:text-7xl font-[900] tracking-tight italic mb-8">
-                L'intelligence artificielle.<br><span class="text-audilix">Auditée à la perfection.</span>
-            </h1>
-            <p class="text-xl text-slate-400 font-medium max-w-2xl mx-auto mb-12">
-                Audilix automatise la conformité réglementaire avec l'élégance et la rigueur des standards de la Silicon Valley.
-            </p>
-        </div>
-    </section>
+    <header class="pt-20 pb-32 px-6 text-center">
+        <h1 class="text-6xl md:text-8xl font-[900] tracking-tighter mb-8 italic leading-[0.9]">
+            L'IA de confiance.<br><span class="text-audilix">Sans compromis.</span>
+        </h1>
+        <p class="text-xl text-gray-400 font-medium max-w-2xl mx-auto mb-12">
+            Audilix automatise votre mise en conformité avec la rigueur des leaders de la Silicon Valley.
+        </p>
+    </header>
 
-    <section id="tarifs" class="py-20 px-6 bg-[#fbfbfd]">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                
-                <div class="apple-card p-10 flex flex-col">
-                    <div class="mb-8">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Pack Starter</span>
-                        <h3 class="text-2xl font-black italic">69€<small class="text-sm font-normal opacity-50">/mo</small></h3>
-                    </div>
-                    <div class="space-y-6 mb-12 flex-grow">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Audit Dynamique</strong> : Analyse complète de vos vecteurs de risques IA.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Rapports PDF</strong> : Documents exécutifs prêts pour vos réunions.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Score de Maturité</strong> : Positionnement face aux normes 2026.</p>
-                        </div>
-                    </div>
-                    <a href="audit.html" class="w-full py-4 bg-slate-100 text-center btn-apple text-sm text-slate-600">Démarrer</a>
+    <section id="tarifs" class="py-20 bg-[#fafafa] px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <div class="apple-card p-10 flex flex-col">
+                <div class="mb-10">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Visibilité</p>
+                    <h3 class="text-3xl font-black italic">Starter</h3>
+                    <div class="text-4xl font-[900] mt-4">69€<span class="text-base font-normal text-gray-300 italic">/mo</span></div>
                 </div>
 
-                <div class="apple-card p-10 flex flex-col border-2 border-audilix shadow-xl relative">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-audilix text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">Plus Populaire</div>
-                    <div class="mb-8 text-audilix">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Pack Business</span>
-                        <h3 class="text-3xl font-black italic">149€<small class="text-sm font-normal opacity-50">/mo</small></h3>
+                <div class="space-y-8 mb-12 flex-grow">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Audit Dynamique</strong> : Analyse complète des risques.</p>
                     </div>
-                    <div class="space-y-6 mb-12 flex-grow">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                            </div>
-                            <p class="text-sm font-bold text-slate-800"><strong>Smart Policy Builder</strong> : L'IA génère vos politiques RGPD et Cyber.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A2 2 0 013 15.483V8.517a2 2 0 011.553-1.943L9 5.222m0 14.778l5.447-2.724A2 2 0 0015 15.483V8.517a2 2 0 01-1.553-1.943L9 5.222m0 14.778V5.222m0 14.778l5.447 2.724A2 2 0 0021 15.483V8.517a2 2 0 01-1.553-1.943L15 5.222m-6 0V1l6 3.222M9 5.222l6-3.222"></path></svg>
-                            </div>
-                            <p class="text-sm font-bold text-slate-800"><strong>Feuille de Route</strong> : Plan technique de remédiation priorisé.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                            </div>
-                            <p class="text-sm font-bold text-slate-800"><strong>Vigilance Légale</strong> : Alertes automatiques sur les mises à jour des lois.</p>
-                        </div>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Rapports PDF</strong> : Documents exécutifs 2026.</p>
                     </div>
-                    <a href="audit.html" class="w-full py-4 bg-audilix text-white text-center btn-apple text-sm shadow-lg shadow-blue-900/20">Accéder à la plateforme</a>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Score de Maturité</strong> : Votre position légale.</p>
+                    </div>
                 </div>
-
-                <div class="apple-card p-10 flex flex-col">
-                    <div class="mb-8">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Pack Expert</span>
-                        <h3 class="text-2xl font-black italic">299€<small class="text-sm font-normal opacity-50">/mo</small></h3>
-                    </div>
-                    <div class="space-y-6 mb-12 flex-grow">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Trust Center Public</strong> : Votre page de certification pour vos clients.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Connecteurs</strong> : Exportez vos alertes vers Slack et Jira.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 text-audilix">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            </div>
-                            <p class="text-sm font-semibold"><strong>Badge de Confiance</strong> : Sceau Audilix officiel pour votre site.</p>
-                        </div>
-                    </div>
-                    <a href="audit.html" class="w-full py-4 bg-slate-900 text-white text-center btn-apple text-sm">Contacter l'expert</a>
-                </div>
-
+                <a href="audit.html" class="w-full py-4 bg-gray-50 text-gray-400 text-center btn-sf hover:bg-gray-100">Essai gratuit</a>
             </div>
+
+            <div class="apple-card p-10 flex flex-col border-2 border-audilix relative shadow-2xl">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-audilix text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase italic">Standard Industriel</div>
+                <div class="mb-10">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-audilix mb-2">Actif</p>
+                    <h3 class="text-3xl font-black italic text-audilix">Business</h3>
+                    <div class="text-4xl font-[900] mt-4 text-audilix">149€<span class="text-base font-normal opacity-30 italic">/mo</span></div>
+                </div>
+
+                <div class="space-y-8 mb-12 flex-grow">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box bg-blue-50 text-audilix"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></div>
+                        <p class="text-sm font-bold text-gray-800"><strong>Smart Policy Builder</strong> : IA génératrice de politiques.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box bg-blue-50 text-audilix"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A2 2 0 013 15.483V8.517a2 2 0 011.553-1.943L9 5.222m0 14.778l5.447-2.724A2 2 0 0015 15.483V8.517a2 2 0 01-1.553-1.943L9 5.222m0 14.778V5.222m0 14.778l5.447 2.724A2 2 0 0021 15.483V8.517a2 2 0 01-1.553-1.943L15 5.222m-6 0V1l6 3.222M9 5.222l6-3.222"></path></svg></div>
+                        <p class="text-sm font-bold text-gray-800"><strong>Feuille de Route</strong> : Plan technique priorisé.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box bg-blue-50 text-audilix"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg></div>
+                        <p class="text-sm font-bold text-gray-800"><strong>Vigilance Légale</strong> : Alertes automatiques 24/7.</p>
+                    </div>
+                </div>
+                <a href="audit.html" class="w-full py-4 bg-audilix text-white text-center btn-sf shadow-lg shadow-blue-900/20">Démarrer maintenant</a>
+            </div>
+
+            <div class="apple-card p-10 flex flex-col">
+                <div class="mb-10">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Excellence</p>
+                    <h3 class="text-3xl font-black italic">Expert</h3>
+                    <div class="text-4xl font-[900] mt-4">299€<span class="text-base font-normal text-gray-300 italic">/mo</span></div>
+                </div>
+
+                <div class="space-y-8 mb-12 flex-grow">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Trust Center</strong> : Votre page de certification publique.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Connecteurs</strong> : Intégration Slack, Teams & Jira.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
+                        <p class="text-sm font-semibold text-gray-600"><strong>Badge Officiel</strong> : Sceau de confiance à intégrer.</p>
+                    </div>
+                </div>
+                <a href="#" class="w-full py-4 bg-gray-900 text-white text-center btn-sf">Contacter l'expert</a>
+            </div>
+
         </div>
     </section>
 
-    <footer class="py-20 text-center bg-white">
-        <img src="logo.jpg" alt="Audilix" class="h-6 mx-auto mb-6 opacity-40">
-        <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 italic">Audilix Technologies — Built for the Future</p>
+    <footer class="py-20 text-center border-t border-gray-50">
+        <img src="logo.jpg" alt="Audilix" class="h-8 mx-auto mb-8 opacity-30">
+        <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 italic">Audilix Technologies © 2026 — Built for Trust</p>
     </footer>
 
 </body>
