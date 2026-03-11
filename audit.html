@@ -3,166 +3,154 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — Diagnostic Réglementaire IA</title>
+    <title>Audilix — Diagnostic Intelligent</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #ffffff; color: #111111; }
         .text-audilix { color: #0B3B70; }
         .bg-audilix { background-color: #0B3B70; }
-        .audit-card { 
-            border: 1px solid #f2f2f2; 
-            border-radius: 32px; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.03);
-            background: #ffffff;
+        .audit-container { max-width: 650px; margin: 0 auto; }
+        .step-card { 
+            display: none; 
+            animation: fadeIn 0.5s ease-out;
         }
-        .btn-audilix { 
-            background-color: #0B3B70; 
-            color: white; 
-            border-radius: 12px; 
-            transition: all 0.3s; 
-            font-weight: 700;
-        }
-        .btn-audilix:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(11, 59, 112, 0.2); }
+        .step-card.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .progress-step { width: 8px; height: 8px; border-radius: 50%; background: #e5e7eb; transition: all 0.3s; }
-        .progress-step.active { background: #0B3B70; width: 24px; border-radius: 10px; }
-        
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 16px;
-            border-radius: 16px;
+            padding: 18px;
+            border-radius: 18px;
             border: 1px solid #e5e7eb;
-            background: #fafafa;
+            background: #f9fafb;
             font-weight: 500;
-            outline: none;
             transition: all 0.2s;
+            margin-top: 8px;
         }
-        input:focus { border-color: #0B3B70; background: #ffffff; box-shadow: 0 0 0 4px rgba(11, 59, 112, 0.05); }
+        input:focus, select:focus, textarea:focus { 
+            border-color: #0B3B70; 
+            background: #ffffff; 
+            box-shadow: 0 0 0 4px rgba(11, 59, 112, 0.05); 
+            outline: none;
+        }
+        .btn-next { background: #0B3B70; color: white; padding: 18px; border-radius: 18px; font-weight: 800; width: 100%; transition: all 0.3s; }
+        .btn-next:hover { transform: scale(1.02); filter: brightness(1.2); }
     </style>
 </head>
-<body class="bg-[#fafafa]">
+<body class="bg-[#fbfbfd]">
 
-    <nav class="flex justify-between items-center px-10 py-8 max-w-7xl mx-auto bg-transparent">
-        <a href="index.html"><img src="logo.png" alt="Audilix" class="h-10 w-auto"></a>
-        <div class="flex items-center gap-6">
-            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Diagnostic Sécurisé</span>
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        </div>
+    <nav class="p-8 flex justify-between items-center max-w-7xl mx-auto">
+        <a href="index.html"><img src="logo.jpg" alt="Audilix" class="h-8 w-auto"></a>
+        <div class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300">Audit System v2.6</div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 pt-12 pb-32">
-        <div class="audit-card p-10 md:p-16">
+    <main class="pt-10 pb-20 px-6">
+        <div class="audit-container">
             
-            <div class="flex gap-2 mb-12 justify-center">
-                <div id="dot-1" class="progress-step active"></div>
-                <div id="dot-2" class="progress-step"></div>
-                <div id="dot-3" class="progress-step"></div>
+            <div class="flex gap-2 mb-12">
+                <div id="p1" class="h-1 flex-grow bg-audilix rounded-full transition-all duration-500"></div>
+                <div id="p2" class="h-1 flex-grow bg-gray-200 rounded-full transition-all duration-500"></div>
+                <div id="p3" class="h-1 flex-grow bg-gray-200 rounded-full transition-all duration-500"></div>
             </div>
 
-            <div id="step-1" class="space-y-10">
-                <div class="text-center">
-                    <h1 class="text-4xl font-[900] tracking-tight italic mb-4">Initialisation du Diagnostic.</h1>
-                    <p class="text-gray-400 font-medium">Commençons par identifier l'entité à auditer.</p>
-                </div>
+            <form id="auditForm">
                 
-                <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">Nom de l'entreprise ou du projet IA</label>
-                        <input type="text" placeholder="Ex: Audilix Core System">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">URL de la documentation ou du service</label>
-                        <input type="url" placeholder="https://votre-ia.com">
-                    </div>
-                </div>
-
-                <button onclick="changeStep(2)" class="w-full py-5 btn-audilix text-lg uppercase tracking-tighter">Continuer</button>
-            </div>
-
-            <div id="step-2" class="hidden space-y-10">
-                <div class="text-center">
-                    <h2 class="text-4xl font-[900] tracking-tight italic mb-4">Analyse Contextuelle.</h2>
-                    <p class="text-gray-400 font-medium">Définissez la portée de votre intelligence artificielle.</p>
-                </div>
-
-                <div class="grid grid-cols-1 gap-8">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">Domaine d'application principal</label>
-                        <select>
-                            <option>Traitement de données sensibles (Santé, Finance)</option>
-                            <option>Ressources Humaines & Recrutement</option>
-                            <option>Relation Client & Chatbots</option>
-                            <option>Optimisation Processus Industriels</option>
-                            <option>Autre / Usage Général</option>
-                        </select>
-                    </div>
-
-                    <div class="p-6 border border-dashed border-gray-200 rounded-2xl bg-gray-50 flex items-center justify-between">
+                <div id="step1" class="step-card active">
+                    <h2 class="text-4xl font-[900] italic tracking-tighter mb-2">Identité.</h2>
+                    <p class="text-gray-400 font-medium mb-10">Commençons par les bases de votre organisation.</p>
+                    
+                    <div class="space-y-6">
                         <div>
-                            <p class="text-sm font-bold">Importation de documents (PDF/JSON)</p>
-                            <p class="text-[10px] text-gray-400 font-medium uppercase mt-1">Optionnel — Pour un scan approfondi</p>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Nom de l'entreprise</label>
+                            <input type="text" name="company" placeholder="Ex: Acme Corp" required>
                         </div>
-                        <button class="bg-white border border-gray-200 px-4 py-2 rounded-lg text-xs font-black uppercase hover:bg-gray-50 transition">Parcourir</button>
+                        <div>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Site Web</label>
+                            <input type="url" name="website" placeholder="https://votre-site.com">
+                        </div>
+                        <button type="button" onclick="nextStep(2)" class="btn-next mt-8">Continuer</button>
                     </div>
                 </div>
 
-                <div class="flex gap-4">
-                    <button onclick="changeStep(1)" class="w-1/3 py-5 bg-gray-100 text-gray-400 rounded-2xl font-black uppercase tracking-tighter text-sm">Retour</button>
-                    <button onclick="changeStep(3)" class="w-2/3 py-5 btn-audilix text-lg uppercase tracking-tighter">Lancer l'audit final</button>
-                </div>
-            </div>
-
-            <div id="step-3" class="hidden text-center py-10">
-                <div class="relative w-32 h-32 mx-auto mb-10">
-                    <div class="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
-                    <div class="absolute inset-0 border-4 border-audilix rounded-full border-t-transparent animate-spin"></div>
-                    <div class="absolute inset-0 flex items-center justify-center font-black italic text-audilix">IA</div>
-                </div>
-                
-                <h2 class="text-4xl font-[900] tracking-tight italic mb-4">Analyse en cours...</h2>
-                <p class="text-gray-400 font-medium max-w-sm mx-auto mb-10">Notre moteur IA croise vos données avec les normes EU AI Act et RGPD 2026.</p>
-                
-                <div class="space-y-3 max-w-xs mx-auto">
-                    <div class="flex justify-between text-[10px] font-black uppercase text-gray-300">
-                        <span>Scan Intégrité</span>
-                        <span class="text-audilix">OK</span>
+                <div id="step2" class="step-card">
+                    <h2 class="text-4xl font-[900] italic tracking-tighter mb-2">Usage.</h2>
+                    <p class="text-gray-400 font-medium mb-10">Décrivez comment l'IA est intégrée à vos processus.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Secteur d'activité</label>
+                            <select name="sector">
+                                <option>Santé & Life Sciences</option>
+                                <option>Finance & Fintech</option>
+                                <option>Recrutement & RH</option>
+                                <option>E-commerce & Marketing</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description courte de votre IA</label>
+                            <textarea name="desc" rows="3" placeholder="Quels types de décisions votre IA prend-elle ?"></textarea>
+                        </div>
+                        <div class="flex gap-4">
+                            <button type="button" onclick="nextStep(1)" class="w-1/3 p-4 text-xs font-bold uppercase text-gray-400">Retour</button>
+                            <button type="button" onclick="nextStep(3)" class="btn-next">Suivant</button>
+                        </div>
                     </div>
-                    <div class="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-audilix w-full"></div>
+                </div>
+
+                <div id="step3" class="step-card">
+                    <h2 class="text-4xl font-[900] italic tracking-tighter mb-2">Objectifs.</h2>
+                    <p class="text-gray-400 font-medium mb-10">Dernière étape pour calibrer votre rapport.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Niveau de risque estimé (IA Act)</label>
+                            <select name="risk">
+                                <option>Risque Faible / Minimal</option>
+                                <option>Risque Élevé (High Risk)</option>
+                                <option>Système Inacceptable (Prohibé)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Priorité de conformité</label>
+                            <div class="grid grid-cols-2 gap-3 mt-2">
+                                <label class="p-4 border border-gray-100 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-white transition">
+                                    <input type="checkbox" class="w-4 h-4 accent-audilix"> <span class="text-xs font-bold">RGPD</span>
+                                </label>
+                                <label class="p-4 border border-gray-100 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-white transition">
+                                    <input type="checkbox" class="w-4 h-4 accent-audilix"> <span class="text-xs font-bold">AI Act</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="button" onclick="finishAudit()" class="btn-next shadow-2xl shadow-blue-900/30">Générer mon audit gratuit</button>
                     </div>
                 </div>
-            </div>
 
+            </form>
         </div>
-
-        <footer class="mt-16 text-center">
-            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 italic">Audilix Encryption Standard — AES-256</p>
-        </footer>
     </main>
 
     <script>
-        function changeStep(step) {
-            // Masquer tout
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('step-3').classList.add('hidden');
+        function nextStep(step) {
+            // Cacher toutes les étapes
+            document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+            // Afficher l'étape actuelle
+            document.getElementById('step' + step).classList.add('active');
             
-            // Afficher la bonne étape
-            document.getElementById('step-' + step).classList.remove('hidden');
-            
-            // Update progression visuelle
-            document.querySelectorAll('.progress-step').forEach((el, index) => {
-                if(index + 1 <= step) el.classList.add('active');
-                else el.classList.remove('active');
-            });
+            // Update progress bar
+            document.getElementById('p2').style.backgroundColor = (step >= 2) ? '#0B3B70' : '#e5e7eb';
+            document.getElementById('p3').style.backgroundColor = (step >= 3) ? '#0B3B70' : '#e5e7eb';
+        }
 
-            // Si c'est l'étape finale, redirection vers dashboard
-            if(step === 3) {
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 4000);
-            }
+        function finishAudit() {
+            // Simulation d'envoi et redirection
+            const btn = event.target;
+            btn.innerHTML = "Analyse en cours...";
+            btn.style.opacity = "0.7";
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2500);
         }
     </script>
 </body>
