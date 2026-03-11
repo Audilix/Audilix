@@ -3,83 +3,146 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — Initialisation du Diagnostic</title>
+    <title>Audilix — Diagnostic Complet IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #ffffff; color: #111111; }
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #fbfbfd; color: #111111; }
         .text-audilix { color: #0B3B70; }
         .bg-audilix { background-color: #0B3B70; }
-        .audit-card { 
-            border: 1px solid #f2f2f2; 
-            border-radius: 32px; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.03);
-            background: #ffffff;
-        }
-        .btn-audilix { 
-            background-color: #0B3B70; 
-            color: white; 
-            border-radius: 12px; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-weight: 700;
-        }
-        .btn-audilix:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(11, 59, 112, 0.15); filter: brightness(1.2); }
         
-        input {
+        .audit-card { 
+            background: #ffffff;
+            border-radius: 40px; 
+            border: 1px solid #f2f2f2;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.04);
+        }
+
+        input, select, textarea {
             width: 100%;
             padding: 18px;
-            border-radius: 18px;
+            border-radius: 16px;
             border: 1px solid #e5e7eb;
-            background: #fafafa;
+            background: #fdfdfd;
+            font-size: 15px;
             font-weight: 500;
-            outline: none;
             transition: all 0.2s;
         }
-        input:focus { border-color: #0B3B70; background: #ffffff; box-shadow: 0 0 0 4px rgba(11, 59, 112, 0.05); }
+        input:focus, select:focus, textarea:focus {
+            border-color: #0B3B70;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(11, 59, 112, 0.08);
+            outline: none;
+        }
+
+        .checkbox-card {
+            border: 1px solid #e5e7eb;
+            padding: 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .checkbox-card:hover { border-color: #0B3B70; background: #f8faff; }
     </style>
 </head>
-<body class="bg-[#fbfbfd]">
+<body class="min-h-screen flex flex-col">
 
-    <nav class="flex justify-between items-center px-10 py-8 max-w-7xl mx-auto bg-transparent">
-        <a href="index.html"><img src="logo.png" alt="Audilix" class="h-10 w-auto"></a>
-        <div class="flex items-center gap-6">
-            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Diagnostic Sécurisé</span>
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+    <nav class="flex justify-between items-center px-10 py-8 max-w-7xl mx-auto w-full">
+        <a href="index.html">
+            <img src="logo.jpg" alt="Audilix" class="h-10 w-auto object-contain">
+        </a>
+        <div class="flex items-center gap-3">
+            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Analyse de Conformité 2026</span>
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
         </div>
     </nav>
 
-    <main class="flex-grow flex items-center justify-center px-6 pb-20 pt-12">
-        <div class="audit-card p-10 md:p-16 max-w-3xl w-full">
-            
-            <div class="flex gap-2 mb-12 justify-center">
-                <div id="dot-1" class="h-1 flex-grow bg-audilix rounded-full transition-all duration-500"></div>
-                <div id="dot-2" class="h-1 flex-grow bg-gray-200 rounded-full transition-all duration-500"></div>
-                <div id="dot-3" class="h-1 flex-grow bg-gray-200 rounded-full transition-all duration-500"></div>
-            </div>
+    <main class="flex-grow flex flex-col items-center px-6 py-12">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-[900] italic tracking-tighter uppercase leading-none mb-6">
+                Diagnostic<br><span class="text-audilix">Intégral.</span>
+            </h1>
+            <p class="text-gray-400 font-medium text-lg max-w-xl mx-auto">
+                Complétez ce formulaire pour générer votre rapport de conformité IA Act et RGPD.
+            </p>
+        </div>
 
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-[900] italic tracking-tight uppercase">Initialisation du Diagnostic.</h2>
-                <p class="text-slate-400 font-medium mt-2">Commençons par identifier l'entité à auditer.</p>
-            </div>
-
-            <form id="auditForm" action="dashboard.html" class="space-y-8">
-                <div>
-                    <label class="block text-xs font-black uppercase tracking-widest text-gray-400 ml-1 mb-3">NOM DE L'ENTREPRISE OU DU PROJET IA</label>
-                    <input type="text" placeholder="Ex: Audilix Core System" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-black uppercase tracking-widest text-gray-400 ml-1 mb-3">URL DE LA DOCUMENTATION OU DU SERVICE</label>
-                    <input type="url" placeholder="https://votre-ia.com">
-                </div>
+        <div class="audit-card w-full max-w-3xl p-8 md:p-16 mb-20">
+            <form action="dashboard.html" class="space-y-12">
                 
-                <button type="submit" class="w-full py-5 btn-audilix text-lg uppercase tracking-tighter">Continuer</button>
-            </form>
+                <div class="space-y-6">
+                    <h3 class="text-xs font-black uppercase tracking-[0.4em] text-audilix pb-2 border-b border-gray-100">01. Identité du Projet</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Nom de l'entreprise</label>
+                            <input type="text" placeholder="Ex: Audilix SaaS" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Site Web</label>
+                            <input type="url" placeholder="https://votre-ia.com">
+                        </div>
+                    </div>
+                </div>
 
+                <div class="space-y-6">
+                    <h3 class="text-xs font-black uppercase tracking-[0.4em] text-audilix pb-2 border-b border-gray-100">02. Contexte Technologique</h3>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Secteur d'activité</label>
+                        <select>
+                            <option>Santé / Médical</option>
+                            <option>Finance / Banque</option>
+                            <option>RH / Recrutement</option>
+                            <option>E-commerce / Marketing</option>
+                            <option>Autre</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description de l'IA</label>
+                        <textarea rows="4" placeholder="Décrivez brièvement les décisions ou analyses effectuées par votre système..."></textarea>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-xs font-black uppercase tracking-[0.4em] text-audilix pb-2 border-b border-gray-100">03. Risques & Objectifs</h3>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Auto-évaluation du Risque (AI Act)</label>
+                        <select>
+                            <option>Risque Faible (Chatbot, filtres...)</option>
+                            <option>Risque Élevé (Évaluation de personnes, infrastructures...)</option>
+                            <option>Incertain / En cours d'analyse</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Priorités de conformité</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="checkbox-card">
+                                <input type="checkbox" class="w-5 h-5 accent-audilix">
+                                <span class="text-sm font-bold">Réglementation AI Act</span>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" class="w-5 h-5 accent-audilix">
+                                <span class="text-sm font-bold">Conformité RGPD</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button type="submit" class="w-full py-6 bg-audilix text-white rounded-2xl font-black text-lg uppercase tracking-[0.2em] hover:scale-[1.01] transition-all shadow-2xl shadow-blue-900/20">
+                        Générer mon Rapport Expert
+                    </button>
+                    <p class="text-center text-[10px] text-gray-300 mt-6 font-bold uppercase tracking-widest">Temps d'analyse estimé : 12 secondes</p>
+                </div>
+            </form>
         </div>
     </main>
 
-    <footer class="py-12 border-t border-gray-50 text-center">
-        <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 italic">Audilix Encryption Standard — AES-256</p>
+    <footer class="py-12 text-center opacity-30">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em]">Audilix Secure Protocol — AES-256</p>
     </footer>
 
 </body>
