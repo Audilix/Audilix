@@ -9,12 +9,12 @@ app.use(express.json({ limit: "50mb" }));
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 const RESEND_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = "Audilix <onboarding@resend.dev>";
+const AUDILIX_EMAIL = "contact.audilix@gmail.com";
 
 // ─── Envoi email via Resend ────────────────────────────────────
-async function await sendReportEmail("contact.audilix@gmail.com", companyName, report); {
+async function sendReportEmail(toEmail, companyName, report) {
   const { score, risques, recommandations, résumé } = report;
   const scoreColor = score >= 70 ? "#22c55e" : score >= 40 ? "#f59e0b" : "#ef4444";
-
   const risquesHtml = risques.map((r) => `<li style="margin-bottom:8px;">⚠️ ${r}</li>`).join("");
   const recoHtml = recommandations.map((r) => `<li style="margin-bottom:8px;">✅ ${r}</li>`).join("");
 
@@ -60,7 +60,7 @@ async function await sendReportEmail("contact.audilix@gmail.com", companyName, r
     body: JSON.stringify({
       from: FROM_EMAIL,
       to: [toEmail],
-      subject: `🔍 Votre rapport Audilix — Score ${score}/100`,
+      subject: `🔍 Rapport Audilix — ${companyName} — Score ${score}/100`,
       html,
     }),
   });
@@ -133,29 +133,10 @@ app.post("/webhook/tally", async (req, res) => {
   try {
     const fields = req.body?.data?.fields || [];
 
-    // Log pour debug
     console.log("📋 Champs reçus:", JSON.stringify(fields.map(f => ({
-      label: f.label,
-      type: f.type,
-      value: f.value
+      label: f.label, type: f.type, value: f.value
     })), null, 2));
 
-    // Extraction email — cherche d'abord par type INPUT_EMAIL, puis par label
-    const clientEmail =
-      fields.find(f => f.type === "INPUT_EMAIL")?.value ||
-      fields.find(f => f.label?.toLowerCase().includes("mail"))?.value ||
-      fields.find(f => f.label?.toLowerCase().includes("email"))?.value ||
-      fields.find(f => f.label?.toLowerCase().includes("e-mail"))?.value ||
-      null;
-
-    console.log("📧 Email trouvé:", clientEmail);
-
-    if (!clientEmail || typeof clientEmail !== "string" || !clientEmail.includes("@")) {
-      console.error("❌ Email invalide:", clientEmail);
-      return res.status(400).json({ error: "Email client invalide ou introuvable" });
-    }
-
-    // Extraction autres champs
     const getValue = (label) => {
       const field = fields.find((f) =>
         f.label?.toLowerCase().includes(label.toLowerCase())
@@ -176,17 +157,24 @@ app.post("/webhook/tally", async (req, res) => {
     const domaines = getValue("domaines") || "Non précisé";
     const dpo = getValue("responsable") || getValue("dpo") || "Non précisé";
 
-    const auditData = { entreprise: companyName, secteur, taille, domaines_concernés: domaines, a_dpo_ou_responsable_conformité: dpo };
+    const auditData = {
+      entreprise: companyName,
+      secteur,
+      taille,
+      domaines_concernés: domaines,
+      a_dpo_ou_responsable_conformité: dpo,
+    };
 
     const messages = buildPrompt(auditData);
     const raw = await callOpenAI(messages);
     const clean = raw.replace(/```json|```/g, "").trim();
     const report = JSON.parse(clean);
 
-    await sendReportEmail(clientEmail, companyName, report);
-    await sendReportEmail("contact.audilix@gmail.com", `[COPIE] ${companyName}`, report);
+    // Pour l'instant tout vers contact.audilix@gmail.com
+    // (en attente de vérification du domaine audilix.com sur Resend)
+    await sendReportEmail(AUDILIX_EMAIL, companyName, report);
 
-    console.log(`✅ Rapport envoyé à ${clientEmail} — Score: ${report.score}`);
+    console.log(`✅ Rapport envoyé à ${AUDILIX_EMAIL} — Score: ${report.score}`);
     res.status(200).json({ success: true, score: report.score });
   } catch (e) {
     console.error("❌ Erreur webhook:", e);
@@ -196,7 +184,7 @@ app.post("/webhook/tally", async (req, res) => {
 
 // ─── Health check ──────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({ status: "Audilix backend en ligne ✅", version: "2.2" });
+  res.json({ status: "Audilix backend en ligne ✅", version: "2.3" });
 });
 
 const PORT = process.env.PORT || 3000;
