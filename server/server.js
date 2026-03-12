@@ -11,7 +11,7 @@ const RESEND_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = "Audilix <onboarding@resend.dev>";
 
 // ─── Envoi email via Resend ────────────────────────────────────
-async function sendReportEmail(toEmail, companyName, report) {
+async function await sendReportEmail("contact.audilix@gmail.com", companyName, report); {
   const { score, risques, recommandations, résumé } = report;
   const scoreColor = score >= 70 ? "#22c55e" : score >= 40 ? "#f59e0b" : "#ef4444";
 
