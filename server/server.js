@@ -9,7 +9,7 @@ app.use(express.json({ limit: "50mb" }));
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 const RESEND_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = "Audilix <onboarding@resend.dev>";
-const AUDILIX_EMAIL = "contact.audilix@gmail.com";
+const AUDILIX_EMAIL = "mohamed7azouzi@gmail.com";
 
 // ─── Envoi email via Resend ────────────────────────────────────
 async function sendReportEmail(toEmail, companyName, report) {
@@ -43,7 +43,6 @@ async function sendReportEmail(toEmail, companyName, report) {
       <ul style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.6);padding-left:16px;margin:0;">${recoHtml}</ul>
     </div>
     <div style="padding:32px 40px;text-align:center;background:rgba(255,255,255,0.03);border-top:1px solid rgba(255,255,255,0.06);">
-      <p style="font-size:13px;color:rgba(255,255,255,0.35);margin:0 0 20px;">Passez à l'étape suivante avec un accompagnement complet</p>
       <a href="https://audilix.onrender.com/#tarifs" style="background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:4px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">Voir nos offres →</a>
     </div>
     <div style="padding:24px 40px;text-align:center;">
@@ -53,76 +52,95 @@ async function sendReportEmail(toEmail, companyName, report) {
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: {
-      "Authorization": `Bearer ${RESEND_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: FROM_EMAIL,
-      to: [toEmail],
-      subject: `🔍 Rapport Audilix — ${companyName} — Score ${score}/100`,
-      html,
-    }),
+    headers: { "Authorization": `Bearer ${RESEND_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from: FROM_EMAIL, to: [toEmail], subject: `🔍 Rapport Audilix — ${companyName} — Score ${score}/100`, html }),
   });
-
   const data = await res.json();
   if (!res.ok) throw new Error(`Resend error: ${JSON.stringify(data)}`);
   return data;
 }
 
 // ─── Appel OpenAI ──────────────────────────────────────────────
-async function callOpenAI(messages) {
-  if (!OPENAI_KEY || OPENAI_KEY === "mock") {
-    return JSON.stringify({
-      score: 62,
-      risques: [
-        "Absence de politique RGPD formalisée",
-        "Pas de DPO désigné",
-        "Sauvegardes non chiffrées",
-      ],
-      recommandations: [
-        "Nommer un DPO ou référent conformité",
-        "Mettre en place un registre des traitements",
-        "Chiffrer les sauvegardes et tester les restaurations",
-      ],
-      résumé: "Votre entreprise présente un niveau de conformité intermédiaire. Plusieurs points critiques nécessitent une attention immédiate, notamment sur la protection des données personnelles et la sécurité informatique.",
-    });
-  }
-
+async function callOpenAI(messages, maxTokens = 900) {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${OPENAI_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages,
-      temperature: 0.15,
-      max_tokens: 900,
-    }),
+    headers: { Authorization: `Bearer ${OPENAI_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "gpt-4o-mini", messages, temperature: 0.15, max_tokens: maxTokens }),
   });
   const data = await res.json();
+  if (!data.choices) throw new Error(`OpenAI error: ${JSON.stringify(data)}`);
   return data.choices[0].message.content;
 }
 
-function buildPrompt(p) {
-  return [
-    {
-      role: "system",
-      content: "Tu es un expert en conformité (RGPD, cybersécurité, RSE, ISO). Renvoie UNIQUEMENT un JSON valide sans markdown avec : score (0-100), risques (array de strings), recommandations (array de strings), résumé (string détaillé).",
-    },
-    { role: "user", content: JSON.stringify(p) },
-  ];
+function cleanJSON(raw) {
+  return raw.replace(/```json|```/g, "").trim();
 }
 
-// ─── Route audit direct ────────────────────────────────────────
+// ─── Route SCAN PUBLIC ─────────────────────────────────────────
+app.post("/api/scan", async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ error: "URL manquante" });
+
+    console.log(`🔍 Scan demandé pour: ${url}`);
+
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un expert en conformité réglementaire européenne (RGPD, NIS2, AI Act, RSE, cybersécurité). 
+        Analyse l'URL fournie et génère un rapport de conformité réaliste.
+        Renvoie UNIQUEMENT un JSON valide sans markdown avec exactement cette structure :
+        {
+          "score": (nombre 0-100),
+          "risques": [
+            { "titre": "...", "description": "...", "niveau": "critique|important|modéré" },
+            { "titre": "...", "description": "...", "niveau": "critique|important|modéré" },
+            { "titre": "...", "description": "...", "niveau": "critique|important|modéré" }
+          ],
+          "résumé": "..."
+        }
+        Génère exactement 3 risques réalistes basés sur le type de site. Sois précis et professionnel.`
+      },
+      {
+        role: "user",
+        content: `Analyse la conformité de ce site web : ${url}
+        
+        Évalue notamment :
+        - Présence et conformité de la politique de confidentialité
+        - Gestion des cookies et consentement
+        - Mentions légales
+        - Sécurité (HTTPS, headers de sécurité)
+        - Conformité RGPD globale
+        - Risques juridiques potentiels
+        
+        Génère un score réaliste et 3 risques concrets pour ce type de site.`
+      }
+    ];
+
+    const raw = await callOpenAI(messages, 600);
+    const report = JSON.parse(cleanJSON(raw));
+
+    console.log(`✅ Scan terminé pour ${url} — Score: ${report.score}`);
+    res.json(report);
+
+  } catch (e) {
+    console.error("❌ Erreur scan:", e);
+    res.status(500).json({ error: "Erreur analyse", details: String(e) });
+  }
+});
+
+// ─── Route audit formulaire ────────────────────────────────────
 app.post("/api/audit", async (req, res) => {
   try {
-    const messages = buildPrompt(req.body);
+    const messages = [
+      {
+        role: "system",
+        content: "Tu es un expert en conformité (RGPD, cybersécurité, RSE, ISO). Renvoie UNIQUEMENT un JSON valide sans markdown avec : score (0-100), risques (array de strings), recommandations (array de strings), résumé (string détaillé).",
+      },
+      { role: "user", content: JSON.stringify(req.body) },
+    ];
     const raw = await callOpenAI(messages);
-    const clean = raw.replace(/```json|```/g, "").trim();
-    res.json(JSON.parse(clean));
+    res.json(JSON.parse(cleanJSON(raw)));
   } catch (e) {
     res.status(500).json({ error: "Erreur IA", details: String(e) });
   }
@@ -138,9 +156,7 @@ app.post("/webhook/tally", async (req, res) => {
     })), null, 2));
 
     const getValue = (label) => {
-      const field = fields.find((f) =>
-        f.label?.toLowerCase().includes(label.toLowerCase())
-      );
+      const field = fields.find((f) => f.label?.toLowerCase().includes(label.toLowerCase()));
       if (!field) return null;
       if (Array.isArray(field.value)) {
         return field.value.map((v) => {
@@ -157,24 +173,20 @@ app.post("/webhook/tally", async (req, res) => {
     const domaines = getValue("domaines") || "Non précisé";
     const dpo = getValue("responsable") || getValue("dpo") || "Non précisé";
 
-    const auditData = {
-      entreprise: companyName,
-      secteur,
-      taille,
-      domaines_concernés: domaines,
-      a_dpo_ou_responsable_conformité: dpo,
-    };
+    const messages = [
+      {
+        role: "system",
+        content: "Tu es un expert en conformité (RGPD, cybersécurité, RSE, ISO). Renvoie UNIQUEMENT un JSON valide sans markdown avec : score (0-100), risques (array de strings), recommandations (array de strings), résumé (string détaillé).",
+      },
+      { role: "user", content: JSON.stringify({ entreprise: companyName, secteur, taille, domaines_concernés: domaines, a_dpo_ou_responsable_conformité: dpo }) },
+    ];
 
-    const messages = buildPrompt(auditData);
     const raw = await callOpenAI(messages);
-    const clean = raw.replace(/```json|```/g, "").trim();
-    const report = JSON.parse(clean);
+    const report = JSON.parse(cleanJSON(raw));
 
-    // Pour l'instant tout vers contact.audilix@gmail.com
-    // (en attente de vérification du domaine audilix.com sur Resend)
     await sendReportEmail(AUDILIX_EMAIL, companyName, report);
 
-    console.log(`✅ Rapport envoyé à ${AUDILIX_EMAIL} — Score: ${report.score}`);
+    console.log(`✅ Rapport Tally envoyé — Score: ${report.score}`);
     res.status(200).json({ success: true, score: report.score });
   } catch (e) {
     console.error("❌ Erreur webhook:", e);
@@ -184,7 +196,7 @@ app.post("/webhook/tally", async (req, res) => {
 
 // ─── Health check ──────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({ status: "Audilix backend en ligne ✅", version: "2.3" });
+  res.json({ status: "Audilix backend en ligne ✅", version: "3.0" });
 });
 
 const PORT = process.env.PORT || 3000;
