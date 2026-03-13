@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scanner de Conformité Gratuit — Audilix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0B2545;
+            --navy-mid: #1A3A6B;
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-pale: #F5EDD6;
+            --cream: #FAF8F4;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --border: rgba(11,37,69,0.08);
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --green: #22c55e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: white; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* NAV */
+        nav { padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .nav-logo img { height: 32px; }
+        .nav-back { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+        .nav-back:hover { color: var(--gold); }
+        .nav-back::before { content: '←'; }
+
+        /* GOLD LINE */
+        .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+
+        /* HERO */
+        .hero { padding: 80px 40px 60px; text-align: center; max-width: 800px; margin: auto; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 16px; border-radius: 2px; margin-bottom: 32px; }
+        .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .hero h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 700; line-height: 1.08; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero-sub { font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.7; font-weight: 300; }
+
+        /* SCANNER BOX */
+        .scanner-wrap { max-width: 720px; margin: 0 auto; padding: 0 40px 80px; }
+        .scanner-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 48px; position: relative; overflow: hidden; }
+        .scanner-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+
+        .input-group { display: flex; gap: 12px; margin-bottom: 16px; }
+        .url-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 16px 20px; color: white; font-size: 15px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+        .url-input::placeholder { color: rgba(255,255,255,0.25); }
+        .url-input:focus { border-color: var(--gold); }
+        .scan-btn { background: var(--gold); color: var(--navy); padding: 16px 32px; border-radius: 6px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; white-space: nowrap; }
+        .scan-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+        .scan-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .input-note { font-size: 12px; color: rgba(255,255,255,0.25); text-align: center; }
+
+        /* LOADING */
+        #loading { display: none; text-align: center; padding: 48px 0; }
+        .scan-animation { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+        .scan-circle { width: 80px; height: 80px; border-radius: 50%; border: 2px solid rgba(201,168,76,0.2); border-top-color: var(--gold); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .scan-steps { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+        .scan-step { font-size: 13px; color: rgba(255,255,255,0.3); display: flex; align-items: center; gap: 10px; transition: color 0.3s; }
+        .scan-step.active { color: var(--gold); }
+        .scan-step.done { color: var(--green); }
+        .scan-step::before { content: '○'; font-size: 10px; }
+        .scan-step.active::before { content: '◉'; }
+        .scan-step.done::before { content: '✓'; }
+
+        /* RESULTS */
+        #results { display: none; }
+
+        .result-header { text-align: center; margin-bottom: 40px; }
+        .result-url { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; font-family: monospace; }
+
+        .score-circle-wrap { display: flex; justify-content: center; margin-bottom: 32px; }
+        .score-circle { position: relative; width: 160px; height: 160px; }
+        .score-circle svg { transform: rotate(-90deg); }
+        .score-circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
+        .score-circle-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1.5s ease; }
+        .score-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .score-number { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; line-height: 1; }
+        .score-label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        .score-verdict { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+        .score-desc { font-size: 14px; color: rgba(255,255,255,0.4); }
+
+        /* RISK CARDS */
+        .risks-section { margin-bottom: 32px; }
+        .risks-title { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+        .risk-cards { display: flex; flex-direction: column; gap: 10px; }
+        .risk-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px; }
+        .risk-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .risk-icon.high { background: rgba(239,68,68,0.1); }
+        .risk-icon.medium { background: rgba(245,158,11,0.1); }
+        .risk-icon.low { background: rgba(34,197,94,0.1); }
+        .risk-content {}
+        .risk-title { font-size: 14px; font-weight: 600; color: white; margin-bottom: 4px; }
+        .risk-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+        .risk-badge { display: inline-block; padding: 2px 8px; border-radius: 40px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+        .risk-badge.high { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .risk-badge.medium { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .risk-badge.low { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+        /* LOCKED */
+        .locked-section { background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .locked-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+        .lock-icon { font-size: 32px; margin-bottom: 16px; }
+        .locked-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+        .locked-desc { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 24px; }
+        .locked-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+        .locked-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 40px; font-size: 12px; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 6px; }
+        .locked-item::before { content: '🔒'; font-size: 10px; }
+        .cta-btn { display: inline-block; background: var(--gold); color: var(--navy); padding: 15px 36px; border-radius: 4px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; }
+        .cta-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+        .cta-note { font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 12px; }
+
+        .rescan-btn { display: block; width: 100%; padding: 14px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: rgba(255,255,255,0.4); font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+        .rescan-btn:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+
+        /* STATS */
+        .stats-bar { border-top: 1px solid rgba(255,255,255,0.06); padding: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center; max-width: 720px; margin: 0 auto; }
+        .stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--gold); }
+        .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+        /* FOOTER */
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 40px; text-align: center; }
+        footer p { font-size: 12px; color: rgba(255,255,255,0.2); }
+        footer a { color: rgba(255,255,255,0.3); text-decoration: none; }
+        footer a:hover { color: var(--gold); }
+
+        @media (max-width: 640px) {
+            nav { padding: 20px 24px; }
+            .hero { padding: 60px 24px 40px; }
+            .scanner-wrap { padding: 0 24px 60px; }
+            .scanner-box { padding: 32px 24px; }
+            .input-group { flex-direction: column; }
+            .stats-bar { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="gold-line"></div>
+
+<nav>
+    <div class="nav-logo"><img src="logo.png" alt="Audilix"></div>
+    <a href="index.html" class="nav-back">Retour au site</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-badge">Scanner IA — Gratuit & Instantané</div>
+    <h1>Votre site est-il<br><em>vraiment</em> conforme ?</h1>
+    <p class="hero-sub">Entrez votre URL et obtenez un score de conformité RGPD, cybersécurité et RSE en moins de 30 secondes.</p>
+</div>
+
+<div class="scanner-wrap">
+    <div class="scanner-box">
+
+        <!-- INPUT -->
+        <div id="input-section">
+            <div class="input-group">
+                <input type="url" id="url-input" class="url-input" placeholder="https://votre-site.com" autocomplete="off">
+                <button class="scan-btn" id="scan-btn" onclick="startScan()">Scanner →</button>
+            </div>
+            <p class="input-note">Analyse gratuite • Aucune inscription requise • Résultats en 30 secondes</p>
+        </div>
+
+        <!-- LOADING -->
+        <div id="loading">
+            <div class="scan-animation">
+                <div class="scan-circle"></div>
+                <div class="scan-steps">
+                    <div class="scan-step" id="step1">Récupération du site en cours...</div>
+                    <div class="scan-step" id="step2">Analyse RGPD & cookies</div>
+                    <div class="scan-step" id="step3">Vérification cybersécurité</div>
+                    <div class="scan-step" id="step4">Génération du score de conformité</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div id="results">
+            <div class="result-header">
+                <div class="result-url" id="result-url"></div>
+                <div class="score-circle-wrap">
+                    <div class="score-circle">
+                        <svg width="160" height="160" viewBox="0 0 160 160">
+                            <circle class="score-circle-bg" cx="80" cy="80" r="68"/>
+                            <circle class="score-circle-fill" id="score-arc" cx="80" cy="80" r="68"
+                                stroke-dasharray="427" stroke-dashoffset="427"/>
+                        </svg>
+                        <div class="score-text">
+                            <div class="score-number" id="score-num">--</div>
+                            <div class="score-label">/ 100</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="score-verdict" id="score-verdict"></div>
+                <div class="score-desc" id="score-desc"></div>
+            </div>
+
+            <div class="risks-section">
+                <div class="risks-title">Risques détectés</div>
+                <div class="risk-cards" id="risk-cards"></div>
+            </div>
+
+            <div class="locked-section">
+                <div class="lock-icon">🔒</div>
+                <div class="locked-title">Rapport complet disponible</div>
+                <div class="locked-desc">Accédez à l'analyse complète de votre site avec le plan d'action détaillé, les documents juridiques générés et le monitoring continu.</div>
+                <div class="locked-items">
+                    <span class="locked-item">Rapport PDF complet</span>
+                    <span class="locked-item">Plan d'action priorisé</span>
+                    <span class="locked-item">Documents RGPD générés</span>
+                    <span class="locked-item">Mentions légales</span>
+                    <span class="locked-item">Politique de cookies</span>
+                    <span class="locked-item">Monitoring 24/7</span>
+                </div>
+                <a href="https://tally.so/r/yP6AYX" target="_blank" class="cta-btn">Obtenir mon rapport complet →</a>
+                <p class="cta-note">À partir de 69€/mois • Sans engagement • Résiliation à tout moment</p>
+            </div>
+
+            <button class="rescan-btn" onclick="resetScanner()">← Scanner un autre site</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div><div class="stat-num">94%</div><div class="stat-lbl">Des sites non conformes</div></div>
+    <div><div class="stat-num">20M€</div><div class="stat-lbl">Amendes RGPD en 2024</div></div>
+    <div><div class="stat-num">3min</div><div class="stat-lbl">Pour votre rapport complet</div></div>
+</div>
+
+<footer>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+</footer>
+
+<script>
+const BACKEND = "https://audilix-backend.onrender.com";
+
+async function startScan() {
+    const input = document.getElementById('url-input');
+    let url = input.value.trim();
+    
+    if (!url) { input.focus(); return; }
+    if (!url.startsWith('http')) url = 'https://' + url;
+    
+    // UI switch
+    document.getElementById('input-section').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+
+    // Animate steps
+    const steps = ['step1','step2','step3','step4'];
+    const delays = [0, 4000, 8000, 14000];
+    
+    steps.forEach((id, i) => {
+        setTimeout(() => {
+            if (i > 0) document.getElementById(steps[i-1]).className = 'scan-step done';
+            document.getElementById(id).className = 'scan-step active';
+        }, delays[i]);
+    });
+
+    try {
+        const res = await fetch(`${BACKEND}/api/scan`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+        });
+        
+        const data = await res.json();
+        
+        // Mark last step done
+        document.getElementById('step4').className = 'scan-step done';
+        
+        setTimeout(() => showResults(url, data), 500);
+    } catch(e) {
+        console.error(e);
+        alert("Erreur lors de l'analyse. Vérifiez l'URL et réessayez.");
+        resetScanner();
+    }
+}
+
+function showResults(url, data) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
+    const score = data.score || 0;
+    const risques = data.risques || [];
+
+    // URL
+    document.getElementById('result-url').textContent = url;
+
+    // Score circle
+    const arc = document.getElementById('score-arc');
+    const circumference = 427;
+    const offset = circumference - (score / 100) * circumference;
+    
+    const color = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
+    arc.style.stroke = color;
+    setTimeout(() => { arc.style.strokeDashoffset = offset; }, 100);
+
+    // Score number
+    const numEl = document.getElementById('score-num');
+    numEl.style.color = color;
+    let current = 0;
+    const timer = setInterval(() => {
+        current += Math.ceil(score / 30);
+        if (current >= score) { current = score; clearInterval(timer); }
+        numEl.textContent = current;
+    }, 50);
+
+    // Verdict
+    const verdict = score >= 70 ? '✅ Conformité satisfaisante' : score >= 40 ? '⚠️ Conformité insuffisante' : '🚨 Non-conformité critique';
+    const desc = score >= 70 ? 'Votre site présente un bon niveau de conformité. Quelques points méritent attention.' : score >= 40 ? 'Votre site présente des risques juridiques significatifs à corriger rapidement.' : 'Votre site est exposé à des sanctions RGPD importantes. Action urgente requise.';
+    
+    document.getElementById('score-verdict').textContent = verdict;
+    document.getElementById('score-desc').textContent = desc;
+
+    // Risk cards (show only 3)
+    const cards = document.getElementById('risk-cards');
+    cards.innerHTML = '';
+    const top3 = risques.slice(0, 3);
+    
+    top3.forEach((r, i) => {
+        const level = i === 0 ? 'high' : i === 1 ? 'medium' : 'low';
+        const icon = i === 0 ? '🚨' : i === 1 ? '⚠️' : '📋';
+        const label = i === 0 ? 'Critique' : i === 1 ? 'Important' : 'Modéré';
+        
+        cards.innerHTML += `
+        <div class="risk-card">
+            <div class="risk-icon ${level}">${icon}</div>
+            <div class="risk-content">
+                <div class="risk-badge ${level}">${label}</div>
+                <div class="risk-title">${r.titre || r}</div>
+                <div class="risk-desc">${r.description || ''}</div>
+            </div>
+        </div>`;
+    });
+}
+
+function resetScanner() {
+    document.getElementById('input-section').style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('url-input').value = '';
+    ['step1','step2','step3','step4'].forEach(id => {
+        document.getElementById(id).className = 'scan-step';
+    });
+}
+
+// Enter key
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('url-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter') startScan();
+    });
+});
+</script>
+</body>
+</html>
