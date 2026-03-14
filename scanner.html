@@ -272,7 +272,10 @@ async function startScan() {
         const res = await fetch(`${BACKEND}/api/scan`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({ 
+                url,
+                user_id: (() => { try { const u = JSON.parse(localStorage.getItem('audilix_user')); return u && u.id ? u.id : null; } catch(e) { return null; } })()
+            })
         });
         
         const data = await res.json();
