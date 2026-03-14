@@ -22,15 +22,14 @@
         body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--navy); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
-        /* NAV */
         nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
         .nav-inner { max-width: 1280px; margin: auto; padding: 0 40px; height: 76px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo img { height: 36px; width: auto; }
         .nav-links { display: flex; gap: 40px; list-style: none; }
         .nav-links a { text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); opacity: 0.55; transition: opacity 0.2s; }
         .nav-links a:hover { opacity: 1; }
-        .nav-cta { background: var(--navy); color: white; padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; transition: background 0.2s; display: inline-block; }
-        .nav-cta:hover { background: var(--gold); color: var(--navy); }
+        .nav-cta { background: var(--gold); color: var(--navy); padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-decoration: none; transition: all 0.2s; display: inline-block; }
+        .nav-cta:hover { background: var(--gold-light); }
 
         .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
 
@@ -45,11 +44,12 @@
         .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
         .btn-primary { background: var(--navy); color: white; padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s; display: inline-block; letter-spacing: 0.02em; }
         .btn-primary:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.3); }
+        .btn-gold { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; display: inline-block; }
+        .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.4); }
         .btn-ghost { color: var(--navy); font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; opacity: 0.5; transition: opacity 0.2s; }
         .btn-ghost:hover { opacity: 1; }
         .btn-ghost::after { content: '→'; }
 
-        /* Hero card */
         .hero-card { background: var(--cream); border: 1px solid var(--border); border-radius: 16px; padding: 48px; position: relative; overflow: hidden; }
         .hero-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -60,19 +60,38 @@
         .compliance-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .tag { padding: 6px 14px; background: white; border: 1px solid var(--border); border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--navy); }
 
-        /* TRUST BAR */
         .trust-bar { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 40px; }
         .trust-inner { max-width: 1280px; margin: auto; display: flex; align-items: center; gap: 48px; }
         .trust-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); white-space: nowrap; opacity: 0.6; }
         .trust-items { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
         .trust-item { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: var(--navy); opacity: 0.3; text-transform: uppercase; }
 
-        /* SECTION */
+        /* SCANNER SECTION */
+        .scanner-section { background: var(--navy); padding: 100px 40px; position: relative; overflow: hidden; }
+        .scanner-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+        .scanner-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+        .scanner-inner { max-width: 760px; margin: auto; text-align: center; }
+        .scanner-inner .section-label { margin-bottom: 16px; }
+        .scanner-inner h2 { font-size: clamp(36px, 4vw, 54px); font-weight: 700; color: white; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+        .scanner-inner h2 em { font-style: italic; color: var(--gold); }
+        .scanner-inner p { font-size: 17px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-bottom: 48px; }
+        .scanner-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 40px; position: relative; }
+        .scanner-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 12px 12px 0 0; }
+        .scanner-input-group { display: flex; gap: 12px; margin-bottom: 16px; }
+        .scanner-url-input { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 16px 20px; color: white; font-size: 15px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+        .scanner-url-input::placeholder { color: rgba(255,255,255,0.25); }
+        .scanner-url-input:focus { border-color: var(--gold); }
+        .scanner-submit { background: var(--gold); color: var(--navy); padding: 16px 32px; border-radius: 6px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; white-space: nowrap; }
+        .scanner-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+        .scanner-note { font-size: 12px; color: rgba(255,255,255,0.2); }
+        .scanner-tags { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 32px; }
+        .scanner-tag { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
+        .scanner-tag::before { content: '✓'; color: var(--gold); font-size: 11px; }
+
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
         .section-title { font-size: clamp(36px, 4vw, 54px); font-weight: 700; line-height: 1.1; color: var(--navy); letter-spacing: -0.02em; }
         .section-sub { font-size: 18px; color: var(--gray); line-height: 1.7; font-weight: 300; margin-top: 16px; }
 
-        /* SOLUTIONS */
         .solutions { padding: 120px 40px; max-width: 1280px; margin: auto; }
         .solutions-header { margin-bottom: 64px; max-width: 580px; }
         .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -84,7 +103,6 @@
         .sol-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 14px; }
         .sol-desc { font-size: 15px; line-height: 1.75; color: var(--gray); font-weight: 300; }
 
-        /* PROCESS */
         .process { background: var(--navy); padding: 120px 40px; position: relative; overflow: hidden; }
         .process::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .process-inner { max-width: 1280px; margin: auto; }
@@ -98,7 +116,6 @@
         .step-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: white; margin-bottom: 14px; }
         .step-desc { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.4); font-weight: 300; }
 
-        /* PRICING */
         .pricing { padding: 120px 40px; background: var(--cream); }
         .pricing-inner { max-width: 1280px; margin: auto; }
         .pricing-header { text-align: center; margin-bottom: 72px; }
@@ -122,8 +139,9 @@
         .plan-card.featured .price-currency { color: rgba(255,255,255,0.35); }
         .price-period { font-size: 14px; color: var(--gray); font-weight: 300; }
         .plan-card.featured .price-period { color: rgba(255,255,255,0.35); }
-        .plan-features { list-style: none; margin-bottom: 40px; display: flex; flex-direction: column; gap: 14px; }
-        .plan-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.5; color: var(--navy); }
+        .plan-section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 20px 0 10px; }
+        .plan-features { list-style: none; margin-bottom: 40px; display: flex; flex-direction: column; gap: 10px; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; line-height: 1.5; color: var(--navy); }
         .plan-card.featured .plan-features li { color: rgba(255,255,255,0.7); }
         .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); margin-top: 1px; }
         .plan-card.featured .feat-check { background: rgba(201,168,76,0.15); }
@@ -133,22 +151,20 @@
         .plan-btn-gold { background: var(--gold); color: var(--navy); border: 1.5px solid var(--gold); }
         .plan-btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); transform: translateY(-1px); }
 
-        /* GUARANTEES */
         .guarantees { padding: 80px 40px; border-top: 1px solid var(--border); }
         .guarantees-inner { max-width: 1280px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; text-align: center; }
         .g-icon { font-size: 30px; margin-bottom: 16px; }
         .g-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
         .g-desc { font-size: 14px; color: var(--gray); line-height: 1.65; font-weight: 300; }
 
-        /* CTA */
         .cta-section { background: var(--navy); padding: 120px 40px; text-align: center; position: relative; }
         .cta-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .cta-section h2 { font-size: clamp(40px, 5vw, 68px); color: white; font-weight: 700; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
         .cta-section h2 em { color: var(--gold); font-style: italic; }
         .cta-sub { font-size: 18px; color: rgba(255,255,255,0.45); margin-bottom: 56px; font-weight: 300; }
         .cta-note { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.25); }
+        .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-        /* FOOTER */
         footer { background: #060F1E; padding: 56px 40px; }
         .footer-inner { max-width: 1280px; margin: auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
         .footer-logo img { height: 26px; opacity: 0.4; filter: grayscale(1); }
@@ -157,7 +173,6 @@
         .footer-links a:hover { color: rgba(255,255,255,0.6); }
         .footer-copy { font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; }
 
-        /* CHATBOT */
         #chat-btn { position: fixed; bottom: 32px; right: 32px; z-index: 999; width: 58px; height: 58px; background: var(--navy); border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(11,37,69,0.35); transition: transform 0.25s; }
         #chat-btn:hover { transform: translateY(-2px); }
         #chat-btn::before { content: ''; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: var(--gold); border-radius: 50%; border: 2px solid white; }
@@ -170,25 +185,27 @@
         .chat-close { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 18px; padding: 4px; }
         .chat-body { padding: 24px; }
         .chat-msg { background: var(--cream); border-radius: 12px 12px 12px 2px; padding: 14px 16px; font-size: 14px; line-height: 1.65; color: var(--navy); margin-bottom: 16px; }
-        .chat-action { display: block; width: 100%; background: var(--navy); color: white; text-align: center; padding: 14px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; transition: background 0.2s; }
+        .chat-action { display: block; width: 100%; background: var(--navy); color: white; text-align: center; padding: 14px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; transition: background 0.2s; margin-bottom: 10px; }
         .chat-action:hover { background: var(--gold); color: var(--navy); }
+        .chat-action-ghost { display: block; width: 100%; background: transparent; color: var(--navy); text-align: center; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; border: 1px solid var(--border); transition: all 0.2s; }
+        .chat-action-ghost:hover { border-color: var(--navy); }
 
-        /* REVEAL */
         .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .hero { grid-template-columns: 1fr; padding: 140px 24px 80px; }
             .solutions-grid, .pricing-grid, .process-steps, .guarantees-inner { grid-template-columns: 1fr; }
             .plan-card.featured { transform: none; }
             .process-steps::before { display: none; }
             .nav-links { display: none; }
+            .scanner-input-group { flex-direction: column; }
         }
         @media (max-width: 640px) {
             .guarantees-inner { grid-template-columns: 1fr 1fr; }
             .footer-inner { flex-direction: column; text-align: center; }
             .trust-inner { flex-direction: column; }
+            .scanner-section { padding: 60px 24px; }
         }
     </style>
 </head>
@@ -200,12 +217,12 @@
     <div class="nav-inner">
         <div class="nav-logo"><img src="logo.png" alt="Audilix"></div>
         <ul class="nav-links">
+            <li><a href="#scanner">Scanner</a></li>
             <li><a href="#solutions">Solutions</a></li>
             <li><a href="#tarifs">Tarifs</a></li>
-            <li><a href="methode.html">Méthode</a></li>
             <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
         </ul>
-        <a href="https://tally.so/r/yP6AYX" target="_blank" class="nav-cta">Audit gratuit</a>
+        <a href="scanner.html" class="nav-cta">Scanner mon site →</a>
     </div>
 </nav>
 
@@ -213,10 +230,10 @@
     <div class="hero">
         <div class="reveal">
             <div class="hero-badge">Plateforme IA — Conformité Réglementaire</div>
-            <h1>La conformité,<br><em>enfin</em> à votre portée.</h1>
-            <p class="hero-sub">Audilix analyse vos risques RGPD, cybersécurité et RSE en quelques minutes grâce à l'intelligence artificielle. Un rapport expert. Une action immédiate.</p>
+            <h1>La conformité,<br><em>enfin</em> automatisée.</h1>
+            <p class="hero-sub">Audilix analyse votre site et vos risques RGPD, cybersécurité et RSE en quelques secondes grâce à l'intelligence artificielle. Un rapport expert. Une action immédiate.</p>
             <div class="hero-actions">
-                <a href="https://tally.so/r/yP6AYX" target="_blank" class="btn-primary">Lancer mon audit gratuit</a>
+                <a href="scanner.html" class="btn-gold">Scanner mon site gratuitement →</a>
                 <a href="#solutions" class="btn-ghost">Découvrir la méthode</a>
             </div>
         </div>
@@ -225,7 +242,7 @@
                 <div class="stat-grid">
                     <div><div class="stat-number">3<span>'</span></div><div class="stat-label">Pour votre rapport</div></div>
                     <div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Score de conformité</div></div>
-                    <div><div class="stat-number">0<span>€</span></div><div class="stat-label">Premier audit</div></div>
+                    <div><div class="stat-number">0<span>€</span></div><div class="stat-label">Premier scan</div></div>
                     <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">Analyse augmentée</div></div>
                 </div>
                 <hr class="stat-divider">
@@ -256,31 +273,55 @@
     </div>
 </div>
 
+<!-- SCANNER SECTION -->
+<section id="scanner" class="scanner-section">
+    <div class="scanner-inner reveal">
+        <div class="section-label">Scanner gratuit & instantané</div>
+        <h2>Votre site est-il <em>vraiment</em> conforme ?</h2>
+        <p>Entrez votre URL et obtenez un score de conformité RGPD, cybersécurité et RSE en moins de 30 secondes. Gratuit, sans inscription.</p>
+        <div class="scanner-box">
+            <div class="scanner-input-group">
+                <input type="url" id="hero-url" class="scanner-url-input" placeholder="https://votre-site.com">
+                <button class="scanner-submit" onclick="goToScanner()">Scanner →</button>
+            </div>
+            <p class="scanner-note">Analyse gratuite • Aucune inscription requise • Résultats en 30 secondes</p>
+        </div>
+        <div class="scanner-tags">
+            <span class="scanner-tag">Score /100 instantané</span>
+            <span class="scanner-tag">Risques identifiés</span>
+            <span class="scanner-tag">Plan d'action inclus</span>
+            <span class="scanner-tag">100% automatique</span>
+        </div>
+    </div>
+</section>
+
+<!-- SOLUTIONS -->
 <section id="solutions" class="solutions">
     <div class="solutions-header reveal">
         <div class="section-label">Nos expertises</div>
         <h2 class="section-title">Ce qu'Audilix analyse pour vous.</h2>
-        <p class="section-sub">Une couverture complète des obligations réglementaires européennes, traduite en actions concrètes.</p>
+        <p class="section-sub">Une couverture complète des obligations réglementaires européennes, traduite en actions concrètes par l'IA.</p>
     </div>
     <div class="solutions-grid reveal" style="transition-delay:0.1s">
         <div class="solution-card">
             <div class="sol-icon">🔐</div>
             <div class="sol-title">RGPD & Protection des données</div>
-            <p class="sol-desc">Évaluation de vos traitements de données, registre RGPD, gestion des consentements et obligations du DPO. Identification des non-conformités prioritaires.</p>
+            <p class="sol-desc">Évaluation complète de vos traitements de données, cookies, politique de confidentialité, mentions légales et gestion des consentements. Documents juridiques générés automatiquement.</p>
         </div>
         <div class="solution-card">
             <div class="sol-icon">🛡️</div>
             <div class="sol-title">Cybersécurité & NIS2</div>
-            <p class="sol-desc">Analyse de votre posture de sécurité informatique selon les directives NIS2 et ISO 27001. Plan de remédiation priorisé par niveau de risque.</p>
+            <p class="sol-desc">Analyse de votre posture de sécurité selon NIS2 et ISO 27001. Détection des failles, headers manquants, scripts non sécurisés. Plan de remédiation priorisé par niveau de risque.</p>
         </div>
         <div class="solution-card">
             <div class="sol-icon">🌱</div>
-            <div class="sol-title">RSE & Reporting CSRD</div>
-            <p class="sol-desc">Audit de votre responsabilité sociétale, bilan carbone et conformité aux nouvelles obligations de reporting extra-financier CSRD 2024.</p>
+            <div class="sol-title">RSE, AI Act & CSRD</div>
+            <p class="sol-desc">Audit de responsabilité sociétale, conformité à l'AI Act européen et obligations de reporting CSRD 2024. Surveillance automatique des évolutions réglementaires.</p>
         </div>
     </div>
 </section>
 
+<!-- PROCESS -->
 <section class="process">
     <div class="process-inner">
         <div class="process-header reveal">
@@ -291,23 +332,24 @@
         <div class="process-steps">
             <div class="step reveal" style="transition-delay:0.1s">
                 <div class="step-num">1</div>
-                <div class="step-title">Questionnaire</div>
-                <p class="step-desc">Répondez à 7 questions sur votre entreprise, secteur et priorités. Aucune installation requise, 100% en ligne.</p>
+                <div class="step-title">Scannez votre site</div>
+                <p class="step-desc">Entrez votre URL. Notre IA analyse automatiquement votre site — RGPD, cookies, sécurité, mentions légales. Aucune installation requise.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.2s">
                 <div class="step-num">2</div>
-                <div class="step-title">Analyse IA</div>
-                <p class="step-desc">Notre moteur d'intelligence artificielle croise vos réponses avec les dernières réglementations européennes en vigueur.</p>
+                <div class="step-title">Score & Risques IA</div>
+                <p class="step-desc">Notre moteur IA génère un score sur 100 et identifie vos risques juridiques prioritaires en croisant votre site avec les dernières réglementations européennes.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.3s">
                 <div class="step-num">3</div>
-                <div class="step-title">Rapport expert</div>
-                <p class="step-desc">Vous recevez par email un score sur 100, vos risques identifiés et un plan d'action concret et priorisé.</p>
+                <div class="step-title">Rapport & Documents</div>
+                <p class="step-desc">Recevez votre rapport complet avec le plan d'action et les documents juridiques générés automatiquement : RGPD, mentions légales, politique cookies.</p>
             </div>
         </div>
     </div>
 </section>
 
+<!-- PRICING -->
 <section id="tarifs" class="pricing">
     <div class="pricing-inner">
         <div class="pricing-header reveal">
@@ -316,6 +358,7 @@
             <p class="section-sub">Transparence totale. Engagement mensuel. Résiliable à tout moment.</p>
         </div>
         <div class="pricing-grid">
+
             <div class="plan-card reveal" style="transition-delay:0.1s">
                 <img src="logo-starter.png" alt="Starter" class="plan-logo">
                 <div class="plan-name">Starter</div>
@@ -326,10 +369,19 @@
                     <span class="price-period">&nbsp;/ mois</span>
                 </div>
                 <ul class="plan-features">
-                    <li><span class="feat-check">✓</span>3 diagnostics IA par mois</li>
-                    <li><span class="feat-check">✓</span>Rapport de score immédiat</li>
-                    <li><span class="feat-check">✓</span>Analyse RGPD standard</li>
-                    <li><span class="feat-check">✓</span>Support par ticket (48h)</li>
+                    <div class="plan-section-title">Audit & Score</div>
+                    <li><span class="feat-check">✓</span>Audit automatique du site web</li>
+                    <li><span class="feat-check">✓</span>Score de conformité /100</li>
+                    <li><span class="feat-check">✓</span>3 rapports IA par mois</li>
+                    <li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
+                    <div class="plan-section-title">Documents générés</div>
+                    <li><span class="feat-check">✓</span>Politique de confidentialité</li>
+                    <li><span class="feat-check">✓</span>Mentions légales</li>
+                    <li><span class="feat-check">✓</span>Politique de cookies</li>
+                    <div class="plan-section-title">Surveillance</div>
+                    <li><span class="feat-check">✓</span>Monitoring mensuel automatique</li>
+                    <li><span class="feat-check">✓</span>Alertes si non-conformité détectée</li>
+                    <li><span class="feat-check">✓</span>Dashboard de conformité</li>
                 </ul>
                 <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-outline">Commencer</a>
             </div>
@@ -345,11 +397,19 @@
                     <span class="price-period">&nbsp;/ mois</span>
                 </div>
                 <ul class="plan-features">
-                    <li><span class="feat-check">✓</span>Diagnostics illimités</li>
-                    <li><span class="feat-check">✓</span>Plan d'action détaillé IA</li>
-                    <li><span class="feat-check">✓</span>Cyber + RGPD + RSE</li>
-                    <li><span class="feat-check">✓</span>Export PDF marque blanche</li>
-                    <li><span class="feat-check">✓</span>Support prioritaire 24/7</li>
+                    <div class="plan-section-title">Tout Starter +</div>
+                    <li><span class="feat-check">✓</span>Audits IA illimités</li>
+                    <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
+                    <li><span class="feat-check">✓</span>Plan d'action priorisé par l'IA</li>
+                    <li><span class="feat-check">✓</span>Correction automatique par IA</li>
+                    <div class="plan-section-title">Agent IA Intégré</div>
+                    <li><span class="feat-check">✓</span>Assistant IA disponible 24/7</li>
+                    <li><span class="feat-check">✓</span>Bannière cookies générée automatiquement</li>
+                    <li><span class="feat-check">✓</span>CGU & documents mis à jour auto</li>
+                    <div class="plan-section-title">Rapports & Export</div>
+                    <li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
+                    <li><span class="feat-check">✓</span>Monitoring 24/7 + alertes temps réel</li>
+                    <li><span class="feat-check">✓</span>Score cyber + score conformité</li>
                 </ul>
                 <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-gold">Choisir Business</a>
             </div>
@@ -364,13 +424,22 @@
                     <span class="price-period">&nbsp;/ mois</span>
                 </div>
                 <ul class="plan-features">
-                    <li><span class="feat-check">✓</span>Tout le plan Business</li>
-                    <li><span class="feat-check">✓</span>Accès API développeur</li>
-                    <li><span class="feat-check">✓</span>Gestion d'équipe (Admin)</li>
+                    <div class="plan-section-title">Tout Business +</div>
+                    <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+                    <li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
+                    <li><span class="feat-check">✓</span>IA Compliance Officer virtuel</li>
+                    <div class="plan-section-title">Automatisation avancée</div>
+                    <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
+                    <li><span class="feat-check">✓</span>Alerte si une loi change</li>
+                    <li><span class="feat-check">✓</span>Documents mis à jour automatiquement</li>
+                    <div class="plan-section-title">Intégration & Certification</div>
+                    <li><span class="feat-check">✓</span>API conformité intégrable</li>
+                    <li><span class="feat-check">✓</span>Badge "Certified by Audilix"</li>
                     <li><span class="feat-check">✓</span>Consultant dédié 1h/mois</li>
                 </ul>
                 <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-outline">Contacter l'équipe</a>
             </div>
+
         </div>
     </div>
 </section>
@@ -379,7 +448,7 @@
     <div class="guarantees-inner">
         <div class="reveal"><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
         <div class="reveal" style="transition-delay:0.1s"><div class="g-icon">⚡</div><div class="g-title">Rapport en 3 minutes</div><p class="g-desc">Votre rapport complet généré par IA et envoyé directement dans votre boîte mail.</p></div>
-        <div class="reveal" style="transition-delay:0.2s"><div class="g-icon">📋</div><div class="g-title">Sans jargon juridique</div><p class="g-desc">Des recommandations claires et actionnables, compréhensibles sans être juriste.</p></div>
+        <div class="reveal" style="transition-delay:0.2s"><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et support.</p></div>
         <div class="reveal" style="transition-delay:0.3s"><div class="g-icon">🔄</div><div class="g-title">Mis à jour en continu</div><p class="g-desc">Notre base réglementaire est actualisée à chaque évolution des textes européens.</p></div>
     </div>
 </section>
@@ -387,8 +456,11 @@
 <section class="cta-section">
     <div class="reveal">
         <h2>Votre conformité<br>commence <em>aujourd'hui.</em></h2>
-        <p class="cta-sub">Premier audit gratuit. Résultats immédiats. Aucune carte bancaire requise.</p>
-        <a href="https://tally.so/r/yP6AYX" target="_blank" class="btn-primary" style="font-size:16px; padding:18px 48px;">Démarrer mon audit gratuit →</a>
+        <p class="cta-sub">Scanner gratuit. Résultats immédiats. Aucune carte bancaire requise.</p>
+        <div class="cta-btns">
+            <a href="scanner.html" class="btn-gold" style="font-size:16px; padding:18px 48px;">Scanner mon site gratuitement →</a>
+            <a href="https://tally.so/r/yP6AYX" target="_blank" class="btn-primary" style="font-size:16px; padding:18px 48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">Audit complet</a>
+        </div>
         <p class="cta-note">Rejoignez les entreprises qui prennent leur conformité au sérieux.</p>
     </div>
 </section>
@@ -399,7 +471,7 @@
         <ul class="footer-links">
             <li><a href="confidentialite.html">Confidentialité</a></li>
             <li><a href="mentions.html">Mentions légales</a></li>
-            <li><a href="methode.html">Méthode</a></li>
+            <li><a href="scanner.html">Scanner</a></li>
             <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
         </ul>
         <span class="footer-copy">© 2026 Audilix</span>
@@ -421,19 +493,34 @@
         <button class="chat-close" onclick="toggleChat()">✕</button>
     </div>
     <div class="chat-body">
-        <div class="chat-msg">Bonjour 👋 Je suis l'assistant Audilix. Prêt à analyser votre conformité réglementaire en quelques minutes ?</div>
-        <a href="https://tally.so/r/yP6AYX" target="_blank" class="chat-action">Lancer mon audit gratuit →</a>
+        <div class="chat-msg">Bonjour 👋 Scannez votre site gratuitement ou lancez un audit complet de conformité.</div>
+        <a href="scanner.html" class="chat-action">Scanner mon site gratuitement →</a>
+        <a href="https://tally.so/r/yP6AYX" target="_blank" class="chat-action-ghost">Audit complet →</a>
     </div>
 </div>
 
 <script>
-    function toggleChat() {
-        document.getElementById('chat-panel').classList.toggle('open');
+function toggleChat() {
+    document.getElementById('chat-panel').classList.toggle('open');
+}
+
+function goToScanner() {
+    const url = document.getElementById('hero-url').value.trim();
+    if (url) {
+        window.location.href = 'scanner.html?url=' + encodeURIComponent(url);
+    } else {
+        window.location.href = 'scanner.html';
     }
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+document.getElementById('hero-url').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') goToScanner();
+});
+
+const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
