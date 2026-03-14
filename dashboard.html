@@ -226,7 +226,7 @@
             <div class="user-avatar" id="user-avatar">J</div>
             <div>
                 <div class="user-name" id="user-name-display">Jean Dupont</div>
-                <div class="user-email" id="user-email-display">jean@entreprise.com</div>
+                <div class="user-email" id="user-email-display"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f19b94909fb1949f8583948183988294df929e9c">[email&#160;protected]</a></div>
             </div>
             <span class="logout-btn" onclick="logout()" title="Déconnexion">⏻</span>
         </div>
@@ -583,7 +583,6 @@
 <script>
 const BACKEND = "https://audilix-backend.onrender.com";
 
-// AUTH CHECK
 const token = localStorage.getItem('audilix_token');
 const userStr = localStorage.getItem('audilix_user');
 let user = null;
@@ -595,8 +594,7 @@ if (!token) {
     initDashboard();
 }
 
-function initDashboard() {
-    // User info
+async function initDashboard() {
     const name = user.firstname || 'Client';
     document.getElementById('welcome-name').textContent = name;
     document.getElementById('user-name-display').textContent = (user.firstname || '') + ' ' + (user.lastname || '');
@@ -605,102 +603,102 @@ function initDashboard() {
     const plan = user.plan || 'starter';
     document.getElementById('sidebar-plan-name').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
 
-    // Date
     const now = new Date();
     document.getElementById('topbar-date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-    // Score chart
-    renderScoreChart();
-
-    // Reports
-    renderReports();
+    await loadRealData();
 }
 
-function renderScoreChart() {
-    const data = [
-        { month: 'Oct', score: 38 },
-        { month: 'Nov', score: 45 },
-        { month: 'Déc', score: 52 },
-        { month: 'Jan', score: 58 },
-        { month: 'Fév', score: 64 },
-        { month: 'Mar', score: 72 },
-    ];
+async function loadRealData() {
+    if (!user || !user.id) { renderEmptyState(); return; }
+    try {
+        const res = await fetch(`${BACKEND}/api/scans/${user.id}`);
+        const scans = await res.json();
+        if (!scans || scans.length === 0) { renderEmptyState(); return; }
+        renderRealDashboard(scans);
+    } catch(e) {
+        console.error('Erreur:', e);
+        renderEmptyState();
+    }
+}
+
+function renderEmptyState() {
+    document.getElementById('main-score').textContent = '--';
+    document.getElementById('main-score').style.color = 'rgba(255,255,255,0.3)';
+    document.querySelector('.welcome-text p').textContent = 'Lancez votre premier scan pour voir vos résultats ici.';
+    document.querySelector('.stat-card.gold .stat-value').textContent = '--';
+    document.querySelector('.stat-card.green .stat-value').textContent = '0';
+    document.querySelector('.stat-card.orange .stat-value').textContent = '0';
+    document.querySelector('.stat-card.red .stat-value').textContent = '0';
+    document.getElementById('score-chart').innerHTML = `<div style="width:100%;text-align:center;color:var(--gray);font-size:13px;padding:40px 0;">Aucun scan — <a href="scanner.html" style="color:var(--gold)">Lancer mon premier scan →</a></div>`;
+    const emptyHtml = `<div style="padding:32px;text-align:center;color:var(--gray);font-size:14px;">Aucun scan pour l'instant.<br><br><a href="scanner.html" style="color:var(--gold);font-weight:600;">Lancer mon premier scan →</a></div>`;
+    const p = document.getElementById('report-list-preview');
+    const f = document.getElementById('report-list-full');
+    if (p) p.innerHTML = emptyHtml;
+    if (f) f.innerHTML = emptyHtml;
+}
+
+function renderRealDashboard(scans) {
+    const lastScore = scans[0].score;
+    document.getElementById('main-score').textContent = lastScore;
+    document.getElementById('main-score').style.color = lastScore >= 70 ? 'var(--green)' : lastScore >= 40 ? 'var(--gold)' : 'var(--red)';
+    document.querySelector('.stat-card.gold .stat-value').textContent = lastScore;
+    document.querySelector('.stat-card.green .stat-value').textContent = scans.length;
+    document.querySelector('.stat-card.green .stat-label').textContent = 'Scans réalisés';
+    document.querySelector('.stat-card.orange .stat-value').textContent = scans.filter(s => s.score < 70).length;
+    document.querySelector('.stat-card.red .stat-value').textContent = scans.filter(s => s.score < 40).length;
+    renderScoreChart(scans.slice(0, 6).reverse());
+    renderReports(scans);
+}
+
+function renderScoreChart(scans) {
     const chart = document.getElementById('score-chart');
-    const max = 100;
-    chart.innerHTML = data.map(d => {
-        const pct = (d.score / max) * 100;
-        const cls = d.score >= 70 ? 'high' : d.score >= 50 ? 'medium' : 'low';
+    if (!scans || scans.length === 0) {
+        chart.innerHTML = '<div style="width:100%;text-align:center;color:var(--gray);font-size:13px;">Aucune donnée</div>';
+        return;
+    }
+    chart.innerHTML = scans.map(s => {
+        const pct = (s.score / 100) * 100;
+        const cls = s.score >= 70 ? 'high' : s.score >= 50 ? 'medium' : 'low';
+        const date = new Date(s.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
         return `<div class="score-bar-wrap">
-            <div class="score-bar-val">${d.score}</div>
+            <div class="score-bar-val">${s.score}</div>
             <div class="score-bar ${cls}" style="height:${pct}%"></div>
-            <div class="score-bar-label">${d.month}</div>
+            <div class="score-bar-label">${date}</div>
         </div>`;
     }).join('');
 }
 
-const reports = [
-    { name: 'Audit complet — Mars 2026', date: '14 mars 2026', score: 72, level: 'medium', icon: '📊' },
-    { name: 'Audit complet — Fév 2026', date: '14 fév 2026', score: 64, level: 'medium', icon: '📊' },
-    { name: 'Scan rapide — site.com', date: '10 fév 2026', score: 48, level: 'low', icon: '🔍' },
-    { name: 'Audit complet — Jan 2026', date: '14 jan 2026', score: 58, level: 'medium', icon: '📊' },
-    { name: 'Scan cybersécurité', date: '5 jan 2026', score: 81, level: 'high', icon: '🛡️' },
-];
-
-function renderReports() {
-    const preview = document.getElementById('report-list-preview');
-    const full = document.getElementById('report-list-full');
-    const html = reports.map(r => `
-        <div class="report-item">
-            <div class="report-icon">${r.icon}</div>
-            <div class="report-info">
-                <div class="report-name">${r.name}</div>
-                <div class="report-date">${r.date}</div>
-            </div>
-            <div class="report-score ${r.level}">${r.score}</div>
-            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
-        </div>
-    `).join('');
-    if (preview) preview.innerHTML = html.split('</div>\n        <div class="report-item">').slice(0, 3).join('</div>\n        <div class="report-item">') + (html.includes('report-item') ? '' : '');
-    const items = reports.slice(0, 3).map(r => `
-        <div class="report-item">
-            <div class="report-icon">${r.icon}</div>
-            <div class="report-info">
-                <div class="report-name">${r.name}</div>
-                <div class="report-date">${r.date}</div>
-            </div>
-            <div class="report-score ${r.level}">${r.score}</div>
-            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
-        </div>
-    `).join('');
-    if (preview) preview.innerHTML = items;
-    if (full) full.innerHTML = reports.map(r => `
-        <div class="report-item">
-            <div class="report-icon">${r.icon}</div>
-            <div class="report-info">
-                <div class="report-name">${r.name}</div>
-                <div class="report-date">${r.date}</div>
-            </div>
-            <div class="report-score ${r.level}">${r.score}</div>
-            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
-        </div>
-    `).join('');
+function renderReports(scans) {
+    const makeHtml = (list) => list.length === 0
+        ? `<div style="padding:24px;text-align:center;color:var(--gray);font-size:14px;">Aucun scan</div>`
+        : list.map(s => {
+            const score = s.score;
+            const level = score >= 70 ? 'high' : score >= 40 ? 'medium' : 'low';
+            const date = new Date(s.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+            let hostname = s.url;
+            try { hostname = new URL(s.url).hostname; } catch(e) {}
+            return `<div class="report-item">
+                <div class="report-icon">🔍</div>
+                <div class="report-info">
+                    <div class="report-name">${hostname}</div>
+                    <div class="report-date">${date}</div>
+                </div>
+                <div class="report-score ${level}">${score}</div>
+                <div class="report-dl" title="Voir détails">👁</div>
+            </div>`;
+        }).join('');
+    const p = document.getElementById('report-list-preview');
+    const f = document.getElementById('report-list-full');
+    if (p) p.innerHTML = makeHtml(scans.slice(0, 3));
+    if (f) f.innerHTML = makeHtml(scans);
 }
 
 const pages = ['overview', 'reports', 'documents', 'alerts', 'monitoring', 'settings'];
-const pageTitles = {
-    overview: 'Vue d\'ensemble',
-    reports: 'Mes rapports',
-    documents: 'Documents juridiques',
-    alerts: 'Alertes',
-    monitoring: 'Monitoring',
-    settings: 'Paramètres'
-};
+const pageTitles = { overview: "Vue d'ensemble", reports: 'Mes rapports', documents: 'Documents juridiques', alerts: 'Alertes', monitoring: 'Monitoring', settings: 'Paramètres' };
 
 function showPage(page) {
-    pages.forEach(p => {
-        const el = document.getElementById(`page-${p}`);
-        if (el) el.style.display = p === page ? 'block' : 'none';
-    });
+    pages.forEach(p => { const el = document.getElementById(`page-${p}`); if (el) el.style.display = p === page ? 'block' : 'none'; });
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('page-title').textContent = pageTitles[page] || page;
 }
@@ -711,26 +709,15 @@ function logout() {
     window.location.href = 'login.html';
 }
 
-function downloadReport(name) {
-    alert(`Téléchargement du rapport "${name}" — Fonctionnalité PDF bientôt disponible.`);
-}
-
-function downloadDoc(type) {
-    alert(`Téléchargement du document "${type}" — Fonctionnalité bientôt disponible.`);
-}
+function downloadReport(name) { alert('Fonctionnalité PDF bientôt disponible.'); }
+function downloadDoc(type) { alert('Fonctionnalité bientôt disponible.'); }
 
 function launchScan() {
     const url = document.getElementById('dash-scan-url').value.trim();
-    if (url) {
-        window.location.href = 'scanner.html?url=' + encodeURIComponent(url);
-    } else {
-        window.location.href = 'scanner.html';
-    }
+    window.location.href = url ? 'scanner.html?url=' + encodeURIComponent(url) : 'scanner.html';
 }
 
-function saveSettings() {
-    alert('Paramètres sauvegardés !');
-}
+function saveSettings() { alert('Paramètres sauvegardés !'); }
 </script>
 </body>
 </html>
