@@ -3,166 +3,734 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audilix — Console de Gestion</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Dashboard — Audilix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background-color: #f5f5f7; }
-        .text-audilix { color: #0B3B70; }
-        .bg-audilix { background-color: #0B3B70; }
-        .sidebar { background: #ffffff; border-right: 1px solid #e5e5e7; }
-        .apple-card-dash { 
-            background: #ffffff; 
-            border-radius: 24px; 
-            border: 1px solid #e5e5e7;
-            transition: all 0.3s ease;
+        :root {
+            --navy: #0B2545;
+            --navy-mid: #1A3A6B;
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-pale: #F5EDD6;
+            --cream: #FAF8F4;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --border: rgba(11,37,69,0.08);
+            --sidebar: #060F1E;
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --green: #22c55e;
         }
-        .status-pill {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; display: flex; min-height: 100vh; }
+        h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+        /* SIDEBAR */
+        .sidebar { width: 260px; flex-shrink: 0; background: var(--sidebar); min-height: 100vh; display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0; z-index: 50; }
+        .sidebar-logo { padding: 28px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-logo img { height: 28px; }
+        .sidebar-nav { flex: 1; padding: 20px 12px; }
+        .nav-section { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.2); padding: 0 12px; margin: 20px 0 8px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 6px; color: rgba(255,255,255,0.45); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-decoration: none; margin-bottom: 2px; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+        .nav-item.active { background: rgba(201,168,76,0.1); color: var(--gold); }
+        .nav-item .nav-icon { width: 20px; text-align: center; font-size: 16px; }
+        .nav-badge { margin-left: auto; background: var(--red); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 40px; }
+        .sidebar-bottom { padding: 20px 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-plan { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+        .sidebar-plan-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+        .sidebar-plan-name { font-size: 14px; font-weight: 600; color: white; margin-bottom: 8px; }
+        .sidebar-plan-btn { display: block; text-align: center; background: var(--gold); color: var(--navy); padding: 8px; border-radius: 4px; font-size: 12px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+        .sidebar-plan-btn:hover { background: var(--gold-light); }
+        .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .sidebar-user:hover { background: rgba(255,255,255,0.04); }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+        .user-name { font-size: 13px; font-weight: 600; color: white; }
+        .user-email { font-size: 11px; color: rgba(255,255,255,0.3); }
+        .logout-btn { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.25); cursor: pointer; padding: 4px; transition: color 0.2s; }
+        .logout-btn:hover { color: var(--red); }
+
+        /* MAIN */
+        .main { margin-left: 260px; flex: 1; min-height: 100vh; }
+
+        /* TOPBAR */
+        .topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
+        .topbar-title { font-size: 18px; font-weight: 600; color: var(--navy); }
+        .topbar-right { display: flex; align-items: center; gap: 16px; }
+        .topbar-date { font-size: 13px; color: var(--gray); }
+        .scan-btn { background: var(--gold); color: var(--navy); padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+        .scan-btn:hover { background: var(--gold-light); }
+
+        /* CONTENT */
+        .content { padding: 40px; }
+
+        /* WELCOME BANNER */
+        .welcome-banner { background: var(--navy); border-radius: 12px; padding: 32px 40px; margin-bottom: 32px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; }
+        .welcome-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+        .welcome-banner::after { content: ''; position: absolute; right: -60px; top: -60px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); }
+        .welcome-text h2 { font-size: 26px; font-weight: 700; color: white; margin-bottom: 6px; }
+        .welcome-text p { font-size: 15px; color: rgba(255,255,255,0.4); font-weight: 300; }
+        .welcome-score { text-align: center; }
+        .welcome-score-num { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; line-height: 1; }
+        .welcome-score-label { font-size: 12px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        /* STATS GRID */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 24px; position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+        .stat-card.gold::before { background: var(--gold); }
+        .stat-card.green::before { background: var(--green); }
+        .stat-card.orange::before { background: var(--orange); }
+        .stat-card.red::before { background: var(--red); }
+        .stat-icon { font-size: 24px; margin-bottom: 12px; }
+        .stat-value { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
+        .stat-trend { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+        .stat-trend.up { color: var(--green); }
+        .stat-trend.down { color: var(--red); }
+
+        /* GRID 2COL */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .grid-3-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px; }
+
+        /* CARD */
+        .card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+        .card-action { font-size: 13px; color: var(--gold); font-weight: 600; cursor: pointer; text-decoration: none; }
+        .card-body { padding: 24px; }
+
+        /* SCORE CHART */
+        .score-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+        .score-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+        .score-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.6s ease; min-height: 4px; }
+        .score-bar.high { background: var(--green); }
+        .score-bar.medium { background: var(--orange); }
+        .score-bar.low { background: var(--red); }
+        .score-bar-label { font-size: 10px; color: var(--gray); }
+        .score-bar-val { font-size: 11px; font-weight: 700; color: var(--navy); }
+
+        /* REPORTS TABLE */
+        .report-list { display: flex; flex-direction: column; }
+        .report-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+        .report-item:last-child { border-bottom: none; }
+        .report-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--gold-pale); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .report-info { flex: 1; }
+        .report-name { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+        .report-date { font-size: 12px; color: var(--gray); }
+        .report-score { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+        .report-score.high { color: var(--green); }
+        .report-score.medium { color: var(--orange); }
+        .report-score.low { color: var(--red); }
+        .report-dl { width: 32px; height: 32px; background: var(--cream); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .report-dl:hover { background: var(--gold-pale); }
+
+        /* DOCS */
+        .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .doc-card { background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; }
+        .doc-card:hover { border-color: var(--gold); background: var(--gold-pale); }
+        .doc-icon { font-size: 24px; }
+        .doc-name { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+        .doc-status { font-size: 11px; }
+        .doc-status.ready { color: var(--green); }
+        .doc-status.pending { color: var(--orange); }
+
+        /* ALERTS */
+        .alert-list { display: flex; flex-direction: column; gap: 10px; }
+        .alert-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border-radius: 8px; }
+        .alert-item.critical { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); }
+        .alert-item.warning { background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); }
+        .alert-item.info { background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.15); }
+        .alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+        .alert-item.critical .alert-dot { background: var(--red); }
+        .alert-item.warning .alert-dot { background: var(--orange); }
+        .alert-item.info .alert-dot { background: var(--green); }
+        .alert-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+        .alert-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+        .alert-time { font-size: 11px; color: var(--gray); margin-left: auto; white-space: nowrap; }
+
+        /* COMPLIANCE BARS */
+        .compliance-list { display: flex; flex-direction: column; gap: 16px; }
+        .compliance-item { }
+        .compliance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .compliance-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+        .compliance-val { font-size: 13px; font-weight: 700; }
+        .compliance-bar { height: 6px; background: rgba(11,37,69,0.06); border-radius: 40px; overflow: hidden; }
+        .compliance-fill { height: 100%; border-radius: 40px; transition: width 1s ease; }
+
+        /* NEW SCAN PROMPT */
+        .scan-prompt { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 12px; padding: 32px; text-align: center; position: relative; overflow: hidden; }
+        .scan-prompt::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+        .scan-prompt h3 { font-size: 20px; font-weight: 600; color: white; margin-bottom: 8px; }
+        .scan-prompt p { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+        .scan-prompt-input { display: flex; gap: 8px; }
+        .scan-prompt-url { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px 16px; color: white; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; }
+        .scan-prompt-url::placeholder { color: rgba(255,255,255,0.2); }
+        .scan-prompt-url:focus { border-color: var(--gold); }
+        .scan-prompt-btn { background: var(--gold); color: var(--navy); padding: 12px 20px; border-radius: 6px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; white-space: nowrap; }
+        .scan-prompt-btn:hover { background: var(--gold-light); }
+
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-2, .grid-3-1 { grid-template-columns: 1fr; }
         }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            color: #86868b;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: #f5f5f7;
-            color: #0B3B70;
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .main { margin-left: 0; }
+            .content { padding: 24px 20px; }
+            .topbar { padding: 0 20px; }
         }
     </style>
 </head>
-<body class="flex min-h-screen text-slate-900">
+<body>
 
-    <aside class="w-72 sidebar flex flex-col p-6 sticky top-0 h-screen">
-        <div class="mb-12 px-2">
-            <img src="logo.jpg" alt="Audilix" class="h-8 w-auto">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img src="logo.png" alt="Audilix">
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">Principal</div>
+        <a class="nav-item active" onclick="showPage('overview')">
+            <span class="nav-icon">📊</span> Vue d'ensemble
+        </a>
+        <a class="nav-item" onclick="showPage('reports')">
+            <span class="nav-icon">📋</span> Mes rapports
+        </a>
+        <a class="nav-item" onclick="showPage('documents')">
+            <span class="nav-icon">📄</span> Documents juridiques
+        </a>
+        <div class="nav-section">Surveillance</div>
+        <a class="nav-item" onclick="showPage('alerts')">
+            <span class="nav-icon">🔔</span> Alertes
+            <span class="nav-badge" id="alert-count">3</span>
+        </a>
+        <a class="nav-item" onclick="showPage('monitoring')">
+            <span class="nav-icon">📡</span> Monitoring
+        </a>
+        <div class="nav-section">Compte</div>
+        <a class="nav-item" href="scanner.html" target="_blank">
+            <span class="nav-icon">🔍</span> Nouveau scan
+        </a>
+        <a class="nav-item" onclick="showPage('settings')">
+            <span class="nav-icon">⚙️</span> Paramètres
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="sidebar-plan">
+            <div class="sidebar-plan-label">Mon plan</div>
+            <div class="sidebar-plan-name" id="sidebar-plan-name">Business</div>
+            <a href="index.html#tarifs" class="sidebar-plan-btn">Upgrader →</a>
         </div>
-        
-        <nav class="flex-grow space-y-2">
-            <a href="#" class="nav-item active">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                Vue d'ensemble
-            </a>
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Rapports PDF
-            </a>
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                Vigilance IA
-            </a>
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                Trust Center
-            </a>
-        </nav>
-
-        <div class="mt-auto p-4 bg-slate-50 rounded-2xl border border-slate-100">
-            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Plan Actuel</p>
-            <p class="text-sm font-bold text-audilix">Business — 149€/mo</p>
-            <button class="mt-3 w-full py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-50">Améliorer</button>
-        </div>
-    </aside>
-
-    <main class="flex-grow p-12 overflow-y-auto">
-        
-        <header class="flex justify-between items-start mb-12">
+        <div class="sidebar-user">
+            <div class="user-avatar" id="user-avatar">J</div>
             <div>
-                <h1 class="text-3xl font-[900] tracking-tight italic">Console Audilix.</h1>
-                <p class="text-slate-400 font-medium">Bienvenue, voici l'état de votre conformité IA.</p>
+                <div class="user-name" id="user-name-display">Jean Dupont</div>
+                <div class="user-email" id="user-email-display">jean@entreprise.com</div>
             </div>
-            <button class="bg-audilix text-white px-6 py-3 rounded-xl font-bold text-sm shadow-xl shadow-blue-900/10 hover:scale-105 transition">Nouveau Scan</button>
-        </header>
+            <span class="logout-btn" onclick="logout()" title="Déconnexion">⏻</span>
+        </div>
+    </div>
+</aside>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="apple-card-dash p-8">
-                <div class="flex justify-between items-center mb-4 text-slate-400">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span class="status-pill">Actif</span>
+<!-- MAIN -->
+<main class="main">
+    <div class="topbar">
+        <div class="topbar-title" id="page-title">Vue d'ensemble</div>
+        <div class="topbar-right">
+            <span class="topbar-date" id="topbar-date"></span>
+            <button class="scan-btn" onclick="window.location.href='scanner.html'">+ Nouveau scan</button>
+        </div>
+    </div>
+
+    <div class="content" id="main-content">
+
+        <!-- OVERVIEW PAGE -->
+        <div id="page-overview">
+
+            <!-- WELCOME -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bonjour, <span id="welcome-name">Jean</span> 👋</h2>
+                    <p>Voici l'état de votre conformité réglementaire en temps réel.</p>
                 </div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Score Conformité</p>
-                <p class="text-4xl font-[900] italic text-audilix">92%</p>
+                <div class="welcome-score">
+                    <div class="welcome-score-num" id="main-score" style="color: var(--orange);">72</div>
+                    <div class="welcome-score-label">Score global / 100</div>
+                </div>
             </div>
 
-            <div class="apple-card-dash p-8">
-                <div class="flex justify-between items-center mb-4 text-slate-400">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card gold">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">72</div>
+                    <div class="stat-label">Score conformité</div>
+                    <div class="stat-trend up">↑ +8 ce mois</div>
                 </div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Dernier Scan</p>
-                <p class="text-2xl font-[900] italic">Il y a 2h</p>
+                <div class="stat-card green">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">Points conformes</div>
+                    <div class="stat-trend up">↑ +3 ce mois</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Risques identifiés</div>
+                    <div class="stat-trend down">↓ -2 ce mois</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-icon">🚨</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Alertes actives</div>
+                    <div class="stat-trend down">Action requise</div>
+                </div>
             </div>
 
-            <div class="apple-card-dash p-8">
-                <div class="flex justify-between items-center mb-4 text-slate-400">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            <div class="grid-3-1">
+                <!-- SCORE HISTORY -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Historique du score</div>
+                        <span class="card-action">6 derniers mois</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="score-chart" id="score-chart"></div>
+                    </div>
                 </div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Alertes Légales</p>
-                <p class="text-2xl font-[900] italic text-red-500">0</p>
+
+                <!-- COMPLIANCE BARS -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Par domaine</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="compliance-list">
+                            <div class="compliance-item">
+                                <div class="compliance-header">
+                                    <span class="compliance-name">RGPD</span>
+                                    <span class="compliance-val" style="color:var(--orange)">68%</span>
+                                </div>
+                                <div class="compliance-bar"><div class="compliance-fill" style="width:68%;background:var(--orange)"></div></div>
+                            </div>
+                            <div class="compliance-item">
+                                <div class="compliance-header">
+                                    <span class="compliance-name">Cybersécurité</span>
+                                    <span class="compliance-val" style="color:var(--green)">81%</span>
+                                </div>
+                                <div class="compliance-bar"><div class="compliance-fill" style="width:81%;background:var(--green)"></div></div>
+                            </div>
+                            <div class="compliance-item">
+                                <div class="compliance-header">
+                                    <span class="compliance-name">RSE</span>
+                                    <span class="compliance-val" style="color:var(--red)">45%</span>
+                                </div>
+                                <div class="compliance-bar"><div class="compliance-fill" style="width:45%;background:var(--red)"></div></div>
+                            </div>
+                            <div class="compliance-item">
+                                <div class="compliance-header">
+                                    <span class="compliance-name">AI Act</span>
+                                    <span class="compliance-val" style="color:var(--orange)">60%</span>
+                                </div>
+                                <div class="compliance-bar"><div class="compliance-fill" style="width:60%;background:var(--orange)"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <!-- RECENT REPORTS -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Rapports récents</div>
+                        <a class="card-action" onclick="showPage('reports')">Voir tout →</a>
+                    </div>
+                    <div class="card-body" style="padding-top:0;">
+                        <div class="report-list" id="report-list-preview"></div>
+                    </div>
+                </div>
+
+                <!-- ALERTS -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Alertes actives</div>
+                        <a class="card-action" onclick="showPage('alerts')">Voir tout →</a>
+                    </div>
+                    <div class="card-body" style="padding-top:8px;">
+                        <div class="alert-list">
+                            <div class="alert-item critical">
+                                <div class="alert-dot"></div>
+                                <div>
+                                    <div class="alert-title">Politique de cookies manquante</div>
+                                    <div class="alert-desc">Aucun bandeau de consentement détecté sur votre site.</div>
+                                </div>
+                                <span class="alert-time">Aujourd'hui</span>
+                            </div>
+                            <div class="alert-item warning">
+                                <div class="alert-dot"></div>
+                                <div>
+                                    <div class="alert-title">Mentions légales incomplètes</div>
+                                    <div class="alert-desc">L'adresse du responsable de traitement est manquante.</div>
+                                </div>
+                                <span class="alert-time">Il y a 2j</span>
+                            </div>
+                            <div class="alert-item info">
+                                <div class="alert-dot"></div>
+                                <div>
+                                    <div class="alert-title">Rapport mensuel disponible</div>
+                                    <div class="alert-desc">Votre rapport de conformité de mars est prêt.</div>
+                                </div>
+                                <span class="alert-time">Il y a 3j</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SCAN -->
+            <div class="scan-prompt">
+                <h3>Lancer un nouveau scan</h3>
+                <p>Analysez votre site ou un site concurrent en temps réel.</p>
+                <div class="scan-prompt-input">
+                    <input type="url" class="scan-prompt-url" id="dash-scan-url" placeholder="https://votre-site.com">
+                    <button class="scan-prompt-btn" onclick="launchScan()">Scanner →</button>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-            <div class="apple-card-dash p-10">
-                <h3 class="text-xl font-black italic mb-8 uppercase tracking-tighter">Matériel de Preuve</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-red-500 font-black text-[10px] border border-slate-200 italic">PDF</div>
-                            <div>
-                                <p class="text-sm font-bold">Rapport Audit Exécutif</p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase">Mars 2026</p>
-                            </div>
-                        </div>
-                        <a href="rapport.pdf" download class="text-audilix font-black text-xs uppercase hover:underline">Download</a>
-                    </div>
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-audilix font-black text-[10px] border border-slate-200 italic">DOC</div>
-                            <div>
-                                <p class="text-sm font-bold">Smart Policy RGPD/IA</p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase">Généré par IA</p>
-                            </div>
-                        </div>
-                        <a href="#" class="text-audilix font-black text-xs uppercase hover:underline">Editer</a>
-                    </div>
+        <!-- REPORTS PAGE -->
+        <div id="page-reports" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Tous mes rapports</div>
+                    <button class="scan-btn" onclick="window.location.href='scanner.html'">+ Nouveau scan</button>
+                </div>
+                <div class="card-body" style="padding-top:0;">
+                    <div class="report-list" id="report-list-full"></div>
                 </div>
             </div>
-
-            <div class="apple-card-dash p-10 bg-audilix text-white">
-                <h3 class="text-xl font-black italic mb-4 uppercase tracking-tighter">Trust Center Public</h3>
-                <p class="text-sm text-blue-200 mb-8 font-medium">Partagez votre conformité avec vos clients via une page dédiée et sécurisée.</p>
-                
-                <div class="p-6 bg-white/5 rounded-2xl border border-white/10 mb-6">
-                    <p class="text-[10px] font-black uppercase text-blue-300 mb-2 tracking-widest">Statut du Badge</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                        <p class="font-bold">Sceau Audilix Certifié</p>
-                    </div>
-                </div>
-
-                <button class="w-full py-4 bg-white text-audilix rounded-xl font-black text-sm hover:scale-105 transition">Gérer les accès API</button>
-            </div>
-
         </div>
 
-        <footer class="mt-20 text-center">
-            <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 italic">Audilix Management Console — v2.0</p>
-        </footer>
+        <!-- DOCUMENTS PAGE -->
+        <div id="page-documents" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Documents juridiques générés</div>
+                    <span class="card-action">Tous prêts à l'emploi</span>
+                </div>
+                <div class="card-body">
+                    <div class="doc-grid">
+                        <div class="doc-card" onclick="downloadDoc('rgpd')">
+                            <div class="doc-icon">📋</div>
+                            <div>
+                                <div class="doc-name">Politique de confidentialité</div>
+                                <div class="doc-status ready">✓ Générée — RGPD conforme</div>
+                            </div>
+                        </div>
+                        <div class="doc-card" onclick="downloadDoc('mentions')">
+                            <div class="doc-icon">⚖️</div>
+                            <div>
+                                <div class="doc-name">Mentions légales</div>
+                                <div class="doc-status ready">✓ Générée — À jour</div>
+                            </div>
+                        </div>
+                        <div class="doc-card" onclick="downloadDoc('cookies')">
+                            <div class="doc-icon">🍪</div>
+                            <div>
+                                <div class="doc-name">Politique de cookies</div>
+                                <div class="doc-status warning">⚠ À finaliser</div>
+                            </div>
+                        </div>
+                        <div class="doc-card" onclick="downloadDoc('cgu')">
+                            <div class="doc-icon">📝</div>
+                            <div>
+                                <div class="doc-name">CGU — Conditions générales</div>
+                                <div class="doc-status ready">✓ Générée — À jour</div>
+                            </div>
+                        </div>
+                        <div class="doc-card" onclick="downloadDoc('dpa')">
+                            <div class="doc-icon">🔒</div>
+                            <div>
+                                <div class="doc-name">DPA — Accord sous-traitants</div>
+                                <div class="doc-status pending">⏳ En cours de génération</div>
+                            </div>
+                        </div>
+                        <div class="doc-card" onclick="downloadDoc('registre')">
+                            <div class="doc-icon">📊</div>
+                            <div>
+                                <div class="doc-name">Registre des traitements</div>
+                                <div class="doc-status pending">⏳ En cours de génération</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    </main>
+        <!-- ALERTS PAGE -->
+        <div id="page-alerts" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Toutes les alertes</div>
+                </div>
+                <div class="card-body">
+                    <div class="alert-list">
+                        <div class="alert-item critical">
+                            <div class="alert-dot"></div>
+                            <div>
+                                <div class="alert-title">🚨 Politique de cookies manquante</div>
+                                <div class="alert-desc">Aucun bandeau de consentement aux cookies détecté sur votre site. Risque d'amende RGPD.</div>
+                            </div>
+                            <span class="alert-time">Aujourd'hui</span>
+                        </div>
+                        <div class="alert-item warning">
+                            <div class="alert-dot"></div>
+                            <div>
+                                <div class="alert-title">⚠️ Mentions légales incomplètes</div>
+                                <div class="alert-desc">L'adresse du responsable de traitement des données est manquante dans vos mentions légales.</div>
+                            </div>
+                            <span class="alert-time">Il y a 2j</span>
+                        </div>
+                        <div class="alert-item warning">
+                            <div class="alert-dot"></div>
+                            <div>
+                                <div class="alert-title">⚠️ Headers de sécurité manquants</div>
+                                <div class="alert-desc">Content-Security-Policy et X-Frame-Options non configurés sur votre serveur.</div>
+                            </div>
+                            <span class="alert-time">Il y a 4j</span>
+                        </div>
+                        <div class="alert-item info">
+                            <div class="alert-dot"></div>
+                            <div>
+                                <div class="alert-title">✅ Rapport mensuel disponible</div>
+                                <div class="alert-desc">Votre rapport de conformité de mars 2026 est prêt. Score : 72/100.</div>
+                            </div>
+                            <span class="alert-time">Il y a 3j</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- MONITORING PAGE -->
+        <div id="page-monitoring" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Monitoring en temps réel</div>
+                    <span class="card-action" style="color:var(--green)">● Actif</span>
+                </div>
+                <div class="card-body">
+                    <p style="color:var(--gray);font-size:14px;margin-bottom:24px;">Votre site est surveillé 24/7. Dernière vérification il y a <strong>12 minutes</strong>.</p>
+                    <div class="compliance-list">
+                        <div class="compliance-item">
+                            <div class="compliance-header">
+                                <span class="compliance-name">🔒 HTTPS actif</span>
+                                <span style="color:var(--green);font-size:13px;font-weight:700;">✓ OK</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item">
+                            <div class="compliance-header">
+                                <span class="compliance-name">🍪 Bandeau cookies</span>
+                                <span style="color:var(--red);font-size:13px;font-weight:700;">✗ Manquant</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item">
+                            <div class="compliance-header">
+                                <span class="compliance-name">📋 Politique de confidentialité</span>
+                                <span style="color:var(--orange);font-size:13px;font-weight:700;">⚠ Incomplète</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item">
+                            <div class="compliance-header">
+                                <span class="compliance-name">⚖️ Mentions légales</span>
+                                <span style="color:var(--orange);font-size:13px;font-weight:700;">⚠ Incomplètes</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item">
+                            <div class="compliance-header">
+                                <span class="compliance-name">🛡️ Headers de sécurité</span>
+                                <span style="color:var(--red);font-size:13px;font-weight:700;">✗ Manquants</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div id="page-settings" style="display:none;">
+            <div class="card">
+                <div class="card-header"><div class="card-title">Paramètres du compte</div></div>
+                <div class="card-body">
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label style="font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:8px;">Email de notification</label>
+                        <input type="email" style="width:100%;max-width:400px;padding:12px 16px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;" id="notif-email" placeholder="votre@email.com">
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <label style="font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:8px;">Site à surveiller</label>
+                        <input type="url" style="width:100%;max-width:400px;padding:12px 16px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;" id="monitored-url" placeholder="https://votre-site.com">
+                    </div>
+                    <button style="background:var(--navy);color:white;padding:12px 24px;border:none;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;" onclick="saveSettings()">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+const BACKEND = "https://audilix-backend.onrender.com";
+
+// AUTH CHECK
+const token = localStorage.getItem('audilix_token');
+const userStr = localStorage.getItem('audilix_user');
+let user = null;
+
+if (!token) {
+    window.location.href = 'login.html';
+} else {
+    user = userStr ? JSON.parse(userStr) : { firstname: 'Client', email: 'client@audilix.com', plan: 'business' };
+    initDashboard();
+}
+
+function initDashboard() {
+    // User info
+    const name = user.firstname || 'Client';
+    document.getElementById('welcome-name').textContent = name;
+    document.getElementById('user-name-display').textContent = (user.firstname || '') + ' ' + (user.lastname || '');
+    document.getElementById('user-email-display').textContent = user.email || '';
+    document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
+    const plan = user.plan || 'starter';
+    document.getElementById('sidebar-plan-name').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+
+    // Date
+    const now = new Date();
+    document.getElementById('topbar-date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    // Score chart
+    renderScoreChart();
+
+    // Reports
+    renderReports();
+}
+
+function renderScoreChart() {
+    const data = [
+        { month: 'Oct', score: 38 },
+        { month: 'Nov', score: 45 },
+        { month: 'Déc', score: 52 },
+        { month: 'Jan', score: 58 },
+        { month: 'Fév', score: 64 },
+        { month: 'Mar', score: 72 },
+    ];
+    const chart = document.getElementById('score-chart');
+    const max = 100;
+    chart.innerHTML = data.map(d => {
+        const pct = (d.score / max) * 100;
+        const cls = d.score >= 70 ? 'high' : d.score >= 50 ? 'medium' : 'low';
+        return `<div class="score-bar-wrap">
+            <div class="score-bar-val">${d.score}</div>
+            <div class="score-bar ${cls}" style="height:${pct}%"></div>
+            <div class="score-bar-label">${d.month}</div>
+        </div>`;
+    }).join('');
+}
+
+const reports = [
+    { name: 'Audit complet — Mars 2026', date: '14 mars 2026', score: 72, level: 'medium', icon: '📊' },
+    { name: 'Audit complet — Fév 2026', date: '14 fév 2026', score: 64, level: 'medium', icon: '📊' },
+    { name: 'Scan rapide — site.com', date: '10 fév 2026', score: 48, level: 'low', icon: '🔍' },
+    { name: 'Audit complet — Jan 2026', date: '14 jan 2026', score: 58, level: 'medium', icon: '📊' },
+    { name: 'Scan cybersécurité', date: '5 jan 2026', score: 81, level: 'high', icon: '🛡️' },
+];
+
+function renderReports() {
+    const preview = document.getElementById('report-list-preview');
+    const full = document.getElementById('report-list-full');
+    const html = reports.map(r => `
+        <div class="report-item">
+            <div class="report-icon">${r.icon}</div>
+            <div class="report-info">
+                <div class="report-name">${r.name}</div>
+                <div class="report-date">${r.date}</div>
+            </div>
+            <div class="report-score ${r.level}">${r.score}</div>
+            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
+        </div>
+    `).join('');
+    if (preview) preview.innerHTML = html.split('</div>\n        <div class="report-item">').slice(0, 3).join('</div>\n        <div class="report-item">') + (html.includes('report-item') ? '' : '');
+    const items = reports.slice(0, 3).map(r => `
+        <div class="report-item">
+            <div class="report-icon">${r.icon}</div>
+            <div class="report-info">
+                <div class="report-name">${r.name}</div>
+                <div class="report-date">${r.date}</div>
+            </div>
+            <div class="report-score ${r.level}">${r.score}</div>
+            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
+        </div>
+    `).join('');
+    if (preview) preview.innerHTML = items;
+    if (full) full.innerHTML = reports.map(r => `
+        <div class="report-item">
+            <div class="report-icon">${r.icon}</div>
+            <div class="report-info">
+                <div class="report-name">${r.name}</div>
+                <div class="report-date">${r.date}</div>
+            </div>
+            <div class="report-score ${r.level}">${r.score}</div>
+            <div class="report-dl" title="Télécharger" onclick="downloadReport('${r.name}')">⬇</div>
+        </div>
+    `).join('');
+}
+
+const pages = ['overview', 'reports', 'documents', 'alerts', 'monitoring', 'settings'];
+const pageTitles = {
+    overview: 'Vue d\'ensemble',
+    reports: 'Mes rapports',
+    documents: 'Documents juridiques',
+    alerts: 'Alertes',
+    monitoring: 'Monitoring',
+    settings: 'Paramètres'
+};
+
+function showPage(page) {
+    pages.forEach(p => {
+        const el = document.getElementById(`page-${p}`);
+        if (el) el.style.display = p === page ? 'block' : 'none';
+    });
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('page-title').textContent = pageTitles[page] || page;
+}
+
+function logout() {
+    localStorage.removeItem('audilix_token');
+    localStorage.removeItem('audilix_user');
+    window.location.href = 'login.html';
+}
+
+function downloadReport(name) {
+    alert(`Téléchargement du rapport "${name}" — Fonctionnalité PDF bientôt disponible.`);
+}
+
+function downloadDoc(type) {
+    alert(`Téléchargement du document "${type}" — Fonctionnalité bientôt disponible.`);
+}
+
+function launchScan() {
+    const url = document.getElementById('dash-scan-url').value.trim();
+    if (url) {
+        window.location.href = 'scanner.html?url=' + encodeURIComponent(url);
+    } else {
+        window.location.href = 'scanner.html';
+    }
+}
+
+function saveSettings() {
+    alert('Paramètres sauvegardés !');
+}
+</script>
 </body>
 </html>
