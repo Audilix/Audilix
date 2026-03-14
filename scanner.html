@@ -239,10 +239,10 @@
 </div>
 
 <footer>
-    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="/cdn-cgi/l/email-protection#ea8985849e8b899ec48b9f8e83868392aa8d878b8386c4898587">Contact</a></p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const BACKEND = "https://audilix-backend.onrender.com";
 
 async function startScan() {
@@ -358,10 +358,19 @@ function resetScanner() {
 
 // Enter key
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('url-input').addEventListener('keypress', e => {
-        if (e.key === 'Enter') startScan();
+   
+        document.getElementById('url-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') startScan();
+        });
+
+        // Auto-scan si URL passée depuis index.html
+        const params = new URLSearchParams(window.location.search);
+        const urlParam = params.get('url');
+        if (urlParam) {
+            document.getElementById('url-input').value = urlParam;
+            setTimeout(startScan, 600);
+        }
     });
-});
 </script>
 </body>
 </html>
