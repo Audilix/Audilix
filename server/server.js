@@ -194,6 +194,44 @@ app.post("/webhook/tally", async (req, res) => {
   }
 });
 
+// ─── Auth (stockage en mémoire — à remplacer par DB plus tard) ─
+const users = new Map();
+
+function generateToken(email) {
+  return Buffer.from(`${email}:${Date.now()}:audilix`).toString('base64');
+}
+
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const { firstname, lastname, email, company, password, plan } = req.body;
+    if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
+    if (users.has(email)) return res.status(400).json({ error: "Un compte existe déjà avec cet email" });
+    if (password.length < 8) return res.status(400).json({ error: "Mot de passe trop court (8 caractères min)" });
+    const user = { firstname, lastname, email, company, plan: plan || 'starter', createdAt: new Date() };
+    users.set(email, { ...user, password });
+    const token = generateToken(email);
+    console.log(`✅ Nouveau compte: ${email} — Plan: ${plan}`);
+    res.json({ token, user });
+  } catch(e) {
+    res.status(500).json({ error: "Erreur serveur", details: String(e) });
+  }
+});
+
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
+    const stored = users.get(email);
+    if (!stored || stored.password !== password) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
+    const token = generateToken(email);
+    const { password: _, ...user } = stored;
+    console.log(`✅ Connexion: ${email}`);
+    res.json({ token, user });
+  } catch(e) {
+    res.status(500).json({ error: "Erreur serveur", details: String(e) });
+  }
+});
+
 // ─── Health check ──────────────────────────────────────────────
 app.get("/", (req, res) => {
   res.json({ status: "Audilix backend en ligne ✅", version: "3.0" });
