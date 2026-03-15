@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choisir mon plan — Audilix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root {
+            --navy: #0B2545;
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-pale: #F5EDD6;
+            --cream: #FAF8F4;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --border: rgba(11,37,69,0.08);
+            --green: #22c55e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+        .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+
+        nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo img { height: 32px; }
+        .nav-back { color: var(--gray); text-decoration: none; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+        .nav-back:hover { color: var(--navy); }
+        .nav-back::before { content: '←'; }
+
+        .hero { text-align: center; padding: 64px 40px 48px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold-pale); border: 1px solid var(--gold); color: #8B6914; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 16px; border-radius: 2px; margin-bottom: 24px; }
+        .hero h1 { font-size: clamp(36px, 4vw, 54px); font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 16px; }
+        .hero h1 em { color: var(--gold); font-style: italic; }
+        .hero p { font-size: 17px; color: var(--gray); font-weight: 300; }
+
+        /* PLANS */
+        .plans { max-width: 1100px; margin: 0 auto; padding: 0 40px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+
+        .plan-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 32px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+        .plan-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(11,37,69,0.08); }
+        .plan-card.featured { background: var(--navy); border-color: transparent; transform: scale(1.04); }
+        .plan-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+        .plan-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 16px 16px 0 0; }
+
+        .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 18px; border-radius: 40px; white-space: nowrap; }
+
+        .plan-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .plan-card.featured .plan-name { color: white; }
+        .plan-tagline { font-size: 13px; color: var(--gray); margin-bottom: 28px; font-weight: 300; }
+        .plan-card.featured .plan-tagline { color: rgba(255,255,255,0.4); }
+
+        .plan-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+        .plan-card.featured .plan-price { border-color: rgba(255,255,255,0.1); }
+        .price-currency { font-size: 22px; color: var(--gray); }
+        .plan-card.featured .price-currency { color: rgba(255,255,255,0.4); }
+        .price-amount { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: var(--navy); line-height: 1; }
+        .plan-card.featured .price-amount { color: var(--gold); }
+        .price-period { font-size: 14px; color: var(--gray); font-weight: 300; }
+        .plan-card.featured .price-period { color: rgba(255,255,255,0.4); }
+
+        .plan-section { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 16px 0 10px; }
+        .plan-features { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--navy); line-height: 1.5; }
+        .plan-card.featured .plan-features li { color: rgba(255,255,255,0.75); }
+        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); margin-top: 1px; }
+        .plan-card.featured .feat-check { background: rgba(201,168,76,0.15); }
+
+        .plan-btn { display: block; width: 100%; padding: 15px; text-align: center; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; border: none; }
+        .btn-outline { background: transparent; border: 1.5px solid rgba(11,37,69,0.2); color: var(--navy); }
+        .btn-outline:hover { background: var(--navy); color: white; }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); transform: translateY(-1px); }
+        .plan-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+        .plan-note { text-align: center; font-size: 12px; color: var(--gray); margin-top: 12px; }
+        .plan-card.featured .plan-note { color: rgba(255,255,255,0.3); }
+
+        /* GARANTIES */
+        .garanties { background: white; border-top: 1px solid var(--border); padding: 48px 40px; }
+        .garanties-inner { max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+        .g-icon { font-size: 28px; margin-bottom: 12px; }
+        .g-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .g-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+        /* LOADING OVERLAY */
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11,37,69,0.7); display: none; align-items: center; justify-content: center; z-index: 999; }
+        .loading-overlay.show { display: flex; }
+        .loading-box { background: white; border-radius: 16px; padding: 48px; text-align: center; max-width: 320px; }
+        .loading-spin { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { font-size: 15px; font-weight: 600; color: var(--navy); }
+        .loading-sub { font-size: 13px; color: var(--gray); margin-top: 6px; }
+
+        @media (max-width: 900px) {
+            .plans { grid-template-columns: 1fr; max-width: 480px; }
+            .plan-card.featured { transform: none; }
+            .garanties-inner { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="gold-line"></div>
+
+<nav>
+    <div class="nav-logo"><img src="logo.png" alt="Audilix"></div>
+    <a href="index.html" class="nav-back">Retour au site</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-badge">Paiement sécurisé par Stripe</div>
+    <h1>Choisissez votre plan<br><em>Audilix</em></h1>
+    <p>Sans engagement · Résiliable à tout moment · Paiement 100% sécurisé</p>
+</div>
+
+<div class="plans">
+
+    <!-- STARTER -->
+    <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-tagline">TPE, indépendants, associations</div>
+        <div class="plan-price">
+            <span class="price-currency">€</span>
+            <span class="price-amount">69</span>
+            <span class="price-period">&nbsp;/ mois</span>
+        </div>
+        <ul class="plan-features">
+            <div class="plan-section">Audit & Score</div>
+            <li><span class="feat-check">✓</span>Audit automatique du site web</li>
+            <li><span class="feat-check">✓</span>Score de conformité /100</li>
+            <li><span class="feat-check">✓</span>3 rapports IA par mois</li>
+            <li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
+            <div class="plan-section">Documents générés</div>
+            <li><span class="feat-check">✓</span>Politique de confidentialité</li>
+            <li><span class="feat-check">✓</span>Mentions légales</li>
+            <li><span class="feat-check">✓</span>Politique de cookies</li>
+            <div class="plan-section">Surveillance</div>
+            <li><span class="feat-check">✓</span>Monitoring mensuel automatique</li>
+            <li><span class="feat-check">✓</span>Dashboard de conformité</li>
+        </ul>
+        <button class="plan-btn btn-outline" onclick="checkout('starter')">Commencer →</button>
+        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="plan-card featured">
+        <div class="plan-badge">Le plus choisi</div>
+        <div class="plan-name">Business</div>
+        <div class="plan-tagline">PME, startups, ETI</div>
+        <div class="plan-price">
+            <span class="price-currency">€</span>
+            <span class="price-amount">149</span>
+            <span class="price-period">&nbsp;/ mois</span>
+        </div>
+        <ul class="plan-features">
+            <div class="plan-section">Tout Starter +</div>
+            <li><span class="feat-check">✓</span>Audits IA illimités</li>
+            <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
+            <li><span class="feat-check">✓</span>Plan d'action priorisé par l'IA</li>
+            <li><span class="feat-check">✓</span>Correction automatique par IA</li>
+            <div class="plan-section">Agent IA Intégré</div>
+            <li><span class="feat-check">✓</span>Assistant IA disponible 24/7</li>
+            <li><span class="feat-check">✓</span>Bannière cookies générée automatiquement</li>
+            <div class="plan-section">Rapports & Export</div>
+            <li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
+            <li><span class="feat-check">✓</span>Monitoring 24/7 + alertes temps réel</li>
+        </ul>
+        <button class="plan-btn btn-gold" onclick="checkout('business')">Choisir Business →</button>
+        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+    </div>
+
+    <!-- EXPERT -->
+    <div class="plan-card">
+        <div class="plan-name">Expert</div>
+        <div class="plan-tagline">Grandes entreprises, cabinets</div>
+        <div class="plan-price">
+            <span class="price-currency">€</span>
+            <span class="price-amount">299</span>
+            <span class="price-period">&nbsp;/ mois</span>
+        </div>
+        <ul class="plan-features">
+            <div class="plan-section">Tout Business +</div>
+            <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+            <li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
+            <li><span class="feat-check">✓</span>IA Compliance Officer virtuel</li>
+            <div class="plan-section">Automatisation avancée</div>
+            <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
+            <li><span class="feat-check">✓</span>Documents mis à jour automatiquement</li>
+            <div class="plan-section">Intégration & Certification</div>
+            <li><span class="feat-check">✓</span>API conformité intégrable</li>
+            <li><span class="feat-check">✓</span>Badge "Certified by Audilix"</li>
+            <li><span class="feat-check">✓</span>Consultant dédié 1h/mois</li>
+        </ul>
+        <button class="plan-btn btn-outline" onclick="checkout('expert')">Choisir Expert →</button>
+        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+    </div>
+
+</div>
+
+<div class="garanties">
+    <div class="garanties-inner">
+        <div><div class="g-icon">🔒</div><div class="g-title">Paiement sécurisé</div><p class="g-desc">Chiffrement SSL 256 bits. Vos données bancaires ne sont jamais stockées.</p></div>
+        <div><div class="g-icon">🔄</div><div class="g-title">Sans engagement</div><p class="g-desc">Résiliez à tout moment depuis votre dashboard, sans frais ni justification.</p></div>
+        <div><div class="g-icon">⚡</div><div class="g-title">Accès immédiat</div><p class="g-desc">Votre compte est activé instantanément après le paiement.</p></div>
+        <div><div class="g-icon">🇪🇺</div><div class="g-title">Données en Europe</div><p class="g-desc">Hébergement 100% européen. Conformité RGPD garantie.</p></div>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+    <div class="loading-box">
+        <div class="loading-spin"></div>
+        <div class="loading-text">Redirection vers le paiement...</div>
+        <div class="loading-sub">Vous allez être redirigé vers Stripe</div>
+    </div>
+</div>
+
+<script>
+const BACKEND = "https://audilix-backend.onrender.com";
+
+const PRICE_IDS = {
+    starter: 'price_1TBEp1L1yZKJczeCtlqQ4u3F',
+    business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
+    expert: 'price_1TBEuYL1yZKJczeCXrgBEFcu'
+};
+
+async function checkout(plan) {
+    // Vérifier si connecté
+    const token = localStorage.getItem('audilix_token');
+    const userStr = localStorage.getItem('audilix_user');
+
+    if (!token) {
+        // Pas connecté → rediriger vers login avec retour sur pricing
+        localStorage.setItem('audilix_redirect_plan', plan);
+        window.location.href = 'login.html?redirect=pricing.html';
+        return;
+    }
+
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    document.getElementById('loading').classList.add('show');
+
+    try {
+        const res = await fetch(`${BACKEND}/api/stripe/checkout`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                plan,
+                priceId: PRICE_IDS[plan],
+                userId: user?.id,
+                email: user?.email,
+                successUrl: `${window.location.origin}/dashboard.html?payment=success`,
+                cancelUrl: `${window.location.origin}/pricing.html`
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            throw new Error(data.error || 'Erreur lors de la création de la session');
+        }
+    } catch(e) {
+        document.getElementById('loading').classList.remove('show');
+        alert('Erreur : ' + e.message);
+    }
+}
+
+// Si redirigé après login avec un plan en attente
+const redirectPlan = localStorage.getItem('audilix_redirect_plan');
+if (redirectPlan && localStorage.getItem('audilix_token')) {
+    localStorage.removeItem('audilix_redirect_plan');
+    checkout(redirectPlan);
+}
+</script>
+</body>
+</html>
