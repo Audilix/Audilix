@@ -42,7 +42,7 @@
         .hero h1 em { font-style: italic; color: var(--gold); }
         .hero-sub { font-size: 18px; line-height: 1.75; color: var(--gray); margin-bottom: 48px; font-weight: 300; }
         .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-        .btn-primary { background: var(--navy); color: white; padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s; display: inline-block; letter-spacing: 0.02em; }
+        .btn-primary { background: var(--navy); color: white; padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s; display: inline-block; }
         .btn-primary:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.3); }
         .btn-gold { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; display: inline-block; }
         .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.4); }
@@ -92,6 +92,7 @@
         .section-title { font-size: clamp(36px, 4vw, 54px); font-weight: 700; line-height: 1.1; color: var(--navy); letter-spacing: -0.02em; }
         .section-sub { font-size: 18px; color: var(--gray); line-height: 1.7; font-weight: 300; margin-top: 16px; }
 
+        /* SOLUTIONS */
         .solutions { padding: 120px 40px; max-width: 1280px; margin: auto; }
         .solutions-header { margin-bottom: 64px; max-width: 580px; }
         .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -103,6 +104,7 @@
         .sol-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 14px; }
         .sol-desc { font-size: 15px; line-height: 1.75; color: var(--gray); font-weight: 300; }
 
+        /* PROCESS */
         .process { background: var(--navy); padding: 120px 40px; position: relative; overflow: hidden; }
         .process::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .process-inner { max-width: 1280px; margin: auto; }
@@ -116,47 +118,50 @@
         .step-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: white; margin-bottom: 14px; }
         .step-desc { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.4); font-weight: 300; }
 
-        .pricing { padding: 120px 40px; background: var(--cream); }
+        /* PRICING PREVIEW */
+        .pricing-preview { padding: 120px 40px; background: var(--cream); }
         .pricing-inner { max-width: 1280px; margin: auto; }
-        .pricing-header { text-align: center; margin-bottom: 72px; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
-        .plan-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 48px 40px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+        .pricing-header { text-align: center; margin-bottom: 56px; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; margin-bottom: 48px; }
+        .plan-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 40px 32px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
         .plan-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(11,37,69,0.08); }
         .plan-card.featured { background: var(--navy); border-color: transparent; transform: scale(1.03); }
-        .plan-card.featured:hover { transform: scale(1.03) translateY(-4px); box-shadow: 0 32px 80px rgba(11,37,69,0.25); }
+        .plan-card.featured:hover { transform: scale(1.03) translateY(-4px); }
         .plan-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 12px 12px 0 0; }
         .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 18px; border-radius: 40px; white-space: nowrap; }
-        .plan-logo { width: 52px; height: 52px; object-fit: contain; margin-bottom: 28px; border-radius: 8px; }
-        .plan-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+        .plan-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
         .plan-card.featured .plan-name { color: white; }
-        .plan-tagline { font-size: 13px; color: var(--gray); margin-bottom: 32px; font-weight: 300; }
-        .plan-card.featured .plan-tagline { color: rgba(255,255,255,0.4); }
-        .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid var(--border); }
+        .plan-target-small { font-size: 12px; color: var(--gray); margin-bottom: 24px; font-weight: 300; }
+        .plan-card.featured .plan-target-small { color: rgba(255,255,255,0.4); }
+        .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
         .plan-card.featured .plan-price { border-color: rgba(255,255,255,0.1); }
         .price-amount { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: var(--navy); line-height: 1; }
         .plan-card.featured .price-amount { color: var(--gold); }
-        .price-currency { font-size: 22px; font-weight: 400; color: var(--gray); margin-right: 2px; }
+        .price-currency { font-size: 20px; font-weight: 400; color: var(--gray); }
         .plan-card.featured .price-currency { color: rgba(255,255,255,0.35); }
-        .price-period { font-size: 14px; color: var(--gray); font-weight: 300; }
+        .price-period { font-size: 14px; color: var(--gray); font-weight: 300; margin-left: 4px; }
         .plan-card.featured .price-period { color: rgba(255,255,255,0.35); }
-        .plan-section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 20px 0 10px; }
-        .plan-features { list-style: none; margin-bottom: 40px; display: flex; flex-direction: column; gap: 10px; }
-        .plan-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; line-height: 1.5; color: var(--navy); }
-        .plan-card.featured .plan-features li { color: rgba(255,255,255,0.7); }
-        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); margin-top: 1px; }
+        .plan-highlights { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
+        .plan-highlights li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--navy); }
+        .plan-card.featured .plan-highlights li { color: rgba(255,255,255,0.7); }
+        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); }
         .plan-card.featured .feat-check { background: rgba(201,168,76,0.15); }
-        .plan-btn { display: block; width: 100%; padding: 15px; text-align: center; border-radius: 4px; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-decoration: none; transition: all 0.25s; }
+        .plan-btn { display: block; width: 100%; padding: 14px; text-align: center; border-radius: 4px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.25s; }
         .plan-btn-outline { border: 1.5px solid rgba(11,37,69,0.2); color: var(--navy); background: transparent; }
         .plan-btn-outline:hover { background: var(--navy); color: white; }
-        .plan-btn-gold { background: var(--gold); color: var(--navy); border: 1.5px solid var(--gold); }
-        .plan-btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); transform: translateY(-1px); }
+        .plan-btn-gold { background: var(--gold); color: var(--navy); }
+        .plan-btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+        .pricing-cta { text-align: center; }
+        .pricing-note { font-size: 13px; color: var(--gray); margin-top: 16px; }
 
+        /* GUARANTEES */
         .guarantees { padding: 80px 40px; border-top: 1px solid var(--border); }
         .guarantees-inner { max-width: 1280px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; text-align: center; }
         .g-icon { font-size: 30px; margin-bottom: 16px; }
         .g-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
         .g-desc { font-size: 14px; color: var(--gray); line-height: 1.65; font-weight: 300; }
 
+        /* CTA */
         .cta-section { background: var(--navy); padding: 120px 40px; text-align: center; position: relative; }
         .cta-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .cta-section h2 { font-size: clamp(40px, 5vw, 68px); color: white; font-weight: 700; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
@@ -171,7 +176,7 @@
         .footer-links { display: flex; gap: 32px; list-style: none; }
         .footer-links a { text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color 0.2s; }
         .footer-links a:hover { color: rgba(255,255,255,0.6); }
-        .footer-copy { font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; }
+        .footer-copy { font-size: 11px; color: rgba(255,255,255,0.18); }
 
         #chat-btn { position: fixed; bottom: 32px; right: 32px; z-index: 999; width: 58px; height: 58px; background: var(--navy); border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(11,37,69,0.35); transition: transform 0.25s; }
         #chat-btn:hover { transform: translateY(-2px); }
@@ -206,6 +211,7 @@
             .footer-inner { flex-direction: column; text-align: center; }
             .trust-inner { flex-direction: column; }
             .scanner-section { padding: 60px 24px; }
+            .cta-btns { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
@@ -230,8 +236,8 @@
     <div class="hero">
         <div class="reveal">
             <div class="hero-badge">Plateforme IA — Conformité Réglementaire</div>
-            <h1>La conformité,<br><em>enfin</em> automatisée.</h1>
-            <p class="hero-sub">Audilix analyse votre site et vos risques RGPD, cybersécurité et RSE en quelques secondes grâce à l'intelligence artificielle. Un rapport expert. Une action immédiate.</p>
+            <h1>Votre AI Compliance<br>Officer, <em>automatisé.</em></h1>
+            <p class="hero-sub">Audilix analyse votre site, détecte vos risques RGPD, cybersécurité et RSE, génère vos documents juridiques et surveille votre conformité 24/7 — sans intervention humaine.</p>
             <div class="hero-actions">
                 <a href="scanner.html" class="btn-gold">Scanner mon site gratuitement →</a>
                 <a href="#solutions" class="btn-ghost">Découvrir la méthode</a>
@@ -240,10 +246,10 @@
         <div class="reveal" style="transition-delay:0.15s">
             <div class="hero-card">
                 <div class="stat-grid">
-                    <div><div class="stat-number">3<span>'</span></div><div class="stat-label">Pour votre rapport</div></div>
-                    <div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Score de conformité</div></div>
+                    <div><div class="stat-number">2<span>'</span></div><div class="stat-label">Analyse complète</div></div>
+                    <div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Compliance Trust Score™</div></div>
                     <div><div class="stat-number">0<span>€</span></div><div class="stat-label">Premier scan</div></div>
-                    <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">Analyse augmentée</div></div>
+                    <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">100% automatisé</div></div>
                 </div>
                 <hr class="stat-divider">
                 <div class="compliance-tags">
@@ -273,23 +279,23 @@
     </div>
 </div>
 
-<!-- SCANNER SECTION -->
+<!-- SCANNER -->
 <section id="scanner" class="scanner-section">
     <div class="scanner-inner reveal">
-        <div class="section-label">Scanner gratuit & instantané</div>
+        <div class="section-label">Compliance Trust Score™ — Gratuit & Instantané</div>
         <h2>Votre site est-il <em>vraiment</em> conforme ?</h2>
-        <p>Entrez votre URL et obtenez un score de conformité RGPD, cybersécurité et RSE en moins de 30 secondes. Gratuit, sans inscription.</p>
+        <p>Entrez votre URL et obtenez votre Compliance Trust Score™ en moins de 2 minutes. Sans inscription, sans engagement.</p>
         <div class="scanner-box">
             <div class="scanner-input-group">
                 <input type="url" id="hero-url" class="scanner-url-input" placeholder="https://votre-site.com">
-                <button class="scanner-submit" onclick="goToScanner()">Scanner →</button>
+                <button class="scanner-submit" onclick="goToScanner()">Analyser →</button>
             </div>
-            <p class="scanner-note">Analyse gratuite • Aucune inscription requise • Résultats en 30 secondes</p>
+            <p class="scanner-note">Analyse gratuite · Aucune inscription · Résultats en moins de 2 minutes</p>
         </div>
         <div class="scanner-tags">
-            <span class="scanner-tag">Score /100 instantané</span>
-            <span class="scanner-tag">Risques identifiés</span>
-            <span class="scanner-tag">Plan d'action inclus</span>
+            <span class="scanner-tag">Compliance Trust Score™</span>
+            <span class="scanner-tag">Risques RGPD détectés</span>
+            <span class="scanner-tag">Documents juridiques</span>
             <span class="scanner-tag">100% automatique</span>
         </div>
     </div>
@@ -299,24 +305,24 @@
 <section id="solutions" class="solutions">
     <div class="solutions-header reveal">
         <div class="section-label">Nos expertises</div>
-        <h2 class="section-title">Ce qu'Audilix analyse pour vous.</h2>
-        <p class="section-sub">Une couverture complète des obligations réglementaires européennes, traduite en actions concrètes par l'IA.</p>
+        <h2 class="section-title">Ce qu'Audilix analyse et corrige pour vous.</h2>
+        <p class="section-sub">Une couverture complète des obligations réglementaires européennes, gérée entièrement par l'IA.</p>
     </div>
     <div class="solutions-grid reveal" style="transition-delay:0.1s">
         <div class="solution-card">
             <div class="sol-icon">🔐</div>
             <div class="sol-title">RGPD & Protection des données</div>
-            <p class="sol-desc">Évaluation complète de vos traitements de données, cookies, politique de confidentialité, mentions légales et gestion des consentements. Documents juridiques générés automatiquement.</p>
+            <p class="sol-desc">Analyse complète de vos cookies, politique de confidentialité, mentions légales et consentements. Documents juridiques générés et mis à jour automatiquement.</p>
         </div>
         <div class="solution-card">
             <div class="sol-icon">🛡️</div>
             <div class="sol-title">Cybersécurité & NIS2</div>
-            <p class="sol-desc">Analyse de votre posture de sécurité selon NIS2 et ISO 27001. Détection des failles, headers manquants, scripts non sécurisés. Plan de remédiation priorisé par niveau de risque.</p>
+            <p class="sol-desc">Détection des failles, headers manquants, scripts non sécurisés. Plan de remédiation priorisé par niveau de risque selon NIS2 et ISO 27001.</p>
         </div>
         <div class="solution-card">
             <div class="sol-icon">🌱</div>
-            <div class="sol-title">RSE, AI Act & CSRD</div>
-            <p class="sol-desc">Audit de responsabilité sociétale, conformité à l'AI Act européen et obligations de reporting CSRD 2024. Surveillance automatique des évolutions réglementaires.</p>
+            <div class="sol-title">RSE, AI Act & Regulatory Watch™</div>
+            <p class="sol-desc">Surveillance automatique des évolutions réglementaires RGPD, AI Act et CSRD. Alertes immédiates si votre conformité est impactée par une nouvelle loi.</p>
         </div>
     </div>
 </section>
@@ -326,142 +332,118 @@
     <div class="process-inner">
         <div class="process-header reveal">
             <div class="section-label">Notre méthode</div>
-            <h2 class="section-title">De l'analyse à l'action en 3 étapes.</h2>
-            <p class="section-sub">Simple, rapide, sans jargon. Un rapport que vous pouvez utiliser dès aujourd'hui.</p>
+            <h2 class="section-title">De l'analyse à la conformité en 3 étapes.</h2>
+            <p class="section-sub">Entièrement automatisé. Aucune intervention humaine requise.</p>
         </div>
         <div class="process-steps">
             <div class="step reveal" style="transition-delay:0.1s">
                 <div class="step-num">1</div>
                 <div class="step-title">Scannez votre site</div>
-                <p class="step-desc">Entrez votre URL. Notre IA analyse automatiquement votre site — RGPD, cookies, sécurité, mentions légales. Aucune installation requise.</p>
+                <p class="step-desc">Entrez votre URL. Notre IA analyse votre site en moins de 2 minutes — RGPD, cookies, sécurité, mentions légales. Gratuit, sans inscription.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.2s">
                 <div class="step-num">2</div>
-                <div class="step-title">Score & Risques IA</div>
-                <p class="step-desc">Notre moteur IA génère un score sur 100 et identifie vos risques juridiques prioritaires en croisant votre site avec les dernières réglementations européennes.</p>
+                <div class="step-title">Compliance Trust Score™</div>
+                <p class="step-desc">Notre IA génère votre score sur 100 et identifie chaque risque juridique avec son niveau de priorité et les corrections à apporter.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.3s">
                 <div class="step-num">3</div>
-                <div class="step-title">Rapport & Documents</div>
-                <p class="step-desc">Recevez votre rapport complet avec le plan d'action et les documents juridiques générés automatiquement : RGPD, mentions légales, politique cookies.</p>
+                <div class="step-title">Conformité automatisée</div>
+                <p class="step-desc">Documents générés, corrections suggérées, monitoring continu et alertes automatiques. Votre conformité est gérée en permanence par l'IA.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- PRICING -->
-<section id="tarifs" class="pricing">
+<!-- PRICING PREVIEW -->
+<section id="tarifs" class="pricing-preview">
     <div class="pricing-inner">
         <div class="pricing-header reveal">
             <div class="section-label">Nos formules</div>
-            <h2 class="section-title">Un plan taillé pour votre ambition.</h2>
-            <p class="section-sub">Transparence totale. Engagement mensuel. Résiliable à tout moment.</p>
+            <h2 class="section-title">Un plan pour chaque ambition.</h2>
+            <p class="section-sub">Sans engagement · Résiliable à tout moment · Accès immédiat</p>
         </div>
         <div class="pricing-grid">
-
             <div class="plan-card reveal" style="transition-delay:0.1s">
-                <img src="logo-starter.png" alt="Starter" class="plan-logo">
                 <div class="plan-name">Starter</div>
-                <div class="plan-tagline">TPE, indépendants, associations</div>
+                <div class="plan-target-small">Freelances & petits sites web</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">69</span>
-                    <span class="price-period">&nbsp;/ mois</span>
+                    <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-features">
-                    <div class="plan-section-title">Audit & Score</div>
-                    <li><span class="feat-check">✓</span>Audit automatique du site web</li>
-                    <li><span class="feat-check">✓</span>Score de conformité /100</li>
-                    <li><span class="feat-check">✓</span>3 rapports IA par mois</li>
-                    <li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
-                    <div class="plan-section-title">Documents générés</div>
-                    <li><span class="feat-check">✓</span>Politique de confidentialité</li>
-                    <li><span class="feat-check">✓</span>Mentions légales</li>
-                    <li><span class="feat-check">✓</span>Politique de cookies</li>
-                    <div class="plan-section-title">Surveillance</div>
-                    <li><span class="feat-check">✓</span>Monitoring mensuel automatique</li>
-                    <li><span class="feat-check">✓</span>Alertes si non-conformité détectée</li>
-                    <li><span class="feat-check">✓</span>Dashboard de conformité</li>
+                <ul class="plan-highlights">
+                    <li><span class="feat-check">✓</span>Audit mensuel automatique</li>
+                    <li><span class="feat-check">✓</span>Compliance Trust Score™</li>
+                    <li><span class="feat-check">✓</span>Documents juridiques générés</li>
+                    <li><span class="feat-check">✓</span>Alertes email</li>
+                    <li><span class="feat-check">✓</span>1 site</li>
                 </ul>
-                <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-outline">Commencer</a>
+                <a href="pricing.html" class="plan-btn plan-btn-outline">Commencer →</a>
             </div>
-
             <div class="plan-card featured reveal" style="transition-delay:0.2s">
                 <div class="plan-badge">Le plus choisi</div>
-                <img src="logo-business.png" alt="Business" class="plan-logo">
                 <div class="plan-name">Business</div>
-                <div class="plan-tagline">PME, startups, ETI</div>
+                <div class="plan-target-small" style="color:rgba(255,255,255,0.4)">PME et startups en croissance</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">149</span>
-                    <span class="price-period">&nbsp;/ mois</span>
+                    <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-features">
-                    <div class="plan-section-title">Tout Starter +</div>
-                    <li><span class="feat-check">✓</span>Audits IA illimités</li>
-                    <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
-                    <li><span class="feat-check">✓</span>Plan d'action priorisé par l'IA</li>
-                    <li><span class="feat-check">✓</span>Correction automatique par IA</li>
-                    <div class="plan-section-title">Agent IA Intégré</div>
-                    <li><span class="feat-check">✓</span>Assistant IA disponible 24/7</li>
-                    <li><span class="feat-check">✓</span>Bannière cookies générée automatiquement</li>
-                    <li><span class="feat-check">✓</span>CGU & documents mis à jour auto</li>
-                    <div class="plan-section-title">Rapports & Export</div>
-                    <li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
-                    <li><span class="feat-check">✓</span>Monitoring 24/7 + alertes temps réel</li>
-                    <li><span class="feat-check">✓</span>Score cyber + score conformité</li>
+                <ul class="plan-highlights">
+                    <li><span class="feat-check">✓</span>Audit continu automatisé</li>
+                    <li><span class="feat-check">✓</span>AI Compliance Chat</li>
+                    <li><span class="feat-check">✓</span>Regulatory Watch™</li>
+                    <li><span class="feat-check">✓</span>Corrections suggérées par IA</li>
+                    <li><span class="feat-check">✓</span>5 sites</li>
                 </ul>
-                <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-gold">Choisir Business</a>
+                <a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business →</a>
             </div>
-
             <div class="plan-card reveal" style="transition-delay:0.3s">
-                <img src="logo-expert.png" alt="Expert" class="plan-logo">
                 <div class="plan-name">Expert</div>
-                <div class="plan-tagline">Grandes entreprises, cabinets</div>
+                <div class="plan-target-small">Agences & entreprises multi-sites</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">299</span>
-                    <span class="price-period">&nbsp;/ mois</span>
+                    <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-features">
-                    <div class="plan-section-title">Tout Business +</div>
+                <ul class="plan-highlights">
+                    <li><span class="feat-check">✓</span>Sites illimités</li>
                     <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
-                    <li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
-                    <li><span class="feat-check">✓</span>IA Compliance Officer virtuel</li>
-                    <div class="plan-section-title">Automatisation avancée</div>
                     <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
-                    <li><span class="feat-check">✓</span>Alerte si une loi change</li>
-                    <li><span class="feat-check">✓</span>Documents mis à jour automatiquement</li>
-                    <div class="plan-section-title">Intégration & Certification</div>
-                    <li><span class="feat-check">✓</span>API conformité intégrable</li>
-                    <li><span class="feat-check">✓</span>Badge "Certified by Audilix"</li>
-                    <li><span class="feat-check">✓</span>Consultant dédié 1h/mois</li>
+                    <li><span class="feat-check">✓</span>API conformité</li>
+                    <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
                 </ul>
-                <a href="https://tally.so/r/yP6AYX" target="_blank" class="plan-btn plan-btn-outline">Contacter l'équipe</a>
+                <a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Expert →</a>
             </div>
-
+        </div>
+        <div class="pricing-cta reveal">
+            <a href="pricing.html" class="btn-primary" style="display:inline-block; padding:16px 40px; font-size:15px;">Voir tous les détails →</a>
+            <p class="pricing-note">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
         </div>
     </div>
 </section>
 
+<!-- GUARANTEES -->
 <section class="guarantees">
     <div class="guarantees-inner">
         <div class="reveal"><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
-        <div class="reveal" style="transition-delay:0.1s"><div class="g-icon">⚡</div><div class="g-title">Rapport en 3 minutes</div><p class="g-desc">Votre rapport complet généré par IA et envoyé directement dans votre boîte mail.</p></div>
-        <div class="reveal" style="transition-delay:0.2s"><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et support.</p></div>
-        <div class="reveal" style="transition-delay:0.3s"><div class="g-icon">🔄</div><div class="g-title">Mis à jour en continu</div><p class="g-desc">Notre base réglementaire est actualisée à chaque évolution des textes européens.</p></div>
+        <div class="reveal" style="transition-delay:0.1s"><div class="g-icon">⚡</div><div class="g-title">Analyse en 2 minutes</div><p class="g-desc">Votre Compliance Trust Score™ généré par IA et envoyé directement dans votre boîte mail.</p></div>
+        <div class="reveal" style="transition-delay:0.2s"><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et corrections.</p></div>
+        <div class="reveal" style="transition-delay:0.3s"><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
     </div>
 </section>
 
+<!-- CTA -->
 <section class="cta-section">
     <div class="reveal">
-        <h2>Votre conformité<br>commence <em>aujourd'hui.</em></h2>
+        <h2>Votre conformité<br>commence <em>maintenant.</em></h2>
         <p class="cta-sub">Scanner gratuit. Résultats immédiats. Aucune carte bancaire requise.</p>
         <div class="cta-btns">
             <a href="scanner.html" class="btn-gold" style="font-size:16px; padding:18px 48px;">Scanner mon site gratuitement →</a>
-            <a href="https://tally.so/r/yP6AYX" target="_blank" class="btn-primary" style="font-size:16px; padding:18px 48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">Audit complet</a>
+            <a href="pricing.html" class="btn-primary" style="font-size:16px; padding:18px 48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">Voir les plans →</a>
         </div>
-        <p class="cta-note">Rejoignez les entreprises qui prennent leur conformité au sérieux.</p>
+        <p class="cta-note">Rejoignez les entreprises qui automatisent leur conformité avec Audilix.</p>
     </div>
 </section>
 
@@ -472,6 +454,7 @@
             <li><a href="confidentialite.html">Confidentialité</a></li>
             <li><a href="mentions.html">Mentions légales</a></li>
             <li><a href="scanner.html">Scanner</a></li>
+            <li><a href="pricing.html">Tarifs</a></li>
             <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
         </ul>
         <span class="footer-copy">© 2026 Audilix</span>
@@ -493,9 +476,9 @@
         <button class="chat-close" onclick="toggleChat()">✕</button>
     </div>
     <div class="chat-body">
-        <div class="chat-msg">Bonjour 👋 Scannez votre site gratuitement ou lancez un audit complet de conformité.</div>
+        <div class="chat-msg">Bonjour 👋 Scannez votre site gratuitement et obtenez votre Compliance Trust Score™ en moins de 2 minutes.</div>
         <a href="scanner.html" class="chat-action">Scanner mon site gratuitement →</a>
-        <a href="https://tally.so/r/yP6AYX" target="_blank" class="chat-action-ghost">Audit complet →</a>
+        <a href="pricing.html" class="chat-action-ghost">Voir les plans →</a>
     </div>
 </div>
 
@@ -503,20 +486,13 @@
 function toggleChat() {
     document.getElementById('chat-panel').classList.toggle('open');
 }
-
 function goToScanner() {
     const url = document.getElementById('hero-url').value.trim();
-    if (url) {
-        window.location.href = 'scanner.html?url=' + encodeURIComponent(url);
-    } else {
-        window.location.href = 'scanner.html';
-    }
+    window.location.href = url ? 'scanner.html?url=' + encodeURIComponent(url) : 'scanner.html';
 }
-
 document.getElementById('hero-url').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') goToScanner();
 });
-
 const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.08 });
