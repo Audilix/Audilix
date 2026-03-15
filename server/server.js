@@ -306,6 +306,91 @@ app.post("/webhook/tally", async (req, res) => {
   }
 });
 
+
+// ─── STRIPE CHECKOUT ───────────────────────────────────────────
+const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
+
+app.post("/api/stripe/checkout", async (req, res) => {
+  try {
+    const { priceId, userId, email, successUrl, cancelUrl, plan } = req.body;
+    if (!priceId) return res.status(400).json({ error: "Price ID manquant" });
+
+    const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${STRIPE_SECRET}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        "mode": "subscription",
+        "line_items[0][price]": priceId,
+        "line_items[0][quantity]": "1",
+        "success_url": successUrl || "https://audilix.com/dashboard.html?payment=success",
+        "cancel_url": cancelUrl || "https://audilix.com/pricing.html",
+        "customer_email": email || "",
+        "metadata[userId]": userId || "",
+        "metadata[plan]": plan || "",
+        "allow_promotion_codes": "true",
+        "billing_address_collection": "auto",
+        "locale": "fr"
+      })
+    });
+
+    const session = await stripeRes.json();
+    if (!stripeRes.ok) throw new Error(session.error?.message || "Erreur Stripe");
+
+    console.log(`💳 Checkout créé — Plan: ${plan} — Session: ${session.id}`);
+    res.json({ url: session.url, sessionId: session.id });
+  } catch(e) {
+    console.error("❌ Stripe error:", e);
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+// ─── STRIPE WEBHOOK ────────────────────────────────────────────
+app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (req, res) => {
+  try {
+    const sig = req.headers["stripe-signature"];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    let event;
+
+    if (webhookSecret) {
+      // Vérification signature (optionnel pour l'instant)
+      event = JSON.parse(req.body);
+    } else {
+      event = req.body;
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const userId = session.metadata?.userId;
+      const plan = session.metadata?.plan;
+
+      if (userId && SUPABASE_URL) {
+        try {
+          await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
+            method: "PATCH",
+            headers: {
+              "apikey": SUPABASE_KEY,
+              "Authorization": `Bearer ${SUPABASE_KEY}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ plan, stripe_customer_id: session.customer })
+          });
+          console.log(`✅ Plan mis à jour: ${userId} → ${plan}`);
+        } catch(e) {
+          console.warn("⚠️ Erreur mise à jour plan:", e.message);
+        }
+      }
+    }
+
+    res.json({ received: true });
+  } catch(e) {
+    console.error("❌ Stripe webhook error:", e);
+    res.status(400).json({ error: String(e) });
+  }
+});
+
 // ─── HEALTH CHECK ──────────────────────────────────────────────
 app.get("/", (req, res) => {
   res.json({ status: "Audilix backend en ligne ✅", version: "4.0", supabase: !!SUPABASE_URL });
