@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Choisir mon plan — Audilix</title>
+    <title>Tarifs — Audilix</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
     <style>
         :root {
             --navy: #0B2545;
+            --navy-mid: #1A3A6B;
             --gold: #C9A84C;
             --gold-light: #E8C97A;
             --gold-pale: #F5EDD6;
@@ -20,85 +21,125 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
         h1,h2,h3 { font-family: 'Playfair Display', serif; }
 
         .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
 
-        nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; }
+        nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
         .nav-logo img { height: 32px; }
-        .nav-back { color: var(--gray); text-decoration: none; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-back { color: var(--gray); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
         .nav-back:hover { color: var(--navy); }
-        .nav-back::before { content: '←'; }
+        .nav-scanner { background: var(--gold); color: var(--navy); padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+        .nav-scanner:hover { background: var(--gold-light); }
 
-        .hero { text-align: center; padding: 64px 40px 48px; }
+        /* HERO */
+        .hero { text-align: center; padding: 72px 40px 56px; }
         .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold-pale); border: 1px solid var(--gold); color: #8B6914; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 16px; border-radius: 2px; margin-bottom: 24px; }
-        .hero h1 { font-size: clamp(36px, 4vw, 54px); font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 16px; }
+        .hero h1 { font-size: clamp(36px, 4vw, 58px); font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; }
         .hero h1 em { color: var(--gold); font-style: italic; }
-        .hero p { font-size: 17px; color: var(--gray); font-weight: 300; }
+        .hero-sub { font-size: 17px; color: var(--gray); font-weight: 300; margin-bottom: 32px; }
+        .hero-scanner-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--navy); color: rgba(255,255,255,0.7); padding: 14px 24px; border-radius: 8px; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+        .hero-scanner-cta:hover { background: var(--navy-mid); color: white; }
+        .hero-scanner-cta strong { color: var(--gold); }
 
         /* PLANS */
-        .plans { max-width: 1100px; margin: 0 auto; padding: 0 40px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+        .plans-wrap { max-width: 1140px; margin: 0 auto; padding: 0 40px 80px; }
+        .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
 
         .plan-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 32px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
         .plan-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(11,37,69,0.08); }
         .plan-card.featured { background: var(--navy); border-color: transparent; transform: scale(1.04); }
-        .plan-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+        .plan-card.featured:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 32px 80px rgba(11,37,69,0.2); }
         .plan-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 16px 16px 0 0; }
 
-        .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 18px; border-radius: 40px; white-space: nowrap; }
+        .plan-popular { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 18px; border-radius: 40px; white-space: nowrap; }
 
-        .plan-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .plan-target { display: inline-block; background: var(--gold-pale); color: #8B6914; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 40px; margin-bottom: 16px; }
+        .plan-card.featured .plan-target { background: rgba(201,168,76,0.15); color: var(--gold); }
+
+        .plan-name { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
         .plan-card.featured .plan-name { color: white; }
-        .plan-tagline { font-size: 13px; color: var(--gray); margin-bottom: 28px; font-weight: 300; }
+        .plan-tagline { font-size: 13px; color: var(--gray); margin-bottom: 28px; font-weight: 300; line-height: 1.5; }
         .plan-card.featured .plan-tagline { color: rgba(255,255,255,0.4); }
 
-        .plan-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+        .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
         .plan-card.featured .plan-price { border-color: rgba(255,255,255,0.1); }
-        .price-currency { font-size: 22px; color: var(--gray); }
+        .price-currency { font-size: 22px; color: var(--gray); font-weight: 400; }
         .plan-card.featured .price-currency { color: rgba(255,255,255,0.4); }
-        .price-amount { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: var(--navy); line-height: 1; }
+        .price-amount { font-family: 'Playfair Display', serif; font-size: 58px; font-weight: 700; color: var(--navy); line-height: 1; }
         .plan-card.featured .price-amount { color: var(--gold); }
-        .price-period { font-size: 14px; color: var(--gray); font-weight: 300; }
+        .price-period { font-size: 14px; color: var(--gray); font-weight: 300; margin-left: 4px; }
         .plan-card.featured .price-period { color: rgba(255,255,255,0.4); }
 
-        .plan-section { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 16px 0 10px; }
+        .plan-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 18px 0 10px; opacity: 0.9; }
         .plan-features { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
         .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--navy); line-height: 1.5; }
         .plan-card.featured .plan-features li { color: rgba(255,255,255,0.75); }
-        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); margin-top: 1px; }
+        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); margin-top: 2px; }
         .plan-card.featured .feat-check { background: rgba(201,168,76,0.15); }
+        .feat-badge { display: inline-block; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; vertical-align: middle; }
 
-        .plan-btn { display: block; width: 100%; padding: 15px; text-align: center; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; border: none; }
+        .plan-btn { display: block; width: 100%; padding: 16px; text-align: center; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; border: none; letter-spacing: 0.02em; }
         .btn-outline { background: transparent; border: 1.5px solid rgba(11,37,69,0.2); color: var(--navy); }
-        .btn-outline:hover { background: var(--navy); color: white; }
+        .btn-outline:hover { background: var(--navy); color: white; border-color: var(--navy); }
         .btn-gold { background: var(--gold); color: var(--navy); }
         .btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); transform: translateY(-1px); }
-        .plan-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
-
+        .plan-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
         .plan-note { text-align: center; font-size: 12px; color: var(--gray); margin-top: 12px; }
-        .plan-card.featured .plan-note { color: rgba(255,255,255,0.3); }
+        .plan-card.featured .plan-note { color: rgba(255,255,255,0.25); }
+
+        /* SCANNER BANNER */
+        .scanner-banner { background: var(--navy); padding: 48px 40px; text-align: center; position: relative; overflow: hidden; }
+        .scanner-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+        .scanner-banner h2 { font-size: 28px; font-weight: 600; color: white; margin-bottom: 12px; }
+        .scanner-banner h2 em { color: var(--gold); font-style: italic; }
+        .scanner-banner p { font-size: 15px; color: rgba(255,255,255,0.45); margin-bottom: 24px; }
+        .scanner-btn { display: inline-block; background: var(--gold); color: var(--navy); padding: 14px 32px; border-radius: 4px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+        .scanner-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
 
         /* GARANTIES */
-        .garanties { background: white; border-top: 1px solid var(--border); padding: 48px 40px; }
-        .garanties-inner { max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+        .garanties { padding: 56px 40px; border-top: 1px solid var(--border); background: white; }
+        .garanties-inner { max-width: 960px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
         .g-icon { font-size: 28px; margin-bottom: 12px; }
         .g-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
         .g-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
 
-        /* LOADING OVERLAY */
-        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11,37,69,0.7); display: none; align-items: center; justify-content: center; z-index: 999; }
+        /* FAQ */
+        .faq { max-width: 720px; margin: 0 auto; padding: 64px 40px; }
+        .faq h2 { font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 40px; text-align: center; }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; }
+        .faq-q { font-size: 15px; font-weight: 600; color: var(--navy); display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { font-size: 14px; color: var(--gray); line-height: 1.7; margin-top: 12px; display: none; }
+        .faq-item.open .faq-a { display: block; }
+        .faq-arrow { color: var(--gold); font-size: 18px; transition: transform 0.2s; }
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+        /* LOADING */
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11,37,69,0.75); display: none; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(4px); }
         .loading-overlay.show { display: flex; }
         .loading-box { background: white; border-radius: 16px; padding: 48px; text-align: center; max-width: 320px; }
         .loading-spin { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-text { font-size: 15px; font-weight: 600; color: var(--navy); }
-        .loading-sub { font-size: 13px; color: var(--gray); margin-top: 6px; }
+        .loading-text { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .loading-sub { font-size: 13px; color: var(--gray); }
 
-        @media (max-width: 900px) {
-            .plans { grid-template-columns: 1fr; max-width: 480px; }
+        footer { background: #060F1E; padding: 40px; text-align: center; }
+        footer p { font-size: 12px; color: rgba(255,255,255,0.2); }
+        footer a { color: rgba(255,255,255,0.3); text-decoration: none; }
+        footer a:hover { color: var(--gold); }
+
+        @media (max-width: 960px) {
+            .plans { grid-template-columns: 1fr; max-width: 480px; margin: auto; }
             .plan-card.featured { transform: none; }
             .garanties-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            nav { padding: 0 20px; }
+            .hero { padding: 48px 20px 40px; }
+            .plans-wrap { padding: 0 20px 60px; }
+            .garanties-inner { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -108,120 +149,174 @@
 
 <nav>
     <div class="nav-logo"><img src="logo.png" alt="Audilix"></div>
-    <a href="index.html" class="nav-back">Retour au site</a>
+    <div class="nav-right">
+        <a href="index.html" class="nav-back">← Retour</a>
+        <a href="scanner.html" class="nav-scanner">Scanner gratuit →</a>
+    </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-    <div class="hero-badge">Paiement sécurisé par Stripe</div>
-    <h1>Choisissez votre plan<br><em>Audilix</em></h1>
-    <p>Sans engagement · Résiliable à tout moment · Paiement 100% sécurisé</p>
+    <div class="hero-badge">Paiement sécurisé · Sans engagement</div>
+    <h1>Un plan pour chaque<br><em>niveau d'ambition</em></h1>
+    <p class="hero-sub">Transparence totale · Résiliable à tout moment · Accès immédiat après paiement</p>
+    <a href="scanner.html" class="hero-scanner-cta">
+        🔍 Pas encore scanné votre site ? <strong>C'est gratuit →</strong>
+    </a>
 </div>
 
+<!-- PLANS -->
+<div class="plans-wrap">
 <div class="plans">
 
     <!-- STARTER -->
     <div class="plan-card">
+        <div class="plan-target">Freelances & petits sites web</div>
         <div class="plan-name">Starter</div>
-        <div class="plan-tagline">TPE, indépendants, associations</div>
+        <div class="plan-tagline">L'essentiel pour être conforme et protégé légalement.</div>
         <div class="plan-price">
             <span class="price-currency">€</span>
             <span class="price-amount">69</span>
-            <span class="price-period">&nbsp;/ mois</span>
+            <span class="price-period">/ mois</span>
         </div>
         <ul class="plan-features">
-            <div class="plan-section">Audit & Score</div>
-            <li><span class="feat-check">✓</span>Audit automatique du site web</li>
-            <li><span class="feat-check">✓</span>Score de conformité /100</li>
-            <li><span class="feat-check">✓</span>3 rapports IA par mois</li>
+            <div class="plan-section-label">Audit & Score</div>
+            <li><span class="feat-check">✓</span>Audit automatique du site web <em style="color:var(--gray);font-size:12px;">(analyse en moins de 2 min)</em></li>
+            <li><span class="feat-check">✓</span>Compliance Trust Score™ /100</li>
             <li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
-            <div class="plan-section">Documents générés</div>
+            <li><span class="feat-check">✓</span>Audit mensuel automatique</li>
+            <div class="plan-section-label">Documents juridiques générés</div>
             <li><span class="feat-check">✓</span>Politique de confidentialité</li>
             <li><span class="feat-check">✓</span>Mentions légales</li>
             <li><span class="feat-check">✓</span>Politique de cookies</li>
-            <div class="plan-section">Surveillance</div>
-            <li><span class="feat-check">✓</span>Monitoring mensuel automatique</li>
+            <div class="plan-section-label">Surveillance</div>
+            <li><span class="feat-check">✓</span>Alertes email si non-conformité détectée</li>
             <li><span class="feat-check">✓</span>Dashboard de conformité</li>
+            <li><span class="feat-check">✓</span>1 site</li>
         </ul>
         <button class="plan-btn btn-outline" onclick="checkout('starter')">Commencer →</button>
-        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+        <div class="plan-note">Sans engagement · Résiliable à tout moment</div>
     </div>
 
     <!-- BUSINESS -->
     <div class="plan-card featured">
-        <div class="plan-badge">Le plus choisi</div>
+        <div class="plan-popular">Le plus choisi</div>
+        <div class="plan-target">PME et startups en croissance</div>
         <div class="plan-name">Business</div>
-        <div class="plan-tagline">PME, startups, ETI</div>
+        <div class="plan-tagline">La conformité entièrement automatisée. Vous ne gérez plus rien.</div>
         <div class="plan-price">
             <span class="price-currency">€</span>
             <span class="price-amount">149</span>
-            <span class="price-period">&nbsp;/ mois</span>
+            <span class="price-period">/ mois</span>
         </div>
         <ul class="plan-features">
-            <div class="plan-section">Tout Starter +</div>
-            <li><span class="feat-check">✓</span>Audits IA illimités</li>
+            <div class="plan-section-label">Tout Starter +</div>
+            <li><span class="feat-check">✓</span>Audit continu automatisé</li>
             <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
+            <li><span class="feat-check">✓</span>Scan hebdomadaire automatique</li>
+            <li><span class="feat-check">✓</span>Alertes temps réel</li>
+            <div class="plan-section-label">IA & Automatisation</div>
+            <li><span class="feat-check">✓</span>AI Compliance Chat <span class="feat-badge">IA</span></li>
             <li><span class="feat-check">✓</span>Plan d'action priorisé par l'IA</li>
-            <li><span class="feat-check">✓</span>Correction automatique par IA</li>
-            <div class="plan-section">Agent IA Intégré</div>
-            <li><span class="feat-check">✓</span>Assistant IA disponible 24/7</li>
-            <li><span class="feat-check">✓</span>Bannière cookies générée automatiquement</li>
-            <div class="plan-section">Rapports & Export</div>
+            <li><span class="feat-check">✓</span>Corrections suggérées par IA (copy/paste en 1 clic)</li>
+            <li><span class="feat-check">✓</span>Regulatory Watch™ <span class="feat-badge">NEW</span></li>
+            <div class="plan-section-label">Rapports & Export</div>
             <li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
-            <li><span class="feat-check">✓</span>Monitoring 24/7 + alertes temps réel</li>
+            <li><span class="feat-check">✓</span>Compliance Timeline</li>
+            <li><span class="feat-check">✓</span>5 sites</li>
         </ul>
         <button class="plan-btn btn-gold" onclick="checkout('business')">Choisir Business →</button>
-        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+        <div class="plan-note">Sans engagement · Résiliable à tout moment</div>
     </div>
 
     <!-- EXPERT -->
     <div class="plan-card">
+        <div class="plan-target">Agences & entreprises multi-sites</div>
         <div class="plan-name">Expert</div>
-        <div class="plan-tagline">Grandes entreprises, cabinets</div>
+        <div class="plan-tagline">Un AI Compliance Officer complet pour votre organisation.</div>
         <div class="plan-price">
             <span class="price-currency">€</span>
             <span class="price-amount">299</span>
-            <span class="price-period">&nbsp;/ mois</span>
+            <span class="price-period">/ mois</span>
         </div>
         <ul class="plan-features">
-            <div class="plan-section">Tout Business +</div>
-            <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+            <div class="plan-section-label">Tout Business +</div>
+            <li><span class="feat-check">✓</span>Sites illimités</li>
             <li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
-            <li><span class="feat-check">✓</span>IA Compliance Officer virtuel</li>
-            <div class="plan-section">Automatisation avancée</div>
+            <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+            <div class="plan-section-label">Automatisation avancée</div>
             <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
-            <li><span class="feat-check">✓</span>Documents mis à jour automatiquement</li>
-            <div class="plan-section">Intégration & Certification</div>
+            <li><span class="feat-check">✓</span>Documents mis à jour si la loi change</li>
+            <li><span class="feat-check">✓</span>Détection proactive des risques</li>
+            <div class="plan-section-label">Intégration & Analytics</div>
             <li><span class="feat-check">✓</span>API conformité intégrable</li>
-            <li><span class="feat-check">✓</span>Badge "Certified by Audilix"</li>
-            <li><span class="feat-check">✓</span>Consultant dédié 1h/mois</li>
+            <li><span class="feat-check">✓</span>Analytics & benchmark sectoriel</li>
+            <li><span class="feat-check">✓</span>Badge "Audilix Verified" <span class="feat-badge">PRO</span></li>
         </ul>
         <button class="plan-btn btn-outline" onclick="checkout('expert')">Choisir Expert →</button>
-        <div class="plan-note">Essai sans risque · Résiliable à tout moment</div>
+        <div class="plan-note">Sans engagement · Résiliable à tout moment</div>
     </div>
 
 </div>
+</div>
 
+<!-- SCANNER BANNER -->
+<div class="scanner-banner">
+    <h2>Pas encore scanné votre site ? <em>C'est gratuit.</em></h2>
+    <p>Obtenez votre Compliance Trust Score™ en moins de 30 secondes — sans inscription.</p>
+    <a href="scanner.html" class="scanner-btn">Scanner mon site gratuitement →</a>
+</div>
+
+<!-- GARANTIES -->
 <div class="garanties">
     <div class="garanties-inner">
-        <div><div class="g-icon">🔒</div><div class="g-title">Paiement sécurisé</div><p class="g-desc">Chiffrement SSL 256 bits. Vos données bancaires ne sont jamais stockées.</p></div>
+        <div><div class="g-icon">🔒</div><div class="g-title">Paiement sécurisé</div><p class="g-desc">Chiffrement SSL 256 bits via Stripe. Vos données bancaires ne sont jamais stockées.</p></div>
         <div><div class="g-icon">🔄</div><div class="g-title">Sans engagement</div><p class="g-desc">Résiliez à tout moment depuis votre dashboard, sans frais ni justification.</p></div>
         <div><div class="g-icon">⚡</div><div class="g-title">Accès immédiat</div><p class="g-desc">Votre compte est activé instantanément après le paiement.</p></div>
-        <div><div class="g-icon">🇪🇺</div><div class="g-title">Données en Europe</div><p class="g-desc">Hébergement 100% européen. Conformité RGPD garantie.</p></div>
+        <div><div class="g-icon">🇪🇺</div><div class="g-title">100% européen</div><p class="g-desc">Hébergement en Europe. Conformité RGPD garantie sur toute la chaîne.</p></div>
     </div>
 </div>
+
+<!-- FAQ -->
+<div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Comment fonctionne l'audit automatique ? <span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Notre IA analyse votre site web en moins de 2 minutes — cookies, RGPD, mentions légales, sécurité. Vous recevez un Compliance Trust Score™ et un rapport détaillé par email.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Les documents juridiques générés sont-ils valables légalement ? <span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Nos documents sont générés par IA sur la base des réglementations européennes en vigueur (RGPD, ePrivacy). Ils constituent une base solide mais nous recommandons de les faire valider par un juriste pour les entreprises à forte exposition légale.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Qu'est-ce que le Regulatory Watch™ ? <span class="faq-arrow">↓</span></div>
+        <div class="faq-a">C'est notre système de veille réglementaire automatique. L'IA surveille les évolutions du RGPD, de l'AI Act et des directives cookies. Si une nouvelle règle vous concerne, vous êtes alerté immédiatement avec les actions à prendre.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Puis-je changer de plan à tout moment ? <span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Oui, vous pouvez upgrader ou downgrader votre plan à tout moment depuis votre dashboard. Le changement est effectif immédiatement et le montant est ajusté au prorata.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Comment resilier mon abonnement ? <span class="faq-arrow">↓</span></div>
+        <div class="faq-a">Depuis votre dashboard Audilix, section Paramètres → Abonnement → Résilier. La résiliation est immédiate, sans frais et sans justification requise.</div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+</footer>
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loading">
     <div class="loading-box">
         <div class="loading-spin"></div>
         <div class="loading-text">Redirection vers le paiement...</div>
-        <div class="loading-sub">Vous allez être redirigé vers Stripe</div>
+        <div class="loading-sub">Vous allez être redirigé vers Stripe 🔒</div>
     </div>
 </div>
 
 <script>
 const BACKEND = "https://audilix-backend.onrender.com";
-
 const PRICE_IDS = {
     starter: 'price_1TBEp1L1yZKJczeCtlqQ4u3F',
     business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
@@ -229,21 +324,15 @@ const PRICE_IDS = {
 };
 
 async function checkout(plan) {
-    // Vérifier si connecté
     const token = localStorage.getItem('audilix_token');
     const userStr = localStorage.getItem('audilix_user');
-
     if (!token) {
-        // Pas connecté → rediriger vers login avec retour sur pricing
         localStorage.setItem('audilix_redirect_plan', plan);
-        window.location.href = 'login.html?redirect=pricing.html';
+        window.location.href = 'login.html';
         return;
     }
-
     const user = userStr ? JSON.parse(userStr) : null;
-
     document.getElementById('loading').classList.add('show');
-
     try {
         const res = await fetch(`${BACKEND}/api/stripe/checkout`, {
             method: 'POST',
@@ -253,25 +342,23 @@ async function checkout(plan) {
                 priceId: PRICE_IDS[plan],
                 userId: user?.id,
                 email: user?.email,
-                successUrl: `${window.location.origin}/dashboard.html?payment=success`,
-                cancelUrl: `${window.location.origin}/pricing.html`
+                successUrl: window.location.origin + '/dashboard.html?payment=success',
+                cancelUrl: window.location.origin + '/pricing.html'
             })
         });
-
         const data = await res.json();
-
-        if (data.url) {
-            window.location.href = data.url;
-        } else {
-            throw new Error(data.error || 'Erreur lors de la création de la session');
-        }
+        if (data.url) { window.location.href = data.url; }
+        else throw new Error(data.error || 'Erreur Stripe');
     } catch(e) {
         document.getElementById('loading').classList.remove('show');
         alert('Erreur : ' + e.message);
     }
 }
 
-// Si redirigé après login avec un plan en attente
+function toggleFaq(el) {
+    el.classList.toggle('open');
+}
+
 const redirectPlan = localStorage.getItem('audilix_redirect_plan');
 if (redirectPlan && localStorage.getItem('audilix_token')) {
     localStorage.removeItem('audilix_redirect_plan');
