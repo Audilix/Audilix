@@ -226,9 +226,12 @@
             <li><a href="#scanner">Scanner</a></li>
             <li><a href="#solutions">Solutions</a></li>
             <li><a href="#tarifs">Tarifs</a></li>
-            <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#2b4844455f4a485f054a5e4f424742536b4c464a424705484446">Contact</a></li>
         </ul>
-        <a href="scanner.html" class="nav-cta">Scanner mon site →</a>
+        <div style="display:flex;gap:12px;align-items:center;">
+            <a href="login.html" style="color:var(--navy);text-decoration:none;font-size:13px;font-weight:600;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">Espace client →</a>
+            <a href="scanner.html" class="nav-cta">Scanner mon site →</a>
+        </div>
     </div>
 </nav>
 
@@ -455,7 +458,7 @@
             <li><a href="mentions.html">Mentions légales</a></li>
             <li><a href="scanner.html">Scanner</a></li>
             <li><a href="pricing.html">Tarifs</a></li>
-            <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#385b57564c595b4c16594d5c51545140785f55595154165b5755">Contact</a></li>
         </ul>
         <span class="footer-copy">© 2026 Audilix</span>
     </div>
@@ -475,16 +478,89 @@
         </div>
         <button class="chat-close" onclick="toggleChat()">✕</button>
     </div>
-    <div class="chat-body">
-        <div class="chat-msg">Bonjour 👋 Scannez votre site gratuitement et obtenez votre Compliance Trust Score™ en moins de 2 minutes.</div>
-        <a href="scanner.html" class="chat-action">Scanner mon site gratuitement →</a>
-        <a href="pricing.html" class="chat-action-ghost">Voir les plans →</a>
+    <div class="chat-body" id="chat-body">
+        <div class="chat-msg" id="chat-welcome">Bonjour 👋 Je suis l'assistant Audilix. Je peux répondre à vos questions sur la conformité RGPD, nos plans ou le fonctionnement du service.</div>
+        <div id="chat-messages" style="max-height:240px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;"></div>
+        <div style="display:flex;gap:8px;">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--navy);" onkeypress="if(event.key==='Enter')sendChatMsg()">
+            <button onclick="sendChatMsg()" style="background:var(--navy);color:white;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:16px;transition:background 0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--navy)';this.style.color='white'">→</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+            <button onclick="quickChat('Quels sont vos tarifs ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">💰 Tarifs</button>
+            <button onclick="quickChat('Comment fonctionne le scanner ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">🔍 Scanner</button>
+            <button onclick="quickChat('Qu\'est-ce que le RGPD ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">⚖️ RGPD</button>
+        </div>
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function toggleChat() {
     document.getElementById('chat-panel').classList.toggle('open');
+}
+
+// ── AI CHATBOT ──
+const BACKEND_CHAT = "https://audilix-backend.onrender.com";
+let chatHistory = [];
+
+function addChatMessage(text, isUser) {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.style.cssText = isUser 
+        ? 'background:var(--navy);color:white;padding:10px 14px;border-radius:12px 12px 2px 12px;font-size:13px;line-height:1.5;max-width:85%;align-self:flex-end;'
+        : 'background:var(--cream);color:var(--navy);padding:10px 14px;border-radius:12px 12px 12px 2px;font-size:13px;line-height:1.5;max-width:85%;border:1px solid var(--border);';
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    
+    const welcome = document.getElementById('chat-welcome');
+    if (welcome) welcome.style.display = 'none';
+}
+
+function addTypingIndicator() {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.id = 'typing-indicator';
+    div.style.cssText = 'background:var(--cream);color:var(--gray);padding:10px 14px;border-radius:12px 12px 12px 2px;font-size:13px;border:1px solid var(--border);';
+    div.textContent = '...';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.remove();
+}
+
+async function sendChatMsg() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    
+    addChatMessage(msg, true);
+    chatHistory.push({ role: 'user', content: msg });
+    addTypingIndicator();
+
+    try {
+        const res = await fetch(`${BACKEND_CHAT}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: chatHistory })
+        });
+        const data = await res.json();
+        removeTypingIndicator();
+        const reply = data.reply || "Désolé, je n\'ai pas pu répondre. Contactez-nous à contact.audilix@gmail.com";
+        addChatMessage(reply, false);
+        chatHistory.push({ role: 'assistant', content: reply });
+    } catch(e) {
+        removeTypingIndicator();
+        addChatMessage("Erreur de connexion. Réessayez ou contactez contact.audilix@gmail.com", false);
+    }
+}
+
+function quickChat(msg) {
+    document.getElementById('chat-input').value = msg;
+    sendChatMsg();
 }
 function goToScanner() {
     const url = document.getElementById('hero-url').value.trim();
@@ -494,10 +570,3 @@ document.getElementById('hero-url').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') goToScanner();
 });
 const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
-    <script src="cookies.js"></script>
-</body>
-</html>
