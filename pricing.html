@@ -303,7 +303,7 @@
 </div>
 
 <footer>
-    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="/cdn-cgi/l/email-protection#f2919d9c86939186dc9387969b9e9b8ab2959f939b9edc919d9f">Contact</a></p>
 </footer>
 
 <!-- LOADING -->
@@ -315,7 +315,7 @@
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const BACKEND = "https://audilix-backend.onrender.com";
 const PRICE_IDS = {
     starter: 'price_1TBEp1L1yZKJczeCtlqQ4u3F',
@@ -323,36 +323,34 @@ const PRICE_IDS = {
     expert: 'price_1TBEuYL1yZKJczeCXrgBEFcu'
 };
 
-async function checkout(plan) {
-    const token = localStorage.getItem('audilix_token');
-    const userStr = localStorage.getItem('audilix_user');
-    if (!token) {
-        localStorage.setItem('audilix_redirect_plan', plan);
-        window.location.href = 'login.html';
-        return;
-    }
-    const user = userStr ? JSON.parse(userStr) : null;
+function checkout(plan) {
+    // Get user info if logged in (optional)
+    var userStr = localStorage.getItem('audilix_user');
+    var user = userStr ? JSON.parse(userStr) : null;
+    
     document.getElementById('loading').classList.add('show');
-    try {
-        const res = await fetch(`${BACKEND}/api/stripe/checkout`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                plan,
-                priceId: PRICE_IDS[plan],
-                userId: user?.id,
-                email: user?.email,
-                successUrl: window.location.origin + '/dashboard.html?payment=success',
-                cancelUrl: window.location.origin + '/pricing.html'
-            })
-        });
-        const data = await res.json();
-        if (data.url) { window.location.href = data.url; }
-        else throw new Error(data.error || 'Erreur Stripe');
-    } catch(e) {
+    
+    fetch(BACKEND + '/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            plan: plan,
+            priceId: PRICE_IDS[plan],
+            userId: user ? user.id : null,
+            email: user ? user.email : null,
+            successUrl: window.location.origin + '/dashboard.html?payment=success',
+            cancelUrl: window.location.origin + '/pricing.html'
+        })
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            throw new Error(data.error || 'Erreur Stripe');
+        }
+    }).catch(function(e) {
         document.getElementById('loading').classList.remove('show');
         alert('Erreur : ' + e.message);
-    }
+    });
 }
 
 function toggleFaq(el) {
@@ -360,11 +358,4 @@ function toggleFaq(el) {
 }
 
 const redirectPlan = localStorage.getItem('audilix_redirect_plan');
-if (redirectPlan && localStorage.getItem('audilix_token')) {
-    localStorage.removeItem('audilix_redirect_plan');
-    checkout(redirectPlan);
-}
-</script>
-    <script src="cookies.js"></script>
-</body>
-</html>
+if (redirectPla
