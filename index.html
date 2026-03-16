@@ -375,7 +375,7 @@
     <div class="process-inner">
         <div class="process-header reveal">
             <div class="section-label">Notre méthode</div>
-            <h2 class="section-title">De l'analyse à la conformité en 3 étapes.</h2>
+            <h2 class="section-title">De l&rsquo;analyse à la conformité en 3 étapes.</h2>
             <p class="section-sub">Entièrement automatisé. Aucune intervention humaine requise.</p>
         </div>
         <div class="process-steps">
@@ -686,7 +686,8 @@ async function sendChat() {
 }
 
 function quickChat(msg) {
-    document.getElementById('chat-input').value = msg;
+    var decoded = msg.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    document.getElementById('chat-input').value = decoded;
     sendChat();
 }
 
