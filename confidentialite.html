@@ -1,47 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Politique de confidentialité — Audilix</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-body{font-family:Inter;background:#f6f7fb;margin:0}
-.wrap{max-width:900px;margin:0 auto;padding:26px}
-.card{background:#fff;border:1px solid #e2e6ef;border-radius:14px;padding:18px}
-h1{margin-top:0}
-ul{line-height:1.6}
-a{color:#0A2F63}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Politique de confidentialité — Audilix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #0B2545; --gold: #C9A84C; --gold-light: #E8C97A; --cream: #FAF8F4; --gray: #6B7280; --border: rgba(11,37,69,0.08); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
+        h1,h2,h3 { font-family: 'Playfair Display', serif; }
+        .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+        nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 70px; display: flex; align-items: center; justify-content: space-between; }
+        nav img { height: 30px; }
+        nav a { color: var(--gray); text-decoration: none; font-size: 13px; }
+        nav a:hover { color: var(--navy); }
+        .container { max-width: 760px; margin: 0 auto; padding: 64px 40px 80px; }
+        .doc-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+        h1 { font-size: 42px; font-weight: 700; color: var(--navy); margin-bottom: 12px; line-height: 1.1; }
+        .doc-date { font-size: 14px; color: var(--gray); margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+        h2 { font-size: 22px; font-weight: 600; color: var(--navy); margin: 40px 0 16px; }
+        p { font-size: 15px; line-height: 1.8; color: #374151; margin-bottom: 16px; }
+        ul { padding-left: 20px; margin-bottom: 16px; }
+        li { font-size: 15px; line-height: 1.8; color: #374151; margin-bottom: 6px; }
+        .highlight { background: white; border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 4px; padding: 20px 24px; margin: 24px 0; }
+        .highlight p { margin: 0; }
+        footer { background: #060F1E; padding: 32px 40px; text-align: center; }
+        footer p { font-size: 12px; color: rgba(255,255,255,0.2); }
+        footer a { color: rgba(255,255,255,0.3); text-decoration: none; }
+        footer a:hover { color: var(--gold); }
+    </style>
 </head>
-
 <body>
-<div class="wrap">
-<div class="card">
-<h1>Politique de confidentialité</h1>
+<div class="gold-line"></div>
+<nav>
+    <a href="index.html"><img src="logo.png" alt="Audilix"></a>
+    <a href="index.html">← Retour au site</a>
+</nav>
+<div class="container">
+    <div class="doc-label">Document légal</div>
+    <h1>Politique de confidentialité</h1>
+    <div class="doc-date">Dernière mise à jour : 15 mars 2026</div>
 
-<p>Audilix collecte uniquement les informations nécessaires au fonctionnement de la plateforme et au suivi des demandes.</p>
+    <h2>1. Identité du responsable de traitement</h2>
+    <p>Le responsable du traitement des données personnelles collectées via le site <strong>audilix.com</strong> est :</p>
+    <div class="highlight">
+        <p><strong>Mohamed Azouzi</strong><br>
+        Adresse : Pamiers, France<br>
+        Email : <a href="mailto:contact.audilix@gmail.com">contact.audilix@gmail.com</a><br>
+        Site web : <a href="https://audilix.com">https://audilix.com</a></p>
+    </div>
 
-<h3>Données collectées</h3>
-<ul>
-<li>Données fournies via les formulaires</li>
-<li>Adresse email de contact</li>
-<li>Données techniques minimales (logs de sécurité)</li>
-</ul>
+    <h2>2. Données collectées</h2>
+    <p>Dans le cadre de l'utilisation de nos services, nous collectons les données suivantes :</p>
+    <ul>
+        <li><strong>Données d'identification</strong> : prénom, nom, adresse email, nom de l'entreprise</li>
+        <li><strong>Données de navigation</strong> : adresse IP, type de navigateur, pages visitées, durée de visite</li>
+        <li><strong>Données d'utilisation</strong> : URLs analysées, scores de conformité, rapports générés</li>
+        <li><strong>Données de paiement</strong> : traitées exclusivement par Stripe (nous ne stockons aucune donnée bancaire)</li>
+    </ul>
 
-<h3>Finalité</h3>
-<p>Analyse d’audit, contact et amélioration du service.</p>
+    <h2>3. Finalités du traitement</h2>
+    <p>Vos données sont collectées pour les finalités suivantes :</p>
+    <ul>
+        <li>Fourniture du service d'audit de conformité automatisé</li>
+        <li>Création et gestion de votre compte utilisateur</li>
+        <li>Envoi de rapports d'audit et d'alertes de conformité par email</li>
+        <li>Traitement des paiements et gestion des abonnements</li>
+        <li>Amélioration de nos services et analyses statistiques anonymisées</li>
+        <li>Respect de nos obligations légales</li>
+    </ul>
 
-<h3>Durée de conservation</h3>
-<p>12 mois maximum sauf obligation légale.</p>
+    <h2>4. Base légale des traitements</h2>
+    <ul>
+        <li><strong>Exécution du contrat</strong> : pour la fourniture du service souscrit</li>
+        <li><strong>Consentement</strong> : pour l'envoi de communications marketing (opt-in)</li>
+        <li><strong>Intérêt légitime</strong> : pour l'amélioration de nos services et la sécurité</li>
+        <li><strong>Obligation légale</strong> : pour la conservation des données comptables et fiscales</li>
+    </ul>
 
-<h3>Vos droits</h3>
-<p>Accès, modification, suppression des données sur simple demande.</p>
+    <h2>5. Durée de conservation</h2>
+    <ul>
+        <li><strong>Données de compte</strong> : durée de l'abonnement + 3 ans après résiliation</li>
+        <li><strong>Données de navigation</strong> : 13 mois maximum</li>
+        <li><strong>Données de facturation</strong> : 10 ans (obligation légale)</li>
+        <li><strong>Rapports d'audit</strong> : durée de l'abonnement actif</li>
+    </ul>
 
-<p><a href="supprimer-donnees.html">➡ Supprimer mes données</a></p>
+    <h2>6. Destinataires des données</h2>
+    <p>Vos données peuvent être partagées avec les sous-traitants suivants, dans le strict cadre de la fourniture du service :</p>
+    <ul>
+        <li><strong>Supabase</strong> (base de données) — hébergement UE</li>
+        <li><strong>Render</strong> (hébergement applicatif) — serveurs UE</li>
+        <li><strong>Stripe</strong> (paiement) — conforme PCI DSS</li>
+        <li><strong>Resend</strong> (envoi d'emails transactionnels)</li>
+        <li><strong>OpenAI</strong> (génération IA des rapports) — données traitées de manière anonymisée</li>
+    </ul>
+    <p>Aucune donnée n'est vendue à des tiers. Aucune donnée n'est utilisée à des fins publicitaires.</p>
 
-<p><a href="index.html">← Retour au site</a></p>
+    <h2>7. Transferts hors UE</h2>
+    <p>Certains de nos prestataires (OpenAI, Stripe) peuvent traiter des données en dehors de l'Union Européenne. Ces transferts sont encadrés par des clauses contractuelles types approuvées par la Commission Européenne, conformément à l'article 46 du RGPD.</p>
+
+    <h2>8. Cookies</h2>
+    <p>Notre site utilise des cookies techniques nécessaires au fonctionnement du service (session utilisateur, préférences). Aucun cookie publicitaire ou de tracking tiers n'est utilisé.</p>
+    <p>Vous pouvez gérer vos préférences de cookies via le bandeau de consentement affiché lors de votre première visite.</p>
+
+    <h2>9. Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez des droits suivants concernant vos données personnelles :</p>
+    <ul>
+        <li><strong>Droit d'accès</strong> : obtenir une copie de vos données</li>
+        <li><strong>Droit de rectification</strong> : corriger des données inexactes</li>
+        <li><strong>Droit à l'effacement</strong> : demander la suppression de vos données</li>
+        <li><strong>Droit à la portabilité</strong> : recevoir vos données dans un format structuré</li>
+        <li><strong>Droit d'opposition</strong> : vous opposer à certains traitements</li>
+        <li><strong>Droit à la limitation</strong> : limiter le traitement de vos données</li>
+    </ul>
+    <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:contact.audilix@gmail.com">contact.audilix@gmail.com</a></p>
+    <p>Vous disposez également du droit d'introduire une réclamation auprès de la <strong>CNIL</strong> (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+
+    <h2>10. Sécurité des données</h2>
+    <p>Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données : chiffrement HTTPS, authentification sécurisée, accès restreint aux données, hébergement en Europe.</p>
+
+    <h2>11. Modifications</h2>
+    <p>Nous nous réservons le droit de modifier cette politique à tout moment. Toute modification significative vous sera notifiée par email ou via une notification sur le site.</p>
+
+    <h2>12. Contact</h2>
+    <p>Pour toute question relative à cette politique de confidentialité :<br>
+    📧 <a href="mailto:contact.audilix@gmail.com">contact.audilix@gmail.com</a></p>
 </div>
-</div>
+<footer>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="mentions.html">Mentions légales</a> — <a href="confidentialite.html">Confidentialité</a></p>
+</footer>
 </body>
 </html>
