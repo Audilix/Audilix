@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audilix — Conformité &amp; Audit IA</title>
+<title>Audilix — Conformité & Audit IA</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0B2545;--navy-mid:#1A3A6B;--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5EDD6;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.08)}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--navy);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 h1,h2,h3,h4{font-family:'Playfair Display',serif}
 nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
@@ -54,25 +53,6 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .trust-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap;opacity:.6}
 .trust-items{display:flex;gap:40px;align-items:center;flex-wrap:wrap}
 .trust-item{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--navy);opacity:.3;text-transform:uppercase}
-.scanner-section{background:var(--navy);padding:100px 40px;position:relative;overflow:hidden}
-.scanner-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.scanner-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.scanner-inner{max-width:760px;margin:auto;text-align:center}
-.scanner-inner h2{font-size:clamp(36px,4vw,54px);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
-.scanner-inner h2 em{font-style:italic;color:var(--gold)}
-.scanner-inner p{font-size:17px;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300;margin-bottom:48px}
-.scanner-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:40px;position:relative}
-.scanner-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:12px 12px 0 0}
-.scanner-input-group{display:flex;gap:12px;margin-bottom:16px}
-.scanner-url-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:16px 20px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.scanner-url-input::placeholder{color:rgba(255,255,255,.25)}
-.scanner-url-input:focus{border-color:var(--gold)}
-.scanner-submit{background:var(--gold);color:var(--navy);padding:16px 32px;border-radius:6px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;white-space:nowrap}
-.scanner-submit:hover{background:var(--gold-light)}
-.scanner-note{font-size:12px;color:rgba(255,255,255,.2)}
-.scanner-tags{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:32px}
-.scanner-tag{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.35);font-weight:500}
-.scanner-tag::before{content:'✓';color:var(--gold);font-size:11px}
 .section-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .section-title{font-size:clamp(36px,4vw,54px);font-weight:700;line-height:1.1;color:var(--navy);letter-spacing:-.02em}
 .section-sub{font-size:18px;color:var(--gray);line-height:1.7;font-weight:300;margin-top:16px}
@@ -95,112 +75,102 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .step-num{width:56px;height:56px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-family:'Playfair Display',serif;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
 .step-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#fff;margin-bottom:14px}
 .step-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,.4);font-weight:300}
+/* PRICING */
 .pricing-preview{padding:120px 40px;background:var(--cream)}
 .pricing-inner{max-width:1280px;margin:auto}
 .pricing-header{text-align:center;margin-bottom:56px}
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start;margin-bottom:48px}
-.plan-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 32px;position:relative;transition:transform .3s,box-shadow .3s}
+.plan-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:40px 32px;position:relative;transition:transform .3s,box-shadow .3s}
 .plan-card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(11,37,69,.08)}
-.plan-card.featured{background:var(--navy);border-color:transparent;transform:scale(1.03)}
+/* Starter - bleu clair */
+.plan-card.starter{border-top:4px solid #4A90D9}
+.plan-card.starter .price-amount{color:#2B5EA7}
+/* Business - navy gold */
+.plan-card.featured{background:var(--navy);border-color:transparent;transform:scale(1.03);border-top:4px solid var(--gold)}
 .plan-card.featured:hover{transform:scale(1.03) translateY(-4px)}
-.plan-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:12px 12px 0 0}
-.plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 18px;border-radius:40px;white-space:nowrap}
+/* Expert - or foncé */
+.plan-card.expert-card{border-top:4px solid #8B6914}
+.plan-card.expert-card .price-amount{color:#6B4F0A}
+.plan-badge{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 18px;border-radius:40px;white-space:nowrap}
+.plan-logo{width:44px;height:44px;object-fit:contain;margin-bottom:16px;border-radius:8px}
 .plan-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--navy);margin-bottom:4px}
 .plan-card.featured .plan-name{color:#fff}
-.plan-target-small{font-size:12px;color:var(--gray);margin-bottom:24px}
+.plan-target-small{font-size:12px;color:var(--gray);margin-bottom:20px}
 .plan-card.featured .plan-target-small{color:rgba(255,255,255,.4)}
-.plan-price{display:flex;align-items:baseline;gap:2px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.plan-price{display:flex;align-items:baseline;gap:2px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
 .plan-card.featured .plan-price{border-color:rgba(255,255,255,.1)}
-.price-amount{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--navy);line-height:1}
+.price-amount{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;line-height:1;color:var(--navy)}
 .plan-card.featured .price-amount{color:var(--gold)}
 .price-currency{font-size:20px;color:var(--gray)}
 .plan-card.featured .price-currency{color:rgba(255,255,255,.35)}
 .price-period{font-size:14px;color:var(--gray);font-weight:300;margin-left:4px}
 .plan-card.featured .price-period{color:rgba(255,255,255,.35)}
-.plan-highlights-preview{list-style:none;margin-bottom:16px;display:flex;flex-direction:column;gap:8px}
-.plan-highlights-preview li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)}
-.plan-card.featured .plan-highlights-preview li{color:rgba(255,255,255,.7)}
-.feat-check{width:16px;height:16px;flex-shrink:0;background:var(--gold-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--gold)}
+.plan-features-all{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:9px}
+.plan-features-all li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--navy);line-height:1.5}
+.plan-card.featured .plan-features-all li{color:rgba(255,255,255,.75)}
+.feat-check{width:16px;height:16px;flex-shrink:0;background:var(--gold-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--gold);margin-top:2px}
 .plan-card.featured .feat-check{background:rgba(201,168,76,.15)}
-.plan-accordion{margin-bottom:28px}
-.plan-accordion-btn{width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:10px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--navy);border-top:1px solid var(--border)}
-.plan-card.featured .plan-accordion-btn{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.1)}
-.plan-accordion-btn .arrow{color:var(--gold);font-size:12px;transition:transform .3s}
-.plan-accordion-btn.open .arrow{transform:rotate(180deg)}
-.plan-accordion-content{display:none;padding:8px 0 4px}
-.plan-accordion-content.open{display:block}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:8px}
-.plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--navy);line-height:1.5}
-.plan-card.featured .plan-features li{color:rgba(255,255,255,.7)}
-.plan-section-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:10px 0 6px;opacity:.8}
-.plan-btn{display:block;width:100%;padding:14px;text-align:center;border-radius:4px;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s}
-.plan-btn-outline{border:1.5px solid rgba(11,37,69,.2);color:var(--navy);background:transparent}
-.plan-btn-outline:hover{background:var(--navy);color:#fff}
-.plan-btn-gold{background:var(--gold);color:var(--navy)}
-.plan-btn-gold:hover{background:var(--gold-light);box-shadow:0 8px 24px rgba(201,168,76,.35)}
-.pricing-note{text-align:center;font-size:13px;color:var(--gray);margin-top:16px}
+.plan-section-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:10px 0 4px;opacity:.8}
+.plan-btn{display:block;width:100%;padding:14px;text-align:center;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;border:none;text-decoration:none}
+.btn-starter{background:#EBF3FB;color:#2B5EA7;border:1.5px solid #4A90D9}
+.btn-starter:hover{background:#2B5EA7;color:#fff}
+.btn-business{background:var(--gold);color:var(--navy)}
+.btn-business:hover{background:var(--gold-light);box-shadow:0 8px 24px rgba(201,168,76,.35)}
+.btn-expert{background:#F5EDD6;color:#6B4F0A;border:1.5px solid #8B6914}
+.btn-expert:hover{background:#6B4F0A;color:#fff}
 .guarantees{padding:80px 40px;border-top:1px solid var(--border)}
 .guarantees-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:48px;text-align:center}
 .g-icon{font-size:30px;margin-bottom:16px}
 .g-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:10px}
 .g-desc{font-size:14px;color:var(--gray);line-height:1.65;font-weight:300}
-.cta-section{background:var(--navy);padding:120px 40px;text-align:center;position:relative}
-.cta-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.cta-section h2{font-size:clamp(40px,5vw,68px);color:#fff;font-weight:700;line-height:1.1;margin-bottom:24px;letter-spacing:-.02em}
-.cta-section h2 em{color:var(--gold);font-style:italic}
-.cta-sub{font-size:18px;color:rgba(255,255,255,.45);margin-bottom:56px;font-weight:300}
-.cta-note{margin-top:24px;font-size:13px;color:rgba(255,255,255,.25)}
-.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 footer{background:#060F1E;padding:56px 40px}
 .footer-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
-.footer-logo img{height:28px;width:auto}
+.footer-logo img{height:36px;width:auto}
 .footer-links{display:flex;gap:32px;list-style:none}
 .footer-links a{text-decoration:none;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
 .footer-links a:hover{color:rgba(255,255,255,.6)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
-#chat-btn{position:fixed;bottom:32px;right:32px;z-index:999;width:62px;height:62px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 24px rgba(11,37,69,.4),0 0 0 2px rgba(201,168,76,.3);transition:all .3s;border:2px solid rgba(201,168,76,.4)}
-#chat-btn:hover{transform:scale(1.08)}
-.chat-notif{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--gold);border-radius:50%;border:2px solid var(--navy);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-#chat-panel{position:fixed;bottom:108px;right:32px;z-index:998;width:340px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(11,37,69,.18);border:1px solid var(--border);overflow:hidden;display:none}
+/* CHATBOT */
+#chat-btn{position:fixed;bottom:32px;right:32px;z-index:999;width:64px;height:64px;background:var(--navy);border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 32px rgba(11,37,69,.45);transition:all .3s;border:2px solid rgba(201,168,76,.35)}
+#chat-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(11,37,69,.5);border-color:var(--gold)}
+.chat-notif{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--gold);border-radius:50%;border:2px solid #fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+#chat-panel{position:fixed;bottom:112px;right:32px;z-index:998;width:340px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(11,37,69,.18);border:1px solid var(--border);overflow:hidden;display:none}
 #chat-panel.open{display:block}
 .chat-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px}
-.chat-header-icon{width:36px;height:36px;background:rgba(201,168,76,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.3);flex-shrink:0}
-.chat-hinfo .chat-name{font-size:14px;font-weight:600;color:#fff}
+.chat-avatar{width:40px;height:40px;border-radius:12px;background:rgba(201,168,76,.1);border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-hinfo .chat-name{font-size:14px;font-weight:700;color:#fff}
 .chat-hinfo .chat-status{font-size:11px;color:var(--gold);display:flex;align-items:center;gap:5px;margin-top:2px}
 .chat-hinfo .chat-status::before{content:'';width:5px;height:5px;background:#22c55e;border-radius:50%}
-.chat-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px;margin-left:auto;padding:4px;transition:color .2s}
+.chat-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:20px;margin-left:auto;line-height:1;transition:color .2s}
 .chat-close:hover{color:#fff}
-.chat-messages-wrap{padding:16px 16px 0;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-.chat-bubble-bot{background:var(--cream);border:1px solid var(--border);border-radius:12px 12px 12px 2px;padding:12px 14px;font-size:13px;line-height:1.6;color:var(--navy);max-width:90%}
-.chat-bubble-user{background:var(--navy);color:#fff;border-radius:12px 12px 2px 12px;padding:12px 14px;font-size:13px;line-height:1.6;max-width:90%;align-self:flex-end}
-.chat-typing{padding:12px 16px;display:none}
-.chat-typing span{display:inline-block;width:6px;height:6px;background:var(--gray);border-radius:50%;animation:typing 1.2s infinite;margin:0 2px}
+.chat-messages-wrap{padding:16px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.chat-bubble-bot{background:var(--cream);border:1px solid var(--border);border-radius:14px 14px 14px 2px;padding:12px 14px;font-size:13px;line-height:1.6;color:var(--navy);max-width:88%}
+.chat-bubble-user{background:var(--navy);color:#fff;border-radius:14px 14px 2px 14px;padding:12px 14px;font-size:13px;line-height:1.6;max-width:88%;align-self:flex-end}
+.chat-typing{padding:0 16px 8px;display:none;align-items:center;gap:4px}
+.chat-typing span{width:7px;height:7px;background:var(--gray);border-radius:50%;animation:typing 1.2s infinite;opacity:.5}
 .chat-typing span:nth-child(2){animation-delay:.2s}
 .chat-typing span:nth-child(3){animation-delay:.4s}
-@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
-.chat-quick{padding:10px 16px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--border)}
-.chat-quick-btn{background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.chat-quick-btn:hover{background:var(--gold-pale);border-color:var(--gold)}
-.chat-input-wrap{padding:12px 16px 16px;display:flex;gap:8px}
-.chat-text-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border-color .2s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chat-quick{padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--border);background:#fafafa}
+.chat-quick-btn{background:#fff;border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.chat-quick-btn:hover{background:var(--gold-pale);border-color:var(--gold);color:#8B6914}
+.chat-input-wrap{padding:12px 16px 14px;display:flex;gap:8px;border-top:1px solid var(--border)}
+.chat-text-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border-color .2s}
 .chat-text-input:focus{border-color:var(--gold)}
-.chat-send-btn{background:var(--navy);color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:15px;transition:background .2s}
+.chat-text-input::placeholder{color:rgba(107,114,128,.4)}
+.chat-send-btn{background:var(--navy);color:#fff;border:none;width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:16px;transition:background .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-send-btn:hover{background:var(--gold);color:var(--navy)}
-.reveal{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s ease}
-
 @media(max-width:1024px){
 .hero{grid-template-columns:1fr;padding:140px 24px 80px}
 .solutions-grid,.pricing-grid,.process-steps,.guarantees-inner{grid-template-columns:1fr}
 .plan-card.featured{transform:none}
 .nav-links{display:none}
-.scanner-input-group{flex-direction:column}
 }
 @media(max-width:640px){
 .guarantees-inner{grid-template-columns:1fr 1fr}
 .footer-inner{flex-direction:column;text-align:center}
 .trust-inner{flex-direction:column}
-.cta-btns{flex-direction:column;align-items:center}
 #chat-panel{width:calc(100vw - 32px);right:16px}
 #chat-btn{right:16px;bottom:16px}
 }
@@ -214,7 +184,7 @@ footer{background:#060F1E;padding:56px 40px}
 <ul class="nav-links">
 <li><a href="#solutions">Solutions</a></li>
 <li><a href="#tarifs">Tarifs</a></li>
-<li><a href="/cdn-cgi/l/email-protection#a7c4c8c9d3c6c4d389c6d2c3cecbcedfe7c0cac6cecb89c4c8ca">Contact</a></li>
+<li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
 </ul>
 <div class="nav-right">
 <a href="login.html" class="nav-client">Espace client</a>
@@ -224,7 +194,7 @@ footer{background:#060F1E;padding:56px 40px}
 </nav>
 <section>
 <div class="hero">
-<div class="reveal">
+<div>
 <div class="hero-badge">Plateforme IA — Conformité Réglementaire</div>
 <h1>Votre AI Compliance<br>Officer, <em>automatisé.</em></h1>
 <p class="hero-sub">Audilix analyse votre site, détecte vos risques RGPD, cybersécurité et RSE, génère vos documents juridiques et surveille votre conformité 24/7 — sans intervention humaine.</p>
@@ -233,7 +203,7 @@ footer{background:#060F1E;padding:56px 40px}
 <a href="#solutions" class="btn-ghost">Découvrir la méthode</a>
 </div>
 </div>
-<div class="reveal" style="transition-delay:.15s">
+<div>
 <div class="hero-card">
 <div class="stat-grid">
 <div><div class="stat-number">2<span>'</span></div><div class="stat-label">Analyse complète</div></div>
@@ -257,14 +227,13 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 </div>
 </div>
-
 <section id="solutions" class="solutions">
-<div class="solutions-header reveal">
+<div class="solutions-header">
 <div class="section-label">Nos expertises</div>
 <h2 class="section-title">Ce qu'Audilix analyse et corrige pour vous.</h2>
 <p class="section-sub">Une couverture complète des obligations réglementaires européennes, gérée entièrement par l'IA.</p>
 </div>
-<div class="solutions-grid reveal" style="transition-delay:.1s">
+<div class="solutions-grid">
 <div class="solution-card">
 <div class="sol-icon">🔐</div>
 <div class="sol-title">RGPD &amp; Protection des données</div>
@@ -284,52 +253,45 @@ footer{background:#060F1E;padding:56px 40px}
 </section>
 <section class="process">
 <div class="process-inner">
-<div class="process-header reveal">
+<div class="process-header">
 <div class="section-label">Notre méthode</div>
 <h2 class="section-title">De l'analyse à la conformité en 3 étapes.</h2>
 <p class="section-sub">Entièrement automatisé. Aucune intervention humaine requise.</p>
 </div>
 <div class="process-steps">
-<div class="step reveal" style="transition-delay:.1s">
+<div class="step">
 <div class="step-num">1</div>
 <div class="step-title">Diagnostic immédiat</div>
-<p class="step-desc">Entrez votre URL. Notre IA crawle et analyse votre site en temps réel en moins de 2 minutes. Gratuit, sans inscription.</p>
+<p class="step-desc">Notre IA crawle et analyse votre site en temps réel en moins de 2 minutes. Gratuit, sans inscription.</p>
 </div>
-<div class="step reveal" style="transition-delay:.2s">
+<div class="step">
 <div class="step-num">2</div>
 <div class="step-title">Compliance Trust Score™</div>
-<p class="step-desc">Notre IA génère votre score sur 100 et identifie chaque risque juridique avec son niveau de priorité et les corrections à apporter.</p>
+<p class="step-desc">Notre IA génère votre score sur 100 et identifie chaque risque juridique avec son niveau de priorité.</p>
 </div>
-<div class="step reveal" style="transition-delay:.3s">
+<div class="step">
 <div class="step-num">3</div>
 <div class="step-title">Conformité automatisée</div>
-<p class="step-desc">Documents générés, corrections suggérées, monitoring continu et alertes automatiques 24/7. Vous ne gérez plus rien.</p>
+<p class="step-desc">Documents générés, corrections suggérées, monitoring continu et alertes automatiques 24/7.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="tarifs" class="pricing-preview">
 <div class="pricing-inner">
-<div class="pricing-header reveal">
+<div class="pricing-header">
 <div class="section-label">Nos formules</div>
 <h2 class="section-title">Un plan pour chaque ambition.</h2>
 <p class="section-sub">Sans engagement · Résiliable à tout moment · Accès immédiat</p>
 </div>
 <div class="pricing-grid">
-<div class="plan-card reveal" style="transition-delay:.1s">
+<!-- STARTER -->
+<div class="plan-card starter">
+<img src="logo-starter.png" alt="Starter" class="plan-logo">
 <div class="plan-name">Starter</div>
 <div class="plan-target-small">Freelances &amp; petits sites web</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">69</span><span class="price-period">/ mois</span></div>
-<ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Audit mensuel automatique</li>
-<li><span class="feat-check">✓</span>Compliance Trust Score™</li>
-<li><span class="feat-check">✓</span>Documents juridiques générés</li>
-<li><span class="feat-check">✓</span>1 site</li>
-</ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
+<ul class="plan-features-all">
 <div class="plan-section-lbl">Audit &amp; Score</div>
 <li><span class="feat-check">✓</span>Audit automatique (moins de 2 min)</li>
 <li><span class="feat-check">✓</span>Compliance Trust Score™ /100</li>
@@ -344,25 +306,16 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Dashboard de conformité</li>
 <li><span class="feat-check">✓</span>1 site</li>
 </ul>
+<button class="plan-btn btn-starter" onclick="window.location.href='pricing.html#starter'">Commencer</button>
 </div>
-</div>
-<a href="pricing.html" class="plan-btn plan-btn-outline">Commencer</a>
-</div>
-<div class="plan-card featured reveal" style="transition-delay:.2s">
+<!-- BUSINESS -->
+<div class="plan-card featured">
 <div class="plan-badge">Le plus choisi</div>
+<img src="logo-business.png" alt="Business" class="plan-logo">
 <div class="plan-name">Business</div>
 <div class="plan-target-small">PME et startups en croissance</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">149</span><span class="price-period">/ mois</span></div>
-<ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Audit continu automatisé</li>
-<li><span class="feat-check">✓</span>AI Compliance Chat</li>
-<li><span class="feat-check">✓</span>Regulatory Watch™</li>
-<li><span class="feat-check">✓</span>5 sites</li>
-</ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
+<ul class="plan-features-all">
 <div class="plan-section-lbl">Tout Starter +</div>
 <li><span class="feat-check">✓</span>Audit continu automatisé</li>
 <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
@@ -378,28 +331,19 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Compliance Timeline</li>
 <li><span class="feat-check">✓</span>5 sites</li>
 </ul>
+<button class="plan-btn btn-business" onclick="window.location.href='pricing.html#business'">Choisir Business</button>
 </div>
-</div>
-<a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business</a>
-</div>
-<div class="plan-card reveal" style="transition-delay:.3s">
+<!-- EXPERT -->
+<div class="plan-card expert-card">
+<img src="logo-expert.png" alt="Expert" class="plan-logo">
 <div class="plan-name">Expert</div>
 <div class="plan-target-small">Agences &amp; entreprises multi-sites</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">299</span><span class="price-period">/ mois</span></div>
-<ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Sites illimités</li>
-<li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
-<li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
-<li><span class="feat-check">✓</span>API conformité</li>
-</ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
+<ul class="plan-features-all">
 <div class="plan-section-lbl">Tout Business +</div>
 <li><span class="feat-check">✓</span>Sites illimités</li>
-<li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
 <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+<li><span class="feat-check">✓</span>IA Compliance Officer virtuel</li>
 <div class="plan-section-lbl">Automatisation avancée</div>
 <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
 <li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
@@ -409,26 +353,19 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Analytics &amp; benchmark sectoriel</li>
 <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
 </ul>
+<button class="plan-btn btn-expert" onclick="window.location.href='pricing.html#expert'">Choisir Expert</button>
 </div>
-</div>
-<a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Expert</a>
-</div>
-</div>
-<div style="text-align:center">
-<a href="pricing.html" class="btn-primary" style="display:inline-block;padding:16px 40px;font-size:15px">Voir la page tarifs complète</a>
-<p class="pricing-note">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
 </div>
 </div>
 </section>
 <section class="guarantees">
 <div class="guarantees-inner">
-<div class="reveal"><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
-<div class="reveal" style="transition-delay:.1s"><div class="g-icon">⚡</div><div class="g-title">Analyse en 2 minutes</div><p class="g-desc">Votre Compliance Trust Score™ généré par IA et envoyé directement dans votre boîte mail.</p></div>
-<div class="reveal" style="transition-delay:.2s"><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et corrections.</p></div>
-<div class="reveal" style="transition-delay:.3s"><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
+<div><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
+<div><div class="g-icon">⚡</div><div class="g-title">Analyse en 2 minutes</div><p class="g-desc">Votre Compliance Trust Score™ généré par IA et envoyé directement dans votre boîte mail.</p></div>
+<div><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et corrections.</p></div>
+<div><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
 </div>
 </section>
-
 <footer>
 <div class="footer-inner">
 <div class="footer-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
@@ -437,31 +374,41 @@ footer{background:#060F1E;padding:56px 40px}
 <li><a href="mentions.html">Mentions légales</a></li>
 <li><a href="scanner.html">Scanner</a></li>
 <li><a href="pricing.html">Tarifs</a></li>
-<li><a href="/cdn-cgi/l/email-protection#88ebe7e6fce9ebfca6e9fdece1e4e1f0c8efe5e9e1e4a6ebe7e5">Contact</a></li>
+<li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
 </ul>
 <span class="footer-copy">© 2026 Audilix</span>
 </div>
 </footer>
+<!-- CHATBOT -->
 <div id="chat-btn" onclick="toggleChat()">
 <div class="chat-notif"></div>
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.06)"/>
-<circle cx="18" cy="18" r="6.5" stroke="#C9A84C" stroke-width="1.2" fill="rgba(11,37,69,0.8)"/>
-<circle cx="18" cy="18" r="5" stroke="rgba(201,168,76,0.3)" stroke-width="0.6" fill="none" stroke-dasharray="2 1.5"/>
-<circle cx="18" cy="18" r="3.5" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="1"/>
-<circle cx="18" cy="18" r="1.8" fill="#C9A84C"/>
-<circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/>
-<circle cx="18" cy="18" r="4.8" stroke="#C9A84C" stroke-width="0.5" fill="none" stroke-dasharray="1.2 2.2" opacity="0.6"/>
+<svg width="34" height="34" viewBox="0 0 40 40" fill="none">
+<!-- Bulle chat arrondie -->
+<rect x="3" y="4" width="34" height="26" rx="8" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="1.5"/>
+<!-- Oeil gauche -->
+<ellipse cx="14" cy="17" rx="4.5" ry="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+<circle cx="14" cy="17" r="2.5" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="1"/>
+<circle cx="14" cy="17" r="1.2" fill="#C9A84C"/>
+<circle cx="14.8" cy="15.8" r="0.5" fill="white" opacity="0.9"/>
+<!-- Oeil droit -->
+<ellipse cx="26" cy="17" rx="4.5" ry="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+<circle cx="26" cy="17" r="2.5" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="1"/>
+<circle cx="26" cy="17" r="1.2" fill="#C9A84C"/>
+<circle cx="26.8" cy="15.8" r="0.5" fill="white" opacity="0.9"/>
+<!-- Queue de bulle -->
+<path d="M12 30 L8 37 L20 30 Z" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round"/>
 </svg>
 </div>
 <div id="chat-panel">
 <div class="chat-header">
-<div class="chat-header-icon">
-<svg width="22" height="22" viewBox="0 0 36 36" fill="none">
-<path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.08)"/>
-<circle cx="18" cy="18" r="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
-<circle cx="18" cy="18" r="3" fill="#C9A84C" opacity="0.8"/>
-<circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/>
+<div class="chat-avatar">
+<svg width="24" height="24" viewBox="0 0 40 40" fill="none">
+<rect x="3" y="4" width="34" height="26" rx="8" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="1.5"/>
+<circle cx="14" cy="17" r="4" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+<circle cx="14" cy="17" r="1.5" fill="#C9A84C"/>
+<circle cx="26" cy="17" r="4" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+<circle cx="26" cy="17" r="1.5" fill="#C9A84C"/>
+<path d="M12 30 L8 37 L20 30 Z" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="1.2"/>
 </svg>
 </div>
 <div class="chat-hinfo">
@@ -476,7 +423,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="chat-typing" id="chat-typing"><span></span><span></span><span></span></div>
 <div class="chat-quick">
 <button class="chat-quick-btn" id="qb1">💰 Tarifs</button>
-<button class="chat-quick-btn" id="qb2">🔍 Comment ça marche</button>
+<button class="chat-quick-btn" id="qb2">🔍 Comment ca marche</button>
 <button class="chat-quick-btn" id="qb3">⚖️ RGPD</button>
 </div>
 <div class="chat-input-wrap">
@@ -484,15 +431,14 @@ footer{background:#060F1E;padding:56px 40px}
 <button class="chat-send-btn" onclick="sendChat()">→</button>
 </div>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var BACKEND = 'https://audilix-backend.onrender.com';
 var chatHistory = [];
 var chatOpen = false;
 
 function toggleChat() {
     chatOpen = !chatOpen;
-    var panel = document.getElementById('chat-panel');
-    if (chatOpen) { panel.classList.add('open'); } else { panel.classList.remove('open'); }
+    document.getElementById('chat-panel').style.display = chatOpen ? 'block' : 'none';
 }
 
 function addMsg(text, isUser) {
@@ -504,9 +450,6 @@ function addMsg(text, isUser) {
     wrap.scrollTop = wrap.scrollHeight;
 }
 
-function showTyping() { document.getElementById('chat-typing').style.display = 'block'; }
-function hideTyping() { document.getElementById('chat-typing').style.display = 'none'; }
-
 function sendChat() {
     var input = document.getElementById('chat-input');
     var msg = input.value.trim();
@@ -514,57 +457,31 @@ function sendChat() {
     input.value = '';
     addMsg(msg, true);
     chatHistory.push({ role: 'user', content: msg });
-    showTyping();
+    document.getElementById('chat-typing').style.display = 'flex';
     fetch(BACKEND + '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: chatHistory })
     }).then(function(r) { return r.json(); }).then(function(data) {
-        hideTyping();
-        var reply = data.reply || 'Une erreur est survenue. Contactez contact.audilix@gmail.com';
+        document.getElementById('chat-typing').style.display = 'none';
+        var reply = data.reply || 'Contactez contact.audilix@gmail.com';
         addMsg(reply, false);
         chatHistory.push({ role: 'assistant', content: reply });
     }).catch(function() {
-        hideTyping();
-        addMsg('Erreur de connexion. Contactez contact.audilix@gmail.com', false);
+        document.getElementById('chat-typing').style.display = 'none';
+        addMsg('Erreur. Contactez contact.audilix@gmail.com', false);
     });
 }
 
-document.getElementById('qb1').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Quels sont vos tarifs ?';
-    sendChat();
-});
-document.getElementById('qb2').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Comment fonctionne le scanner ?';
-    sendChat();
-});
-document.getElementById('qb3').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Comment se mettre en conformite RGPD ?';
-    sendChat();
-});
-
-document.getElementById('chat-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendChat();
-});
-
-function toggleAccordion(btn) {
-    btn.classList.toggle('open');
-    btn.nextElementSibling.classList.toggle('open');
-}
+document.getElementById('qb1').addEventListener('click', function() { document.getElementById('chat-input').value = 'Quels sont vos tarifs ?'; sendChat(); });
+document.getElementById('qb2').addEventListener('click', function() { document.getElementById('chat-input').value = 'Comment fonctionne le service ?'; sendChat(); });
+document.getElementById('qb3').addEventListener('click', function() { document.getElementById('chat-input').value = 'Comment se mettre en conformite RGPD ?'; sendChat(); });
+document.getElementById('chat-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChat(); });
 
 function goToScanner() {
-    var url = document.getElementById('hero-url').value.trim();
+    var url = document.getElementById('hero-url') ? document.getElementById('hero-url').value.trim() : '';
     window.location.href = url ? 'scanner.html?url=' + encodeURIComponent(url) : 'scanner.html';
 }
-
-document.getElementById('hero-url').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') goToScanner();
-});
-
-var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e..target.classList.add('visible'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
 </script>
 <script src="cookies.js"></script>
 </body>
