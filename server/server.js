@@ -167,6 +167,45 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
+// ─── CRAWLER HTML ─────────────────────────────────────────────
+async function crawlSite(url) {
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Audilix-Scanner/1.0 (compliance audit bot)" },
+      timeout: 8000
+    });
+    const html = await res.text();
+    const headers = Object.fromEntries(res.headers.entries());
+
+    // Extraire infos clés du HTML
+    const hasPrivacyPolicy = /politique de confidentialit|privacy policy|confidentialit/i.test(html);
+    const hasLegalMentions = /mentions l.gales|legal notice/i.test(html);
+    const hasCookieBanner = /cookie|consentement|consent|bandeau/i.test(html);
+    const hasCookiePolicy = /politique.*cookie|cookie.*policy/i.test(html);
+    const hasHttps = url.startsWith("https://");
+    const hasHSTSHeader = !!headers["strict-transport-security"];
+    const hasCSPHeader = !!headers["content-security-policy"];
+    const hasXFrameHeader = !!headers["x-frame-options"];
+    const hasXContentHeader = !!headers["x-content-type-options"];
+    const hasRGPDMention = /rgpd|gdpr/i.test(html);
+    const hasDPO = /dpo|délégué.*protection|data protection officer/i.test(html);
+    const hasContactInfo = /contact|email|mail/i.test(html);
+    const hasTerms = /conditions générales|cgu|terms|cgv/i.test(html);
+    const hasSitemap = /sitemap/i.test(html);
+
+    return {
+      hasPrivacyPolicy, hasLegalMentions, hasCookieBanner, hasCookiePolicy,
+      hasHttps, hasHSTSHeader, hasCSPHeader, hasXFrameHeader, hasXContentHeader,
+      hasRGPDMention, hasDPO, hasContactInfo, hasTerms, hasSitemap,
+      htmlLength: html.length,
+      statusCode: res.status
+    };
+  } catch(e) {
+    console.warn("⚠️ Crawl failed:", e.message);
+    return null;
+  }
+}
+
 // ─── SCAN PUBLIC ───────────────────────────────────────────────
 app.post("/api/scan", async (req, res) => {
   try {
@@ -175,14 +214,50 @@ app.post("/api/scan", async (req, res) => {
 
     console.log(`🔍 Scan demandé pour: ${url}`);
 
+    // Crawler le site en temps réel
+    const siteData = await crawlSite(url);
+    const crawlInfo = siteData ? `
+DONNÉES RÉELLES CRAWLÉES DU SITE :
+- Politique de confidentialité présente : ${siteData.hasPrivacyPolicy}
+- Mentions légales présentes : ${siteData.hasLegalMentions}
+- Bandeau cookies présent : ${siteData.hasCookieBanner}
+- Politique cookies présente : ${siteData.hasCookiePolicy}
+- HTTPS actif : ${siteData.hasHttps}
+- Header HSTS : ${siteData.hasHSTSHeader}
+- Header CSP : ${siteData.hasCSPHeader}
+- Header X-Frame-Options : ${siteData.hasXFrameHeader}
+- Header X-Content-Type : ${siteData.hasXContentHeader}
+- Mention RGPD/GDPR : ${siteData.hasRGPDMention}
+- DPO mentionné : ${siteData.hasDPO}
+- Coordonnées de contact : ${siteData.hasContactInfo}
+- CGU/CGV présentes : ${siteData.hasTerms}
+- Code HTTP : ${siteData.statusCode}
+` : "Crawl impossible - analyse basée sur l'URL uniquement";
+
     const messages = [
       {
         role: "system",
-        content: `Tu es un expert en conformité réglementaire européenne (RGPD, NIS2, AI Act, RSE, cybersécurité). 
-        Analyse l'URL fournie et génère un rapport de conformité réaliste.
-        Renvoie UNIQUEMENT un JSON valide sans markdown avec exactement cette structure :
+        content: `Tu es un expert en conformité réglementaire européenne (RGPD, NIS2, AI Act, cybersécurité).
+        On t'a fourni des données réelles crawlées du site. Base-toi UNIQUEMENT sur ces données réelles pour générer le rapport.
+        
+        RÈGLES DE SCORING STRICTES basées sur les données réelles :
+        - Politique de confidentialité présente = +20 points
+        - Mentions légales présentes = +15 points  
+        - Bandeau cookies présent = +15 points
+        - HTTPS actif = +10 points
+        - Header HSTS présent = +5 points
+        - Header CSP présent = +10 points
+        - Header X-Frame-Options présent = +5 points
+        - Coordonnées de contact = +5 points
+        - CGU présentes = +5 points
+        - Mention RGPD = +5 points
+        - DPO mentionné = +5 points
+        
+        Commence à 0 et additionne uniquement les points des éléments PRÉSENTS.
+        
+        Renvoie UNIQUEMENT un JSON valide sans markdown :
         {
-          "score": (nombre 0-100),
+          "score": (nombre 0-100 basé strictement sur les données),
           "risques": [
             { "titre": "...", "description": "...", "niveau": "critique|important|modéré" },
             { "titre": "...", "description": "...", "niveau": "critique|important|modéré" },
@@ -190,17 +265,19 @@ app.post("/api/scan", async (req, res) => {
           ],
           "résumé": "..."
         }
-        Génère exactement 3 risques réalistes basés sur le type de site. Sois précis et professionnel.`
+        Génère des risques UNIQUEMENT pour les éléments manquants détectés.`
       },
       {
         role: "user",
-        content: `Analyse la conformité de ce site web : ${url}
-        Évalue notamment : politique de confidentialité, cookies, mentions légales, sécurité HTTPS, conformité RGPD, risques juridiques.
-        Génère un score réaliste et 3 risques concrets.`
+        content: `URL analysée : ${url}
+        
+        ${crawlInfo}
+        
+        Génère le rapport de conformité basé sur ces données réelles.`
       }
     ];
 
-    const raw = await callOpenAI(messages, 600);
+    const raw = await callOpenAI(messages, 700);
     const report = JSON.parse(cleanJSON(raw));
 
     // Sauvegarder en DB si utilisateur connecté
@@ -306,6 +383,46 @@ app.post("/webhook/tally", async (req, res) => {
   }
 });
 
+
+// ─── AI CHAT ───────────────────────────────────────────────────
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { messages } = req.body;
+    if (!messages || !messages.length) return res.status(400).json({ error: "Messages manquants" });
+
+    const systemPrompt = {
+      role: "system",
+      content: `Tu es l'assistant virtuel d'Audilix, une plateforme SaaS d'audit de conformité automatisé par IA.
+      
+      Réponds en français, de manière concise et professionnelle (max 3-4 phrases).
+      
+      Informations sur Audilix :
+      - Scanner gratuit : analyse un site web et génère un Compliance Trust Score™ /100 en moins de 2 minutes
+      - Plan Starter : 69€/mois — 1 site, audit mensuel, documents juridiques générés, alertes email
+      - Plan Business : 149€/mois — 5 sites, audit continu, AI Compliance Chat, Regulatory Watch™, corrections suggérées
+      - Plan Expert : 299€/mois — sites illimités, moteur juridique IA avancé, API conformité, Badge Audilix Verified
+      - Sans engagement, résiliable à tout moment
+      - Paiement sécurisé par Stripe
+      - Données hébergées en Europe (RGPD)
+      - Contact : contact.audilix@gmail.com
+      
+      Tu peux répondre aux questions sur :
+      - Le RGPD et la conformité réglementaire (cookies, mentions légales, politique de confidentialité, etc.)
+      - Les plans et tarifs Audilix
+      - Le fonctionnement du scanner et des rapports
+      - La cybersécurité, NIS2, AI Act, RSE
+      
+      Si la question dépasse tes connaissances, suggère de contacter contact.audilix@gmail.com`
+    };
+
+    const allMessages = [systemPrompt, ...messages.slice(-6)]; // garder les 6 derniers messages
+    const raw = await callOpenAI(allMessages, 300);
+    res.json({ reply: raw });
+  } catch(e) {
+    console.error("❌ Chat error:", e);
+    res.status(500).json({ error: String(e) });
+  }
+});
 
 // ─── STRIPE CHECKOUT ───────────────────────────────────────────
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
