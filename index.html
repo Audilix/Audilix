@@ -28,12 +28,14 @@
         .nav-links { display: flex; gap: 40px; list-style: none; }
         .nav-links a { text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); opacity: 0.55; transition: opacity 0.2s; }
         .nav-links a:hover { opacity: 1; }
-        .nav-cta { background: var(--gold); color: var(--navy); padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-decoration: none; transition: all 0.2s; display: inline-block; }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+        .nav-client { color: var(--navy); font-size: 13px; font-weight: 600; text-decoration: none; opacity: 0.6; transition: opacity 0.2s; }
+        .nav-client:hover { opacity: 1; }
+        .nav-cta { background: var(--gold); color: var(--navy); padding: 12px 28px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
         .nav-cta:hover { background: var(--gold-light); }
 
         .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
 
-        /* HERO */
         .hero { padding: 180px 40px 120px; max-width: 1280px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
         .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold-pale); border: 1px solid var(--gold); color: #8B6914; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 16px; border-radius: 2px; margin-bottom: 32px; }
         .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: blink 2s infinite; }
@@ -43,7 +45,7 @@
         .hero-sub { font-size: 18px; line-height: 1.75; color: var(--gray); margin-bottom: 48px; font-weight: 300; }
         .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
         .btn-primary { background: var(--navy); color: white; padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s; display: inline-block; }
-        .btn-primary:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.3); }
+        .btn-primary:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); }
         .btn-gold { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 4px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; display: inline-block; }
         .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.4); }
         .btn-ghost { color: var(--navy); font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; opacity: 0.5; transition: opacity 0.2s; }
@@ -66,12 +68,10 @@
         .trust-items { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
         .trust-item { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: var(--navy); opacity: 0.3; text-transform: uppercase; }
 
-        /* SCANNER SECTION */
         .scanner-section { background: var(--navy); padding: 100px 40px; position: relative; overflow: hidden; }
         .scanner-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .scanner-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .scanner-inner { max-width: 760px; margin: auto; text-align: center; }
-        .scanner-inner .section-label { margin-bottom: 16px; }
         .scanner-inner h2 { font-size: clamp(36px, 4vw, 54px); font-weight: 700; color: white; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
         .scanner-inner h2 em { font-style: italic; color: var(--gold); }
         .scanner-inner p { font-size: 17px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-bottom: 48px; }
@@ -82,7 +82,7 @@
         .scanner-url-input::placeholder { color: rgba(255,255,255,0.25); }
         .scanner-url-input:focus { border-color: var(--gold); }
         .scanner-submit { background: var(--gold); color: var(--navy); padding: 16px 32px; border-radius: 6px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s; white-space: nowrap; }
-        .scanner-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+        .scanner-submit:hover { background: var(--gold-light); }
         .scanner-note { font-size: 12px; color: rgba(255,255,255,0.2); }
         .scanner-tags { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 32px; }
         .scanner-tag { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
@@ -92,7 +92,6 @@
         .section-title { font-size: clamp(36px, 4vw, 54px); font-weight: 700; line-height: 1.1; color: var(--navy); letter-spacing: -0.02em; }
         .section-sub { font-size: 18px; color: var(--gray); line-height: 1.7; font-weight: 300; margin-top: 16px; }
 
-        /* SOLUTIONS */
         .solutions { padding: 120px 40px; max-width: 1280px; margin: auto; }
         .solutions-header { margin-bottom: 64px; max-width: 580px; }
         .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -104,8 +103,7 @@
         .sol-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 14px; }
         .sol-desc { font-size: 15px; line-height: 1.75; color: var(--gray); font-weight: 300; }
 
-        /* PROCESS */
-        .process { background: var(--navy); padding: 120px 40px; position: relative; overflow: hidden; }
+        .process { background: var(--navy); padding: 120px 40px; position: relative; }
         .process::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .process-inner { max-width: 1280px; margin: auto; }
         .process-header { text-align: center; margin-bottom: 80px; }
@@ -118,7 +116,6 @@
         .step-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: white; margin-bottom: 14px; }
         .step-desc { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.4); font-weight: 300; }
 
-        /* PRICING PREVIEW */
         .pricing-preview { padding: 120px 40px; background: var(--cream); }
         .pricing-inner { max-width: 1280px; margin: auto; }
         .pricing-header { text-align: center; margin-bottom: 56px; }
@@ -129,39 +126,51 @@
         .plan-card.featured:hover { transform: scale(1.03) translateY(-4px); }
         .plan-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 12px 12px 0 0; }
         .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 18px; border-radius: 40px; white-space: nowrap; }
-        .plan-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+        .plan-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
         .plan-card.featured .plan-name { color: white; }
-        .plan-target-small { font-size: 12px; color: var(--gray); margin-bottom: 24px; font-weight: 300; }
+        .plan-target-small { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
         .plan-card.featured .plan-target-small { color: rgba(255,255,255,0.4); }
-        .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+        .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
         .plan-card.featured .plan-price { border-color: rgba(255,255,255,0.1); }
         .price-amount { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: var(--navy); line-height: 1; }
         .plan-card.featured .price-amount { color: var(--gold); }
-        .price-currency { font-size: 20px; font-weight: 400; color: var(--gray); }
+        .price-currency { font-size: 20px; color: var(--gray); }
         .plan-card.featured .price-currency { color: rgba(255,255,255,0.35); }
         .price-period { font-size: 14px; color: var(--gray); font-weight: 300; margin-left: 4px; }
         .plan-card.featured .price-period { color: rgba(255,255,255,0.35); }
-        .plan-highlights { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
-        .plan-highlights li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--navy); }
-        .plan-card.featured .plan-highlights li { color: rgba(255,255,255,0.7); }
-        .feat-check { width: 18px; height: 18px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--gold); }
+
+        /* ACCORDION */
+        .plan-accordion { margin-bottom: 28px; }
+        .plan-accordion-btn { width: 100%; background: none; border: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 0; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); border-top: 1px solid var(--border); }
+        .plan-card.featured .plan-accordion-btn { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.1); }
+        .plan-accordion-btn .arrow { color: var(--gold); font-size: 12px; transition: transform 0.3s; }
+        .plan-accordion-btn.open .arrow { transform: rotate(180deg); }
+        .plan-accordion-content { display: none; padding: 8px 0 4px; }
+        .plan-accordion-content.open { display: block; }
+        .plan-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--navy); line-height: 1.5; }
+        .plan-card.featured .plan-features li { color: rgba(255,255,255,0.7); }
+        .feat-check { width: 16px; height: 16px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--gold); margin-top: 2px; }
         .plan-card.featured .feat-check { background: rgba(201,168,76,0.15); }
+        .plan-section-lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 10px 0 6px; opacity: 0.8; }
+
+        .plan-highlights-preview { list-style: none; margin-bottom: 0; display: flex; flex-direction: column; gap: 8px; }
+        .plan-highlights-preview li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--navy); }
+        .plan-card.featured .plan-highlights-preview li { color: rgba(255,255,255,0.7); }
+
         .plan-btn { display: block; width: 100%; padding: 14px; text-align: center; border-radius: 4px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.25s; }
         .plan-btn-outline { border: 1.5px solid rgba(11,37,69,0.2); color: var(--navy); background: transparent; }
         .plan-btn-outline:hover { background: var(--navy); color: white; }
         .plan-btn-gold { background: var(--gold); color: var(--navy); }
         .plan-btn-gold:hover { background: var(--gold-light); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
-        .pricing-cta { text-align: center; }
-        .pricing-note { font-size: 13px; color: var(--gray); margin-top: 16px; }
+        .pricing-note { text-align: center; font-size: 13px; color: var(--gray); margin-top: 16px; }
 
-        /* GUARANTEES */
         .guarantees { padding: 80px 40px; border-top: 1px solid var(--border); }
         .guarantees-inner { max-width: 1280px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; text-align: center; }
         .g-icon { font-size: 30px; margin-bottom: 16px; }
         .g-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
         .g-desc { font-size: 14px; color: var(--gray); line-height: 1.65; font-weight: 300; }
 
-        /* CTA */
         .cta-section { background: var(--navy); padding: 120px 40px; text-align: center; position: relative; }
         .cta-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .cta-section h2 { font-size: clamp(40px, 5vw, 68px); color: white; font-weight: 700; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
@@ -178,22 +187,52 @@
         .footer-links a:hover { color: rgba(255,255,255,0.6); }
         .footer-copy { font-size: 11px; color: rgba(255,255,255,0.18); }
 
-        #chat-btn { position: fixed; bottom: 32px; right: 32px; z-index: 999; width: 58px; height: 58px; background: var(--navy); border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(11,37,69,0.35); transition: transform 0.25s; }
-        #chat-btn:hover { transform: translateY(-2px); }
-        #chat-btn::before { content: ''; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: var(--gold); border-radius: 50%; border: 2px solid white; }
-        #chat-panel { position: fixed; bottom: 106px; right: 32px; z-index: 998; width: 330px; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(11,37,69,0.18); border: 1px solid var(--border); overflow: hidden; display: none; }
-        #chat-panel.open { display: block; }
-        .chat-header { background: var(--navy); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+        /* CHATBOT OEIL ROBOT */
+        #chat-btn {
+            position: fixed; bottom: 32px; right: 32px; z-index: 999;
+            width: 62px; height: 62px;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(11,37,69,0.4), 0 0 0 2px rgba(201,168,76,0.3);
+            transition: all 0.3s;
+            border: 2px solid rgba(201,168,76,0.4);
+        }
+        #chat-btn:hover { transform: scale(1.08); box-shadow: 0 8px 32px rgba(11,37,69,0.5), 0 0 0 3px rgba(201,168,76,0.5); }
+        #chat-btn svg { transition: transform 0.3s; }
+        #chat-btn:hover svg { transform: scale(1.1); }
+        .chat-notif { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: var(--gold); border-radius: 50%; border: 2px solid var(--navy); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+        #chat-panel { position: fixed; bottom: 108px; right: 32px; z-index: 998; width: 340px; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(11,37,69,0.18); border: 1px solid var(--border); overflow: hidden; display: none; transform: scale(0.95) translateY(10px); opacity: 0; transition: all 0.25s; transform-origin: bottom right; }
+        #chat-panel.open { display: block; transform: scale(1) translateY(0); opacity: 1; }
+        .chat-header { background: var(--navy); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+        .chat-header-icon { width: 36px; height: 36px; background: rgba(201,168,76,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,168,76,0.3); flex-shrink: 0; }
         .chat-hinfo .chat-name { font-size: 14px; font-weight: 600; color: white; }
         .chat-hinfo .chat-status { font-size: 11px; color: var(--gold); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
         .chat-hinfo .chat-status::before { content: ''; width: 5px; height: 5px; background: #22c55e; border-radius: 50%; }
-        .chat-close { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 18px; padding: 4px; }
-        .chat-body { padding: 24px; }
-        .chat-msg { background: var(--cream); border-radius: 12px 12px 12px 2px; padding: 14px 16px; font-size: 14px; line-height: 1.65; color: var(--navy); margin-bottom: 16px; }
-        .chat-action { display: block; width: 100%; background: var(--navy); color: white; text-align: center; padding: 14px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; transition: background 0.2s; margin-bottom: 10px; }
-        .chat-action:hover { background: var(--gold); color: var(--navy); }
-        .chat-action-ghost { display: block; width: 100%; background: transparent; color: var(--navy); text-align: center; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; border: 1px solid var(--border); transition: all 0.2s; }
-        .chat-action-ghost:hover { border-color: var(--navy); }
+        .chat-close { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 18px; margin-left: auto; padding: 4px; transition: color 0.2s; }
+        .chat-close:hover { color: white; }
+
+        .chat-messages-wrap { padding: 16px 16px 0; max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-bubble-bot { background: var(--cream); border: 1px solid var(--border); border-radius: 12px 12px 12px 2px; padding: 12px 14px; font-size: 13px; line-height: 1.6; color: var(--navy); max-width: 90%; }
+        .chat-bubble-user { background: var(--navy); color: white; border-radius: 12px 12px 2px 12px; padding: 12px 14px; font-size: 13px; line-height: 1.6; max-width: 90%; align-self: flex-end; }
+        .chat-typing { background: var(--cream); border: 1px solid var(--border); border-radius: 12px 12px 12px 2px; padding: 12px 16px; display: none; }
+        .chat-typing span { display: inline-block; width: 6px; height: 6px; background: var(--gray); border-radius: 50%; animation: typing 1.2s infinite; margin: 0 2px; }
+        .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+
+        .chat-quick { padding: 10px 16px; display: flex; gap: 6px; flex-wrap: wrap; border-top: 1px solid var(--border); }
+        .chat-quick-btn { background: var(--cream); border: 1px solid var(--border); color: var(--navy); padding: 5px 10px; border-radius: 40px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+        .chat-quick-btn:hover { background: var(--gold-pale); border-color: var(--gold); }
+
+        .chat-input-wrap { padding: 12px 16px 16px; display: flex; gap: 8px; }
+        .chat-text-input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--navy); outline: none; transition: border-color 0.2s; }
+        .chat-text-input:focus { border-color: var(--gold); }
+        .chat-send-btn { background: var(--navy); color: white; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-size: 15px; transition: background 0.2s; }
+        .chat-send-btn:hover { background: var(--gold); color: var(--navy); }
 
         .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -212,6 +251,8 @@
             .trust-inner { flex-direction: column; }
             .scanner-section { padding: 60px 24px; }
             .cta-btns { flex-direction: column; align-items: center; }
+            #chat-panel { width: calc(100vw - 32px); right: 16px; }
+            #chat-btn { right: 16px; bottom: 16px; }
         }
     </style>
 </head>
@@ -226,11 +267,11 @@
             <li><a href="#scanner">Scanner</a></li>
             <li><a href="#solutions">Solutions</a></li>
             <li><a href="#tarifs">Tarifs</a></li>
-            <li><a href="/cdn-cgi/l/email-protection#2b4844455f4a485f054a5e4f424742536b4c464a424705484446">Contact</a></li>
+            <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
         </ul>
-        <div style="display:flex;gap:12px;align-items:center;">
-            <a href="login.html" style="color:var(--navy);text-decoration:none;font-size:13px;font-weight:600;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">Espace client →</a>
-            <a href="scanner.html" class="nav-cta">Scanner mon site →</a>
+        <div class="nav-right">
+            <a href="login.html" class="nav-client">Espace client</a>
+            <a href="scanner.html" class="nav-cta">Scanner mon site</a>
         </div>
     </div>
 </nav>
@@ -242,7 +283,7 @@
             <h1>Votre AI Compliance<br>Officer, <em>automatisé.</em></h1>
             <p class="hero-sub">Audilix analyse votre site, détecte vos risques RGPD, cybersécurité et RSE, génère vos documents juridiques et surveille votre conformité 24/7 — sans intervention humaine.</p>
             <div class="hero-actions">
-                <a href="scanner.html" class="btn-gold">Scanner mon site gratuitement →</a>
+                <a href="scanner.html" class="btn-gold">Scanner mon site gratuitement</a>
                 <a href="#solutions" class="btn-ghost">Découvrir la méthode</a>
             </div>
         </div>
@@ -282,7 +323,6 @@
     </div>
 </div>
 
-<!-- SCANNER -->
 <section id="scanner" class="scanner-section">
     <div class="scanner-inner reveal">
         <div class="section-label">Compliance Trust Score™ — Gratuit & Instantané</div>
@@ -291,7 +331,7 @@
         <div class="scanner-box">
             <div class="scanner-input-group">
                 <input type="url" id="hero-url" class="scanner-url-input" placeholder="https://votre-site.com">
-                <button class="scanner-submit" onclick="goToScanner()">Analyser →</button>
+                <button class="scanner-submit" onclick="goToScanner()">Analyser</button>
             </div>
             <p class="scanner-note">Analyse gratuite · Aucune inscription · Résultats en moins de 2 minutes</p>
         </div>
@@ -304,7 +344,6 @@
     </div>
 </section>
 
-<!-- SOLUTIONS -->
 <section id="solutions" class="solutions">
     <div class="solutions-header reveal">
         <div class="section-label">Nos expertises</div>
@@ -330,7 +369,6 @@
     </div>
 </section>
 
-<!-- PROCESS -->
 <section class="process">
     <div class="process-inner">
         <div class="process-header reveal">
@@ -342,23 +380,22 @@
             <div class="step reveal" style="transition-delay:0.1s">
                 <div class="step-num">1</div>
                 <div class="step-title">Scannez votre site</div>
-                <p class="step-desc">Entrez votre URL. Notre IA analyse votre site en moins de 2 minutes — RGPD, cookies, sécurité, mentions légales. Gratuit, sans inscription.</p>
+                <p class="step-desc">Entrez votre URL. Notre IA analyse votre site en moins de 2 minutes. Gratuit, sans inscription.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.2s">
                 <div class="step-num">2</div>
                 <div class="step-title">Compliance Trust Score™</div>
-                <p class="step-desc">Notre IA génère votre score sur 100 et identifie chaque risque juridique avec son niveau de priorité et les corrections à apporter.</p>
+                <p class="step-desc">Notre IA génère votre score sur 100 et identifie chaque risque juridique avec son niveau de priorité.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.3s">
                 <div class="step-num">3</div>
                 <div class="step-title">Conformité automatisée</div>
-                <p class="step-desc">Documents générés, corrections suggérées, monitoring continu et alertes automatiques. Votre conformité est gérée en permanence par l'IA.</p>
+                <p class="step-desc">Documents générés, corrections suggérées, monitoring continu et alertes automatiques 24/7.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- PRICING PREVIEW -->
 <section id="tarifs" class="pricing-preview">
     <div class="pricing-inner">
         <div class="pricing-header reveal">
@@ -367,67 +404,133 @@
             <p class="section-sub">Sans engagement · Résiliable à tout moment · Accès immédiat</p>
         </div>
         <div class="pricing-grid">
+
             <div class="plan-card reveal" style="transition-delay:0.1s">
                 <div class="plan-name">Starter</div>
-                <div class="plan-target-small">Freelances & petits sites web</div>
+                <div class="plan-target-small">Freelances &amp; petits sites web</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">69</span>
                     <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-highlights">
+                <ul class="plan-highlights-preview">
                     <li><span class="feat-check">✓</span>Audit mensuel automatique</li>
                     <li><span class="feat-check">✓</span>Compliance Trust Score™</li>
                     <li><span class="feat-check">✓</span>Documents juridiques générés</li>
-                    <li><span class="feat-check">✓</span>Alertes email</li>
                     <li><span class="feat-check">✓</span>1 site</li>
                 </ul>
-                <a href="pricing.html" class="plan-btn plan-btn-outline">Commencer →</a>
+                <div class="plan-accordion">
+                    <button class="plan-accordion-btn" onclick="toggleAccordion(this)">
+                        Voir toutes les fonctionnalités <span class="arrow">▼</span>
+                    </button>
+                    <div class="plan-accordion-content">
+                        <ul class="plan-features">
+                            <div class="plan-section-lbl">Audit &amp; Score</div>
+                            <li><span class="feat-check">✓</span>Audit automatique du site web (moins de 2 min)</li>
+                            <li><span class="feat-check">✓</span>Compliance Trust Score™ /100</li>
+                            <li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
+                            <li><span class="feat-check">✓</span>Audit mensuel automatique</li>
+                            <div class="plan-section-lbl">Documents générés</div>
+                            <li><span class="feat-check">✓</span>Politique de confidentialité</li>
+                            <li><span class="feat-check">✓</span>Mentions légales</li>
+                            <li><span class="feat-check">✓</span>Politique de cookies</li>
+                            <div class="plan-section-lbl">Surveillance</div>
+                            <li><span class="feat-check">✓</span>Alertes email si non-conformité</li>
+                            <li><span class="feat-check">✓</span>Dashboard de conformité</li>
+                            <li><span class="feat-check">✓</span>1 site</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="pricing.html" class="plan-btn plan-btn-outline">Commencer</a>
             </div>
+
             <div class="plan-card featured reveal" style="transition-delay:0.2s">
                 <div class="plan-badge">Le plus choisi</div>
                 <div class="plan-name">Business</div>
-                <div class="plan-target-small" style="color:rgba(255,255,255,0.4)">PME et startups en croissance</div>
+                <div class="plan-target-small">PME et startups en croissance</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">149</span>
                     <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-highlights">
+                <ul class="plan-highlights-preview">
                     <li><span class="feat-check">✓</span>Audit continu automatisé</li>
                     <li><span class="feat-check">✓</span>AI Compliance Chat</li>
                     <li><span class="feat-check">✓</span>Regulatory Watch™</li>
-                    <li><span class="feat-check">✓</span>Corrections suggérées par IA</li>
                     <li><span class="feat-check">✓</span>5 sites</li>
                 </ul>
-                <a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business →</a>
+                <div class="plan-accordion">
+                    <button class="plan-accordion-btn" onclick="toggleAccordion(this)">
+                        Voir toutes les fonctionnalités <span class="arrow">▼</span>
+                    </button>
+                    <div class="plan-accordion-content">
+                        <ul class="plan-features">
+                            <div class="plan-section-lbl">Tout Starter +</div>
+                            <li><span class="feat-check">✓</span>Audit continu automatisé</li>
+                            <li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
+                            <li><span class="feat-check">✓</span>Scan hebdomadaire automatique</li>
+                            <li><span class="feat-check">✓</span>Alertes temps réel</li>
+                            <div class="plan-section-lbl">IA &amp; Automatisation</div>
+                            <li><span class="feat-check">✓</span>AI Compliance Chat 24/7</li>
+                            <li><span class="feat-check">✓</span>Plan d'action priorisé par IA</li>
+                            <li><span class="feat-check">✓</span>Corrections suggérées (copy/paste)</li>
+                            <li><span class="feat-check">✓</span>Regulatory Watch™</li>
+                            <div class="plan-section-lbl">Rapports &amp; Export</div>
+                            <li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
+                            <li><span class="feat-check">✓</span>Compliance Timeline</li>
+                            <li><span class="feat-check">✓</span>5 sites</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business</a>
             </div>
+
             <div class="plan-card reveal" style="transition-delay:0.3s">
                 <div class="plan-name">Expert</div>
-                <div class="plan-target-small">Agences & entreprises multi-sites</div>
+                <div class="plan-target-small">Agences &amp; entreprises multi-sites</div>
                 <div class="plan-price">
                     <span class="price-currency">€</span>
                     <span class="price-amount">299</span>
                     <span class="price-period">/ mois</span>
                 </div>
-                <ul class="plan-highlights">
+                <ul class="plan-highlights-preview">
                     <li><span class="feat-check">✓</span>Sites illimités</li>
                     <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
                     <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
                     <li><span class="feat-check">✓</span>API conformité</li>
-                    <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
                 </ul>
-                <a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Expert →</a>
+                <div class="plan-accordion">
+                    <button class="plan-accordion-btn" onclick="toggleAccordion(this)">
+                        Voir toutes les fonctionnalités <span class="arrow">▼</span>
+                    </button>
+                    <div class="plan-accordion-content">
+                        <ul class="plan-features">
+                            <div class="plan-section-lbl">Tout Business +</div>
+                            <li><span class="feat-check">✓</span>Sites illimités</li>
+                            <li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
+                            <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
+                            <div class="plan-section-lbl">Automatisation avancée</div>
+                            <li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
+                            <li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
+                            <li><span class="feat-check">✓</span>Détection proactive des risques</li>
+                            <div class="plan-section-lbl">Intégration &amp; Certification</div>
+                            <li><span class="feat-check">✓</span>API conformité intégrable</li>
+                            <li><span class="feat-check">✓</span>Analytics &amp; benchmark sectoriel</li>
+                            <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Expert</a>
             </div>
+
         </div>
-        <div class="pricing-cta reveal">
-            <a href="pricing.html" class="btn-primary" style="display:inline-block; padding:16px 40px; font-size:15px;">Voir tous les détails →</a>
+        <div style="text-align:center;">
+            <a href="pricing.html" class="btn-primary" style="display:inline-block;padding:16px 40px;font-size:15px;">Voir la page tarifs complète</a>
             <p class="pricing-note">Paiement sécurisé par Stripe · Sans engagement · Résiliable à tout moment</p>
         </div>
     </div>
 </section>
 
-<!-- GUARANTEES -->
 <section class="guarantees">
     <div class="guarantees-inner">
         <div class="reveal"><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
@@ -437,14 +540,13 @@
     </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section">
     <div class="reveal">
         <h2>Votre conformité<br>commence <em>maintenant.</em></h2>
         <p class="cta-sub">Scanner gratuit. Résultats immédiats. Aucune carte bancaire requise.</p>
         <div class="cta-btns">
-            <a href="scanner.html" class="btn-gold" style="font-size:16px; padding:18px 48px;">Scanner mon site gratuitement →</a>
-            <a href="pricing.html" class="btn-primary" style="font-size:16px; padding:18px 48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">Voir les plans →</a>
+            <a href="scanner.html" class="btn-gold" style="font-size:16px;padding:18px 48px;">Scanner mon site gratuitement</a>
+            <a href="pricing.html" class="btn-primary" style="font-size:16px;padding:18px 48px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);">Voir les plans</a>
         </div>
         <p class="cta-note">Rejoignez les entreprises qui automatisent leur conformité avec Audilix.</p>
     </div>
@@ -458,110 +560,132 @@
             <li><a href="mentions.html">Mentions légales</a></li>
             <li><a href="scanner.html">Scanner</a></li>
             <li><a href="pricing.html">Tarifs</a></li>
-            <li><a href="/cdn-cgi/l/email-protection#385b57564c595b4c16594d5c51545140785f55595154165b5755">Contact</a></li>
+            <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
         </ul>
         <span class="footer-copy">© 2026 Audilix</span>
     </div>
 </footer>
 
+<!-- CHATBOT OEIL ROBOT -->
 <div id="chat-btn" onclick="toggleChat()">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    <div class="chat-notif"></div>
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Oeil robot Audilix -->
+        <ellipse cx="17" cy="17" rx="13" ry="9" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <circle cx="17" cy="17" r="5" fill="#C9A84C" opacity="0.15"/>
+        <circle cx="17" cy="17" r="4" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <circle cx="17" cy="17" r="2" fill="#C9A84C"/>
+        <circle cx="18.5" cy="15.5" r="0.8" fill="white" opacity="0.8"/>
+        <!-- Cils tech -->
+        <line x1="4" y1="17" x2="6" y2="17" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="28" y1="17" x2="30" y2="17" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="17" y1="8" x2="17" y2="10" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="10" y1="10" x2="11.5" y2="11.5" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+        <line x1="24" y1="10" x2="22.5" y2="11.5" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
     </svg>
 </div>
 
 <div id="chat-panel">
     <div class="chat-header">
+        <div class="chat-header-icon">
+            <svg width="20" height="20" viewBox="0 0 34 34" fill="none">
+                <ellipse cx="17" cy="17" rx="13" ry="9" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+                <circle cx="17" cy="17" r="4" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+                <circle cx="17" cy="17" r="2" fill="#C9A84C"/>
+            </svg>
+        </div>
         <div class="chat-hinfo">
             <div class="chat-name">Assistant Audilix</div>
-            <div class="chat-status">En ligne</div>
+            <div class="chat-status">En ligne — IA active</div>
         </div>
         <button class="chat-close" onclick="toggleChat()">✕</button>
     </div>
-    <div class="chat-body" id="chat-body">
-        <div class="chat-msg" id="chat-welcome">Bonjour 👋 Je suis l'assistant Audilix. Je peux répondre à vos questions sur la conformité RGPD, nos plans ou le fonctionnement du service.</div>
-        <div id="chat-messages" style="max-height:240px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;"></div>
-        <div style="display:flex;gap:8px;">
-            <input type="text" id="chat-input" placeholder="Posez votre question..." style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--navy);" onkeypress="if(event.key==='Enter')sendChatMsg()">
-            <button onclick="sendChatMsg()" style="background:var(--navy);color:white;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:16px;transition:background 0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--navy)';this.style.color='white'">→</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-            <button onclick="quickChat('Quels sont vos tarifs ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">💰 Tarifs</button>
-            <button onclick="quickChat('Comment fonctionne le scanner ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">🔍 Scanner</button>
-            <button onclick="quickChat('Qu\'est-ce que le RGPD ?')" style="background:var(--cream);border:1px solid var(--border);color:var(--navy);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">⚖️ RGPD</button>
-        </div>
+    <div class="chat-messages-wrap" id="chat-messages">
+        <div class="chat-bubble-bot">Bonjour 👋 Je suis l'assistant IA d'Audilix. Posez-moi vos questions sur la conformité RGPD, nos plans ou le fonctionnement du service.</div>
+    </div>
+    <div class="chat-typing" id="chat-typing"><span></span><span></span><span></span></div>
+    <div class="chat-quick">
+        <button class="chat-quick-btn" onclick="quickChat('Quels sont vos tarifs ?')">💰 Tarifs</button>
+        <button class="chat-quick-btn" onclick="quickChat('Comment fonctionne le scanner ?')">🔍 Scanner</button>
+        <button class="chat-quick-btn" onclick="quickChat('Comment se mettre en conformité RGPD ?')">⚖️ RGPD</button>
+    </div>
+    <div class="chat-input-wrap">
+        <input type="text" id="chat-input" class="chat-text-input" placeholder="Posez votre question...">
+        <button class="chat-send-btn" onclick="sendChat()">→</button>
     </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function toggleChat() {
-    document.getElementById('chat-panel').classList.toggle('open');
-}
-
-// ── AI CHATBOT ──
-const BACKEND_CHAT = "https://audilix-backend.onrender.com";
+<script>
+const BACKEND = 'https://audilix-backend.onrender.com';
 let chatHistory = [];
+let chatOpen = false;
 
-function addChatMessage(text, isUser) {
-    const msgs = document.getElementById('chat-messages');
+function toggleChat() {
+    chatOpen = !chatOpen;
+    const panel = document.getElementById('chat-panel');
+    if (chatOpen) {
+        panel.classList.add('open');
+    } else {
+        panel.classList.remove('open');
+    }
+}
+
+function addMsg(text, isUser) {
+    const wrap = document.getElementById('chat-messages');
     const div = document.createElement('div');
-    div.style.cssText = isUser 
-        ? 'background:var(--navy);color:white;padding:10px 14px;border-radius:12px 12px 2px 12px;font-size:13px;line-height:1.5;max-width:85%;align-self:flex-end;'
-        : 'background:var(--cream);color:var(--navy);padding:10px 14px;border-radius:12px 12px 12px 2px;font-size:13px;line-height:1.5;max-width:85%;border:1px solid var(--border);';
+    div.className = isUser ? 'chat-bubble-user' : 'chat-bubble-bot';
     div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    
-    const welcome = document.getElementById('chat-welcome');
-    if (welcome) welcome.style.display = 'none';
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
 }
 
-function addTypingIndicator() {
-    const msgs = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.id = 'typing-indicator';
-    div.style.cssText = 'background:var(--cream);color:var(--gray);padding:10px 14px;border-radius:12px 12px 12px 2px;font-size:13px;border:1px solid var(--border);';
-    div.textContent = '...';
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
+function showTyping() {
+    document.getElementById('chat-typing').style.display = 'block';
+}
+function hideTyping() {
+    document.getElementById('chat-typing').style.display = 'none';
 }
 
-function removeTypingIndicator() {
-    const el = document.getElementById('typing-indicator');
-    if (el) el.remove();
-}
-
-async function sendChatMsg() {
+async function sendChat() {
     const input = document.getElementById('chat-input');
     const msg = input.value.trim();
     if (!msg) return;
     input.value = '';
-    
-    addChatMessage(msg, true);
+    addMsg(msg, true);
     chatHistory.push({ role: 'user', content: msg });
-    addTypingIndicator();
-
+    showTyping();
     try {
-        const res = await fetch(`${BACKEND_CHAT}/api/chat`, {
+        const res = await fetch(BACKEND + '/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messages: chatHistory })
         });
         const data = await res.json();
-        removeTypingIndicator();
-        const reply = data.reply || "Désolé, je n\'ai pas pu répondre. Contactez-nous à contact.audilix@gmail.com";
-        addChatMessage(reply, false);
+        hideTyping();
+        const reply = data.reply || 'Une erreur est survenue. Contactez contact.audilix@gmail.com';
+        addMsg(reply, false);
         chatHistory.push({ role: 'assistant', content: reply });
     } catch(e) {
-        removeTypingIndicator();
-        addChatMessage("Erreur de connexion. Réessayez ou contactez contact.audilix@gmail.com", false);
+        hideTyping();
+        addMsg('Erreur de connexion. Contactez contact.audilix@gmail.com', false);
     }
 }
 
 function quickChat(msg) {
     document.getElementById('chat-input').value = msg;
-    sendChatMsg();
+    sendChat();
 }
+
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendChat();
+});
+
+function toggleAccordion(btn) {
+    btn.classList.toggle('open');
+    const content = btn.nextElementSibling;
+    content.classList.toggle('open');
+}
+
 function goToScanner() {
     const url = document.getElementById('hero-url').value.trim();
     window.location.href = url ? 'scanner.html?url=' + encodeURIComponent(url) : 'scanner.html';
@@ -569,4 +693,12 @@ function goToScanner() {
 document.getElementById('hero-url').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') goToScanner();
 });
-const obs = new IntersectionObserver(entries => {
+
+const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+</script>
+<script src="cookies.js"></script>
+</body>
+</html>
