@@ -14,7 +14,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif}
 nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1280px;margin:auto;padding:0 40px;height:76px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo a{display:flex;align-items:center;text-decoration:none}
-.nav-logo img{height:48px;width:auto}
+.nav-logo img{height:56px;width:auto}
 .nav-links{display:flex;gap:40px;list-style:none}
 .nav-links a{text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);opacity:.55;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
@@ -214,7 +214,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><a href="#scanner">Scanner</a></li>
 <li><a href="#solutions">Solutions</a></li>
 <li><a href="#tarifs">Tarifs</a></li>
-<li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
+<li><a href="/cdn-cgi/l/email-protection#a7c4c8c9d3c6c4d389c6d2c3cecbcedfe7c0cac6cecb89c4c8ca">Contact</a></li>
 </ul>
 <div class="nav-right">
 <a href="login.html" class="nav-client">Espace client</a>
@@ -447,17 +447,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="reveal" style="transition-delay:.3s"><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
 </div>
 </section>
-<section class="cta-section">
-<div class="reveal">
-<h2>Votre conformité<br>commence <em>maintenant.</em></h2>
-<p class="cta-sub">Diagnostic gratuit. Résultats immédiats. Aucune carte bancaire requise.</p>
-<div class="cta-btns">
-<a href="scanner.html" class="btn-gold" style="font-size:16px;padding:18px 48px">Obtenir mon Compliance Score™</a>
-<a href="pricing.html" class="btn-primary" style="font-size:16px;padding:18px 48px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)">Voir les plans</a>
-</div>
-<p class="cta-note">Rejoignez les entreprises qui automatisent leur conformité avec Audilix.</p>
-</div>
-</section>
+
 <footer>
 <div class="footer-inner">
 <div class="footer-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
@@ -466,7 +456,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><a href="mentions.html">Mentions légales</a></li>
 <li><a href="scanner.html">Scanner</a></li>
 <li><a href="pricing.html">Tarifs</a></li>
-<li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
+<li><a href="/cdn-cgi/l/email-protection#88ebe7e6fce9ebfca6e9fdece1e4e1f0c8efe5e9e1e4a6ebe7e5">Contact</a></li>
 </ul>
 <span class="footer-copy">© 2026 Audilix</span>
 </div>
@@ -513,7 +503,7 @@ footer{background:#060F1E;padding:56px 40px}
 <button class="chat-send-btn" onclick="sendChat()">→</button>
 </div>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var BACKEND = 'https://audilix-backend.onrender.com';
 var chatHistory = [];
 var chatOpen = false;
@@ -591,10 +581,4 @@ document.getElementById('hero-url').addEventListener('keypress', function(e) {
 });
 
 var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
-</script>
-<script src="cookies.js"></script>
-</body>
-</html>
+    entries.forEach(function(e) { if (e.isIntersecting) e.
