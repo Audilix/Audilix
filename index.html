@@ -186,8 +186,8 @@ footer{background:#060F1E;padding:56px 40px}
 .chat-text-input:focus{border-color:var(--gold)}
 .chat-send-btn{background:var(--navy);color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:15px;transition:background .2s}
 .chat-send-btn:hover{background:var(--gold);color:var(--navy)}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s ease}
+
 @media(max-width:1024px){
 .hero{grid-template-columns:1fr;padding:140px 24px 80px}
 .solutions-grid,.pricing-grid,.process-steps,.guarantees-inner{grid-template-columns:1fr}
@@ -581,4 +581,10 @@ document.getElementById('hero-url').addEventListener('keypress', function(e) {
 });
 
 var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e.
+    entries.forEach(function(e) { if (e.isIntersecting) e..target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+</script>
+<script src="cookies.js"></script>
+</body>
+</html>
