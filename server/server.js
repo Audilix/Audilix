@@ -244,15 +244,17 @@ DONNÉES RÉELLES CRAWLÉES DU SITE :
         - Politique de confidentialité présente = +20 points
         - Mentions légales présentes = +15 points  
         - Bandeau cookies présent = +15 points
-        - HTTPS actif = +10 points
-        - Header HSTS présent = +5 points
-        - Header CSP présent = +10 points
-        - Header X-Frame-Options présent = +5 points
-        - Coordonnées de contact = +5 points
-        - CGU présentes = +5 points
-        - Mention RGPD = +5 points
+        - HTTPS actif = +15 points
+        - Coordonnées de contact = +10 points
+        - CGU présentes = +8 points
+        - Mention RGPD = +8 points
         - DPO mentionné = +5 points
+        - Header HSTS présent = +2 points (bonus technique)
+        - Header CSP présent = +1 point (bonus technique)
+        - Header X-Frame-Options présent = +1 point (bonus technique)
         
+        IMPORTANT: Les headers HTTP (HSTS, CSP, X-Frame) sont des bonus mineurs.
+        Un site avec politique de confidentialité + mentions légales + cookies + HTTPS + contact peut avoir 90+.
         Commence à 0 et additionne uniquement les points des éléments PRÉSENTS.
         
         Renvoie UNIQUEMENT un JSON valide sans markdown :
