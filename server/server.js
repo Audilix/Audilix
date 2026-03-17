@@ -466,39 +466,131 @@ app.post("/api/stripe/checkout", async (req, res) => {
   }
 });
 
+// ─── GÉNÉRATION MOT DE PASSE TEMPORAIRE ───────────────────────
+function generateTempPassword() {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+  let password = "";
+  for (let i = 0; i < 10; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+}
+
+// ─── EMAIL DE BIENVENUE ────────────────────────────────────────
+async function sendWelcomeEmail(email, firstname, plan, tempPassword) {
+  const planNames = { starter: "Starter", business: "Business", expert: "Expert" };
+  const planPrices = { starter: "69€", business: "149€", expert: "299€" };
+  const planName = planNames[plan] || plan;
+  const planPrice = planPrices[plan] || "";
+
+  const html = `
+  <div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;background:#0B2545;border-radius:16px;overflow:hidden;">
+    <div style="height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);"></div>
+    <div style="padding:40px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A84C;">Bienvenue sur Audilix</p>
+      <h1 style="margin:0;font-size:28px;font-weight:700;color:#ffffff;">Votre compte est prêt 🎉</h1>
+    </div>
+    <div style="padding:40px;">
+      <p style="font-size:16px;color:rgba(255,255,255,0.8);margin-bottom:24px;">Bonjour ${firstname || ""},</p>
+      <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:32px;">
+        Votre abonnement <strong style="color:#C9A84C;">${planName} — ${planPrice}/mois</strong> est activé. 
+        Votre compte Audilix a été créé automatiquement avec les accès ci-dessous.
+      </p>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:24px;margin-bottom:32px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C9A84C;margin:0 0 16px;">Vos accès</p>
+        <p style="margin:0 0 8px;font-size:14px;color:rgba(255,255,255,0.7);"><strong style="color:white;">Email :</strong> ${email}</p>
+        <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.7);"><strong style="color:white;">Mot de passe temporaire :</strong> <span style="background:rgba(201,168,76,0.15);color:#C9A84C;padding:3px 10px;border-radius:4px;font-family:monospace;font-size:16px;letter-spacing:0.1em;">${tempPassword}</span></p>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:32px;">⚠️ Changez votre mot de passe après votre première connexion depuis les paramètres de votre dashboard.</p>
+      <div style="text-align:center;">
+        <a href="https://audilix.com/login.html" style="background:#C9A84C;color:#0B2545;padding:16px 40px;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px;display:inline-block;">Accéder à mon dashboard →</a>
+      </div>
+    </div>
+    <div style="padding:24px 40px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;">
+      <p style="font-size:11px;color:rgba(255,255,255,0.2);margin:0;">© 2026 Audilix — contact.audilix@gmail.com — <a href="https://audilix.com" style="color:rgba(255,255,255,0.3);text-decoration:none;">audilix.com</a></p>
+    </div>
+  </div>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${RESEND_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: FROM_EMAIL,
+      to: [email],
+      subject: `🎉 Bienvenue sur Audilix — Vos accès ${planName}`,
+      html
+    })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(`Resend error: ${JSON.stringify(data)}`);
+  return data;
+}
+
 // ─── STRIPE WEBHOOK ────────────────────────────────────────────
 app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (req, res) => {
   try {
-    const sig = req.headers["stripe-signature"];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     let event;
-
-    if (webhookSecret) {
-      // Vérification signature (optionnel pour l'instant)
+    try {
       event = JSON.parse(req.body);
-    } else {
+    } catch(e) {
       event = req.body;
     }
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      const userId = session.metadata?.userId;
-      const plan = session.metadata?.plan;
+      const email = session.customer_details?.email || session.customer_email;
+      const plan = session.metadata?.plan || "starter";
+      const existingUserId = session.metadata?.userId;
 
-      if (userId && SUPABASE_URL) {
+      console.log(`💳 Paiement confirmé — Email: ${email} — Plan: ${plan}`);
+
+      if (!email || !SUPABASE_URL) {
+        console.warn("⚠️ Email manquant ou Supabase non configuré");
+        return res.json({ received: true });
+      }
+
+      // Vérifier si l'utilisateur existe déjà
+      const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}`);
+
+      if (existing && existing.length > 0) {
+        // Utilisateur existant — mettre à jour son plan
+        const userId = existing[0].id;
+        await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
+          method: "PATCH",
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ plan, stripe_customer_id: session.customer })
+        });
+        console.log(`✅ Plan mis à jour: ${email} → ${plan}`);
+      } else {
+        // Nouvel utilisateur — créer le compte automatiquement
+        const tempPassword = generateTempPassword();
+        const firstname = session.customer_details?.name?.split(" ")[0] || "";
+        const lastname = session.customer_details?.name?.split(" ").slice(1).join(" ") || "";
+
+        const newUser = await sbInsert("users", {
+          email,
+          password_hash: hashPassword(tempPassword),
+          firstname,
+          lastname,
+          company: "",
+          plan,
+          stripe_customer_id: session.customer
+        });
+
+        console.log(`✅ Nouveau compte créé: ${email} — Plan: ${plan}`);
+
+        // Envoyer email de bienvenue avec mot de passe temporaire
         try {
-          await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
-            method: "PATCH",
-            headers: {
-              "apikey": SUPABASE_KEY,
-              "Authorization": `Bearer ${SUPABASE_KEY}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ plan, stripe_customer_id: session.customer })
-          });
-          console.log(`✅ Plan mis à jour: ${userId} → ${plan}`);
+          await sendWelcomeEmail(AUDILIX_EMAIL, firstname, plan, tempPassword);
+          // En production avec domaine vérifié, envoyer à l'email client :
+          // await sendWelcomeEmail(email, firstname, plan, tempPassword);
+          console.log(`📧 Email de bienvenue envoyé`);
         } catch(e) {
-          console.warn("⚠️ Erreur mise à jour plan:", e.message);
+          console.warn("⚠️ Email bienvenue non envoyé:", e.message);
         }
       }
     }
