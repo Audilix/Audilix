@@ -306,7 +306,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Dashboard de conformité</li>
 <li><span class="feat-check">✓</span>1 site</li>
 </ul>
-<button class="plan-btn btn-starter" onclick="window.location.href='pricing.html#starter'">Commencer</button>
+<button class="plan-btn btn-starter" onclick="checkout('starter')">Commencer</button>
 </div>
 <!-- BUSINESS -->
 <div class="plan-card featured">
@@ -331,7 +331,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Compliance Timeline</li>
 <li><span class="feat-check">✓</span>5 sites</li>
 </ul>
-<button class="plan-btn btn-business" onclick="window.location.href='pricing.html#business'">Choisir Business</button>
+<button class="plan-btn btn-business" onclick="checkout('business')">Choisir Business</button>
 </div>
 <!-- EXPERT -->
 <div class="plan-card expert-card">
@@ -353,7 +353,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Analytics &amp; benchmark sectoriel</li>
 <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
 </ul>
-<button class="plan-btn btn-expert" onclick="window.location.href='pricing.html#expert'">Choisir Expert</button>
+<button class="plan-btn btn-expert" onclick="checkout('expert')">Choisir Expert</button>
 </div>
 </div>
 </div>
@@ -366,6 +366,96 @@ footer{background:#060F1E;padding:56px 40px}
 <div><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
 </div>
 </section>
+<!-- FAQ -->
+<section class="faq-section">
+<div class="faq-inner">
+    <div class="section-label" style="text-align:center;margin-bottom:16px;">Questions fréquentes</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:56px;">Tout ce que vous devez savoir</h2>
+    <div class="faq-list">
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                Comment fonctionne l'audit automatique ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                Notre IA crawle votre site web en temps réel et analyse : la politique de confidentialité, le bandeau de consentement cookies, les mentions légales, les headers de sécurité HTTPS, et la conformité RGPD globale. L'analyse prend moins de 2 minutes et génère un Compliance Trust Score™ sur 100 avec un rapport détaillé.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                C'est quoi l'AI Compliance Chat ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                C'est un assistant virtuel intégré dans votre dashboard, disponible 24h/24. Vous pouvez lui poser des questions en langage naturel comme "Mon site est-il conforme au RGPD ?", "Que signifie ce risque ?" ou "Comment corriger ce problème ?". Il répond instantanément grâce à l'IA, sans intervention humaine.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                C'est quoi le Regulatory Watch™ ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                Le Regulatory Watch™ est notre système de veille réglementaire automatique. Il surveille en permanence les évolutions du RGPD, de l'AI Act européen, de la directive ePrivacy (cookies) et du CSRD. Si une nouvelle loi vous concerne, vous êtes alerté immédiatement avec les actions à prendre pour rester conforme.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                C'est quoi le Compliance Trust Score™ ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                C'est notre score propriétaire sur 100 qui mesure le niveau de conformité réglementaire de votre site. Il prend en compte : la protection des données (RGPD), la gestion des cookies, la cybersécurité, les mentions légales et les documents juridiques. Plus votre score est élevé, moins vous êtes exposé aux sanctions.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                Les documents juridiques générés sont-ils valables légalement ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                Nos documents (politique de confidentialité, mentions légales, CGU, politique cookies) sont générés par IA sur la base des réglementations européennes en vigueur. Ils constituent une base solide et conforme. Pour les entreprises à forte exposition légale, nous recommandons de les faire valider par un juriste spécialisé.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                C'est quoi le RGPD, l'AI Act, NIS2 ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                Le <strong>RGPD</strong> (Règlement Général sur la Protection des Données) est la loi européenne qui encadre la collecte et le traitement des données personnelles. L'<strong>AI Act</strong> est la nouvelle réglementation européenne sur l'intelligence artificielle. <strong>NIS2</strong> est la directive européenne sur la cybersécurité des entreprises. <strong>CSRD</strong> concerne le reporting sur la responsabilité sociétale (RSE). Audilix vous aide à respecter toutes ces obligations automatiquement.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+                Puis-je résilier à tout moment ?
+                <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+                Oui, sans engagement et sans frais. Résiliez depuis votre dashboard Audilix en un clic. La résiliation est effective immédiatement. Aucune justification requise.
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<!-- LOADING STRIPE -->
+<div id="checkout-loading" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,37,69,0.75);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+    <div style="background:white;border-radius:16px;padding:48px;text-align:center;max-width:300px;">
+        <div style="width:48px;height:48px;border:3px solid rgba(11,37,69,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 20px;"></div>
+        <div style="font-size:16px;font-weight:700;color:#0B2545;margin-bottom:6px;">Redirection...</div>
+        <div style="font-size:13px;color:#6B7280;">Vous allez être redirigé vers Stripe 🔒</div>
+    </div>
+</div>
+
 <footer>
 <div class="footer-inner">
 <div class="footer-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
