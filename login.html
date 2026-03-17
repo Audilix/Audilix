@@ -1,143 +1,423 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Connexion — Audilix</title>
-<link rel="icon" type="image/png" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root{--navy:#0B2545;--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5EDD6;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.1);--red:#ef4444;--green:#22c55e}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--navy);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
-.left-panel{width:460px;flex-shrink:0;background:linear-gradient(160deg,#0B2545 0%,#1A3A6B 100%);padding:48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
-.left-panel::before{content:'';position:absolute;top:0;right:0;width:1px;background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent);height:100%}
-.left-logo img{height:52px;width:auto}
-.left-content{}
-.left-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 14px;border-radius:2px;margin-bottom:32px}
-.left-title{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:20px}
-.left-title em{color:var(--gold);font-style:italic}
-.left-desc{font-size:15px;color:rgba(255,255,255,0.4);line-height:1.75;font-weight:300;margin-bottom:48px}
-.left-features{display:flex;flex-direction:column;gap:16px}
-.left-feature{display:flex;align-items:center;gap:14px}
-.feat-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0}
-.feat-text{font-size:14px;color:rgba(255,255,255,0.55)}
-.back-link{color:rgba(255,255,255,0.3);text-decoration:none;font-size:13px;transition:color .2s;display:flex;align-items:center;gap:6px}
-.back-link:hover{color:var(--gold)}
-.right-panel{flex:1;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:40px}
-.form-container{width:100%;max-width:420px}
-.form-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.form-subtitle{font-size:15px;color:var(--gray);margin-bottom:32px;font-weight:300}
-.tabs{display:flex;gap:0;background:rgba(11,37,69,0.05);border-radius:6px;padding:4px;margin-bottom:28px}
-.tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-radius:4px;transition:all .2s;color:var(--gray);border:none;background:transparent;font-family:'DM Sans',sans-serif}
-.tab.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(11,37,69,0.08)}
-.google-btn{width:100%;padding:14px;background:#fff;border:1.5px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:15px;font-weight:600;color:var(--navy);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-bottom:20px}
-.google-btn:hover{border-color:var(--gold);background:var(--gold-pale);transform:translateY(-1px)}
-.google-btn svg{flex-shrink:0}
-.divider{text-align:center;font-size:12px;color:rgba(107,114,128,0.5);margin:16px 0;position:relative}
-.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(11,37,69,0.08)}
-.divider span{background:var(--cream);padding:0 12px;position:relative}
-.form-group{margin-bottom:18px}
-.form-label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px}
-.form-input{width:100%;padding:13px 16px;background:#fff;border:1.5px solid rgba(11,37,69,0.12);border-radius:6px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border-color .2s}
-.form-input:focus{border-color:var(--gold)}
-.form-input::placeholder{color:rgba(107,114,128,0.5)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-submit{width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;margin-top:6px}
-.form-submit:hover{background:var(--gold);color:var(--navy);transform:translateY(-1px)}
-.form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.form-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red);font-size:13px;padding:12px 14px;border-radius:6px;margin-bottom:16px;display:none}
-.form-error.show{display:block}
-.form-success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#16a34a;font-size:13px;padding:12px 14px;border-radius:6px;margin-bottom:16px;display:none}
-.form-success.show{display:block}
-.form-link{text-align:center;font-size:13px;color:var(--gray);margin-top:16px}
-.form-link a{color:var(--navy);font-weight:600;text-decoration:none}
-.form-link a:hover{color:var(--gold)}
-.forgot-link{text-align:right;margin-top:-10px;margin-bottom:16px}
-.forgot-link a{font-size:12px;color:var(--gray);text-decoration:none}
-.forgot-link a:hover{color:var(--navy)}
-.plan-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.plan-option{border:1.5px solid rgba(11,37,69,0.12);border-radius:6px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .2s;background:#fff}
-.plan-option:hover{border-color:var(--gold)}
-.plan-option.selected{border-color:var(--gold);background:var(--gold-pale)}
-.plan-option input{display:none}
-.plan-name-opt{font-size:13px;font-weight:700;color:var(--navy);display:block}
-.plan-price-opt{font-size:11px;color:var(--gray)}
-@media(max-width:768px){
-.left-panel{display:none}
-.right-panel{background:var(--navy)}
-.form-container{background:var(--cream);padding:36px 28px;border-radius:16px}
-}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connexion — Audilix</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0B2545;
+            --navy-mid: #1A3A6B;
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-pale: #F5EDD6;
+            --cream: #FAF8F4;
+            --gray: #6B7280;
+            --border: rgba(11,37,69,0.1);
+            --red: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); display: flex; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+        /* ── LEFT PANEL ── */
+        .left-panel {
+            width: 45%;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #0B2545 0%, #1A3A6B 50%, #0D3060 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px;
+        }
+
+        /* Geometric shapes background */
+        .shape {
+            position: absolute;
+            border-radius: 40px;
+            opacity: 0.12;
+        }
+        .shape-1 {
+            width: 280px; height: 80px;
+            background: var(--gold);
+            bottom: 120px; left: -60px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+        }
+        .shape-2 {
+            width: 200px; height: 60px;
+            background: var(--gold-light);
+            bottom: 200px; left: 80px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.08;
+        }
+        .shape-3 {
+            width: 160px; height: 50px;
+            background: var(--gold);
+            bottom: 60px; left: 100px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.07;
+        }
+        .shape-4 {
+            width: 120px; height: 40px;
+            background: white;
+            bottom: 280px; left: -20px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.04;
+        }
+        .shape-5 {
+            width: 320px; height: 90px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            bottom: 0; right: -80px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.15;
+        }
+        .shape-6 {
+            width: 180px; height: 55px;
+            background: var(--gold);
+            top: 180px; right: -40px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.08;
+        }
+        .shape-7 {
+            width: 100px; height: 35px;
+            background: var(--gold-light);
+            top: 260px; right: 60px;
+            transform: rotate(-35deg);
+            border-radius: 50px;
+            opacity: 0.06;
+        }
+        /* Glowing orb */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+        .orb-1 {
+            width: 300px; height: 300px;
+            background: rgba(201,168,76,0.12);
+            bottom: -60px; left: -60px;
+        }
+        .orb-2 {
+            width: 200px; height: 200px;
+            background: rgba(26,58,107,0.6);
+            top: 100px; right: -40px;
+        }
+
+        /* Left content */
+        .left-top { position: relative; z-index: 2; }
+        .left-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .left-logo img { height: 36px; width: auto; }
+
+        .left-middle {
+            position: relative;
+            z-index: 2;
+        }
+        .left-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .left-eyebrow::before {
+            content: '';
+            width: 28px; height: 1px;
+            background: var(--gold);
+            opacity: 0.6;
+        }
+        .left-title {
+            font-size: clamp(32px, 3vw, 44px);
+            font-weight: 700;
+            color: white;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+        .left-title em { color: var(--gold); font-style: italic; }
+        .left-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 40px;
+            max-width: 320px;
+        }
+        .left-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .left-stat {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .left-stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .left-stat-lbl {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .left-bottom {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .left-back {
+            color: rgba(255,255,255,0.2);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .left-back:hover { color: rgba(255,255,255,0.5); }
+        .left-back::before { content: '←'; }
+        .left-version { font-size: 11px; color: rgba(255,255,255,0.1); }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 56px;
+        }
+        .form-container { width: 100%; max-width: 380px; }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            background: rgba(11,37,69,0.05);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 36px;
+        }
+        .tab {
+            flex: 1; padding: 10px;
+            text-align: center;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            color: var(--gray);
+            border: none; background: transparent;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .tab.active {
+            background: white;
+            color: var(--navy);
+            box-shadow: 0 2px 8px rgba(11,37,69,0.06);
+        }
+
+        /* FORM */
+        .form-title { font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .form-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 28px; font-weight: 300; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label {
+            display: block;
+            font-size: 11px; font-weight: 700;
+            color: var(--navy); margin-bottom: 7px;
+            letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .form-input {
+            width: 100%; padding: 13px 16px;
+            background: var(--cream);
+            border: 1.5px solid transparent;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--navy); outline: none;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            border-color: var(--gold);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+        }
+        .form-input::placeholder { color: rgba(107,114,128,0.4); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .forgot-link { text-align: right; margin-top: -8px; margin-bottom: 16px; }
+        .forgot-link a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+        .forgot-link a:hover { color: var(--navy); }
+
+        .form-submit {
+            width: 100%; padding: 15px;
+            background: var(--navy); color: white;
+            border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.25s;
+            letter-spacing: 0.02em;
+        }
+        .form-submit:hover { background: var(--gold); color: var(--navy); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,168,76,0.25); }
+        .form-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .form-error {
+            background: rgba(239,68,68,0.06);
+            border: 1px solid rgba(239,68,68,0.18);
+            color: var(--red);
+            font-size: 13px; padding: 11px 14px;
+            border-radius: 8px; margin-bottom: 16px; display: none;
+        }
+        .form-error.show { display: block; }
+
+        .form-divider {
+            text-align: center; font-size: 12px;
+            color: rgba(107,114,128,0.4);
+            margin: 18px 0; position: relative;
+        }
+        .form-divider::before {
+            content: ''; position: absolute;
+            top: 50%; left: 0; right: 0;
+            height: 1px; background: rgba(11,37,69,0.07);
+        }
+        .form-divider span { background: white; padding: 0 12px; position: relative; }
+
+        .form-link {
+            text-align: center; font-size: 13px;
+            color: var(--gray); margin-top: 18px;
+        }
+        .form-link a { color: var(--navy); font-weight: 600; text-decoration: none; }
+        .form-link a:hover { color: var(--gold); }
+
+        .plan-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .plan-option {
+            border: 1.5px solid rgba(11,37,69,0.1);
+            border-radius: 8px; padding: 10px 6px;
+            text-align: center; cursor: pointer;
+            transition: all 0.2s; background: var(--cream);
+        }
+        .plan-option:hover { border-color: var(--gold); }
+        .plan-option.selected { border-color: var(--gold); background: var(--gold-pale); }
+        .plan-option input { display: none; }
+        .plan-opt-name { font-size: 13px; font-weight: 700; color: var(--navy); display: block; }
+        .plan-opt-price { font-size: 10px; color: var(--gray); }
+
+        @media (max-width: 900px) {
+            .left-panel { display: none; }
+            .right-panel { padding: 32px 24px; }
+        }
+    </style>
 </head>
 <body>
 
+<!-- LEFT PANEL -->
 <div class="left-panel">
-    <div><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
-    <div class="left-content">
-        <div class="left-badge">Espace client</div>
-        <h1 class="left-title">Votre conformité,<br><em>pilotée</em> par l'IA.</h1>
-        <p class="left-desc">Accédez à votre tableau de bord, vos rapports d'audit et vos documents juridiques générés automatiquement.</p>
-        <div class="left-features">
-            <div class="left-feature"><div class="feat-dot"></div><span class="feat-text">Compliance Trust Score™ en temps réel</span></div>
-            <div class="left-feature"><div class="feat-dot"></div><span class="feat-text">Rapports PDF générés automatiquement</span></div>
-            <div class="left-feature"><div class="feat-dot"></div><span class="feat-text">Documents juridiques RGPD prêts à l'emploi</span></div>
-            <div class="left-feature"><div class="feat-dot"></div><span class="feat-text">Alertes et monitoring 24/7</span></div>
+    <!-- Geometric shapes -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
+    <div class="shape shape-7"></div>
+
+    <div class="left-top">
+        <a href="index.html" class="left-logo">
+            <img src="logo.png" alt="Audilix">
+        </a>
+    </div>
+
+    <div class="left-middle">
+        <div class="left-eyebrow">Espace client</div>
+        <h1 class="left-title">Votre conformité,<br><em>pilotée</em><br>par l'IA.</h1>
+        <p class="left-desc">Accédez à votre tableau de bord, vos rapports d'audit et vos documents juridiques — générés et mis à jour automatiquement.</p>
+        <div class="left-stats">
+            <div class="left-stat">
+                <div class="left-stat-num">2'</div>
+                <div class="left-stat-lbl">Analyse complète</div>
+            </div>
+            <div class="left-stat">
+                <div class="left-stat-num">/100</div>
+                <div class="left-stat-lbl">Compliance Score™</div>
+            </div>
+            <div class="left-stat">
+                <div class="left-stat-num">24/7</div>
+                <div class="left-stat-lbl">Monitoring actif</div>
+            </div>
+            <div class="left-stat">
+                <div class="left-stat-num">IA</div>
+                <div class="left-stat-lbl">100% automatisé</div>
+            </div>
         </div>
     </div>
-    <a href="index.html" class="back-link">← Retour au site</a>
+
+    <div class="left-bottom">
+        <a href="index.html" class="left-back">Retour au site</a>
+        <span class="left-version">Audilix v4.0</span>
+    </div>
 </div>
 
+<!-- RIGHT PANEL -->
 <div class="right-panel">
     <div class="form-container">
 
         <div class="tabs">
-            <button class="tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
-            <button class="tab" id="tab-register" onclick="showTab('register')">Créer un compte</button>
+            <button class="tab active" onclick="showTab('login')">Connexion</button>
+            <button class="tab" onclick="showTab('register')">Créer un compte</button>
         </div>
 
         <!-- LOGIN -->
         <div id="login-form">
             <h2 class="form-title">Bon retour 👋</h2>
             <p class="form-subtitle">Connectez-vous à votre espace Audilix.</p>
-
-            <!-- GOOGLE -->
-            <button class="google-btn" onclick="loginWithGoogle()">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                Continuer avec Google
-            </button>
-
-            <div class="divider"><span>ou par email</span></div>
-
             <div class="form-error" id="login-error"></div>
             <div class="form-group">
-                <label class="form-label">Adresse email</label>
+                <label class="form-label">Email</label>
                 <input type="email" class="form-input" id="login-email" placeholder="vous@entreprise.com">
             </div>
             <div class="form-group">
                 <label class="form-label">Mot de passe</label>
                 <input type="password" class="form-input" id="login-password" placeholder="••••••••">
             </div>
-            <div class="forgot-link"><a href="#" onclick="showForgot()">Mot de passe oublié ?</a></div>
+            <div class="forgot-link"><a href="#">Mot de passe oublié ?</a></div>
             <button class="form-submit" onclick="handleLogin()" id="login-btn">Se connecter</button>
+            <div class="form-divider"><span>ou</span></div>
             <div class="form-link">Pas encore de compte ? <a href="#" onclick="showTab('register')">Créer un compte gratuit</a></div>
         </div>
 
         <!-- REGISTER -->
-        <div id="register-form" style="display:none">
+        <div id="register-form" style="display:none;">
             <h2 class="form-title">Commencer</h2>
             <p class="form-subtitle">Créez votre compte et lancez votre premier audit.</p>
-
-            <button class="google-btn" onclick="loginWithGoogle()">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                Continuer avec Google
-            </button>
-
-            <div class="divider"><span>ou par email</span></div>
-
             <div class="form-error" id="register-error"></div>
-            <div class="form-success" id="register-success"></div>
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Prénom</label>
@@ -165,40 +445,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);min-height:100vh;di
                 <div class="plan-selector">
                     <label class="plan-option selected" onclick="selectPlan(this)">
                         <input type="radio" name="plan" value="starter" checked>
-                        <span class="plan-name-opt">Starter</span>
-                        <span class="plan-price-opt">69€/mois</span>
+                        <span class="plan-opt-name">Starter</span>
+                        <span class="plan-opt-price">69€/mois</span>
                     </label>
                     <label class="plan-option" onclick="selectPlan(this)">
                         <input type="radio" name="plan" value="business">
-                        <span class="plan-name-opt">Business</span>
-                        <span class="plan-price-opt">149€/mois</span>
+                        <span class="plan-opt-name">Business</span>
+                        <span class="plan-opt-price">149€/mois</span>
                     </label>
                     <label class="plan-option" onclick="selectPlan(this)">
                         <input type="radio" name="plan" value="expert">
-                        <span class="plan-name-opt">Expert</span>
-                        <span class="plan-price-opt">299€/mois</span>
+                        <span class="plan-opt-name">Expert</span>
+                        <span class="plan-opt-price">299€/mois</span>
                     </label>
                 </div>
             </div>
             <button class="form-submit" onclick="handleRegister()" id="register-btn">Créer mon compte</button>
-            <div class="form-link" style="margin-top:14px">Déjà un compte ? <a href="#" onclick="showTab('login')">Se connecter</a></div>
+            <div class="form-link" style="margin-top:16px;">Déjà un compte ? <a href="#" onclick="showTab('login')">Se connecter</a></div>
         </div>
 
     </div>
 </div>
 
 <script>
-var SUPABASE_URL = 'https://wxcjxbybkocwjxlwpxbd.supabase.co';
-var SUPABASE_ANON = 'sb_publishable_czEitP6ahNypB1c1f6yIuw_WXTs9bPl';
-var BACKEND = 'https://audilix-backend.onrender.com';
-
-var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const BACKEND = 'https://audilix-backend.onrender.com';
 
 function showTab(tab) {
     document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
     document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    document.querySelectorAll('.tab').forEach(function(t, i) {
+        t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
+    });
 }
 
 function selectPlan(el) {
@@ -211,102 +488,83 @@ function showError(id, msg) {
     el.textContent = msg;
     el.classList.add('show');
 }
+
 function hideError(id) {
     document.getElementById(id).classList.remove('show');
 }
 
-function loginWithGoogle() {
-    supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: 'https://audilix.com/dashboard.html' }
-    });
-}
-
-function handleLogin() {
+async function handleLogin() {
     hideError('login-error');
     var email = document.getElementById('login-email').value.trim();
     var password = document.getElementById('login-password').value;
     if (!email || !password) { showError('login-error', 'Veuillez remplir tous les champs.'); return; }
-
     var btn = document.getElementById('login-btn');
     btn.disabled = true;
     btn.textContent = 'Connexion...';
-
-    fetch(BACKEND + '/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, password: password })
-    }).then(function(r) { return r.json(); }).then(function(data) {
-        if (data.error) throw new Error(data.error);
+    try {
+        var res = await fetch(BACKEND + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Identifiants incorrects');
         localStorage.setItem('audilix_token', data.token);
         localStorage.setItem('audilix_user', JSON.stringify(data.user));
         window.location.href = 'dashboard.html';
-    }).catch(function(e) {
+    } catch(e) {
         showError('login-error', e.message);
         btn.disabled = false;
         btn.textContent = 'Se connecter';
-    });
+    }
 }
 
-function handleRegister() {
+async function handleRegister() {
     hideError('register-error');
     var firstname = document.getElementById('reg-firstname').value.trim();
     var email = document.getElementById('reg-email').value.trim();
     var company = document.getElementById('reg-company').value.trim();
     var password = document.getElementById('reg-password').value;
     var lastname = document.getElementById('reg-lastname').value.trim();
-    var plan = document.querySelector('input[name="plan"]:checked');
-    var planVal = plan ? plan.value : 'starter';
-
+    var planEl = document.querySelector('input[name="plan"]:checked');
+    var planVal = planEl ? planEl.value : 'starter';
     if (!firstname || !email || !password) { showError('register-error', 'Veuillez remplir tous les champs obligatoires.'); return; }
     if (password.length < 8) { showError('register-error', 'Le mot de passe doit contenir au moins 8 caractères.'); return; }
-
     var btn = document.getElementById('register-btn');
     btn.disabled = true;
     btn.textContent = 'Création...';
-
-    fetch(BACKEND + '/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname: firstname, lastname: lastname, email: email, company: company, password: password, plan: planVal })
-    }).then(function(r) { return r.json(); }).then(function(data) {
-        if (data.error) throw new Error(data.error);
+    try {
+        var res = await fetch(BACKEND + '/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstname: firstname, lastname: lastname, email: email, company: company, password: password, plan: planVal })
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erreur lors de la création');
         localStorage.setItem('audilix_token', data.token);
         localStorage.setItem('audilix_user', JSON.stringify(data.user));
         window.location.href = 'dashboard.html';
-    }).catch(function(e) {
+    } catch(e) {
         showError('register-error', e.message);
         btn.disabled = false;
         btn.textContent = 'Créer mon compte';
-    });
+    }
 }
 
-function showForgot() {
-    var email = document.getElementById('login-email').value.trim();
-    if (!email) { showError('login-error', 'Entrez votre email d\'abord.'); return; }
-    alert('Un lien de réinitialisation sera envoyé à ' + email + ' (bientôt disponible).');
-}
+document.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        if (document.getElementById('register-form').style.display === 'none') {
+            handleLogin();
+        } else {
+            handleRegister();
+        }
+    }
+});
 
-// Redirect si déjà connecté
 if (localStorage.getItem('audilix_token')) {
     window.location.href = 'dashboard.html';
 }
-
-// Gérer retour Google OAuth
-supabase.auth.onAuthStateChange(function(event, session) {
-    if (event === 'SIGNED_IN' && session) {
-        var user = session.user;
-        localStorage.setItem('audilix_token', session.access_token);
-        localStorage.setItem('audilix_user', JSON.stringify({
-            id: user.id,
-            email: user.email,
-            firstname: user.user_metadata.full_name ? user.user_metadata.full_name.split(' ')[0] : 'Client',
-            lastname: user.user_metadata.full_name ? user.user_metadata.full_name.split(' ').slice(1).join(' ') : '',
-            plan: 'starter'
-        }));
-        window.location.href = 'dashboard.html';
-    }
-});
 </script>
+<script src="cookies.js"></script>
 </body>
 </html>
