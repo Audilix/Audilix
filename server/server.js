@@ -2,6 +2,18 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import crypto from "crypto";
+import multer from "multer";
+
+// Multer - stockage en mémoire (pas de fichier sur disque)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
+  fileFilter: (req, file, cb) => {
+    const allowed = ["application/pdf", "text/plain", "text/html", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    if (allowed.includes(file.mimetype)) cb(null, true);
+    else cb(new Error("Format non supporté. Utilisez PDF, TXT ou DOCX."));
+  }
+});
 
 const app = express();
 app.use(cors());
@@ -13,6 +25,13 @@ const FROM_EMAIL = "Audilix <onboarding@resend.dev>";
 const AUDILIX_EMAIL = "mohamed7azouzi@gmail.com";
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+
+// Limites par plan
+const LIMITES_PLAN = {
+  starter: 10,   // analyses/mois
+  business: -1,  // illimité (Pro)
+  expert: -1     // illimité (Premium)
+};
 
 // ─── Supabase helpers ──────────────────────────────────────────
 async function sbGet(table, filter = "") {
@@ -599,6 +618,207 @@ app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (re
   } catch(e) {
     console.error("❌ Stripe webhook error:", e);
     res.status(400).json({ error: String(e) });
+  }
+});
+
+// ─── COMPTAGE ANALYSES DU MOIS ────────────────────────────────
+async function compterAnalysesMois(userId) {
+  try {
+    const debut = new Date();
+    debut.setDate(1); debut.setHours(0,0,0,0);
+    const analyses = await sbGet("analyses", 
+      `?user_id=eq.${userId}&created_at=gte.${debut.toISOString()}&select=id`
+    );
+    return analyses ? analyses.length : 0;
+  } catch(e) {
+    return 0;
+  }
+}
+
+// ─── ANALYSE DE DOCUMENT ──────────────────────────────────────
+app.post("/api/analyser-document", upload.single("document"), async (req, res) => {
+  try {
+    const { userId, planUtilisateur } = req.body;
+    
+    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
+    if (!userId) return res.status(400).json({ error: "Utilisateur non identifié" });
+
+    // Vérifier la limite mensuelle selon le plan
+    const plan = planUtilisateur || "starter";
+    const limite = LIMITES_PLAN[plan] || 10;
+    
+    if (limite !== -1) {
+      const nbAnalyses = await compterAnalysesMois(userId);
+      if (nbAnalyses >= limite) {
+        return res.status(403).json({ 
+          error: `Limite mensuelle atteinte (${limite} analyses). Passez au plan Professionnel pour des analyses illimitées.`,
+          limitAtteinte: true
+        });
+      }
+    }
+
+    // Extraire le texte du document
+    let contenu = "";
+    const nomFichier = req.file.originalname;
+    const typeFichier = req.file.mimetype;
+
+    if (typeFichier === "text/plain" || typeFichier === "text/html") {
+      contenu = req.file.buffer.toString("utf-8").substring(0, 8000);
+    } else if (typeFichier === "application/pdf") {
+      // Pour les PDF : extraction du texte brut (les caractères lisibles)
+      const buffer = req.file.buffer.toString("latin1");
+      const textePdf = buffer.replace(/[^\x20-\x7E\xA0-\xFF\n]/g, " ").replace(/\s+/g, " ").trim();
+      contenu = textePdf.substring(0, 8000);
+    } else {
+      contenu = req.file.buffer.toString("utf-8", 0, 8000);
+    }
+
+    if (!contenu || contenu.trim().length < 50) {
+      return res.status(400).json({ error: "Le document est vide ou illisible. Essayez un fichier texte (.txt) ou copiez le contenu manuellement." });
+    }
+
+    console.log(`📄 Analyse document: ${nomFichier} — User: ${userId} — Plan: ${plan}`);
+
+    // Analyser avec OpenAI
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un expert en droit des affaires et conformité réglementaire européenne (RGPD, droit du travail, droit commercial).
+        Analyse le document fourni et identifie les problèmes de conformité.
+        Réponds UNIQUEMENT en JSON valide sans markdown avec cette structure exacte :
+        {
+          "score": (0-100, score de conformité du document),
+          "type_document": "ex: Politique de confidentialité, Contrat de travail, CGV, Mentions légales, etc.",
+          "problemes": [
+            {
+              "titre": "Titre court du problème",
+              "description": "Description claire du problème",
+              "gravite": "critique|important|mineur",
+              "article_reference": "ex: Article 13 RGPD (optionnel)"
+            }
+          ],
+          "points_positifs": ["Point positif 1", "Point positif 2"],
+          "recommandations": ["Action concrète 1", "Action concrète 2", "Action concrète 3"],
+          "resume": "Résumé en 2-3 phrases du niveau de conformité du document"
+        }
+        Sois précis, professionnel et honnête. Si le document n'est pas un document juridique ou de conformité, indique-le dans le résumé.`
+      },
+      {
+        role: "user",
+        content: `Analyse ce document nommé "${nomFichier}" :\n\n${contenu}`
+      }
+    ];
+
+    const raw = await callOpenAI(messages, 1000);
+    const analyse = JSON.parse(cleanJSON(raw));
+
+    // Sauvegarder en base de données
+    let analyseId = null;
+    try {
+      const saved = await sbInsert("analyses", {
+        user_id: userId,
+        nom_fichier: nomFichier,
+        type_document: analyse.type_document || "Document",
+        score: analyse.score,
+        problemes: analyse.problemes,
+        recommandations: analyse.recommandations,
+        resume: analyse.resume,
+        points_positifs: analyse.points_positifs
+      });
+      analyseId = saved?.id;
+    } catch(e) {
+      console.warn("⚠️ Sauvegarde analyse échouée:", e.message);
+    }
+
+    console.log(`✅ Analyse terminée: ${nomFichier} — Score: ${analyse.score}`);
+    res.json({ ...analyse, id: analyseId, nomFichier });
+
+  } catch(e) {
+    console.error("❌ Erreur analyse document:", e);
+    res.status(500).json({ error: "Erreur lors de l'analyse", details: String(e) });
+  }
+});
+
+// ─── RÉCUPÉRER LES ANALYSES D'UN UTILISATEUR ──────────────────
+app.get("/api/analyses/:userId", async (req, res) => {
+  try {
+    const analyses = await sbGet("analyses", 
+      `?user_id=eq.${req.params.userId}&order=created_at.desc&limit=50`
+    );
+    res.json(analyses || []);
+  } catch(e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+// ─── GÉNÉRER UN DOCUMENT ──────────────────────────────────────
+app.post("/api/generer-document", async (req, res) => {
+  try {
+    const { type, entreprise, activite, userId } = req.body;
+    if (!type) return res.status(400).json({ error: "Type de document manquant" });
+
+    const typesDisponibles = {
+      "confidentialite": "Politique de confidentialité conforme au RGPD",
+      "mentions": "Mentions légales complètes",
+      "cookies": "Politique de gestion des cookies",
+      "cgu": "Conditions générales d'utilisation"
+    };
+
+    const nomType = typesDisponibles[type] || type;
+
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un juriste spécialisé en droit européen. Génère un document juridique complet, professionnel et conforme.
+        Réponds UNIQUEMENT en JSON valide sans markdown :
+        {
+          "titre": "Titre du document",
+          "contenu": "Contenu complet du document en texte (utilisez \n pour les sauts de ligne)",
+          "avertissement": "Note sur les limites du document généré"
+        }`
+      },
+      {
+        role: "user",
+        content: `Génère une ${nomType} pour une entreprise ayant les caractéristiques suivantes :
+        - Nom/type d'entreprise : ${entreprise || "PME française"}
+        - Secteur d'activité : ${activite || "Services numériques"}
+        Le document doit être complet, professionnel et conforme au droit français et européen en vigueur.`
+      }
+    ];
+
+    const raw = await callOpenAI(messages, 1500);
+    const doc = JSON.parse(cleanJSON(raw));
+
+    // Sauvegarder
+    if (userId) {
+      try {
+        await sbInsert("documents_generes", {
+          user_id: userId,
+          type_document: type,
+          titre: doc.titre,
+          contenu: doc.contenu
+        });
+      } catch(e) {
+        console.warn("⚠️ Sauvegarde document échouée:", e.message);
+      }
+    }
+
+    res.json(doc);
+  } catch(e) {
+    console.error("❌ Erreur génération:", e);
+    res.status(500).json({ error: "Erreur lors de la génération", details: String(e) });
+  }
+});
+
+// ─── RÉCUPÉRER LES DOCUMENTS GÉNÉRÉS ──────────────────────────
+app.get("/api/documents/:userId", async (req, res) => {
+  try {
+    const docs = await sbGet("documents_generes",
+      `?user_id=eq.${req.params.userId}&order=created_at.desc`
+    );
+    res.json(docs || []);
+  } catch(e) {
+    res.status(500).json({ error: String(e) });
   }
 });
 
