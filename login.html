@@ -31,16 +31,13 @@
         .l-title { font-size:clamp(28px,2.8vw,40px); font-weight:700; color:white; line-height:1.14; letter-spacing:-0.02em; margin-bottom:18px; }
         .l-title em { color:var(--gold); font-style:italic; }
         .l-desc { font-size:14px; color:rgba(255,255,255,0.36); line-height:1.8; font-weight:300; margin-bottom:36px; max-width:320px; }
-        .l-stats { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-        .l-stat { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:14px; }
-        .l-stat-num { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--gold); line-height:1; margin-bottom:3px; }
-        .l-stat-lbl { font-size:11px; color:rgba(255,255,255,0.28); text-transform:uppercase; letter-spacing:0.07em; }
+
         .l-bot { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; }
         .l-back { color:rgba(255,255,255,0.2); text-decoration:none; font-size:12px; font-weight:500; transition:color 0.2s; display:flex; align-items:center; gap:5px; }
         .l-back:hover { color:rgba(255,255,255,0.5); }
         .l-back::before { content:'←'; }
         .l-ver { font-size:11px; color:rgba(255,255,255,0.1); }
-        .right { flex:1; background:white; display:flex; align-items:center; justify-content:center; padding:48px 52px; }
+        .right { flex:1; background:white; display:flex; align-items:center; justify-content:center; padding:48px 52px; position:relative; }
         .form-wrap { width:100%; max-width:380px; }
         .pay-ok { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); color:#16a34a; font-size:14px; padding:14px 16px; border-radius:8px; margin-bottom:24px; display:none; }
         .pay-ok.show { display:block; }
@@ -77,31 +74,62 @@
         .plan-opt-name { font-size:12px; font-weight:700; color:var(--navy-dark); display:block; }
         .plan-opt-price { font-size:10px; color:var(--gray); }
         @media (max-width:900px) { .left { display:none; } .right { padding:32px 24px; background:var(--cream); } }
-    </style>
+    
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border: 1.5px solid var(--bordure);
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--bleu-fonce);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+        .google-btn:hover { border-color: #4285f4; background: #f8f9ff; }
+        .google-btn svg { flex-shrink: 0; }
+        .ou-separateur { text-align:center; font-size:12px; color:rgba(107,114,128,0.4); margin:0 0 16px; position:relative; }
+        .ou-separateur::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:rgba(27,58,122,0.07); }
+        .ou-separateur span { background:white; padding:0 11px; position:relative; }
+</style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 <div class="left">
-    <div class="geo geo-1"></div><div class="geo geo-2"></div><div class="geo geo-3"></div>
-    <div class="geo geo-4"></div><div class="geo geo-5"></div>
     <div class="orb orb-1"></div><div class="orb orb-2"></div>
+    <!-- Étoiles décoratives -->
+    <div class="etoile" style="top:18%;left:8%;font-size:10px;opacity:0.12;">✦</div>
+    <div class="etoile" style="top:25%;right:14%;font-size:16px;opacity:0.08;">✦</div>
+    <div class="etoile" style="top:38%;left:22%;font-size:7px;opacity:0.15;">✦</div>
+    <div class="etoile" style="top:55%;right:10%;font-size:12px;opacity:0.09;">✦</div>
+    <div class="etoile" style="top:68%;left:12%;font-size:8px;opacity:0.13;">✦</div>
+    <div class="etoile" style="top:78%;right:20%;font-size:14px;opacity:0.07;">✦</div>
+    <div class="etoile" style="top:85%;left:30%;font-size:6px;opacity:0.16;">✦</div>
+    <div class="etoile" style="top:42%;right:28%;font-size:9px;opacity:0.1;">✦</div>
+    <div class="etoile" style="top:60%;left:40%;font-size:11px;opacity:0.08;">✦</div>
+    <div class="etoile" style="top:30%;left:50%;font-size:6px;opacity:0.14;">✦</div>
     <div class="l-top"><a href="index.html" class="l-logo"><img src="logo.png" alt="Audilix"></a></div>
     <div class="l-mid">
         <div class="l-label">Espace client</div>
         <h1 class="l-title">La conformité<br>de votre entreprise,<br><em>gérée pour vous.</em></h1>
         <p class="l-desc">Accédez à vos rapports d'analyse, vos documents juridiques et votre tableau de bord de conformité.</p>
-        <div class="l-stats">
-            <div class="l-stat"><div class="l-stat-num">2'</div><div class="l-stat-lbl">Durée d'analyse</div></div>
-            <div class="l-stat"><div class="l-stat-num">/100</div><div class="l-stat-lbl">Score de conformité</div></div>
-            <div class="l-stat"><div class="l-stat-num">24h</div><div class="l-stat-lbl">Surveillance active</div></div>
-            <div class="l-stat"><div class="l-stat-num">100%</div><div class="l-stat-lbl">Automatisé</div></div>
-        </div>
+
     </div>
     <div class="l-bot">
-        <a href="index.html" class="l-back">Retour au site</a>
         <span class="l-ver">Audilix v4.0</span>
     </div>
 </div>
 <div class="right">
+    <a href="index.html" style="position:absolute;top:20px;right:24px;display:flex;align-items:center;text-decoration:none;opacity:0.35;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=0.35" title="Retour à l'accueil">
+        <img src="logo.png" alt="Audilix" style="height:28px;width:auto;">
+    </a>
     <div class="form-wrap">
         <div class="pay-ok" id="pay-msg">Votre paiement a été confirmé. Vos identifiants de connexion vous ont été envoyés par email.</div>
         <div class="tabs">
@@ -110,6 +138,11 @@
         </div>
         <div id="login-form">
             <h2 class="f-title">Bon retour 👋</h2>
+            <button class="google-btn" onclick="connexionGoogle()">
+                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h13.1c-.6 3-2.3 5.5-4.8 7.2v6h7.7c4.5-4.1 7-10.2 7-17.5z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.2 1.5-5 2.3-8.2 2.3-6.3 0-11.6-4.2-13.5-9.9H2.6v6.2C6.5 42.7 14.7 48 24 48z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6v-6.2H2.6C.9 16.7 0 20.3 0 24s.9 7.3 2.6 10.8l7.9-6.2z"/><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.4 30.4 0 24 0 14.7 0 6.5 5.3 2.6 13.2l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z"/></svg>
+                Continuer avec Google
+            </button>
+            <div class="ou-separateur"><span>ou par e-mail</span></div>
             <p class="f-sub">Connectez-vous à votre espace Audilix.</p>
             <div class="f-err" id="l-err"></div>
             <div class="f-grp"><label class="f-lbl">Email</label><input type="email" class="f-inp" id="l-email" placeholder="vous@entreprise.com"></div>
@@ -134,8 +167,8 @@
                 <label class="f-lbl">Formule souhaitée</label>
                 <div class="plan-sel">
                     <label class="plan-opt sel" onclick="selPlan(this)"><input type="radio" name="plan" value="starter" checked><span class="plan-opt-name">Essentiel</span><span class="plan-opt-price">69€/mois</span></label>
-                    <label class="plan-opt" onclick="selPlan(this)"><input type="radio" name="plan" value="business"><span class="plan-opt-name">Business</span><span class="plan-opt-price">149€/mois</span></label>
-                    <label class="plan-opt" onclick="selPlan(this)"><input type="radio" name="plan" value="expert"><span class="plan-opt-name">Expert</span><span class="plan-opt-price">299€/mois</span></label>
+                    <label class="plan-opt" onclick="selPlan(this)"><input type="radio" name="plan" value="business"><span class="plan-opt-name">Professionnel</span><span class="plan-opt-price">149€/mois</span></label>
+                    <label class="plan-opt" onclick="selPlan(this)"><input type="radio" name="plan" value="expert"><span class="plan-opt-name">Entreprise</span><span class="plan-opt-price">299€/mois</span></label>
                 </div>
             </div>
             <button class="f-submit" id="r-btn" onclick="sInscrire()">Créer mon compte</button>
