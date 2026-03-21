@@ -19,11 +19,11 @@
             --white: #FFFFFF;
             --gray: #6B7280;
             --border: rgba(27,58,122,0.1);
-            --text: #1a2744;
+            
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--navy-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         h1,h2,h3,h4 { font-family: 'Playfair Display', serif; }
 
         /* NAV */
@@ -32,10 +32,10 @@
         .nav-logo a { display: flex; align-items: center; text-decoration: none; }
         .nav-logo img { height: 42px; width: auto; }
         .nav-links { display: flex; gap: 36px; list-style: none; }
-        .nav-links a { text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; color: var(--text); opacity: 0.5; transition: opacity 0.2s; }
+        .nav-links a { text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; color: var(--navy-dark); opacity: 0.5; transition: opacity 0.2s; }
         .nav-links a:hover { opacity: 1; }
         .nav-right { display: flex; align-items: center; gap: 10px; }
-        .nav-client { display: flex; align-items: center; gap: 7px; color: var(--text); font-size: 13px; font-weight: 600; text-decoration: none; padding: 9px 16px; border-radius: 4px; border: 1.5px solid var(--border); transition: all 0.2s; }
+        .nav-client { display: flex; align-items: center; gap: 7px; color: var(--navy-dark); font-size: 13px; font-weight: 600; text-decoration: none; padding: 9px 16px; border-radius: 4px; border: 1.5px solid var(--border); transition: all 0.2s; }
         .nav-client:hover { border-color: var(--gold); color: var(--gold); }
         .nav-client svg { width: 15px; height: 15px; }
         .nav-cta { background: var(--gold); color: var(--navy-dark); padding: 11px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
@@ -55,7 +55,7 @@
         .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(201,168,76,0.3); }
         .btn-navy { background: var(--navy-dark); color: white; padding: 15px 32px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.25s; display: inline-block; }
         .btn-navy:hover { background: var(--navy); transform: translateY(-2px); }
-        .btn-ghost { color: var(--text); font-size: 14px; font-weight: 500; text-decoration: none; opacity: 0.4; transition: opacity 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-ghost { color: var(--navy-dark); font-size: 14px; font-weight: 500; text-decoration: none; opacity: 0.4; transition: opacity 0.2s; display: inline-flex; align-items: center; gap: 5px; }
         .btn-ghost:hover { opacity: 0.8; }
         .btn-ghost::after { content: '→'; }
 
@@ -68,14 +68,14 @@
         .stat-lbl { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); margin-top: 5px; }
         .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
         .tags { display: flex; flex-wrap: wrap; gap: 7px; }
-        .tag { padding: 5px 12px; background: white; border: 1px solid var(--border); border-radius: 40px; font-size: 11px; font-weight: 500; color: var(--text); }
+        .tag { padding: 5px 12px; background: white; border: 1px solid var(--border); border-radius: 40px; font-size: 11px; font-weight: 500; color: var(--navy-dark); }
 
         /* TRUST */
         .trust-bar { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 40px; }
         .trust-inner { max-width: 1200px; margin: auto; display: flex; align-items: center; gap: 40px; }
         .trust-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); white-space: nowrap; opacity: 0.5; }
         .trust-items { display: flex; gap: 32px; flex-wrap: wrap; }
-        .trust-item { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--text); opacity: 0.22; text-transform: uppercase; }
+        .trust-item { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--navy-dark); opacity: 0.22; text-transform: uppercase; }
 
         /* SCANNER */
         .scanner-section { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); padding: 90px 40px; position: relative; overflow: hidden; }
@@ -156,7 +156,7 @@
         .plan.featured .p-per { color: rgba(255,255,255,0.32); }
         .p-sec { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 14px 0 8px; opacity: 0.8; }
         .p-feats { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 9px; }
-        .p-feats li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--text); line-height: 1.5; }
+        .p-feats li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--navy-dark); line-height: 1.5; }
         .plan.featured .p-feats li { color: rgba(255,255,255,0.7); }
         .p-check { width: 16px; height: 16px; flex-shrink: 0; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--gold); margin-top: 1px; }
         .plan.featured .p-check { background: rgba(201,168,76,0.14); }
@@ -221,7 +221,7 @@
         .chat-x { background: none; border: none; color: rgba(255,255,255,0.3); cursor: pointer; font-size: 16px; margin-left: auto; }
         .chat-x:hover { color: white; }
         .chat-body { padding: 14px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; }
-        .msg-b { background: var(--cream); border: 1px solid var(--border); border-radius: 10px 10px 10px 2px; padding: 10px 13px; font-size: 13px; line-height: 1.6; color: var(--text); max-width: 88%; }
+        .msg-b { background: var(--cream); border: 1px solid var(--border); border-radius: 10px 10px 10px 2px; padding: 10px 13px; font-size: 13px; line-height: 1.6; color: var(--navy-dark); max-width: 88%; }
         .msg-u { background: var(--navy-dark); color: white; border-radius: 10px 10px 2px 10px; padding: 10px 13px; font-size: 13px; line-height: 1.6; max-width: 88%; align-self: flex-end; }
         .chat-typing { padding: 0 14px 8px; display: none; }
         .typing-dots { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; display: inline-flex; gap: 4px; }
@@ -230,10 +230,10 @@
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dots { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
         .chat-quick { padding: 8px 14px; display: flex; gap: 5px; flex-wrap: wrap; border-top: 1px solid var(--border); }
-        .chat-qb { background: var(--cream); border: 1px solid var(--border); color: var(--text); padding: 4px 9px; border-radius: 40px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+        .chat-qb { background: var(--cream); border: 1px solid var(--border); color: var(--navy-dark); padding: 4px 9px; border-radius: 40px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
         .chat-qb:hover { background: var(--gold-pale); border-color: var(--gold); }
         .chat-footer { padding: 8px 12px 12px; display: flex; gap: 7px; }
-        .chat-inp { flex: 1; padding: 9px 13px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text); outline: none; transition: border-color 0.2s; background: var(--cream); }
+        .chat-inp { flex: 1; padding: 9px 13px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--navy-dark); outline: none; transition: border-color 0.2s; background: var(--cream); }
         .chat-inp:focus { border-color: var(--gold); background: white; }
         .chat-send { background: var(--navy-dark); color: white; border: none; padding: 9px 13px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
         .chat-send:hover { background: var(--gold); color: var(--navy-dark); }
@@ -423,7 +423,7 @@
             <!-- STARTER -->
             <div class="plan reveal" style="transition-delay:0.1s">
                 <div class="plan-for">Indépendants &amp; petites structures</div>
-                <div class="plan-name">Starter</div>
+                <div class="plan-name">Essentiel</div>
                 <div class="plan-desc">Tout ce qu'il faut pour être conforme et protégé dès le premier mois.</div>
                 <div class="plan-price">
                     <span class="p-cur">€</span>
@@ -452,7 +452,7 @@
             <div class="plan featured reveal" style="transition-delay:0.2s">
                 <div class="plan-badge">Le plus choisi</div>
                 <div class="plan-for">PME &amp; startups en croissance</div>
-                <div class="plan-name">Pro</div>
+                <div class="plan-name">Professionnel</div>
                 <div class="plan-desc">Analyses illimitées, IA disponible 24h/24 et veille réglementaire automatique.</div>
                 <div class="plan-price">
                     <span class="p-cur">€</span>
@@ -474,13 +474,13 @@
                     <li><span class="p-check">✓</span>Historique complet des analyses</li>
                     <li><span class="p-check">✓</span>Support prioritaire (réponse sous 24h)</li>
                 </ul>
-                <button class="plan-btn btn-gl" onclick="payer('business')">Choisir Pro</button>
+                <button class="plan-btn btn-gl" onclick="payer('business')">Choisir Professionnel</button>
             </div>
 
             <!-- EXPERT -->
             <div class="plan reveal" style="transition-delay:0.3s">
                 <div class="plan-for">Agences &amp; entreprises multi-sites</div>
-                <div class="plan-name">Premium</div>
+                <div class="plan-name">Entreprise</div>
                 <div class="plan-desc">Audit complet, rapports PDF, multi-sites, API et support VIP.</div>
                 <div class="plan-price">
                     <span class="p-cur">€</span>
@@ -500,7 +500,7 @@
                     <div class="p-sec">Support</div>
                     <li><span class="p-check">✓</span>Support VIP (réponse le jour même)</li>
                 </ul>
-                <button class="plan-btn btn-ol" onclick="payer('expert')">Choisir Premium</button>
+                <button class="plan-btn btn-ol" onclick="payer('expert')">Choisir Entreprise</button>
             </div>
 
         </div>
