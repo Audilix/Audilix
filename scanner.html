@@ -3,272 +3,280 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Scanner de Conformité Gratuit — Audilix</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <title>Analyse de conformité gratuite — Audilix</title>
+    <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root{--navy:#0B2545;--navy-mid:#1A3A6B;--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5EDD6;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.08);--red:#ef4444;--orange:#f59e0b;--green:#22c55e}
-        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-        body{font-family:'DM Sans',sans-serif;background:var(--navy);color:white;-webkit-font-smoothing:antialiased;min-height:100vh}
-        h1,h2,h3{font-family:'Playfair Display',serif}
-        nav{padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08)}
-        .nav-logo a{display:flex;align-items:center;text-decoration:none}
-        .nav-logo img{height:52px;width:auto;filter:brightness(0) invert(1)}
-        .nav-back{color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:color 0.2s}
-        .nav-back:hover{color:var(--gold)}
-        .nav-back::before{content:'←'}
-        .gold-line{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-        .hero{padding:80px 40px 60px;text-align:center;max-width:800px;margin:auto}
-        .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;border-radius:2px;margin-bottom:32px}
-        .hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 2s infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-        .hero h1{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.08;margin-bottom:20px;letter-spacing:-.02em}
-        .hero h1 em{font-style:italic;color:var(--gold)}
-        .hero-sub{font-size:18px;color:rgba(255,255,255,.5);line-height:1.7;font-weight:300}
-        .scanner-wrap{max-width:720px;margin:0 auto;padding:0 40px 80px}
-        .scanner-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:48px;position:relative;overflow:hidden}
-        .scanner-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-        .input-group{display:flex;gap:12px;margin-bottom:16px}
-        .url-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:16px 20px;color:white;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-        .url-input::placeholder{color:rgba(255,255,255,.25)}
-        .url-input:focus{border-color:var(--gold)}
-        .scan-btn{background:var(--gold);color:var(--navy);padding:16px 32px;border-radius:6px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;white-space:nowrap}
-        .scan-btn:hover{background:var(--gold-light);transform:translateY(-1px)}
-        .scan-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-        .input-note{font-size:12px;color:rgba(255,255,255,.25);text-align:center}
-        #loading{display:none;text-align:center;padding:48px 0}
-        .scan-animation{display:flex;flex-direction:column;align-items:center;gap:24px}
-        .scan-circle{width:80px;height:80px;border-radius:50%;border:2px solid rgba(201,168,76,.2);border-top-color:var(--gold);animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .scan-steps{display:flex;flex-direction:column;gap:8px;text-align:left}
-        .scan-step{font-size:13px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:10px;transition:color .3s}
-        .scan-step.active{color:var(--gold)}
-        .scan-step.done{color:var(--green)}
-        .scan-step::before{content:'○';font-size:10px}
-        .scan-step.active::before{content:'◉'}
-        .scan-step.done::before{content:'✓'}
-        #results{display:none}
-        .result-header{text-align:center;margin-bottom:40px}
-        .result-url{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:24px;font-family:monospace}
-        .score-circle-wrap{display:flex;justify-content:center;margin-bottom:32px}
-        .score-circle{position:relative;width:160px;height:160px}
-        .score-circle svg{transform:rotate(-90deg)}
-        .score-circle-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:8}
-        .score-circle-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
-        .score-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-        .score-number{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;line-height:1}
-        .score-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-        .score-verdict{font-size:15px;font-weight:500;margin-bottom:8px}
-        .score-desc{font-size:14px;color:rgba(255,255,255,.4)}
-        .risks-section{margin-bottom:32px}
-        .risks-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
-        .risk-cards{display:flex;flex-direction:column;gap:10px}
-        .risk-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
-        .risk-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-        .risk-icon.high{background:rgba(239,68,68,.1)}
-        .risk-icon.medium{background:rgba(245,158,11,.1)}
-        .risk-icon.low{background:rgba(34,197,94,.1)}
-        .risk-title{font-size:14px;font-weight:600;color:white;margin-bottom:4px}
-        .risk-desc{font-size:13px;color:rgba(255,255,255,.4);line-height:1.5}
-        .risk-badge{display:inline-block;padding:2px 8px;border-radius:40px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-        .risk-badge.high{background:rgba(239,68,68,.15);color:#ef4444}
-        .risk-badge.medium{background:rgba(245,158,11,.15);color:#f59e0b}
-        .risk-badge.low{background:rgba(34,197,94,.15);color:#22c55e}
-        .locked-section{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:12px;padding:32px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden}
-        .locked-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-        .lock-icon{font-size:32px;margin-bottom:16px}
-        .locked-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;margin-bottom:10px}
-        .locked-desc{font-size:14px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:24px}
-        .locked-items{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
-        .locked-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:6px 14px;border-radius:40px;font-size:12px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px}
-        .locked-item::before{content:'🔒';font-size:10px}
-        .cta-btn{display:inline-block;background:var(--gold);color:var(--navy);padding:15px 36px;border-radius:4px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s}
-        .cta-btn:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
-        .cta-note{font-size:12px;color:rgba(255,255,255,.25);margin-top:12px}
-        .rescan-btn{display:block;width:100%;padding:14px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:rgba(255,255,255,.4);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-        .rescan-btn:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
-        .stats-bar{border-top:1px solid rgba(255,255,255,.06);padding:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center;max-width:720px;margin:0 auto}
-        .stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--gold)}
-        .stat-lbl{font-size:12px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-        footer{border-top:1px solid rgba(255,255,255,.05);padding:32px 40px;text-align:center}
-        footer p{font-size:12px;color:rgba(255,255,255,.2)}
-        footer a{color:rgba(255,255,255,.3);text-decoration:none}
-        footer a:hover{color:var(--gold)}
-        @media(max-width:640px){
-        nav{padding:16px 24px}
-        .hero{padding:60px 24px 40px}
-        .scanner-wrap{padding:0 24px 60px}
-        .scanner-box{padding:32px 24px}
-        .input-group{flex-direction:column}
-        .stats-bar{grid-template-columns:1fr;gap:24px;padding:32px 24px}
+        :root { --navy:#1B3A7A; --navy-dark:#0F2456; --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6; --cream:#FAF8F4; --gray:#6B7280; --border:rgba(27,58,122,0.1); --text:#0F2456; --red:#ef4444; --orange:#f59e0b; --green:#22c55e; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--navy-dark); color:white; -webkit-font-smoothing:antialiased; min-height:100vh; }
+        h1,h2,h3 { font-family:'Playfair Display',serif; }
+        .gold-line { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
+        nav { padding:20px 40px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); }
+        nav a.logo { display:flex; align-items:center; text-decoration:none; }
+        nav a.logo img { height:36px; width:auto; }
+        nav a.back { color:rgba(255,255,255,0.35); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s; display:flex; align-items:center; gap:6px; }
+        nav a.back:hover { color:var(--gold); }
+        nav a.back::before { content:'←'; }
+
+        .hero { padding:64px 40px 48px; text-align:center; max-width:680px; margin:auto; }
+        .h-label { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .h-label::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .hero h1 { font-size:clamp(32px,4.5vw,54px); font-weight:700; line-height:1.1; margin-bottom:18px; letter-spacing:-0.02em; }
+        .hero h1 em { font-style:italic; color:var(--gold); }
+        .hero p { font-size:16px; color:rgba(255,255,255,0.42); line-height:1.75; font-weight:300; }
+
+        .scan-wrap { max-width:660px; margin:0 auto; padding:0 40px 72px; }
+        .scan-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:40px; position:relative; overflow:hidden; }
+        .scan-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+        .s-group { display:flex; gap:10px; margin-bottom:14px; }
+        .s-inp { flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:15px 18px; color:white; font-size:15px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
+        .s-inp::placeholder { color:rgba(255,255,255,0.2); }
+        .s-inp:focus { border-color:var(--gold); }
+        .s-btn { background:var(--gold); color:var(--navy-dark); padding:15px 28px; border-radius:6px; border:none; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background 0.2s; white-space:nowrap; }
+        .s-btn:hover { background:var(--gold-light); }
+        .s-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .s-note { font-size:11px; color:rgba(255,255,255,0.18); text-align:center; }
+
+        /* LOADING */
+        #loading { display:none; text-align:center; padding:40px 0; }
+        .spin-ring { width:64px; height:64px; border-radius:50%; border:2px solid rgba(201,168,76,0.2); border-top-color:var(--gold); animation:spin 0.9s linear infinite; margin:0 auto 24px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .scan-steps { display:flex; flex-direction:column; gap:8px; text-align:left; max-width:320px; margin:0 auto; }
+        .scan-step { font-size:13px; color:rgba(255,255,255,0.28); display:flex; align-items:center; gap:10px; transition:color 0.3s; }
+        .scan-step.active { color:var(--gold); }
+        .scan-step.done { color:var(--green); }
+        .scan-step::before { content:'○'; font-size:10px; flex-shrink:0; }
+        .scan-step.active::before { content:'◉'; }
+        .scan-step.done::before { content:'✓'; }
+
+        /* RESULTS */
+        #results { display:none; }
+        .r-url { font-size:12px; color:rgba(255,255,255,0.28); text-align:center; margin-bottom:28px; font-family:monospace; }
+        .score-wrap { display:flex; justify-content:center; margin-bottom:28px; }
+        .score-ring { position:relative; width:148px; height:148px; }
+        .score-ring svg { transform:rotate(-90deg); }
+        .score-bg { fill:none; stroke:rgba(255,255,255,0.06); stroke-width:8; }
+        .score-fill { fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1.4s ease; }
+        .score-txt { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+        .score-num { font-family:'Playfair Display',serif; font-size:44px; font-weight:700; line-height:1; }
+        .score-sub { font-size:11px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.1em; margin-top:3px; }
+        .r-verdict { font-size:15px; font-weight:600; text-align:center; margin-bottom:6px; }
+        .r-desc { font-size:14px; color:rgba(255,255,255,0.38); text-align:center; margin-bottom:32px; }
+
+        .risks-lbl { font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:14px; }
+        .risk-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+        .risk-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:16px 18px; display:flex; align-items:flex-start; gap:14px; }
+        .risk-lvl { flex-shrink:0; padding:3px 10px; border-radius:40px; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; }
+        .lvl-critique { background:rgba(239,68,68,0.12); color:#ef4444; }
+        .lvl-important { background:rgba(245,158,11,0.12); color:#f59e0b; }
+        .lvl-modere { background:rgba(34,197,94,0.12); color:#22c55e; }
+        .risk-body {}
+        .risk-title { font-size:14px; font-weight:600; color:white; margin-bottom:4px; }
+        .risk-desc { font-size:13px; color:rgba(255,255,255,0.38); line-height:1.55; }
+
+        .locked { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.14); border-radius:12px; padding:28px; text-align:center; margin-bottom:20px; position:relative; overflow:hidden; }
+        .locked::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+        .lock-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:600; margin-bottom:8px; }
+        .lock-desc { font-size:13px; color:rgba(255,255,255,0.38); line-height:1.65; margin-bottom:20px; }
+        .lock-items { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-bottom:22px; }
+        .lock-item { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); padding:5px 12px; border-radius:40px; font-size:12px; color:rgba(255,255,255,0.35); }
+        .cta-btn { display:inline-block; background:var(--gold); color:var(--navy-dark); padding:14px 32px; border-radius:4px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.25s; }
+        .cta-btn:hover { background:var(--gold-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(201,168,76,0.28); }
+        .cta-note { font-size:12px; color:rgba(255,255,255,0.2); margin-top:10px; }
+        .retry-btn { display:block; width:100%; padding:13px; background:transparent; border:1px solid rgba(255,255,255,0.08); border-radius:6px; color:rgba(255,255,255,0.35); font-size:14px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
+        .retry-btn:hover { border-color:rgba(255,255,255,0.18); color:rgba(255,255,255,0.65); }
+
+        .stats-bar { border-top:1px solid rgba(255,255,255,0.05); padding:36px 40px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px; text-align:center; max-width:660px; margin:0 auto; }
+        .st-num { font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:var(--gold); }
+        .st-lbl { font-size:11px; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.08em; margin-top:3px; }
+
+        footer { border-top:1px solid rgba(255,255,255,0.05); padding:28px 40px; text-align:center; }
+        footer p { font-size:12px; color:rgba(255,255,255,0.18); }
+        footer a { color:rgba(255,255,255,0.25); text-decoration:none; }
+        footer a:hover { color:var(--gold); }
+
+        @media (max-width:600px) {
+            nav { padding:16px 20px; }
+            .hero { padding:48px 20px 36px; }
+            .scan-wrap { padding:0 20px 56px; }
+            .s-group { flex-direction:column; }
+            .stats-bar { grid-template-columns:1fr; padding:28px 20px; }
         }
     </style>
 </head>
 <body>
 <div class="gold-line"></div>
 <nav>
-    <div class="nav-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
-    <a href="index.html" class="nav-back">Retour au site</a>
+    <a href="index.html" class="logo"><img src="logo.png" alt="Audilix"></a>
+    <a href="index.html" class="back">Retour au site</a>
 </nav>
+
 <div class="hero">
-    <div class="hero-badge">Scanner IA — Gratuit &amp; Instantané</div>
-    <h1>Votre site est-il<br><em>vraiment</em> conforme ?</h1>
-    <p class="hero-sub">Entrez votre URL et obtenez un score de conformité RGPD, cybersécurité et RSE en moins de 30 secondes.</p>
+    <div class="h-label">Analyse gratuite &amp; instantanée</div>
+    <h1>Votre site est-il <em>vraiment<br>conforme</em> ?</h1>
+    <p>Entrez l'adresse de votre site. Notre outil l'analyse automatiquement et vous remet un rapport de conformité en moins de 2 minutes.</p>
 </div>
-<div class="scanner-wrap">
-    <div class="scanner-box">
+
+<div class="scan-wrap">
+    <div class="scan-box">
+
         <div id="input-section">
-            <div class="input-group">
-                <input type="url" id="url-input" class="url-input" placeholder="https://votre-site.com" autocomplete="off">
-                <button class="scan-btn" id="scan-btn" onclick="startScan()">Scanner</button>
+            <div class="s-group">
+                <input type="url" id="url-inp" class="s-inp" placeholder="https://votre-site.com">
+                <button class="s-btn" id="scan-btn" onclick="lancer()">Analyser</button>
             </div>
-            <p class="input-note">Analyse gratuite • Aucune inscription requise • Résultats en 30 secondes</p>
+            <p class="s-note">Gratuit · Sans inscription · Résultats en moins de 2 minutes</p>
         </div>
+
         <div id="loading">
-            <div class="scan-animation">
-                <div class="scan-circle"></div>
-                <div class="scan-steps">
-                    <div class="scan-step" id="step1">Récupération du site en cours...</div>
-                    <div class="scan-step" id="step2">Analyse RGPD &amp; cookies</div>
-                    <div class="scan-step" id="step3">Vérification cybersécurité</div>
-                    <div class="scan-step" id="step4">Génération du score de conformité</div>
-                </div>
+            <div class="spin-ring"></div>
+            <div class="scan-steps">
+                <div class="scan-step" id="e1">Visite de votre site en cours...</div>
+                <div class="scan-step" id="e2">Vérification RGPD &amp; cookies</div>
+                <div class="scan-step" id="e3">Analyse de la sécurité</div>
+                <div class="scan-step" id="e4">Génération du rapport</div>
             </div>
         </div>
+
         <div id="results">
-            <div class="result-header">
-                <div class="result-url" id="result-url"></div>
-                <div class="score-circle-wrap">
-                    <div class="score-circle">
-                        <svg width="160" height="160" viewBox="0 0 160 160">
-                            <circle class="score-circle-bg" cx="80" cy="80" r="68"/>
-                            <circle class="score-circle-fill" id="score-arc" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
-                        </svg>
-                        <div class="score-text">
-                            <div class="score-number" id="score-num">--</div>
-                            <div class="score-label">/ 100</div>
-                        </div>
+            <div class="r-url" id="r-url"></div>
+            <div class="score-wrap">
+                <div class="score-ring">
+                    <svg width="148" height="148" viewBox="0 0 148 148">
+                        <circle class="score-bg" cx="74" cy="74" r="62"/>
+                        <circle class="score-fill" id="score-arc" cx="74" cy="74" r="62" stroke-dasharray="389" stroke-dashoffset="389"/>
+                    </svg>
+                    <div class="score-txt">
+                        <div class="score-num" id="score-num">--</div>
+                        <div class="score-sub">/ 100</div>
                     </div>
                 </div>
-                <div class="score-verdict" id="score-verdict"></div>
-                <div class="score-desc" id="score-desc"></div>
             </div>
-            <div class="risks-section">
-                <div class="risks-title">Risques détectés</div>
-                <div class="risk-cards" id="risk-cards"></div>
-            </div>
-            <div class="locked-section">
-                <div class="lock-icon">🔒</div>
-                <div class="locked-title">Rapport complet disponible</div>
-                <div class="locked-desc">Accédez à l'analyse complète avec le plan d'action détaillé, les documents juridiques générés et le monitoring continu.</div>
-                <div class="locked-items">
-                    <span class="locked-item">Rapport PDF complet</span>
-                    <span class="locked-item">Plan d'action priorisé</span>
-                    <span class="locked-item">Documents RGPD générés</span>
-                    <span class="locked-item">Mentions légales</span>
-                    <span class="locked-item">Politique de cookies</span>
-                    <span class="locked-item">Monitoring 24/7</span>
+            <div class="r-verdict" id="r-verdict"></div>
+            <div class="r-desc" id="r-desc"></div>
+            <div class="risks-lbl">Manquements identifiés</div>
+            <div class="risk-cards" id="risk-cards"></div>
+            <div class="locked">
+                <div class="lock-title">Rapport complet disponible</div>
+                <div class="lock-desc">Accédez à l'analyse détaillée, au plan de correction et à vos documents juridiques générés automatiquement.</div>
+                <div class="lock-items">
+                    <span class="lock-item">Rapport PDF complet</span>
+                    <span class="lock-item">Plan de correction</span>
+                    <span class="lock-item">Politique de confidentialité</span>
+                    <span class="lock-item">Mentions légales</span>
+                    <span class="lock-item">Politique cookies</span>
+                    <span class="lock-item">Surveillance continue</span>
                 </div>
-                <a href="pricing.html" class="cta-btn">Voir nos plans →</a>
-                <p class="cta-note">À partir de 69€/mois • Sans engagement • Résiliation à tout moment</p>
+                <a href="pricing.html" class="cta-btn">Voir nos formules</a>
+                <p class="cta-note">À partir de 69€ / mois · Sans engagement · Résiliable à tout moment</p>
             </div>
-            <button class="rescan-btn" onclick="resetScanner()">← Scanner un autre site</button>
+            <button class="retry-btn" onclick="reinitialiser()">← Analyser un autre site</button>
         </div>
+
     </div>
 </div>
+
 <div class="stats-bar">
-    <div><div class="stat-num">94%</div><div class="stat-lbl">Des sites non conformes</div></div>
-    <div><div class="stat-num">20M€</div><div class="stat-lbl">Amendes RGPD en 2024</div></div>
-    <div><div class="stat-num">3min</div><div class="stat-lbl">Pour votre rapport complet</div></div>
+    <div><div class="st-num">94%</div><div class="st-lbl">des sites ont au moins un manquement</div></div>
+    <div><div class="st-num">20M€</div><div class="st-lbl">d'amendes RGPD en 2024</div></div>
+    <div><div class="st-num">2 min</div><div class="st-lbl">pour votre rapport complet</div></div>
 </div>
+
 <footer>
-    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="/cdn-cgi/l/email-protection#e685898892878592c88793828f8a8f9ea6818b878f8ac885898b">Contact</a></p>
 </footer>
-<script>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var BACKEND = 'https://audilix-backend.onrender.com';
 
-function startScan() {
-    var input = document.getElementById('url-input');
-    var url = input.value.trim();
-    if (!url) { input.focus(); return; }
+async function lancer() {
+    var inp = document.getElementById('url-inp');
+    var url = inp.value.trim();
+    if (!url) { inp.focus(); return; }
     if (!url.startsWith('http')) url = 'https://' + url;
+
     document.getElementById('input-section').style.display = 'none';
     document.getElementById('loading').style.display = 'block';
     document.getElementById('results').style.display = 'none';
-    var steps = ['step1','step2','step3','step4'];
-    var delays = [0,4000,8000,14000];
-    steps.forEach(function(id,i) {
+
+    var etapes = ['e1','e2','e3','e4'];
+    var delais = [0, 4000, 8000, 14000];
+    etapes.forEach(function(id, i) {
         setTimeout(function() {
-            if (i > 0) document.getElementById(steps[i-1]).className = 'scan-step done';
+            if (i > 0) document.getElementById(etapes[i-1]).className = 'scan-step done';
             document.getElementById(id).className = 'scan-step active';
-        }, delays[i]);
+        }, delais[i]);
     });
-    var userId = null;
-    try { var u = JSON.parse(localStorage.getItem('audilix_user')); if (u && u.id) userId = u.id; } catch(e) {}
-    fetch(BACKEND + '/api/scan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url, user_id: userId })
-    }).then(function(r) { return r.json(); }).then(function(data) {
-        document.getElementById('step4').className = 'scan-step done';
-        setTimeout(function() { showResults(url, data); }, 500);
-    }).catch(function(e) {
-        alert("Erreur lors de l'analyse. Verifiez l'URL et reessayez.");
-        resetScanner();
-    });
+
+    try {
+        var user = localStorage.getItem('audilix_user');
+        var userId = user ? JSON.parse(user).id : null;
+        var res = await fetch(BACKEND + '/api/scan', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({ url:url, user_id:userId })
+        });
+        var data = await res.json();
+        document.getElementById('e4').className = 'scan-step done';
+        setTimeout(function() { afficherResultats(url, data); }, 500);
+    } catch(e) {
+        alert('Une erreur est survenue. Vérifiez l\'adresse et réessayez.');
+        reinitialiser();
+    }
 }
 
-function showResults(url, data) {
+function afficherResultats(url, data) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('results').style.display = 'block';
+
     var score = data.score || 0;
     var risques = data.risques || [];
-    document.getElementById('result-url').textContent = url;
+
+    document.getElementById('r-url').textContent = url;
+
     var arc = document.getElementById('score-arc');
-    var offset = 427 - (score / 100) * 427;
-    var color = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
-    arc.style.stroke = color;
+    var circ = 389;
+    var offset = circ - (score / 100) * circ;
+    var couleur = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
+    arc.style.stroke = couleur;
     setTimeout(function() { arc.style.strokeDashoffset = offset; }, 100);
+
     var numEl = document.getElementById('score-num');
-    numEl.style.color = color;
-    var current = 0;
+    numEl.style.color = couleur;
+    var cur = 0;
     var timer = setInterval(function() {
-        current += Math.ceil(score / 30);
-        if (current >= score) { current = score; clearInterval(timer); }
-        numEl.textContent = current;
+        cur += Math.ceil(score / 28);
+        if (cur >= score) { cur = score; clearInterval(timer); }
+        numEl.textContent = cur;
     }, 50);
-    var verdict = score >= 70 ? 'Conformite satisfaisante' : score >= 40 ? 'Conformite insuffisante' : 'Non-conformite critique';
-    var desc = score >= 70 ? 'Votre site presente un bon niveau de conformite.' : score >= 40 ? 'Votre site presente des risques juridiques significatifs.' : 'Votre site est expose a des sanctions RGPD importantes.';
-    document.getElementById('score-verdict').textContent = (score >= 70 ? '✅ ' : score >= 40 ? '⚠️ ' : '🚨 ') + verdict;
-    document.getElementById('score-desc').textContent = desc;
+
+    var verdict = score >= 70 ? '✅ Niveau de conformité satisfaisant' : score >= 40 ? '⚠️ Conformité insuffisante' : '🚨 Manquements critiques détectés';
+    var desc = score >= 70 ? 'Votre site présente un bon niveau de conformité. Quelques points méritent attention.' : score >= 40 ? 'Votre site présente des risques juridiques à corriger rapidement.' : 'Votre site est exposé à des sanctions réglementaires. Une action urgente est nécessaire.';
+    document.getElementById('r-verdict').textContent = verdict;
+    document.getElementById('r-desc').textContent = desc;
+
     var cards = document.getElementById('risk-cards');
     cards.innerHTML = '';
-    risques.slice(0,3).forEach(function(r,i) {
-        var level = i === 0 ? 'high' : i === 1 ? 'medium' : 'low';
-        var icon = i === 0 ? '🚨' : i === 1 ? '⚠️' : '📋';
-        var label = i === 0 ? 'Critique' : i === 1 ? 'Important' : 'Modere';
-        var div = document.createElement('div');
-        div.className = 'risk-card';
-        div.innerHTML = '<div class="risk-icon ' + level + '">' + icon + '</div><div class="risk-content"><div class="risk-badge ' + level + '">' + label + '</div><div class="risk-title">' + (r.titre || r) + '</div><div class="risk-desc">' + (r.description || '') + '</div></div>';
-        cards.appendChild(div);
+    risques.slice(0, 3).forEach(function(r, i) {
+        var niv = r.niveau || (i === 0 ? 'critique' : i === 1 ? 'important' : 'modere');
+        var cls = 'lvl-' + niv;
+        var lab = niv === 'critique' ? 'Critique' : niv === 'important' ? 'Important' : 'Modéré';
+        cards.innerHTML += '<div class="risk-card"><div class="risk-lvl ' + cls + '">' + lab + '</div><div class="risk-body"><div class="risk-title">' + (r.titre || r) + '</div><div class="risk-desc">' + (r.description || '') + '</div></div></div>';
     });
 }
 
-function resetScanner() {
+function reinitialiser() {
     document.getElementById('input-section').style.display = 'block';
     document.getElementById('loading').style.display = 'none';
     document.getElementById('results').style.display = 'none';
-    document.getElementById('url-input').value = '';
-    ['step1','step2','step3','step4'].forEach(function(id) { document.getElementById(id).className = 'scan-step'; });
+    document.getElementById('url-inp').value = '';
+    ['e1','e2','e3','e4'].forEach(function(id) { document.getElementById(id).className = 'scan-step'; });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('url-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') startScan(); });
+    document.getElementById('url-inp').addEventListener('keypress', function(e) { if (e.key === 'Enter') lancer(); });
     var params = new URLSearchParams(window.location.search);
     var urlParam = params.get('url');
-    if (urlParam) { document.getElementById('url-input').value = urlParam; setTimeout(startScan, 600); }
-});
-</script>
-<script src="cookies.js"></script>
-</body>
-</html>
+    if (u
