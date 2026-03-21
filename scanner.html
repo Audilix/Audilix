@@ -279,4 +279,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('url-inp').addEventListener('keypress', function(e) { if (e.key === 'Enter') lancer(); });
     var params = new URLSearchParams(window.location.search);
     var urlParam = params.get('url');
-    if (u
+    if (urlParam) { document.getElementById('scan-url').value = urlParam; lancer(); }
+</script>
+<script src="cookies.js"></script>
+</body>
+</html>
