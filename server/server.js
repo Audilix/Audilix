@@ -822,6 +822,162 @@ app.get("/api/documents/:userId", async (req, res) => {
   }
 });
 
+// ─── RÉSUMÉ DE CONTRAT ────────────────────────────────────────
+app.post("/api/resumer-contrat", upload.single("document"), async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
+
+    let contenu = "";
+    if (req.file.mimetype === "text/plain") {
+      contenu = req.file.buffer.toString("utf-8").substring(0, 8000);
+    } else {
+      const buffer = req.file.buffer.toString("latin1");
+      contenu = buffer.replace(/[^ -~ -ÿ
+]/g, " ").replace(/\s+/g, " ").trim().substring(0, 8000);
+    }
+
+    if (!contenu || contenu.trim().length < 50) {
+      return res.status(400).json({ error: "Document illisible. Essayez un fichier .txt" });
+    }
+
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un juriste expert. Résume ce document en points clés simples et compréhensibles.
+        Réponds UNIQUEMENT en JSON valide sans markdown :
+        {
+          "titre": "Titre court du document",
+          "type": "Type de document identifié",
+          "points_cles": ["Point clé 1", "Point clé 2", "Point clé 3", "Point clé 4", "Point clé 5"],
+          "points_vigilance": ["Point à surveiller 1", "Point à surveiller 2"],
+          "duree": "Durée ou échéances importantes si applicable",
+          "resume_global": "Résumé en 2-3 phrases simples"
+        }`
+      },
+      { role: "user", content: `Résume ce document :
+
+${contenu}` }
+    ];
+
+    const raw = await callOpenAI(messages, 800);
+    const resume = JSON.parse(cleanJSON(raw));
+    res.json(resume);
+  } catch(e) {
+    console.error("❌ Résumé contrat error:", e);
+    res.status(500).json({ error: "Erreur lors du résumé", details: String(e) });
+  }
+});
+
+// ─── DÉTECTION CLAUSES ABUSIVES ───────────────────────────────
+app.post("/api/detecter-clauses", upload.single("document"), async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
+
+    let contenu = req.file.buffer.toString("latin1").replace(/[^ -~ -ÿ
+]/g, " ").replace(/\s+/g, " ").trim().substring(0, 8000);
+
+    if (!contenu || contenu.trim().length < 50) {
+      return res.status(400).json({ error: "Document illisible." });
+    }
+
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un avocat spécialisé en droit des contrats et droit de la consommation français.
+        Analyse ce document et détecte les clauses problématiques, abusives ou illégales selon le droit français et européen.
+        Réponds UNIQUEMENT en JSON valide sans markdown :
+        {
+          "score_equite": (0-100, 100 = contrat très équilibré),
+          "clauses_abusives": [
+            {
+              "clause": "Extrait ou description de la clause",
+              "probleme": "Pourquoi cette clause est problématique",
+              "gravite": "critique|important|mineur",
+              "reference_legale": "Article de loi ou règlement (si applicable)"
+            }
+          ],
+          "clauses_manquantes": ["Clause obligatoire manquante 1", "Clause manquante 2"],
+          "recommandations": ["Recommandation 1", "Recommandation 2"],
+          "resume": "Bilan global du contrat en 2-3 phrases"
+        }`
+      },
+      { role: "user", content: `Analyse ce contrat :
+
+${contenu}` }
+    ];
+
+    const raw = await callOpenAI(messages, 1000);
+    const analyse = JSON.parse(cleanJSON(raw));
+    res.json(analyse);
+  } catch(e) {
+    console.error("❌ Clauses error:", e);
+    res.status(500).json({ error: "Erreur lors de l'analyse", details: String(e) });
+  }
+});
+
+// ─── REGISTRE DES TRAITEMENTS ─────────────────────────────────
+app.post("/api/registre-traitements", async (req, res) => {
+  try {
+    const { entreprise, activite, userId } = req.body;
+    if (!entreprise) return res.status(400).json({ error: "Informations manquantes" });
+
+    const messages = [
+      {
+        role: "system",
+        content: `Tu es un DPO (Délégué à la Protection des Données) expert en RGPD.
+        Génère un registre des activités de traitement conforme à l'article 30 du RGPD pour cette entreprise.
+        Réponds UNIQUEMENT en JSON valide sans markdown :
+        {
+          "titre": "Registre des activités de traitement — [Nom entreprise]",
+          "date_creation": "${new Date().toLocaleDateString('fr-FR')}",
+          "traitements": [
+            {
+              "nom": "Nom du traitement",
+              "finalite": "Finalité du traitement",
+              "base_legale": "Base légale (consentement, intérêt légitime, obligation légale...)",
+              "categories_donnees": ["Type de donnée 1", "Type de donnée 2"],
+              "destinataires": ["Destinataire 1"],
+              "duree_conservation": "Durée",
+              "mesures_securite": "Mesures techniques et organisationnelles"
+            }
+          ],
+          "responsable": "Responsable de traitement : ${entreprise}",
+          "avertissement": "Ce registre est généré automatiquement. Il doit être personnalisé et validé par votre DPO ou un juriste spécialisé."
+        }`
+      },
+      {
+        role: "user",
+        content: `Génère un registre des traitements RGPD pour :
+        - Entreprise : ${entreprise}
+        - Secteur d'activité : ${activite || "Services"}
+        Inclus tous les traitements typiques de ce type d'entreprise.`
+      }
+    ];
+
+    const raw = await callOpenAI(messages, 1500);
+    const registre = JSON.parse(cleanJSON(raw));
+
+    // Sauvegarder si connecté
+    if (userId) {
+      try {
+        await sbInsert("documents_generes", {
+          user_id: userId,
+          type_document: "registre",
+          titre: registre.titre,
+          contenu: JSON.stringify(registre, null, 2)
+        });
+      } catch(e) { console.warn("⚠️ Sauvegarde registre échouée:", e.message); }
+    }
+
+    res.json(registre);
+  } catch(e) {
+    console.error("❌ Registre error:", e);
+    res.status(500).json({ error: "Erreur lors de la génération", details: String(e) });
+  }
+});
+
 // ─── HEALTH CHECK ──────────────────────────────────────────────
 app.get("/", (req, res) => {
   res.json({ status: "Audilix backend en ligne ✅", version: "4.0", supabase: !!SUPABASE_URL });
