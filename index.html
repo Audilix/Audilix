@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audilix — Audit de conformité pour les PME</title>
-    <meta name="description" content="Audilix analyse automatiquement la conformité réglementaire de votre site web — RGPD, cybersécurité, mentions légales. Rapport détaillé et documents juridiques générés en moins de 2 minutes.">
+    <meta name="description" content="Audilix analyse vos documents juridiques par IA — contrats, CGV, politiques de confidentialité. Détectez les risques RGPD, obtenez des recommandations et générez vos documents conformes en quelques secondes.">
     <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -78,6 +78,10 @@
         .trust-item { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--navy-dark); opacity: 0.22; text-transform: uppercase; }
 
         /* SCANNER */
+        .doc-types-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 4px; }
+        .doc-type { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 7px; padding: 10px 14px; font-size: 13px; color: rgba(255,255,255,0.75); font-weight: 500; transition: background 0.2s; }
+        .doc-type:hover { background: rgba(255,255,255,0.1); }
+        .doc-type-icon { font-size: 18px; flex-shrink: 0; }
         .scanner-section { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); padding: 90px 40px; position: relative; overflow: hidden; }
         .scanner-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
         .scanner-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
@@ -206,8 +210,8 @@
         .footer-copy { font-size: 11px; color: rgba(255,255,255,0.14); }
 
         /* CHATBOT */
-        #chat-btn { position: fixed; bottom: 28px; right: 28px; z-index: 999; width: 56px; height: 56px; background: var(--navy-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 18px rgba(15,36,86,0.38), 0 0 0 2px rgba(201,168,76,0.22); transition: all 0.3s; border: 2px solid rgba(201,168,76,0.28); }
-        #chat-btn:hover { transform: scale(1.08); }
+        #chat-btn { position: fixed; bottom: 28px; right: 28px; z-index: 999; width: 64px; height: 64px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 24px rgba(15,36,86,0.18), 0 0 0 1px rgba(27,58,122,0.08); transition: all 0.3s; border: none; }
+        #chat-btn:hover { transform: scale(1.07); box-shadow: 0 8px 32px rgba(15,36,86,0.22); }
         .chat-dot { position: absolute; top: -1px; right: -1px; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; border: 2px solid white; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
         #chat-panel { position: fixed; bottom: 96px; right: 28px; z-index: 998; width: 330px; background: white; border-radius: 14px; box-shadow: 0 16px 48px rgba(15,36,86,0.14); border: 1px solid var(--border); overflow: hidden; display: none; }
@@ -335,23 +339,28 @@
     </div>
 </div>
 
-<!-- SCANNER -->
+<!-- CE QU'ON ANALYSE -->
 <section id="analyse" class="scanner-section">
     <div class="scanner-inner reveal">
-        <div class="s-label">Analyse gratuite — Résultats immédiats</div>
-        <h2>Votre site est-il <em>vraiment<br>conforme</em> ?</h2>
-        <p>Notre outil analyse votre site en temps réel et vous remet un score de conformité sur 100, avec le détail de chaque manquement détecté.</p>
+        <div class="s-label">Ce que vous pouvez analyser</div>
+        <h2>Tous vos documents juridiques<br><em>passés au crible.</em></h2>
+        <p>Déposez n'importe quel document dans votre espace client. Notre IA l'analyse en moins de 30 secondes et vous indique les risques, les manquements et les corrections à apporter.</p>
         <div class="scanner-box">
-            <div class="s-input-group">
-                <input type="url" id="s-url" class="s-input" placeholder="https://votre-site.com">
-                <button class="s-btn" onclick="goScan()">Analyser maintenant</button>
+            <div class="doc-types-grid">
+                <div class="doc-type"><span class="doc-type-icon">📋</span><span>Contrats de travail</span></div>
+                <div class="doc-type"><span class="doc-type-icon">🔐</span><span>Politiques de confidentialité</span></div>
+                <div class="doc-type"><span class="doc-type-icon">📄</span><span>CGV &amp; CGU</span></div>
+                <div class="doc-type"><span class="doc-type-icon">🤝</span><span>NDA &amp; accords de confidentialité</span></div>
+                <div class="doc-type"><span class="doc-type-icon">🍪</span><span>Politiques de cookies</span></div>
+                <div class="doc-type"><span class="doc-type-icon">📑</span><span>Mentions légales</span></div>
             </div>
-            <p class="s-note">Gratuit · Sans inscription · Résultats en moins de 2 minutes</p>
+            <a href="login.html" class="s-btn" style="display:block;text-align:center;text-decoration:none;margin-top:20px;">Analyser mon premier document →</a>
         </div>
         <div class="s-tags">
             <span class="s-tag">Score de conformité /100</span>
-            <span class="s-tag">Risques juridiques identifiés</span>
+            <span class="s-tag">Risques identifiés et priorisés</span>
             <span class="s-tag">Recommandations concrètes</span>
+            <span class="s-tag">Documents générés automatiquement</span>
         </div>
     </div>
 </section>
@@ -365,19 +374,19 @@
     </div>
     <div class="sol-grid reveal" style="transition-delay:0.1s">
         <div class="sol-card">
-            <div class="sol-icon">🔐</div>
-            <div class="sol-title">Protection des données personnelles</div>
-            <p class="sol-desc">Vérification de votre politique de confidentialité, du consentement aux cookies, des mentions légales et de la conformité au RGPD. Vos documents sont générés et mis à jour automatiquement.</p>
+            <div class="sol-icon">🔍</div>
+            <div class="sol-title">Analyse de documents</div>
+            <p class="sol-desc">Déposez un contrat, des CGV, une politique de confidentialité ou un NDA. Notre IA détecte les clauses problématiques, les manquements au RGPD et les risques juridiques — avec un score sur 100.</p>
         </div>
         <div class="sol-card">
-            <div class="sol-icon">🛡️</div>
-            <div class="sol-title">Sécurité informatique</div>
-            <p class="sol-desc">Analyse de la sécurité de votre site selon les exigences NIS2 et ISO 27001. Détection des failles courantes, des configurations manquantes et des scripts potentiellement dangereux.</p>
+            <div class="sol-icon">📝</div>
+            <div class="sol-title">Génération de documents</div>
+            <p class="sol-desc">Politique de confidentialité, mentions légales, CGU, politique de cookies, registre des traitements — générés automatiquement, personnalisés selon votre activité et conformes au droit européen.</p>
         </div>
         <div class="sol-card">
-            <div class="sol-icon">📋</div>
-            <div class="sol-title">Veille réglementaire</div>
-            <p class="sol-desc">Surveillance automatique des évolutions législatives — RGPD, AI Act, directive ePrivacy, CSRD. Vous êtes alerté dès qu'une nouvelle règle vous concerne, avec les actions à mener.</p>
+            <div class="sol-icon">🔔</div>
+            <div class="sol-title">Veille et alertes</div>
+            <p class="sol-desc">Surveillance automatique des évolutions du RGPD, de l'AI Act et du droit des contrats. Vous êtes alerté dès qu'une loi change et que vos documents doivent être mis à jour.</p>
         </div>
     </div>
 </section>
@@ -393,18 +402,18 @@
         <div class="steps">
             <div class="step reveal" style="transition-delay:0.1s">
                 <div class="step-num">1</div>
-                <div class="step-title">Vous renseignez votre site</div>
-                <p class="step-desc">Entrez l'adresse de votre site. Notre système l'analyse automatiquement en moins de 2 minutes, sans installation ni accès à vos serveurs.</p>
+                <div class="step-title">Vous déposez un document</div>
+                <p class="step-desc">Glissez un PDF, Word ou fichier texte dans votre espace client. Contrat, CGV, politique de confidentialité — n'importe quel document juridique.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.2s">
                 <div class="step-num">2</div>
-                <div class="step-title">Nous identifions les manquements</div>
-                <p class="step-desc">Vous recevez un score de conformité sur 100 et la liste des points à corriger, classés par niveau de priorité et de risque juridique.</p>
+                <div class="step-title">L'IA l'analyse en 30 secondes</div>
+                <p class="step-desc">Vous recevez un score sur 100, la liste des clauses problématiques, les risques juridiques identifiés et les recommandations concrètes à appliquer.</p>
             </div>
             <div class="step reveal" style="transition-delay:0.3s">
                 <div class="step-num">3</div>
-                <div class="step-title">Vos documents sont générés</div>
-                <p class="step-desc">Politique de confidentialité, mentions légales, politique de cookies — vos documents juridiques sont produits automatiquement et mis à jour si la loi évolue.</p>
+                <div class="step-title">Vos documents sont corrigés</div>
+                <p class="step-desc">Les documents manquants sont générés automatiquement. Si la loi évolue, vos documents sont mis à jour et vous en êtes notifié par e-mail.</p>
             </div>
         </div>
     </div>
@@ -583,21 +592,50 @@
 <!-- CHATBOT -->
 <div id="chat-btn" onclick="toggleChat()">
     <div class="chat-dot"></div>
-    <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-        <path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.06)"/>
-        <circle cx="18" cy="18" r="6" stroke="#C9A84C" stroke-width="1.2" fill="rgba(15,36,86,0.8)"/>
-        <circle cx="18" cy="18" r="2" fill="#C9A84C"/>
-        <circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/>
+    <svg width="52" height="46" viewBox="0 0 324 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="g-top-cb" x1="0" y1="0" x2="324" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#1B3A7A"/>
+                <stop offset="35%" stop-color="#C9A84C"/>
+                <stop offset="65%" stop-color="#E8C97A"/>
+                <stop offset="100%" stop-color="#1B3A7A"/>
+            </linearGradient>
+        </defs>
+        <path d="M0 98 C42 40 112 20 162 20 C212 20 282 40 324 98 C290 146 232 166 192 170 L204 190 L174 172 C124 168 54 146 0 98 Z" fill="white"/>
+        <path d="M0 98 C54 146 124 168 174 172 L204 190 L192 170 C232 166 290 146 324 98" stroke="#0F2456" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M0 98 C42 40 112 20 162 20 C212 20 282 40 324 98" stroke="url(#g-top-cb)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="162" cy="93" r="50" fill="#1B3A7A"/>
+        <circle cx="162" cy="93" r="50" fill="#0A1630" opacity="0.45"/>
+        <circle cx="162" cy="93" r="44" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
+        <circle cx="162" cy="93" r="35" stroke="#C9A84C" stroke-width="0.8" fill="none" stroke-dasharray="3 3" opacity="0.5"/>
+        <circle cx="162" cy="45" r="2.5" fill="#C9A84C" opacity="0.7"/>
+        <circle cx="162" cy="141" r="2.5" fill="#C9A84C" opacity="0.7"/>
+        <circle cx="114" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
+        <circle cx="210" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
+        <circle cx="162" cy="93" r="20" fill="#050E1C"/>
+        <ellipse cx="172" cy="82" rx="10" ry="7" fill="white" opacity="0.8" transform="rotate(-25 172 82)"/>
+        <circle cx="179" cy="79" r="4" fill="white" opacity="0.45"/>
     </svg>
 </div>
 
 <div id="chat-panel">
     <div class="chat-head">
         <div class="chat-avatar">
-            <svg width="18" height="18" viewBox="0 0 36 36" fill="none">
-                <path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.08)"/>
-                <circle cx="18" cy="18" r="5" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
-                <circle cx="18" cy="18" r="2" fill="#C9A84C" opacity="0.8"/>
+            <svg width="20" height="20" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="g-or2" x1="0" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#1B3A7A"/>
+                        <stop offset="50%" stop-color="#C9A84C"/>
+                        <stop offset="100%" stop-color="#1B3A7A"/>
+                    </linearGradient>
+                </defs>
+                <path d="M5 30 Q15 50 30 52 Q45 50 55 30" stroke="rgba(201,168,76,0.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M5 30 Q15 10 30 8 Q45 10 55 30" stroke="url(#g-or2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="30" cy="30" r="10" fill="rgba(27,58,122,0.8)"/>
+                <circle cx="30" cy="30" r="7" stroke="#C9A84C" stroke-width="1" fill="none"/>
+                <circle cx="30" cy="30" r="4" fill="#0F2456"/>
+                <circle cx="30" cy="30" r="2.5" fill="rgba(201,168,76,0.3)"/>
+                <circle cx="32" cy="28" r="1.2" fill="white" opacity="0.8"/>
             </svg>
         </div>
         <div class="chat-info">
@@ -671,13 +709,7 @@ function toggleFaq(btn) {
     btn.nextElementSibling.classList.toggle('open');
 }
 
-function goScan() {
-    var url = document.getElementById('s-url').value.trim();
-    window.location.href = url ? 'scanner.html?url=' + encodeURIComponent(url) : 'scanner.html';
-}
-document.getElementById('s-url').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') goScan();
-});
+// Scanner de site supprimé — Audilix analyse des documents
 
 var chatOuvert = false;
 var historique = [];
@@ -725,5 +757,11 @@ document.getElementById('chat-inp').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') envoyerMsg();
 });
 
-var obs = new IntersectionObserver(function(e) {
-    e.forEach(function(el) { if (el.isIntersecting) el.
+var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(el) { if (el.isIntersecting) el.target.classList.add('visible'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal, .apparition').forEach(function(el) { obs.observe(el); });
+</script>
+<script src="cookies.js"></script>
+</body>
+</html>
