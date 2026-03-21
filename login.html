@@ -196,11 +196,7 @@
     <div class="etoile" style="top:42%;right:28%;font-size:9px;opacity:0.10;">✦</div>
     <div class="etoile" style="top:60%;left:40%;font-size:11px;opacity:0.08;">✦</div>
 
-    <div class="g-top">
-        <a href="index.html" class="g-logo"><img src="logo.png" alt="Audilix"></a>
-    </div>
-
-    <div class="g-milieu">
+    <div class="g-milieu" style="padding-top:20px;">
         <div class="g-label">Espace client</div>
         <h1 class="g-titre">La conformité<br>de votre entreprise,<br><em>gérée pour vous.</em></h1>
         <p class="g-desc">Accédez à vos rapports d'analyse, vos documents juridiques et votre tableau de bord de conformité.</p>
@@ -214,9 +210,11 @@
 
 <!-- PANNEAU DROIT -->
 <div class="droite">
-    <a href="index.html" class="logo-accueil" title="Retour à l'accueil">
-        <img src="logo.png" alt="Audilix">
+    <a href="index.html" style="position:absolute;top:18px;right:20px;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--gris);font-size:12px;font-weight:500;opacity:0.4;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=0.4">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Accueil
     </a>
+    
 
     <div class="form-wrap">
 
@@ -225,12 +223,12 @@
         </div>
 
         <div class="onglets">
-            <button class="onglet actif" onclick="afficherOnglet('connexion')">Connexion</button>
-            <button class="onglet" onclick="afficherOnglet('inscription')">Créer un compte</button>
+            <button class="onglet" onclick="afficherOnglet('connexion')">Connexion</button>
+            <button class="onglet actif" onclick="afficherOnglet('inscription')">Créer un compte</button>
         </div>
 
         <!-- CONNEXION -->
-        <div id="form-connexion">
+        <div id="form-connexion" style="display:none;">
             <h2 class="form-titre">Bon retour 👋</h2>
             <p class="form-sous">Connectez-vous à votre espace Audilix.</p>
             <div class="form-erreur" id="err-connexion"></div>
@@ -261,7 +259,7 @@
         </div>
 
         <!-- INSCRIPTION -->
-        <div id="form-inscription" style="display:none;">
+        <div id="form-inscription">
             <h2 class="form-titre">Commencer</h2>
             <p class="form-sous">Lancez votre premier audit de conformité.</p>
             <div class="form-erreur" id="err-inscription"></div>
@@ -340,6 +338,13 @@ if (params.get('paiement') === 'succes' || params.get('payment') === 'success') 
 // Déjà connecté
 if (localStorage.getItem('audilix_token')) {
     window.location.href = 'dashboard.html';
+}
+afficherOnglet('inscription');
+
+// Gérer le paramètre tab dans l'URL
+var urlTab = new URLSearchParams(window.location.search).get('tab');
+if (urlTab === 'connexion') {
+    afficherOnglet('connexion');
 }
 
 // Onglets
