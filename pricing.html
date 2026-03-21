@@ -153,8 +153,8 @@
     <!-- STARTER -->
     <div class="plan">
         <div class="plan-cible">Indépendants &amp; petits sites</div>
-        <div class="plan-nom">Starter</div>
-        <div class="plan-accroche">Tout ce qu'il faut pour être conforme et protégé dès le premier mois.</div>
+        <div class="plan-nom">Essentiel</div>
+        <div class="plan-accroche">L'essentiel pour être conforme et protégé, sans vous occuper des détails juridiques.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">69</span><span class="p-periode">/ mois</span>
         </div>
@@ -181,13 +181,13 @@
     <div class="plan vedette">
         <div class="plan-badge">Le plus choisi</div>
         <div class="plan-cible">PME &amp; startups en croissance</div>
-        <div class="plan-nom">Pro</div>
-        <div class="plan-accroche">Analyses illimitées, IA 24h/24 et veille réglementaire automatique.</div>
+        <div class="plan-nom">Professionnel</div>
+        <div class="plan-accroche">La conformité entièrement gérée pour vous. Analyses illimitées et IA disponible 24h/24.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">149</span><span class="p-periode">/ mois</span>
         </div>
         <ul class="p-liste">
-            <div class="p-section">Tout Starter, et en plus :</div>
+            <div class="p-section">Tout Essentiel, et en plus :</div>
             <li><span class="p-coche">✓</span>Analyses de documents illimitées</li>
             <li><span class="p-coche">✓</span>Analyse avancée des risques avec priorités</li>
             <li><span class="p-coche">✓</span>Plan de correction détaillé et priorisé</li>
@@ -201,20 +201,20 @@
             <li><span class="p-coche">✓</span>Historique complet des analyses</li>
             <li><span class="p-coche">✓</span>Support prioritaire (réponse sous 24h)</li>
         </ul>
-        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Pro</button>
+        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Professionnel</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
     <!-- PREMIUM -->
     <div class="plan">
         <div class="plan-cible">Agences &amp; entreprises multi-sites</div>
-        <div class="plan-nom">Premium</div>
-        <div class="plan-accroche">Audit complet, rapports PDF, multi-sites et support VIP.</div>
+        <div class="plan-nom">Entreprise</div>
+        <div class="plan-accroche">Pour les structures gérant plusieurs sites. Rapports PDF, API et support VIP.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">299</span><span class="p-periode">/ mois</span>
         </div>
         <ul class="p-liste">
-            <div class="p-section">Tout Pro, et en plus :</div>
+            <div class="p-section">Tout Professionnel, et en plus :</div>
             <li><span class="p-coche">✓</span>Audit complet automatisé du site web</li>
             <li><span class="p-coche">✓</span>Rapports PDF professionnels exportables</li>
             <li><span class="p-coche">✓</span>Conseils personnalisés via IA</li>
@@ -226,7 +226,7 @@
             <div class="p-section">Support</div>
             <li><span class="p-coche">✓</span>Support VIP (réponse le jour même)</li>
         </ul>
-        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Premium</button>
+        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Entreprise</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
@@ -240,9 +240,9 @@
         <thead>
             <tr>
                 <th style="text-align:left;">Fonctionnalité</th>
-                <th>Starter</th>
-                <th class="col-or">Pro</th>
-                <th>Premium</th>
+                <th>Essentiel</th>
+                <th class="col-or">Professionnel</th>
+                <th>Entreprise</th>
             </tr>
         </thead>
         <tbody>
@@ -312,7 +312,7 @@
 </div>
 
 <footer>
-    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="/cdn-cgi/l/email-protection#35565a5b415456411b5440515c595c4d755258545c591b565a58">Contact</a></p>
 </footer>
 
 <div id="chargement">
@@ -323,7 +323,7 @@
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var BACKEND = 'https://audilix-backend.onrender.com';
 var PRIX = { starter:'price_1TBEp1L1yZKJczeCtlqQ4u3F', business:'price_1TBEt9L1yZKJczeC28lX4VMH', expert:'price_1TBEuYL1yZKJczeCXrgBEFcu' };
 
@@ -352,11 +352,4 @@ async function payer(plan) {
     }
 }
 
-function tFaq(btn) {
-    btn.classList.toggle('ouvert');
-    btn.nextElementSibling.classList.toggle('ouvert');
-}
-</script>
-<script src="cookies.js"></script>
-</body>
-</html>
+function tFaq(btn)
