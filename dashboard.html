@@ -257,6 +257,14 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Assistant conformité
         </button>
+        <button class="nav-lien" onclick="afficherPage('clauses', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Détection de clauses
+        </button>
+        <button class="nav-lien" onclick="afficherPage('registre', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Registre des traitements
+        </button>
         <button class="nav-lien" onclick="afficherPage('parametres', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             Paramètres
@@ -473,7 +481,7 @@
                         <div class="carte-titre">Choisir un document à générer</div>
                     </div>
                     <div class="carte-corps">
-                        <div class="doc-grille" style="margin-bottom:20px;">
+                        <div class="doc-grille" style="margin-bottom:20px;grid-template-columns:1fr 1fr 1fr;">
                             <div class="doc-carte" onclick="choisirTypeDoc('confidentialite', this)">
                                 <div class="doc-icone">🔐</div>
                                 <div class="doc-nom">Politique de confidentialité</div>
@@ -491,8 +499,18 @@
                             </div>
                             <div class="doc-carte" onclick="choisirTypeDoc('cgu', this)">
                                 <div class="doc-icone">📝</div>
-                                <div class="doc-nom">Conditions générales</div>
-                                <div class="doc-desc">CGU / CGV</div>
+                                <div class="doc-nom">CGU / CGV</div>
+                                <div class="doc-desc">Conditions générales</div>
+                            </div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('nda', this)">
+                                <div class="doc-icone">🤝</div>
+                                <div class="doc-nom">NDA</div>
+                                <div class="doc-desc">Accord de confidentialité</div>
+                            </div>
+                            <div class="doc-carte" onclick="afficherPage('registre', null)" style="border-color:var(--gold);background:var(--gold-pale);">
+                                <div class="doc-icone">📋</div>
+                                <div class="doc-nom">Registre RGPD</div>
+                                <div class="doc-desc">Article 30 RGPD</div>
                             </div>
                         </div>
 
@@ -578,6 +596,85 @@
                         <button onclick="questionAssistant('Comment gérer les cookies sur mon site ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Cookies</button>
                         <button onclick="questionAssistant('Quelles sont mes obligations en tant que PME ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Obligations PME</button>
                         <button onclick="questionAssistant('Comment améliorer mon score de conformité ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Améliorer mon score</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE : DÉTECTION CLAUSES -->
+        <div class="page" id="page-clauses">
+            <div class="grille-2">
+                <div class="carte">
+                    <div class="carte-entete">
+                        <div class="carte-titre">Déposer un contrat à analyser</div>
+                    </div>
+                    <div class="carte-corps">
+                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Notre IA détecte les clauses abusives, illégales ou déséquilibrées dans vos contrats — selon le droit français et européen.</p>
+                        <div class="fichier-selectionne" id="fichier-clause-affiche">
+                            <div class="fichier-icone">📄</div>
+                            <div><div class="fichier-nom" id="fichier-clause-nom"></div><div class="fichier-taille" id="fichier-clause-taille"></div></div>
+                            <button class="fichier-suppr" onclick="supprimerFichierClause()">✕</button>
+                        </div>
+                        <div class="zone-upload" id="zone-upload-clause" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')">
+                            <input type="file" id="input-clause" accept=".pdf,.txt,.doc,.docx" onchange="selectionnerFichierClause(this.files[0])">
+                            <div class="upload-icone">📂</div>
+                            <div class="upload-titre">Déposez votre contrat ici</div>
+                            <div class="upload-sous">PDF, TXT, DOCX — max 10 Mo</div>
+                        </div>
+                        <button class="btn-lancer" id="btn-clauses" onclick="analyserClauses()" style="margin-top:14px;" disabled>Analyser les clauses</button>
+                    </div>
+                </div>
+                <div class="carte">
+                    <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
+                    <div class="carte-corps">
+                        <div id="etat-vide-clauses" class="vide">
+                            <div class="vide-icone">🔍</div>
+                            <div class="vide-titre">En attente d'un contrat</div>
+                            <div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div>
+                        </div>
+                        <div class="analyse-en-cours" id="chargement-clauses">
+                            <div class="spinner"></div>
+                            <h3>Analyse en cours...</h3>
+                            <p>Notre IA examine chaque clause de votre contrat.</p>
+                        </div>
+                        <div id="resultat-clauses" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE : REGISTRE RGPD -->
+        <div class="page" id="page-registre">
+            <div class="grille-2">
+                <div class="carte">
+                    <div class="carte-entete"><div class="carte-titre">Générer votre registre des traitements</div></div>
+                    <div class="carte-corps">
+                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Notre IA le génère automatiquement selon votre activité.</p>
+                        <div class="champ-groupe" style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise</label>
+                            <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
+                        </div>
+                        <div class="champ-groupe" style="margin-bottom:16px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
+                            <input type="text" id="reg-activite" placeholder="Ex : e-commerce, conseil RH, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
+                        </div>
+                        <button class="btn-lancer" onclick="genererRegistre()">Générer le registre</button>
+                    </div>
+                </div>
+                <div class="carte">
+                    <div class="carte-entete"><div class="carte-titre">Votre registre des traitements</div></div>
+                    <div class="carte-corps">
+                        <div id="etat-vide-registre" class="vide">
+                            <div class="vide-icone">📋</div>
+                            <div class="vide-titre">Registre non généré</div>
+                            <div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div>
+                        </div>
+                        <div class="analyse-en-cours" id="chargement-registre">
+                            <div class="spinner"></div>
+                            <h3>Génération en cours...</h3>
+                            <p>Notre IA construit votre registre des traitements.</p>
+                        </div>
+                        <div id="resultat-registre" style="display:none;"></div>
                     </div>
                 </div>
             </div>
@@ -788,7 +885,7 @@ function afficherMesDocuments() {
 }
 
 // NAVIGATION
-var titresPages = { accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses", generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité", parametres:"Paramètres" };
+var titresPages = { accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses", generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité", clauses:"Détection de clauses abusives", registre:"Registre des traitements RGPD", parametres:"Paramètres" };
 
 function afficherPage(id, btnClique) {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
@@ -1021,6 +1118,126 @@ function questionAssistant(msg) {
 document.getElementById('champ-assistant').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') envoyerAssistant();
 });
+
+// DÉTECTION CLAUSES
+var fichierClause = null;
+
+function selectionnerFichierClause(fichier) {
+    if (!fichier) return;
+    fichierClause = fichier;
+    document.getElementById('zone-upload-clause').style.display = 'none';
+    var affiche = document.getElementById('fichier-clause-affiche');
+    affiche.classList.add('visible');
+    document.getElementById('fichier-clause-nom').textContent = fichier.name;
+    document.getElementById('fichier-clause-taille').textContent = (fichier.size / 1024).toFixed(0) + ' Ko';
+    document.getElementById('btn-clauses').disabled = false;
+}
+
+function supprimerFichierClause() {
+    fichierClause = null;
+    document.getElementById('zone-upload-clause').style.display = 'block';
+    document.getElementById('fichier-clause-affiche').classList.remove('visible');
+    document.getElementById('input-clause').value = '';
+    document.getElementById('btn-clauses').disabled = true;
+    document.getElementById('resultat-clauses').style.display = 'none';
+    document.getElementById('etat-vide-clauses').style.display = 'block';
+}
+
+async function analyserClauses() {
+    if (!fichierClause) return;
+    document.getElementById('etat-vide-clauses').style.display = 'none';
+    document.getElementById('chargement-clauses').classList.add('visible');
+    document.getElementById('resultat-clauses').style.display = 'none';
+
+    var formData = new FormData();
+    formData.append('document', fichierClause);
+    formData.append('userId', utilisateur.id);
+
+    try {
+        var res = await fetch(BACKEND + '/api/detecter-clauses', { method: 'POST', body: formData });
+        var data = await res.json();
+        document.getElementById('chargement-clauses').classList.remove('visible');
+
+        if (!res.ok) { alert(data.error || 'Erreur'); document.getElementById('etat-vide-clauses').style.display = 'block'; return; }
+
+        var html = '<div style="margin-bottom:16px;"><div style="font-size:22px;font-weight:700;color:' + scoreCouleur(data.score_equite) + ';">' + data.score_equite + '/100</div><div style="font-size:12px;color:var(--gris);">Score d'équité du contrat</div></div>';
+        html += '<p style="font-size:13px;color:var(--gris);margin-bottom:16px;">' + (data.resume || '') + '</p>';
+
+        if (data.clauses_abusives && data.clauses_abusives.length > 0) {
+            html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);margin-bottom:8px;">Clauses problématiques</div>';
+            data.clauses_abusives.forEach(function(c) {
+                var couleur = c.gravite === 'critique' ? 'var(--rouge)' : c.gravite === 'important' ? 'var(--orange)' : 'var(--vert)';
+                html += '<div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:7px;padding:12px;margin-bottom:8px;">';
+                html += '<div style="font-size:13px;font-weight:600;color:var(--navy-dark);margin-bottom:4px;">' + (c.clause || '') + '</div>';
+                html += '<div style="font-size:12px;color:var(--gris);">' + (c.probleme || '') + '</div>';
+                if (c.reference_legale) html += '<div style="font-size:10px;color:var(--gold);margin-top:4px;">Réf : ' + c.reference_legale + '</div>';
+                html += '</div>';
+            });
+        }
+
+        if (data.clauses_manquantes && data.clauses_manquantes.length > 0) {
+            html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin:12px 0 8px;">Clauses manquantes</div>';
+            data.clauses_manquantes.forEach(function(c) {
+                html += '<div style="display:flex;gap:8px;font-size:13px;color:var(--navy-dark);margin-bottom:6px;"><span style="color:var(--orange);">!</span>' + c + '</div>';
+            });
+        }
+
+        document.getElementById('resultat-clauses').innerHTML = html;
+        document.getElementById('resultat-clauses').style.display = 'block';
+    } catch(e) {
+        document.getElementById('chargement-clauses').classList.remove('visible');
+        document.getElementById('etat-vide-clauses').style.display = 'block';
+        alert('Erreur de connexion.');
+    }
+}
+
+// REGISTRE RGPD
+async function genererRegistre() {
+    var entreprise = document.getElementById('reg-entreprise').value.trim();
+    var activite = document.getElementById('reg-activite').value.trim();
+    if (!entreprise) { alert('Veuillez renseigner le nom de votre entreprise.'); return; }
+
+    document.getElementById('etat-vide-registre').style.display = 'none';
+    document.getElementById('chargement-registre').classList.add('visible');
+    document.getElementById('resultat-registre').style.display = 'none';
+
+    try {
+        var res = await fetch(BACKEND + '/api/registre-traitements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ entreprise: entreprise, activite: activite, userId: utilisateur.id })
+        });
+        var data = await res.json();
+        document.getElementById('chargement-registre').classList.remove('visible');
+
+        if (!res.ok) { alert(data.error || 'Erreur'); document.getElementById('etat-vide-registre').style.display = 'block'; return; }
+
+        var html = '<div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">' + (data.titre || 'Registre des traitements') + '</div>';
+        html += '<div style="font-size:11px;color:var(--gris);margin-bottom:16px;">Généré le ' + data.date_creation + '</div>';
+
+        if (data.traitements && data.traitements.length > 0) {
+            data.traitements.forEach(function(t, i) {
+                html += '<div style="background:var(--creme);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:8px;">';
+                html += '<div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">' + (i+1) + '. ' + (t.nom || '') + '</div>';
+                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Finalité :</strong> ' + (t.finalite || '') + '</div>';
+                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Base légale :</strong> ' + (t.base_legale || '') + '</div>';
+                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Conservation :</strong> ' + (t.duree_conservation || '') + '</div>';
+                html += '</div>';
+            });
+        }
+
+        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement || '') + '</div>';
+        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(JSON.stringify(data, null, 2)) + ', 'registre-rgpd')">Télécharger</button></div>';
+
+        document.getElementById('resultat-registre').innerHTML = html;
+        document.getElementById('resultat-registre').style.display = 'block';
+        await chargerDonnees();
+    } catch(e) {
+        document.getElementById('chargement-registre').classList.remove('visible');
+        document.getElementById('etat-vide-registre').style.display = 'block';
+        alert('Erreur de connexion.');
+    }
+}
 
 function seDeconnecter() {
     localStorage.removeItem('audilix_token');
