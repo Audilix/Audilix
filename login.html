@@ -15,7 +15,7 @@
             --or-pale: #F5EDD6;
             --creme: #FAF8F4;
             --gris: #6B7280;
-            --bordure: rgba(27,58,122,0.1);
+            --border: rgba(27,58,122,0.1);
             --rouge: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -122,7 +122,7 @@
         /* Bouton Google */
         .btn-google {
             width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 12px 16px; background: white; border: 1.5px solid var(--bordure);
+            padding: 12px 16px; background: white; border: 1.5px solid var(--border);
             border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--navy-dark);
             cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
             margin-bottom: 16px;
@@ -167,7 +167,7 @@
 
         /* Plans */
         .choix-plan { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 14px; }
-        .option-plan { border: 1.5px solid var(--bordure); border-radius: 7px; padding: 9px 5px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--creme); }
+        .option-plan { border: 1.5px solid var(--border); border-radius: 7px; padding: 9px 5px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--creme); }
         .option-plan:hover { border-color: var(--or); }
         .option-plan.selectionnee { border-color: var(--or); background: var(--or-pale); }
         .option-plan input { display: none; }
