@@ -3,258 +3,323 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formules &amp; Tarifs — Audilix</title>
+    <title>Formules — Audilix</title>
     <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://js.stripe.com/v3/"></script>
     <style>
-        :root { --navy:#1B3A7A; --navy-dark:#0F2456; --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6; --cream:#FAF8F4; --gray:#6B7280; --border:rgba(27,58,122,0.1); --text:#1a2744; }
+        :root {
+            --navy: #1B3A7A; --navy-dark: #0F2456; --gold: #C9A84C;
+            --gold-light: #E8C97A; --gold-pale: #F5EDD6;
+            --creme: #FAF8F4; --gris: #6B7280; --bordure: rgba(27,58,122,0.1);
+        }
         * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior:smooth; }
-        body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); -webkit-font-smoothing:antialiased; }
+        body { font-family:'DM Sans',sans-serif; background:var(--creme); color:var(--navy-dark); -webkit-font-smoothing:antialiased; }
         h1,h2,h3 { font-family:'Playfair Display',serif; }
-        .gold-line { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
-        nav { background:white; border-bottom:1px solid var(--border); padding:0 40px; height:70px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
-        nav a.logo { display:flex; align-items:center; text-decoration:none; }
-        nav a.logo img { height:40px; width:auto; }
-        .nav-r { display:flex; align-items:center; gap:10px; }
-        .nav-back { color:var(--gray); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s; }
-        .nav-back:hover { color:var(--text); }
-        .nav-scan { background:var(--gold); color:var(--navy-dark); padding:10px 20px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; transition:background 0.2s; }
-        .nav-scan:hover { background:var(--gold-light); }
 
-        .hero { text-align:center; padding:64px 40px 52px; }
-        .h-label { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
-        .hero h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--navy-dark); line-height:1.12; margin-bottom:14px; letter-spacing:-0.02em; }
-        .hero h1 em { color:var(--gold); font-style:italic; }
-        .hero p { font-size:16px; color:var(--gray); font-weight:300; }
+        .ligne-or { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
 
-        .plans-wrap { max-width:1100px; margin:0 auto; padding:0 40px 80px; }
-        .plans { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
+        nav { background:white; border-bottom:1px solid var(--bordure); padding:0 40px; height:68px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+        .nav-logo img { height:38px; }
+        .nav-droite { display:flex; align-items:center; gap:12px; }
+        .nav-retour { color:var(--gris); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s; }
+        .nav-retour::before { content:'← '; }
+        .nav-retour:hover { color:var(--navy-dark); }
+        .nav-analyse { background:var(--gold); color:var(--navy-dark); padding:10px 20px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+        .nav-analyse:hover { background:var(--gold-light); }
 
-        .plan { background:white; border:1px solid var(--border); border-radius:14px; padding:36px 28px; position:relative; transition:transform 0.3s,box-shadow 0.3s; }
+        .entete { text-align:center; padding:60px 40px 48px; }
+        .entete-label { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+        .entete h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--navy-dark); line-height:1.1; margin-bottom:12px; letter-spacing:-0.02em; }
+        .entete h1 em { color:var(--gold); font-style:italic; }
+        .entete p { font-size:16px; color:var(--gris); font-weight:300; margin-bottom:24px; }
+        .entete-scan { display:inline-flex; align-items:center; gap:10px; background:var(--navy-dark); color:rgba(255,255,255,0.65); padding:13px 22px; border-radius:7px; font-size:14px; text-decoration:none; transition:all 0.2s; }
+        .entete-scan:hover { background:var(--navy); color:white; }
+        .entete-scan strong { color:var(--gold); }
+
+        .plans-zone { max-width:1140px; margin:0 auto; padding:0 40px 80px; }
+        .plans-grille { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
+
+        .plan { background:white; border:1px solid var(--bordure); border-radius:14px; padding:36px 28px; position:relative; transition:transform 0.3s,box-shadow 0.3s; }
         .plan:hover { transform:translateY(-4px); box-shadow:0 18px 48px rgba(27,58,122,0.07); }
-        .plan.feat { background:var(--navy-dark); border-color:transparent; transform:scale(1.03); }
-        .plan.feat:hover { transform:scale(1.03) translateY(-4px); box-shadow:0 24px 64px rgba(15,36,86,0.28); }
-        .plan.feat::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:14px 14px 0 0; }
-        .p-popular { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--navy-dark); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 16px; border-radius:40px; white-space:nowrap; }
-        .p-for { font-size:11px; font-weight:600; color:var(--gray); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
-        .plan.feat .p-for { color:rgba(255,255,255,0.32); }
-        .p-name { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:var(--navy-dark); margin-bottom:5px; }
-        .plan.feat .p-name { color:white; }
-        .p-tagline { font-size:13px; color:var(--gray); margin-bottom:22px; font-weight:300; line-height:1.5; }
-        .plan.feat .p-tagline { color:rgba(255,255,255,0.35); }
-        .p-price { display:flex; align-items:baseline; gap:2px; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
-        .plan.feat .p-price { border-color:rgba(255,255,255,0.08); }
-        .p-cur { font-size:18px; color:var(--gray); }
-        .plan.feat .p-cur { color:rgba(255,255,255,0.3); }
-        .p-amt { font-family:'Playfair Display',serif; font-size:50px; font-weight:700; color:var(--navy-dark); line-height:1; }
-        .plan.feat .p-amt { color:var(--gold); }
-        .p-per { font-size:13px; color:var(--gray); font-weight:300; margin-left:4px; }
-        .plan.feat .p-per { color:rgba(255,255,255,0.3); }
-        .p-sec { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin:14px 0 8px; opacity:0.85; }
-        .p-feats { list-style:none; margin-bottom:28px; display:flex; flex-direction:column; gap:9px; }
-        .p-feats li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text); line-height:1.5; }
-        .plan.feat .p-feats li { color:rgba(255,255,255,0.7); }
-        .ck { width:16px; height:16px; flex-shrink:0; background:var(--gold-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; color:var(--gold); margin-top:1px; }
-        .plan.feat .ck { background:rgba(201,168,76,0.14); }
-        .p-btn { display:block; width:100%; padding:14px; text-align:center; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.25s; border:none; }
-        .b-ol { background:transparent; border:1.5px solid rgba(27,58,122,0.16); color:var(--navy-dark); }
-        .b-ol:hover { background:var(--navy-dark); color:white; border-color:var(--navy-dark); }
-        .b-gd { background:var(--gold); color:var(--navy-dark); }
-        .b-gd:hover { background:var(--gold-light); box-shadow:0 6px 20px rgba(201,168,76,0.28); }
-        .p-btn:disabled { opacity:0.5; cursor:not-allowed; }
-        .p-note { text-align:center; font-size:11px; color:var(--gray); margin-top:10px; }
-        .plan.feat .p-note { color:rgba(255,255,255,0.22); }
+        .plan.vedette { background:var(--navy-dark); border-color:transparent; transform:scale(1.04); }
+        .plan.vedette:hover { transform:scale(1.04) translateY(-4px); box-shadow:0 24px 60px rgba(15,36,86,0.28); }
+        .plan.vedette::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:14px 14px 0 0; }
+        .plan-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--navy-dark); font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 14px; border-radius:40px; white-space:nowrap; }
+        .plan-cible { display:inline-block; background:var(--gold-pale); color:#8B6914; font-size:11px; font-weight:600; padding:3px 10px; border-radius:40px; margin-bottom:10px; }
+        .plan.vedette .plan-cible { background:rgba(201,168,76,0.12); color:var(--gold); }
+        .plan-nom { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--navy-dark); margin-bottom:5px; }
+        .plan.vedette .plan-nom { color:white; }
+        .plan-accroche { font-size:13px; color:var(--gris); margin-bottom:20px; font-weight:300; line-height:1.5; }
+        .plan.vedette .plan-accroche { color:rgba(255,255,255,0.36); }
+        .plan-prix { display:flex; align-items:baseline; gap:2px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--bordure); }
+        .plan.vedette .plan-prix { border-color:rgba(255,255,255,0.08); }
+        .p-devise { font-size:18px; color:var(--gris); }
+        .plan.vedette .p-devise { color:rgba(255,255,255,0.35); }
+        .p-montant { font-family:'Playfair Display',serif; font-size:52px; font-weight:700; color:var(--navy-dark); line-height:1; }
+        .plan.vedette .p-montant { color:var(--gold); }
+        .p-periode { font-size:13px; color:var(--gris); font-weight:300; margin-left:3px; }
+        .plan.vedette .p-periode { color:rgba(255,255,255,0.35); }
 
-        .gars { padding:52px 40px; border-top:1px solid var(--border); background:white; }
-        .gars-inner { max-width:960px; margin:auto; display:grid; grid-template-columns:repeat(4,1fr); gap:36px; text-align:center; }
-        .g-ic { font-size:26px; margin-bottom:10px; }
-        .g-ti { font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:5px; }
-        .g-ds { font-size:13px; color:var(--gray); line-height:1.6; }
+        .p-section { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin:14px 0 7px; }
+        .p-liste { list-style:none; margin-bottom:26px; display:flex; flex-direction:column; gap:8px; }
+        .p-liste li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--navy-dark); line-height:1.5; }
+        .plan.vedette .p-liste li { color:rgba(255,255,255,0.72); }
+        .p-coche { width:16px; height:16px; flex-shrink:0; background:var(--gold-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; color:var(--gold); margin-top:1px; }
+        .plan.vedette .p-coche { background:rgba(201,168,76,0.15); }
 
-        .faq { max-width:680px; margin:0 auto; padding:64px 40px 80px; }
-        .faq h2 { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; color:var(--navy-dark); margin-bottom:40px; text-align:center; }
-        .faq-item { border-bottom:1px solid var(--border); }
-        .faq-btn { width:100%; background:none; border:none; display:flex; align-items:center; justify-content:space-between; padding:20px 0; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; color:var(--navy-dark); text-align:left; gap:16px; transition:color 0.2s; }
-        .faq-btn:hover { color:var(--gold); }
-        .faq-ic { width:26px; height:26px; flex-shrink:0; border-radius:50%; border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:14px; transition:all 0.3s; }
-        .faq-btn.open .faq-ic { background:var(--gold); color:var(--navy-dark); transform:rotate(45deg); }
-        .faq-ans { display:none; padding:0 0 20px; font-size:14px; color:var(--gray); line-height:1.85; font-weight:300; }
-        .faq-ans.open { display:block; }
+        .plan-btn { display:block; width:100%; padding:14px; text-align:center; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.25s; border:none; }
+        .btn-contour { background:transparent; border:1.5px solid rgba(27,58,122,0.18); color:var(--navy-dark); }
+        .btn-contour:hover { background:var(--navy-dark); color:white; border-color:var(--navy-dark); }
+        .btn-or { background:var(--gold); color:var(--navy-dark); }
+        .btn-or:hover { background:var(--gold-light); box-shadow:0 6px 20px rgba(201,168,76,0.28); transform:translateY(-1px); }
+        .plan-note { text-align:center; font-size:11px; color:var(--gris); margin-top:8px; }
+        .plan.vedette .plan-note { color:rgba(255,255,255,0.22); }
 
-        footer { background:#0A1A3D; padding:44px 40px; }
-        .f-inner { max-width:1100px; margin:auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px; }
-        .f-inner img { height:26px; opacity:0.28; filter:grayscale(1); }
-        .f-links { display:flex; gap:22px; list-style:none; }
-        .f-links a { text-decoration:none; font-size:12px; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:rgba(255,255,255,0.2); transition:color 0.2s; }
-        .f-links a:hover { color:var(--gold); }
-        .f-copy { font-size:11px; color:rgba(255,255,255,0.13); }
+        /* Comparaison rapide */
+        .comparaison { max-width:800px; margin:0 auto 60px; padding:0 40px; }
+        .comparaison h2 { font-size:26px; font-weight:700; color:var(--navy-dark); margin-bottom:24px; text-align:center; }
+        .tableau { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; border:1px solid var(--bordure); font-size:13px; }
+        .tableau thead tr { background:var(--navy-dark); }
+        .tableau thead th { padding:14px 16px; text-align:center; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.7); }
+        .tableau thead th:first-child { text-align:left; color:rgba(255,255,255,0.4); }
+        .tableau tbody tr { border-bottom:1px solid var(--bordure); transition:background 0.2s; }
+        .tableau tbody tr:last-child { border-bottom:none; }
+        .tableau tbody tr:hover { background:var(--creme); }
+        .tableau td { padding:12px 16px; color:var(--navy-dark); }
+        .tableau td:not(:first-child) { text-align:center; }
+        .tableau td:first-child { font-size:13px; font-weight:500; }
+        .oui { color:#16a34a; font-size:16px; }
+        .non { color:rgba(107,114,128,0.3); font-size:14px; }
+        .limite { color:var(--gold); font-size:12px; font-weight:600; }
+        .col-or { background:rgba(201,168,76,0.04); }
 
-        #pay-load { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,36,86,0.72); z-index:9999; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
-        #pay-load.show { display:flex; }
+        .banniere { background:var(--navy-dark); padding:44px 40px; text-align:center; position:relative; }
+        .banniere::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+        .banniere h2 { font-size:26px; font-weight:600; color:white; margin-bottom:10px; }
+        .banniere h2 em { color:var(--gold); font-style:italic; }
+        .banniere p { font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:22px; }
+        .banniere-btn { display:inline-block; background:var(--gold); color:var(--navy-dark); padding:13px 28px; border-radius:4px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+        .banniere-btn:hover { background:var(--gold-light); transform:translateY(-1px); }
+
+        .garanties { padding:52px 40px; border-top:1px solid var(--bordure); background:white; }
+        .garanties-inner { max-width:960px; margin:auto; display:grid; grid-template-columns:repeat(4,1fr); gap:36px; text-align:center; }
+        .g-icone { font-size:24px; margin-bottom:10px; }
+        .g-titre { font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:6px; }
+        .g-texte { font-size:13px; color:var(--gris); line-height:1.6; }
+
+        .faq { max-width:680px; margin:0 auto; padding:60px 40px 80px; }
+        .faq h2 { font-size:28px; font-weight:700; color:var(--navy-dark); margin-bottom:32px; text-align:center; }
+        .faq-item { border-bottom:1px solid var(--bordure); }
+        .faq-q { width:100%; background:none; border:none; display:flex; align-items:center; justify-content:space-between; padding:18px 0; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--navy-dark); text-align:left; gap:14px; transition:color 0.2s; }
+        .faq-q:hover { color:var(--gold); }
+        .faq-ico { width:24px; height:24px; flex-shrink:0; border-radius:50%; border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:15px; transition:all 0.3s; }
+        .faq-q.ouvert .faq-ico { background:var(--gold); color:var(--navy-dark); transform:rotate(45deg); }
+        .faq-r { display:none; padding:0 0 18px; font-size:14px; color:var(--gris); line-height:1.8; font-weight:300; }
+        .faq-r.ouvert { display:block; }
+
+        footer { background:#0A1A3D; padding:44px 40px; text-align:center; }
+        footer p { font-size:12px; color:rgba(255,255,255,0.18); }
+        footer a { color:rgba(255,255,255,0.25); text-decoration:none; margin:0 8px; }
+        footer a:hover { color:var(--gold); }
+
+        #chargement { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,36,86,0.72); z-index:9999; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+        #chargement.actif { display:flex; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
-        @media (max-width:900px) {
-            .plans { grid-template-columns:1fr; max-width:480px; margin:auto; }
-            .plan.feat { transform:none; }
-            .gars-inner { grid-template-columns:1fr 1fr; }
-        }
-        @media (max-width:640px) {
-            nav { padding:0 20px; }
-            .hero { padding:48px 20px 36px; }
-            .plans-wrap { padding:0 20px 60px; }
-            .gars-inner { grid-template-columns:1fr; }
-        }
+        @media(max-width:900px) { .plans-grille{grid-template-columns:1fr;max-width:460px;margin:auto} .plan.vedette{transform:none} .garanties-inner{grid-template-columns:1fr 1fr} .comparaison{padding:0 20px} }
+        @media(max-width:640px) { nav{padding:0 20px} .entete{padding:48px 20px 36px} .plans-zone{padding:0 20px 60px} .garanties-inner{grid-template-columns:1fr} .tableau{font-size:11px} .tableau td{padding:10px 10px} }
     </style>
 </head>
 <body>
-<div class="gold-line"></div>
+<div class="ligne-or"></div>
 <nav>
-    <a href="index.html" class="logo"><img src="logo.png" alt="Audilix"></a>
-    <div class="nav-r">
-        <a href="index.html" class="nav-back">← Retour</a>
-        <a href="scanner.html" class="nav-scan">Analyse gratuite</a>
+    <a href="index.html"><img src="logo.png" alt="Audilix" style="height:38px;"></a>
+    <div class="nav-droite">
+        <a href="index.html" class="nav-retour">Retour</a>
+        <a href="scanner.html" class="nav-analyse">Analyse gratuite</a>
     </div>
 </nav>
 
-<div class="hero">
-    <div class="h-label">Formules &amp; tarifs</div>
-    <h1>Choisissez la formule<br>adaptée à <em>votre entreprise</em></h1>
-    <p>Sans engagement · Résiliable à tout moment · Accès immédiat après souscription</p>
+<div class="entete">
+    <div class="entete-label">Nos formules</div>
+    <h1>Un abonnement qui <em>vaut vraiment</em><br>son prix.</h1>
+    <p>Sans engagement · Résiliable à tout moment · Accès immédiat</p>
+    <a href="scanner.html" class="entete-scan">Pas encore analysé votre site ? <strong>C'est gratuit →</strong></a>
 </div>
 
-<div class="plans-wrap">
-<div class="plans">
+<div class="plans-zone">
+<div class="plans-grille">
 
-    <!-- ESSENTIEL -->
+    <!-- STARTER -->
     <div class="plan">
-        <div class="p-for">Indépendants &amp; petites structures</div>
-        <div class="p-name">Essentiel</div>
-        <div class="p-tagline">L'essentiel pour être conforme et protégé, sans vous occuper des détails juridiques.</div>
-        <div class="p-price"><span class="p-cur">€</span><span class="p-amt">69</span><span class="p-per">/ mois</span></div>
-        <ul class="p-feats">
-            <div class="p-sec">Analyse &amp; rapport</div>
-            <li><span class="ck">✓</span>Analyse automatique de votre site web</li>
-            <li><span class="ck">✓</span>Score de conformité sur 100</li>
-            <li><span class="ck">✓</span>Rapport mensuel avec corrections à apporter</li>
-            <li><span class="ck">✓</span>Vérification RGPD, cookies et mentions légales</li>
-            <div class="p-sec">Documents juridiques</div>
-            <li><span class="ck">✓</span>Politique de confidentialité générée</li>
-            <li><span class="ck">✓</span>Mentions légales générées</li>
-            <li><span class="ck">✓</span>Politique de gestion des cookies</li>
-            <div class="p-sec">Surveillance</div>
-            <li><span class="ck">✓</span>Alerte par email en cas de manquement</li>
-            <li><span class="ck">✓</span>Tableau de bord de conformité</li>
-            <li><span class="ck">✓</span>1 site web</li>
+        <div class="plan-cible">Indépendants &amp; petits sites</div>
+        <div class="plan-nom">Starter</div>
+        <div class="plan-accroche">Tout ce qu'il faut pour être conforme et protégé dès le premier mois.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">69</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Analyses &amp; Score</div>
+            <li><span class="p-coche">✓</span>10 analyses de documents par mois</li>
+            <li><span class="p-coche">✓</span>Score de conformité complet /100</li>
+            <li><span class="p-coche">✓</span>Rapport détaillé envoyé par e-mail</li>
+            <li><span class="p-coche">✓</span>Recommandations claires et actionnables</li>
+            <div class="p-section">Documents générés</div>
+            <li><span class="p-coche">✓</span>Politique de confidentialité</li>
+            <li><span class="p-coche">✓</span>Mentions légales</li>
+            <li><span class="p-coche">✓</span>Politique de gestion des cookies</li>
+            <div class="p-section">Surveillance</div>
+            <li><span class="p-coche">✓</span>Surveillance mensuelle automatique</li>
+            <li><span class="p-coche">✓</span>Alertes e-mail si anomalie détectée</li>
+            <li><span class="p-coche">✓</span>Support par e-mail (réponse sous 48h)</li>
         </ul>
-        <button class="p-btn b-ol" onclick="payer('starter')">Commencer</button>
-        <div class="p-note">Sans engagement · Résiliable à tout moment</div>
+        <button class="plan-btn btn-contour" onclick="payer('starter')">Commencer</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
-    <!-- BUSINESS -->
-    <div class="plan feat">
-        <div class="p-popular">Le plus choisi</div>
-        <div class="p-for">PME &amp; startups en croissance</div>
-        <div class="p-name">Business</div>
-        <div class="p-tagline">La conformité intégralement gérée, avec surveillance continue et assistance.</div>
-        <div class="p-price"><span class="p-cur">€</span><span class="p-amt">149</span><span class="p-per">/ mois</span></div>
-        <ul class="p-feats">
-            <div class="p-sec">Tout l'Essentiel, plus :</div>
-            <li><span class="ck">✓</span>Analyses illimitées</li>
-            <li><span class="ck">✓</span>Surveillance hebdomadaire automatique</li>
-            <li><span class="ck">✓</span>Alertes en temps réel si votre site change</li>
-            <li><span class="ck">✓</span>Vérification cybersécurité, RSE et réglementation IA</li>
-            <div class="p-sec">Assistance &amp; correction</div>
-            <li><span class="ck">✓</span>Assistant conformité disponible 24h/24</li>
-            <li><span class="ck">✓</span>Plan de correction détaillé et priorisé</li>
-            <li><span class="ck">✓</span>Instructions de correction prêtes à appliquer</li>
-            <li><span class="ck">✓</span>Veille réglementaire automatique</li>
-            <div class="p-sec">Rapports &amp; export</div>
-            <li><span class="ck">✓</span>Rapports PDF téléchargeables</li>
-            <li><span class="ck">✓</span>Historique de conformité</li>
-            <li><span class="ck">✓</span>5 sites web</li>
+    <!-- PRO -->
+    <div class="plan vedette">
+        <div class="plan-badge">Le plus choisi</div>
+        <div class="plan-cible">PME &amp; startups en croissance</div>
+        <div class="plan-nom">Pro</div>
+        <div class="plan-accroche">Analyses illimitées, IA 24h/24 et veille réglementaire automatique.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">149</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Tout Starter, et en plus :</div>
+            <li><span class="p-coche">✓</span>Analyses de documents illimitées</li>
+            <li><span class="p-coche">✓</span>Analyse avancée des risques avec priorités</li>
+            <li><span class="p-coche">✓</span>Plan de correction détaillé et priorisé</li>
+            <li><span class="p-coche">✓</span>Documents personnalisés selon votre activité</li>
+            <div class="p-section">IA &amp; Automatisation</div>
+            <li><span class="p-coche">✓</span>Assistant conformité IA disponible 24h/24</li>
+            <li><span class="p-coche">✓</span>Veille réglementaire automatique (RGPD, AI Act…)</li>
+            <li><span class="p-coche">✓</span>Surveillance hebdomadaire automatique</li>
+            <li><span class="p-coche">✓</span>Alertes en temps réel</li>
+            <div class="p-section">Historique &amp; Support</div>
+            <li><span class="p-coche">✓</span>Historique complet des analyses</li>
+            <li><span class="p-coche">✓</span>Support prioritaire (réponse sous 24h)</li>
         </ul>
-        <button class="p-btn b-gd" onclick="payer('business')">Choisir Business</button>
-        <div class="p-note">Sans engagement · Résiliable à tout moment</div>
+        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Pro</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
-    <!-- EXPERT -->
+    <!-- PREMIUM -->
     <div class="plan">
-        <div class="p-for">Grandes entreprises &amp; agences</div>
-        <div class="p-name">Expert</div>
-        <div class="p-tagline">Pour les structures gérant plusieurs sites ou souhaitant intégrer la conformité dans leurs outils.</div>
-        <div class="p-price"><span class="p-cur">€</span><span class="p-amt">299</span><span class="p-per">/ mois</span></div>
-        <ul class="p-feats">
-            <div class="p-sec">Tout le Business, plus :</div>
-            <li><span class="ck">✓</span>Sites illimités</li>
-            <li><span class="ck">✓</span>Analyse multi-sites centralisée</li>
-            <li><span class="ck">✓</span>Documents mis à jour automatiquement si la loi évolue</li>
-            <div class="p-sec">Intégration &amp; personnalisation</div>
-            <li><span class="ck">✓</span>Accès à notre interface de programmation</li>
-            <li><span class="ck">✓</span>Rapports personnalisés à votre marque</li>
-            <li><span class="ck">✓</span>Statistiques avancées et comparaison sectorielle</li>
-            <div class="p-sec">Certification</div>
-            <li><span class="ck">✓</span>Attestation de conformité Audilix</li>
-            <li><span class="ck">✓</span>Badge de conformité vérifiée pour votre site</li>
+        <div class="plan-cible">Agences &amp; entreprises multi-sites</div>
+        <div class="plan-nom">Premium</div>
+        <div class="plan-accroche">Audit complet, rapports PDF, multi-sites et support VIP.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">299</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Tout Pro, et en plus :</div>
+            <li><span class="p-coche">✓</span>Audit complet automatisé du site web</li>
+            <li><span class="p-coche">✓</span>Rapports PDF professionnels exportables</li>
+            <li><span class="p-coche">✓</span>Conseils personnalisés via IA</li>
+            <li><span class="p-coche">✓</span>Analyses multi-sites (jusqu'à 10 sites)</li>
+            <div class="p-section">Outils avancés</div>
+            <li><span class="p-coche">✓</span>Mise à jour automatique des documents si la loi change</li>
+            <li><span class="p-coche">✓</span>Badge de conformité Audilix pour votre site</li>
+            <li><span class="p-coche">✓</span>Accès à notre API</li>
+            <div class="p-section">Support</div>
+            <li><span class="p-coche">✓</span>Support VIP (réponse le jour même)</li>
         </ul>
-        <button class="p-btn b-ol" onclick="payer('expert')">Choisir Expert</button>
-        <div class="p-note">Sans engagement · Résiliable à tout moment</div>
+        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Premium</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
 </div>
+
+<!-- TABLEAU COMPARATIF -->
+<div style="margin-top:64px;">
+<div class="comparaison">
+    <h2>Comparaison rapide</h2>
+    <table class="tableau">
+        <thead>
+            <tr>
+                <th style="text-align:left;">Fonctionnalité</th>
+                <th>Starter</th>
+                <th class="col-or">Pro</th>
+                <th>Premium</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Analyses de documents</td><td class="limite">10/mois</td><td class="col-or oui">∞</td><td class="oui">∞</td></tr>
+            <tr><td>Score de conformité /100</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Rapport détaillé par e-mail</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Documents juridiques générés</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Surveillance automatique</td><td class="limite">Mensuelle</td><td class="col-or limite">Hebdomadaire</td><td class="limite">Quotidienne</td></tr>
+            <tr><td>Alertes en temps réel</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Assistant conformité IA 24h/24</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Veille réglementaire auto.</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Historique des analyses</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Documents personnalisés</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Rapports PDF exportables</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Audit complet du site web</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Multi-sites</td><td class="non">—</td><td class="col-or non">—</td><td class="limite">Jusqu'à 10</td></tr>
+            <tr><td>Badge de conformité Audilix</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Accès API</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Support</td><td class="limite">E-mail (48h)</td><td class="col-or limite">Prioritaire (24h)</td><td class="limite">VIP (jour même)</td></tr>
+        </tbody>
+    </table>
+</div>
+</div>
 </div>
 
-<div class="gars">
-    <div class="gars-inner">
-        <div><div class="g-ic">🔒</div><div class="g-ti">Paiement sécurisé</div><p class="g-ds">Chiffrement SSL via notre prestataire de paiement. Aucune donnée bancaire n'est stockée chez nous.</p></div>
-        <div><div class="g-ic">🔄</div><div class="g-ti">Sans engagement</div><p class="g-ds">Résiliez à tout moment depuis votre espace client, sans frais ni délai de préavis.</p></div>
-        <div><div class="g-ic">⚡</div><div class="g-ti">Accès immédiat</div><p class="g-ds">Votre compte est activé et vos identifiants envoyés immédiatement après la souscription.</p></div>
-        <div><div class="g-ic">🇪🇺</div><div class="g-ti">Données en Europe</div><p class="g-ds">Hébergement et traitement des données exclusivement en Union Européenne.</p></div>
+<div class="banniere">
+    <h2>Pas encore analysé votre site ? <em>C'est gratuit.</em></h2>
+    <p>Obtenez votre score de conformité en moins de 2 minutes, sans inscription.</p>
+    <a href="scanner.html" class="banniere-btn">Lancer l'analyse gratuite</a>
+</div>
+
+<div class="garanties">
+    <div class="garanties-inner">
+        <div><div class="g-icone">🔒</div><div class="g-titre">Paiement sécurisé</div><p class="g-texte">Chiffrement SSL via Stripe. Vos données bancaires ne sont jamais stockées.</p></div>
+        <div><div class="g-icone">🔄</div><div class="g-titre">Sans engagement</div><p class="g-texte">Résiliez à tout moment depuis votre espace client, sans frais.</p></div>
+        <div><div class="g-icone">⚡</div><div class="g-titre">Accès immédiat</div><p class="g-texte">Votre compte est activé dès la confirmation du paiement.</p></div>
+        <div><div class="g-icone">🇪🇺</div><div class="g-titre">Données en Europe</div><p class="g-texte">Hébergement européen. Conformité RGPD garantie sur toute la chaîne.</p></div>
     </div>
 </div>
 
 <div class="faq">
     <h2>Questions fréquentes</h2>
     <div class="faq-item">
-        <button class="faq-btn" onclick="tf(this)">Que se passe-t-il après mon paiement ? <span class="faq-ic">+</span></button>
-        <div class="faq-ans">Votre compte est créé automatiquement. Vous recevez vos identifiants de connexion par email dans les minutes suivant votre souscription. Vous pouvez immédiatement lancer votre première analyse et consulter vos documents générés.</div>
+        <button class="faq-q" onclick="tFaq(this)">Quelle formule choisir ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Si vous êtes indépendant ou gérez un seul site, le Starter est suffisant. Pour une PME qui veut automatiser totalement sa conformité, le Pro est le choix idéal. Le Premium est fait pour les agences et entreprises gérant plusieurs sites.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-btn" onclick="tf(this)">Puis-je changer de formule en cours d'abonnement ? <span class="faq-ic">+</span></button>
-        <div class="faq-ans">Oui. Vous pouvez passer à une formule supérieure ou inférieure à tout moment depuis votre espace client. Le changement est effectif immédiatement et le montant ajusté.</div>
+        <button class="faq-q" onclick="tFaq(this)">Comment fonctionne l'analyse de documents ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Depuis votre espace client, déposez un document (PDF, Word, TXT). Notre IA l'analyse en moins de 30 secondes et vous retourne un score, la liste des problèmes détectés et les recommandations pour corriger.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-btn" onclick="tf(this)">Les documents juridiques générés sont-ils valides légalement ? <span class="faq-ic">+</span></button>
-        <div class="faq-ans">Les documents produits — politique de confidentialité, mentions légales, politique de cookies — sont rédigés sur la base des obligations légales européennes en vigueur. Ils constituent une base sérieuse. Pour les entreprises à forte exposition juridique, une validation par un juriste spécialisé est conseillée.</div>
+        <button class="faq-q" onclick="tFaq(this)">Les documents juridiques sont-ils valables légalement ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Nos documents sont générés selon les textes réglementaires européens en vigueur. Ils constituent une base sérieuse et conforme. Pour les situations à fort enjeu, nous recommandons de les faire valider par un professionnel du droit.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-btn" onclick="tf(this)">Comment fonctionne la surveillance hebdomadaire ? <span class="faq-ic">+</span></button>
-        <div class="faq-ans">À partir de la formule Business, votre site est analysé automatiquement chaque semaine. Si un changement crée un nouveau manquement — modification de votre site, nouveau cookie, page supprimée — vous recevez une alerte par email avec les actions à mener.</div>
+        <button class="faq-q" onclick="tFaq(this)">C'est quoi l'assistant conformité IA ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Disponible dans votre espace client (formule Pro et Premium), c'est un assistant intelligent qui répond à vos questions sur la conformité en langage simple, explique les résultats de vos analyses et vous guide dans les corrections à apporter.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-btn" onclick="tf(this)">Comment résilier mon abonnement ? <span class="faq-ic">+</span></button>
-        <div class="faq-ans">Depuis votre espace client, section Paramètres, rubrique Abonnement. La résiliation est effective immédiatement, sans frais ni justification requise.</div>
+        <button class="faq-q" onclick="tFaq(this)">Comment créer mon compte après le paiement ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Vous n'avez rien à faire. Après validation de votre paiement, votre compte est créé automatiquement et vos identifiants sont envoyés par e-mail. Vous pouvez vous connecter immédiatement et modifier votre mot de passe depuis les paramètres.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Puis-je résilier à tout moment ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Oui, sans engagement et sans frais. Résiliez depuis votre espace client en un clic. La résiliation est effective immédiatement.</div>
     </div>
 </div>
 
 <footer>
-    <div class="f-inner">
-        <a href="index.html"><img src="logo.png" alt="Audilix"></a>
-        <ul class="f-links">
-            <li><a href="confidentialite.html">Confidentialité</a></li>
-            <li><a href="mentions.html">Mentions légales</a></li>
-            <li><a href="mailto:contact.audilix@gmail.com">Contact</a></li>
-        </ul>
-        <span class="f-copy">© 2026 Audilix</span>
-    </div>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="mailto:contact.audilix@gmail.com">Contact</a></p>
 </footer>
 
-<div id="pay-load">
-    <div style="background:white;border-radius:14px;padding:40px;text-align:center;max-width:260px;">
-        <div style="width:42px;height:42px;border:3px solid rgba(27,58,122,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+<div id="chargement">
+    <div style="background:white;border-radius:14px;padding:44px;text-align:center;max-width:290px;">
+        <div style="width:44px;height:44px;border:3px solid rgba(27,58,122,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 18px;"></div>
         <div style="font-size:15px;font-weight:700;color:#0F2456;margin-bottom:5px;">Redirection en cours...</div>
-        <div style="font-size:12px;color:#6B7280;">Vous allez être redirigé vers notre prestataire de paiement sécurisé.</div>
+        <div style="font-size:13px;color:#6B7280;">Paiement sécurisé par Stripe 🔒</div>
     </div>
 </div>
 
@@ -262,27 +327,34 @@
 var BACKEND = 'https://audilix-backend.onrender.com';
 var PRIX = { starter:'price_1TBEp1L1yZKJczeCtlqQ4u3F', business:'price_1TBEt9L1yZKJczeC28lX4VMH', expert:'price_1TBEuYL1yZKJczeCXrgBEFcu' };
 
-async function payer(f) {
-    var u = localStorage.getItem('audilix_user');
-    var user = u ? JSON.parse(u) : null;
-    document.getElementById('pay-load').classList.add('show');
+async function payer(plan) {
+    var userStr = localStorage.getItem('audilix_user');
+    var user = userStr ? JSON.parse(userStr) : null;
+    document.getElementById('chargement').classList.add('actif');
     try {
-        var r = await fetch(BACKEND + '/api/stripe/checkout', {
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({ plan:f, priceId:PRIX[f], userId:user?user.id:null, email:user?user.email:null, successUrl:window.location.origin+'/login.html?paiement=ok', cancelUrl:window.location.origin+'/pricing.html' })
+        var res = await fetch(BACKEND + '/api/stripe/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                plan: plan, priceId: PRIX[plan],
+                userId: user ? user.id : null,
+                email: user ? user.email : null,
+                successUrl: window.location.origin + '/login.html?paiement=succes',
+                cancelUrl: window.location.origin + '/pricing.html'
+            })
         });
-        var d = await r.json();
-        if (d.url) { window.location.href = d.url; }
-        else throw new Error(d.error || 'Erreur');
+        var data = await res.json();
+        if (data.url) { window.location.href = data.url; }
+        else throw new Error(data.error || 'Erreur');
     } catch(e) {
-        document.getElementById('pay-load').classList.remove('show');
-        alert('Une erreur est survenue. Veuillez réessayer ou nous contacter à contact.audilix@gmail.com');
+        document.getElementById('chargement').classList.remove('actif');
+        alert('Une erreur est survenue. Veuillez réessayer.');
     }
 }
 
-function tf(btn) {
-    btn.classList.toggle('open');
-    btn.nextElementSibling.classList.toggle('open');
+function tFaq(btn) {
+    btn.classList.toggle('ouvert');
+    btn.nextElementSibling.classList.toggle('ouvert');
 }
 </script>
 <script src="cookies.js"></script>
