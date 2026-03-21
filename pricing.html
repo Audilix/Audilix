@@ -18,7 +18,7 @@
 
         .ligne-or { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
 
-        nav { background:white; border-bottom:1px solid var(--bordure); padding:0 40px; height:68px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+        nav { background:white; border-bottom:1px solid var(--border); padding:0 40px; height:68px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
         .nav-logo img { height:38px; }
         .nav-droite { display:flex; align-items:center; gap:12px; }
         .nav-retour { color:var(--gris); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s; }
@@ -39,7 +39,7 @@
         .plans-zone { max-width:1140px; margin:0 auto; padding:0 40px 80px; }
         .plans-grille { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
 
-        .plan { background:white; border:1px solid var(--bordure); border-radius:14px; padding:36px 28px; position:relative; transition:transform 0.3s,box-shadow 0.3s; }
+        .plan { background:white; border:1px solid var(--border); border-radius:14px; padding:36px 28px; position:relative; transition:transform 0.3s,box-shadow 0.3s; }
         .plan:hover { transform:translateY(-4px); box-shadow:0 18px 48px rgba(27,58,122,0.07); }
         .plan.vedette { background:var(--navy-dark); border-color:transparent; transform:scale(1.04); }
         .plan.vedette:hover { transform:scale(1.04) translateY(-4px); box-shadow:0 24px 60px rgba(15,36,86,0.28); }
@@ -51,7 +51,7 @@
         .plan.vedette .plan-nom { color:white; }
         .plan-accroche { font-size:13px; color:var(--gris); margin-bottom:20px; font-weight:300; line-height:1.5; }
         .plan.vedette .plan-accroche { color:rgba(255,255,255,0.36); }
-        .plan-prix { display:flex; align-items:baseline; gap:2px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--bordure); }
+        .plan-prix { display:flex; align-items:baseline; gap:2px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--border); }
         .plan.vedette .plan-prix { border-color:rgba(255,255,255,0.08); }
         .p-devise { font-size:18px; color:var(--gris); }
         .plan.vedette .p-devise { color:rgba(255,255,255,0.35); }
@@ -78,11 +78,11 @@
         /* Comparaison rapide */
         .comparaison { max-width:800px; margin:0 auto 60px; padding:0 40px; }
         .comparaison h2 { font-size:26px; font-weight:700; color:var(--navy-dark); margin-bottom:24px; text-align:center; }
-        .tableau { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; border:1px solid var(--bordure); font-size:13px; }
+        .tableau { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; border:1px solid var(--border); font-size:13px; }
         .tableau thead tr { background:var(--navy-dark); }
         .tableau thead th { padding:14px 16px; text-align:center; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.7); }
         .tableau thead th:first-child { text-align:left; color:rgba(255,255,255,0.4); }
-        .tableau tbody tr { border-bottom:1px solid var(--bordure); transition:background 0.2s; }
+        .tableau tbody tr { border-bottom:1px solid var(--border); transition:background 0.2s; }
         .tableau tbody tr:last-child { border-bottom:none; }
         .tableau tbody tr:hover { background:var(--creme); }
         .tableau td { padding:12px 16px; color:var(--navy-dark); }
@@ -101,7 +101,7 @@
         .banniere-btn { display:inline-block; background:var(--gold); color:var(--navy-dark); padding:13px 28px; border-radius:4px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s; }
         .banniere-btn:hover { background:var(--gold-light); transform:translateY(-1px); }
 
-        .garanties { padding:52px 40px; border-top:1px solid var(--bordure); background:white; }
+        .garanties { padding:52px 40px; border-top:1px solid var(--border); background:white; }
         .garanties-inner { max-width:960px; margin:auto; display:grid; grid-template-columns:repeat(4,1fr); gap:36px; text-align:center; }
         .g-icone { font-size:24px; margin-bottom:10px; }
         .g-titre { font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:6px; }
@@ -109,7 +109,7 @@
 
         .faq { max-width:680px; margin:0 auto; padding:60px 40px 80px; }
         .faq h2 { font-size:28px; font-weight:700; color:var(--navy-dark); margin-bottom:32px; text-align:center; }
-        .faq-item { border-bottom:1px solid var(--bordure); }
+        .faq-item { border-bottom:1px solid var(--border); }
         .faq-q { width:100%; background:none; border:none; display:flex; align-items:center; justify-content:space-between; padding:18px 0; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--navy-dark); text-align:left; gap:14px; transition:color 0.2s; }
         .faq-q:hover { color:var(--gold); }
         .faq-ico { width:24px; height:24px; flex-shrink:0; border-radius:50%; border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:15px; transition:all 0.3s; }
