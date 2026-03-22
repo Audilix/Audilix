@@ -228,7 +228,7 @@
         </div>
 
         <!-- CONNEXION -->
-        <div id="form-connexion" style="display:none;">
+        <div id="form-connexion">
             <h2 class="form-titre">Bon retour 👋</h2>
             <p class="form-sous">Connectez-vous à votre espace Audilix.</p>
             <div class="form-erreur" id="err-connexion"></div>
@@ -259,7 +259,7 @@
         </div>
 
         <!-- INSCRIPTION -->
-        <div id="form-inscription">
+        <div id="form-inscription" style="display:none;">
             <h2 class="form-titre">Commencer</h2>
             <p class="form-sous">Lancez votre premier audit de conformité.</p>
             <div class="form-erreur" id="err-inscription"></div>
@@ -339,7 +339,7 @@ if (params.get('paiement') === 'succes' || params.get('payment') === 'success') 
 if (localStorage.getItem('audilix_token')) {
     window.location.href = 'dashboard.html';
 }
-afficherOnglet('inscription');
+afficherOnglet('connexion');
 
 // Gérer le paramètre tab dans l'URL
 var urlTab = new URLSearchParams(window.location.search).get('tab');
