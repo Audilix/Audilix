@@ -6,7 +6,7 @@
 <title>Audilix — Conformité &amp; Audit IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0B2545;--navy-mid:#1A3A6B;--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5EDD6;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.08)}
+:root{--navy:#0B2545;--navy-dark:#0B2545;--navy-mid:#1A3A6B;--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5EDD6;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.08)}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--navy);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -53,25 +53,6 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .trust-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap;opacity:.6}
 .trust-items{display:flex;gap:40px;align-items:center;flex-wrap:wrap}
 .trust-item{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--navy);opacity:.3;text-transform:uppercase}
-.scanner-section{background:var(--navy);padding:100px 40px;position:relative;overflow:hidden}
-.scanner-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.scanner-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.scanner-inner{max-width:760px;margin:auto;text-align:center}
-.scanner-inner h2{font-size:clamp(36px,4vw,54px);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
-.scanner-inner h2 em{font-style:italic;color:var(--gold)}
-.scanner-inner p{font-size:17px;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300;margin-bottom:48px}
-.scanner-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:40px;position:relative}
-.scanner-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:12px 12px 0 0}
-.scanner-input-group{display:flex;gap:12px;margin-bottom:16px}
-.scanner-url-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:16px 20px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.scanner-url-input::placeholder{color:rgba(255,255,255,.25)}
-.scanner-url-input:focus{border-color:var(--gold)}
-.scanner-submit{background:var(--gold);color:var(--navy);padding:16px 32px;border-radius:6px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;white-space:nowrap}
-.scanner-submit:hover{background:var(--gold-light)}
-.scanner-note{font-size:12px;color:rgba(255,255,255,.2)}
-.scanner-tags{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:32px}
-.scanner-tag{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.35);font-weight:500}
-.scanner-tag::before{content:'✓';color:var(--gold);font-size:11px}
 .section-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .section-title{font-size:clamp(36px,4vw,54px);font-weight:700;line-height:1.1;color:var(--navy);letter-spacing:-.02em}
 .section-sub{font-size:18px;color:var(--gray);line-height:1.7;font-weight:300;margin-top:16px}
@@ -157,10 +138,9 @@ footer{background:#060F1E;padding:56px 40px}
 .footer-links a{text-decoration:none;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
 .footer-links a:hover{color:rgba(255,255,255,.6)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
-#chat-btn{position:fixed;bottom:32px;right:32px;z-index:999;width:62px;height:62px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 24px rgba(11,37,69,.4),0 0 0 2px rgba(201,168,76,.3);transition:all .3s;border:2px solid rgba(201,168,76,.4)}
-#chat-btn:hover{transform:scale(1.08)}
-.chat-notif{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--gold);border-radius:50%;border:2px solid var(--navy);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+#chat-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:68px;height:60px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(15,36,86,0.15),0 0 0 1px rgba(27,58,122,0.07);transition:all 0.3s;border:none}
+#chat-btn:hover{transform:scale(1.06)}
+.chat-notif{position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white}
 #chat-panel{position:fixed;bottom:108px;right:32px;z-index:998;width:340px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(11,37,69,.18);border:1px solid var(--border);overflow:hidden;display:none}
 #chat-panel.open{display:block}
 .chat-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px}
@@ -193,7 +173,6 @@ footer{background:#060F1E;padding:56px 40px}
 .solutions-grid,.pricing-grid,.process-steps,.guarantees-inner{grid-template-columns:1fr}
 .plan-card.featured{transform:none}
 .nav-links{display:none}
-.scanner-input-group{flex-direction:column}
 }
 @media(max-width:640px){
 .guarantees-inner{grid-template-columns:1fr 1fr}
@@ -211,10 +190,9 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="nav-inner">
 <div class="nav-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
 <ul class="nav-links">
-
 <li><a href="#solutions">Solutions</a></li>
 <li><a href="#tarifs">Tarifs</a></li>
-<li><a href="/cdn-cgi/l/email-protection#5734383923363423793622333e3b3e2f17303a363e3b7934383a">Contact</a></li>
+<li><a href="/cdn-cgi/l/email-protection#60030f0e140103144e011504090c091820070d01090c4e030f0d">Contact</a></li>
 </ul>
 <div class="nav-right">
 <a href="login.html" class="nav-client">Espace client</a>
@@ -227,7 +205,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="reveal">
 <div class="hero-badge">Plateforme IA — Conformité Réglementaire</div>
 <h1>Votre AI Compliance<br>Officer, <em>automatisé.</em></h1>
-<p class="hero-sub">Audilix analyse votre site, détecte vos risques RGPD, cybersécurité et RSE, génère vos documents juridiques et surveille votre conformité 24/7 — sans intervention humaine.</p>
+<p class="hero-sub">Audilix analyse vos documents juridiques, détecte les risques de non-conformité, génère vos documents légaux et surveille votre conformité 24/7 — sans connaissances juridiques requises.</p>
 <div class="hero-actions">
 <a href="login.html" class="btn-gold">Commencer</a>
 <a href="#solutions" class="btn-ghost">Découvrir la méthode</a>
@@ -236,10 +214,10 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="reveal" style="transition-delay:.15s">
 <div class="hero-card">
 <div class="stat-grid">
-<div><div class="stat-number">2<span>'</span></div><div class="stat-label">Analyse complète</div></div>
-<div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Compliance Trust Score™</div></div>
 <div><div class="stat-number">30<span>s</span></div><div class="stat-label">Par analyse</div></div>
+<div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Compliance Trust Score™</div></div>
 <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">100% automatisé</div></div>
+<div><div class="stat-number">24<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
 </div>
 <hr class="stat-divider">
 <div class="compliance-tags">
@@ -257,7 +235,6 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 </div>
 </div>
-
 <section id="solutions" class="solutions">
 <div class="solutions-header reveal">
 <div class="section-label">Nos expertises</div>
@@ -268,12 +245,12 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="solution-card">
 <div class="sol-icon">🔐</div>
 <div class="sol-title">RGPD &amp; Protection des données</div>
-<p class="sol-desc">Analyse complète de vos cookies, politique de confidentialité, mentions légales. Documents juridiques générés et mis à jour automatiquement.</p>
+<p class="sol-desc">Analyse complète de vos contrats, politique de confidentialité, mentions légales et CGV. Documents juridiques générés et conformes automatiquement.</p>
 </div>
 <div class="solution-card">
-<div class="sol-icon">🛡️</div>
-<div class="sol-title">Cybersécurité &amp; NIS2</div>
-<p class="sol-desc">Détection des failles, headers manquants, scripts non sécurisés. Plan de remédiation priorisé selon NIS2 et ISO 27001.</p>
+<div class="sol-icon">⚖️</div>
+<div class="sol-title">Détection de clauses abusives</div>
+<p class="sol-desc">Notre IA identifie les clauses illégales ou déséquilibrées dans vos contrats, avec référence aux articles de loi applicables et un score d'équité sur 100.</p>
 </div>
 <div class="solution-card">
 <div class="sol-icon">🌱</div>
@@ -293,7 +270,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="step reveal" style="transition-delay:.1s">
 <div class="step-num">1</div>
 <div class="step-title">Diagnostic immédiat</div>
-<p class="step-desc">Déposez votre document. Notre IA analyse en moins de 30 secondes.t, sans inscription.</p>
+<p class="step-desc">Déposez votre document. Notre IA analyse en moins de 30 secondes, sans inscription.</p>
 </div>
 <div class="step reveal" style="transition-delay:.2s">
 <div class="step-num">2</div>
@@ -318,23 +295,22 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="pricing-grid">
 <div class="plan-card reveal" style="transition-delay:.1s">
 <div class="plan-name">Starter</div>
-<div class="plan-target-small">Freelances &amp; petits sites web</div>
+<div class="plan-target-small">Indépendants &amp; petites entreprises</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">69</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Audit mensuel automatique</li>
+<li><span class="feat-check">✓</span>10 analyses / mois</li>
 <li><span class="feat-check">✓</span>Compliance Trust Score™</li>
 <li><span class="feat-check">✓</span>Documents juridiques générés</li>
-<li><span class="feat-check">✓</span>1 site</li>
+<li><span class="feat-check">✓</span>Alertes email</li>
 </ul>
 <div class="plan-accordion">
 <button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
-<div class="plan-section-lbl">Audit &amp; Score</div>
-<li><span class="feat-check">✓</span>Audit automatique (moins de 2 min)</li>
+<div class="plan-section-lbl">Analyse documents</div>
+<li><span class="feat-check">✓</span>10 analyses de documents / mois</li>
 <li><span class="feat-check">✓</span>Compliance Trust Score™ /100</li>
-<li><span class="feat-check">✓</span>Analyse RGPD, cookies, mentions légales</li>
-<li><span class="feat-check">✓</span>Audit mensuel automatique</li>
+<li><span class="feat-check">✓</span>Analyse RGPD, contrats, mentions légales</li>
 <div class="plan-section-lbl">Documents générés</div>
 <li><span class="feat-check">✓</span>Politique de confidentialité</li>
 <li><span class="feat-check">✓</span>Mentions légales</li>
@@ -342,7 +318,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="plan-section-lbl">Surveillance</div>
 <li><span class="feat-check">✓</span>Alertes email si non-conformité</li>
 <li><span class="feat-check">✓</span>Dashboard de conformité</li>
-<li><span class="feat-check">✓</span>1 site</li>
+<li><span class="feat-check">✓</span>Support 48h</li>
 </ul>
 </div>
 </div>
@@ -351,32 +327,30 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="plan-card featured reveal" style="transition-delay:.2s">
 <div class="plan-badge">Le plus choisi</div>
 <div class="plan-name">Business</div>
-<div class="plan-target-small">PME et startups en croissance</div>
+<div class="plan-target-small">PME &amp; startups en croissance</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">149</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Audit continu automatisé</li>
-<li><span class="feat-check">✓</span>AI Compliance Chat</li>
+<li><span class="feat-check">✓</span>Analyses illimitées</li>
+<li><span class="feat-check">✓</span>AI Compliance Chat 24/7</li>
 <li><span class="feat-check">✓</span>Regulatory Watch™</li>
-<li><span class="feat-check">✓</span>5 sites</li>
+<li><span class="feat-check">✓</span>Détection clauses abusives</li>
 </ul>
 <div class="plan-accordion">
 <button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
 <div class="plan-section-lbl">Tout Starter +</div>
-<li><span class="feat-check">✓</span>Audit continu automatisé</li>
-<li><span class="feat-check">✓</span>Analyse RGPD + Cyber + RSE + AI Act</li>
-<li><span class="feat-check">✓</span>Veille réglementaire automatique</li>
+<li><span class="feat-check">✓</span>Analyses illimitées</li>
+<li><span class="feat-check">✓</span>Détection de clauses abusives</li>
+<li><span class="feat-check">✓</span>Registre des traitements RGPD</li>
 <li><span class="feat-check">✓</span>Alertes temps réel</li>
 <div class="plan-section-lbl">IA &amp; Automatisation</div>
 <li><span class="feat-check">✓</span>AI Compliance Chat 24/7</li>
 <li><span class="feat-check">✓</span>Plan d'action priorisé par IA</li>
-<li><span class="feat-check">✓</span>Corrections suggérées (copy/paste)</li>
 <li><span class="feat-check">✓</span>Regulatory Watch™</li>
 <div class="plan-section-lbl">Rapports &amp; Export</div>
-<li><span class="feat-check">✓</span>Rapports PDF marque blanche</li>
-<li><span class="feat-check">✓</span>Compliance Timeline</li>
-<li><span class="feat-check">✓</span>5 sites</li>
+<li><span class="feat-check">✓</span>Rapports PDF</li>
+<li><span class="feat-check">✓</span>Support 24h</li>
 </ul>
 </div>
 </div>
@@ -384,30 +358,27 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 <div class="plan-card reveal" style="transition-delay:.3s">
 <div class="plan-name">Expert</div>
-<div class="plan-target-small">Agences &amp; entreprises multi-sites</div>
+<div class="plan-target-small">Agences &amp; multi-sites</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">299</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Sites illimités</li>
+<li><span class="feat-check">✓</span>Tout Business inclus</li>
 <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
-<li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
-<li><span class="feat-check">✓</span>API conformité</li>
+<li><span class="feat-check">✓</span>Export PDF premium</li>
+<li><span class="feat-check">✓</span>API conformité + Badge Audilix</li>
 </ul>
 <div class="plan-accordion">
 <button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
 <div class="plan-section-lbl">Tout Business +</div>
-<li><span class="feat-check">✓</span>Sites illimités</li>
-<li><span class="feat-check">✓</span>Audit multi-sites illimité</li>
 <li><span class="feat-check">✓</span>Moteur juridique IA avancé</li>
-<div class="plan-section-lbl">Automatisation avancée</div>
-<li><span class="feat-check">✓</span>Mise à jour légale automatique</li>
 <li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
 <li><span class="feat-check">✓</span>Détection proactive des risques</li>
 <div class="plan-section-lbl">Intégration &amp; Certification</div>
 <li><span class="feat-check">✓</span>API conformité intégrable</li>
 <li><span class="feat-check">✓</span>Analytics &amp; benchmark sectoriel</li>
 <li><span class="feat-check">✓</span>Badge Audilix Verified</li>
+<li><span class="feat-check">✓</span>Support VIP</li>
 </ul>
 </div>
 </div>
@@ -423,7 +394,7 @@ footer{background:#060F1E;padding:56px 40px}
 <section class="guarantees">
 <div class="guarantees-inner">
 <div class="reveal"><div class="g-icon">🔒</div><div class="g-title">Données sécurisées</div><p class="g-desc">Hébergement européen, chiffrement de bout en bout. Vos données ne quittent jamais l'UE.</p></div>
-<div class="reveal" style="transition-delay:.1s"><div class="g-icon">⚡</div><div class="g-title">Analyse en 2 minutes</div><p class="g-desc">Votre Compliance Trust Score™ généré par IA et envoyé directement dans votre boîte mail.</p></div>
+<div class="reveal" style="transition-delay:.1s"><div class="g-icon">⚡</div><div class="g-title">Analyse en 30 secondes</div><p class="g-desc">Votre Compliance Trust Score™ généré par IA immédiatement après upload de votre document.</p></div>
 <div class="reveal" style="transition-delay:.2s"><div class="g-icon">🤖</div><div class="g-title">100% automatisé</div><p class="g-desc">Aucune intervention humaine. L'IA gère tout : analyse, documents, alertes et corrections.</p></div>
 <div class="reveal" style="transition-delay:.3s"><div class="g-icon">🔄</div><div class="g-title">Regulatory Watch™</div><p class="g-desc">Surveillance automatique des évolutions RGPD, AI Act et directives cookies en temps réel.</p></div>
 </div>
@@ -439,119 +410,76 @@ footer{background:#060F1E;padding:56px 40px}
 <p class="cta-note">Rejoignez les entreprises qui automatisent leur conformité avec Audilix.</p>
 </div>
 </section>
-<!-- FAQ -->
-<section class="faq" style="padding:100px 40px;background:white;">
-    <div style="max-width:720px;margin:auto;">
-        <div style="text-align:center;margin-bottom:56px;" class="reveal">
-            <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Questions fréquentes</div>
-            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,46px);font-weight:700;color:var(--navy-dark);letter-spacing:-0.02em;">Tout ce que vous devez savoir<br>avant de vous lancer.</h2>
-        </div>
-        <div class="faq-list reveal" style="transition-delay:0.1s;">
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    Mes documents restent-ils confidentiels ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, totalement. Vos documents sont analysés puis supprimés de nos serveurs après traitement. Nous n'y avons jamais accès et ne les partageons avec aucun tiers. L'ensemble des données est hébergé en Europe, conforme au RGPD.</div>
-            </div>
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    L'IA peut-elle se tromper dans son analyse ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Notre système est entraîné sur les textes réglementaires européens en vigueur. Les analyses sont fiables pour identifier les risques courants. Pour les situations à fort enjeu juridique, nous recommandons de faire valider les résultats par un professionnel du droit — c'est indiqué dans chaque rapport.</div>
-            </div>
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    Combien de temps dure une analyse ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Entre 15 et 45 secondes selon la longueur du document. Vous recevez immédiatement le score de conformité, la liste des problèmes et les recommandations — sans délai.</div>
-            </div>
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    Mon compte est-il créé automatiquement après le paiement ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui. Après validation de votre paiement par Stripe, votre espace client est créé automatiquement. Vos identifiants vous sont envoyés par e-mail en quelques minutes. Aucune démarche supplémentaire n'est requise.</div>
-            </div>
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    Puis-je résilier à tout moment ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, sans engagement et sans frais. La résiliation s'effectue en un clic depuis votre espace client et prend effet immédiatement. Vous conservez l'accès jusqu'à la fin de la période en cours.</div>
-            </div>
-            <div style="border-bottom:1px solid rgba(27,58,122,0.08);">
-                <button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy-dark);text-align:left;gap:14px;">
-                    Les documents générés sont-ils personnalisés ?
-                    <span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span>
-                </button>
-                <div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui. Chaque document est généré selon le nom, le secteur d'activité et le type de traitement de données de votre entreprise. La formule Business inclut une personnalisation avancée selon votre activité spécifique.</div>
-            </div>
-        </div>
-    </div>
+<section style="padding:100px 40px;background:white;">
+<div style="max-width:720px;margin:auto;">
+<div style="text-align:center;margin-bottom:56px;" class="reveal">
+<div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Questions fréquentes</div>
+<h2 style="font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,46px);font-weight:700;color:var(--navy);letter-spacing:-0.02em;">Tout ce que vous devez savoir<br>avant de vous lancer.</h2>
+</div>
+<div class="faq-list reveal" style="transition-delay:0.1s;">
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mes documents restent-ils confidentiels ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, totalement. Vos documents sont analysés puis supprimés de nos serveurs après traitement. Nous n'y avons jamais accès et ne les partageons avec aucun tiers. L'ensemble des données est hébergé en Europe, conforme au RGPD.</div>
+</div>
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">L'IA peut-elle se tromper dans son analyse ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Notre système est entraîné sur les textes réglementaires européens en vigueur. Les analyses sont fiables pour identifier les risques courants. Pour les situations à fort enjeu juridique, nous recommandons de faire valider les résultats par un professionnel du droit — c'est indiqué dans chaque rapport.</div>
+</div>
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Combien de temps dure une analyse ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Entre 15 et 45 secondes selon la longueur du document. Vous recevez immédiatement le score de conformité, la liste des problèmes et les recommandations — sans délai.</div>
+</div>
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mon compte est-il créé automatiquement après le paiement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui. Après validation de votre paiement par Stripe, votre espace client est créé automatiquement. Vos identifiants vous sont envoyés par e-mail en quelques minutes. Aucune démarche supplémentaire n'est requise.</div>
+</div>
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Puis-je résilier à tout moment ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, sans engagement et sans frais. La résiliation s'effectue en un clic depuis votre espace client et prend effet immédiatement. Vous conservez l'accès jusqu'à la fin de la période en cours.</div>
+</div>
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Les documents générés sont-ils personnalisés ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
+<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui. Chaque document est généré selon le nom, le secteur d'activité et le type de traitement de données de votre entreprise. La formule Business inclut une personnalisation avancée selon votre activité spécifique.</div>
+</div>
+</div>
+</div>
 </section>
-
 <footer>
 <div class="footer-inner">
 <div class="footer-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
 <ul class="footer-links">
 <li><a href="confidentialite.html">Confidentialité</a></li>
 <li><a href="mentions.html">Mentions légales</a></li>
-
 <li><a href="pricing.html">Tarifs</a></li>
-<li><a href="/cdn-cgi/l/email-protection#dfbcb0b1abbebcabf1beaabbb6b3b6a79fb8b2beb6b3f1bcb0b2">Contact</a></li>
+<li><a href="/cdn-cgi/l/email-protection#0665696872676572286773626f6a6f7e46616b676f6a2865696b">Contact</a></li>
 </ul>
 <span class="footer-copy">© 2026 Audilix</span>
 </div>
 </footer>
-<div id="chat-btn" onclick="toggleChat()" style="position:fixed;bottom:28px;right:28px;z-index:999;width:68px;height:60px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(15,36,86,0.15),0 0 0 1px rgba(27,58,122,0.07);transition:all 0.3s;border:none;">
-    <div style="position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white;"></div>
-    <svg width="52" height="40" viewBox="0 0 380 196" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <linearGradient id="g-top-cb" x1="0" y1="0" x2="380" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#1B3A7A"/>
-                <stop offset="35%" stop-color="#C9A84C"/>
-                <stop offset="65%" stop-color="#E8C97A"/>
-                <stop offset="100%" stop-color="#1B3A7A"/>
-            </linearGradient>
-        </defs>
-        <path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98 C346 148 278 168 232 172 L248 192 L212 174 C148 170 60 148 0 98 Z" fill="white"/>
-        <path d="M0 98 C60 148 148 170 212 174 L248 192 L232 172 C278 168 346 148 380 98" stroke="#0F2456" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98" stroke="url(#g-top-cb)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="190" cy="93" r="50" fill="#1B3A7A"/>
-        <circle cx="190" cy="93" r="50" fill="#0A1630" opacity="0.45"/>
-        <circle cx="190" cy="93" r="44" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
-        <circle cx="190" cy="93" r="35" stroke="#C9A84C" stroke-width="0.8" fill="none" stroke-dasharray="3 3" opacity="0.5"/>
-        <circle cx="190" cy="45" r="2.5" fill="#C9A84C" opacity="0.7"/>
-        <circle cx="190" cy="141" r="2.5" fill="#C9A84C" opacity="0.7"/>
-        <circle cx="142" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
-        <circle cx="238" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
-        <circle cx="190" cy="93" r="20" fill="#050E1C"/>
-        <ellipse cx="200" cy="82" rx="10" ry="7" fill="white" opacity="0.8" transform="rotate(-25 200 82)"/>
-        <circle cx="207" cy="79" r="4" fill="white" opacity="0.45"/>
-    </svg>
-</div>
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.06)"/>
-<circle cx="18" cy="18" r="6.5" stroke="#C9A84C" stroke-width="1.2" fill="rgba(11,37,69,0.8)"/>
-<circle cx="18" cy="18" r="5" stroke="rgba(201,168,76,0.3)" stroke-width="0.6" fill="none" stroke-dasharray="2 1.5"/>
-<circle cx="18" cy="18" r="3.5" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="1"/>
-<circle cx="18" cy="18" r="1.8" fill="#C9A84C"/>
-<circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/>
-<circle cx="18" cy="18" r="4.8" stroke="#C9A84C" stroke-width="0.5" fill="none" stroke-dasharray="1.2 2.2" opacity="0.6"/>
+<div id="chat-btn" onclick="toggleChat()">
+<div style="position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white;"></div>
+<svg width="52" height="40" viewBox="0 0 380 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g-top-cb" x1="0" y1="0" x2="380" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1B3A7A"/><stop offset="35%" stop-color="#C9A84C"/><stop offset="65%" stop-color="#E8C97A"/><stop offset="100%" stop-color="#1B3A7A"/></linearGradient></defs>
+<path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98 C346 148 278 168 232 172 L248 192 L212 174 C148 170 60 148 0 98 Z" fill="white"/>
+<path d="M0 98 C60 148 148 170 212 174 L248 192 L232 172 C278 168 346 148 380 98" stroke="#0F2456" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98" stroke="url(#g-top-cb)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="190" cy="93" r="50" fill="#1B3A7A"/>
+<circle cx="190" cy="93" r="50" fill="#0A1630" opacity="0.45"/>
+<circle cx="190" cy="93" r="44" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
+<circle cx="190" cy="93" r="35" stroke="#C9A84C" stroke-width="0.8" fill="none" stroke-dasharray="3 3" opacity="0.5"/>
+<circle cx="190" cy="45" r="2.5" fill="#C9A84C" opacity="0.7"/>
+<circle cx="190" cy="141" r="2.5" fill="#C9A84C" opacity="0.7"/>
+<circle cx="142" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
+<circle cx="238" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
+<circle cx="190" cy="93" r="20" fill="#050E1C"/>
+<ellipse cx="200" cy="82" rx="10" ry="7" fill="white" opacity="0.8" transform="rotate(-25 200 82)"/>
+<circle cx="207" cy="79" r="4" fill="white" opacity="0.45"/>
 </svg>
 </div>
 <div id="chat-panel">
 <div class="chat-header">
 <div class="chat-header-icon">
-<svg width="22" height="22" viewBox="0 0 36 36" fill="none">
-<path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.08)"/>
-<circle cx="18" cy="18" r="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
-<circle cx="18" cy="18" r="3" fill="#C9A84C" opacity="0.8"/>
-<circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/>
-</svg>
+<svg width="22" height="22" viewBox="0 0 36 36" fill="none"><path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.08)"/><circle cx="18" cy="18" r="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/><circle cx="18" cy="18" r="3" fill="#C9A84C" opacity="0.8"/><circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/></svg>
 </div>
 <div class="chat-hinfo">
 <div class="chat-name">Assistant Audilix</div>
@@ -607,10 +535,10 @@ function sendChat() {
     fetch(BACKEND + '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: chatHistory })
+        body: JSON.stringify({ message: msg, history: chatHistory })
     }).then(function(r) { return r.json(); }).then(function(data) {
         hideTyping();
-        var reply = data.reply || 'Une erreur est survenue. Contactez contact.audilix@gmail.com';
+        var reply = data.reponse || 'Une erreur est survenue. Contactez contact.audilix@gmail.com';
         addMsg(reply, false);
         chatHistory.push({ role: 'assistant', content: reply });
     }).catch(function() {
@@ -619,33 +547,31 @@ function sendChat() {
     });
 }
 
-document.getElementById('qb1').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Quels sont vos tarifs ?';
-    sendChat();
-});
-document.getElementById('qb2').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Comment analyser un contrat ?';
-    sendChat();
-});
-document.getElementById('qb3').addEventListener('click', function() {
-    document.getElementById('chat-input').value = 'Comment se mettre en conformite RGPD ?';
-    sendChat();
-});
-
-document.getElementById('chat-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendChat();
-});
+document.getElementById('qb1').addEventListener('click', function() { document.getElementById('chat-input').value = 'Quels sont vos tarifs ?'; sendChat(); });
+document.getElementById('qb2').addEventListener('click', function() { document.getElementById('chat-input').value = 'Comment analyser un contrat ?'; sendChat(); });
+document.getElementById('qb3').addEventListener('click', function() { document.getElementById('chat-input').value = 'Comment se mettre en conformité RGPD ?'; sendChat(); });
+document.getElementById('chat-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChat(); });
 
 function toggleAccordion(btn) {
     btn.classList.toggle('open');
     btn.nextElementSibling.classList.toggle('open');
 }
 
-
-
-document.getElementById('hero-url').addEventListener('keypress', function(e) {
-    
-});
+function tFaq(btn) {
+    var ico = btn.querySelector('span:last-child');
+    var ans = btn.nextElementSibling;
+    var open = ans.style.display === 'block';
+    document.querySelectorAll('.faq-list button + div').forEach(function(d) { d.style.display = 'none'; });
+    document.querySelectorAll('.faq-list button span:last-child').forEach(function(s) { s.textContent = '+'; s.style.background = ''; s.style.color = 'var(--gold)'; });
+    if (!open) { ans.style.display = 'block'; ico.textContent = '×'; ico.style.background = 'var(--gold)'; ico.style.color = 'var(--navy)'; }
+}
 
 var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e.
+    entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+</script>
+</body>
+</html>
