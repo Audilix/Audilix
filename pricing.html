@@ -32,9 +32,9 @@
         .entete h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--navy-dark); line-height:1.1; margin-bottom:12px; letter-spacing:-0.02em; }
         .entete h1 em { color:var(--gold); font-style:italic; }
         .entete p { font-size:16px; color:var(--gris); font-weight:300; margin-bottom:24px; }
-        .entete-scan { display:inline-flex; align-items:center; gap:10px; background:var(--navy-dark); color:rgba(255,255,255,0.65); padding:13px 22px; border-radius:7px; font-size:14px; text-decoration:none; transition:all 0.2s; }
-        .entete-scan:hover { background:var(--navy); color:white; }
-        .entete-scan strong { color:var(--gold); }
+        
+        
+        
 
         .plans-zone { max-width:1140px; margin:0 auto; padding:0 40px 80px; }
         .plans-grille { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
@@ -131,8 +131,9 @@
     </style>
 </head>
 <body>
-<a href="index.html" class="btn-home" title="Accueil" style="position:fixed;top:18px;left:18px;z-index:999;width:38px;height:38px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(15,36,86,0.12);text-decoration:none;transition:all 0.2s;border:1px solid rgba(27,58,122,0.08);">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+<a href="index.html" style="position:fixed;top:18px;left:18px;z-index:999;display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.10);border-radius:8px;padding:8px 14px;text-decoration:none;color:#1B3A7A;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 10px rgba(15,36,86,0.09);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 18px rgba(15,36,86,0.16)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(15,36,86,0.09)'">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  Accueil
 </a>
 
 <div class="ligne-or"></div>
@@ -140,7 +141,7 @@
     <a href="index.html"><img src="logo.png" alt="Audilix" style="height:38px;"></a>
     <div class="nav-droite">
         <a href="index.html" class="nav-retour">Retour</a>
-        <a href="login.html" class="nav-analyse">Commencer</a>
+        <a href="login.html" class="nav-cta">Commencer</a>
     </div>
 </nav>
 
@@ -148,16 +149,16 @@
     <div class="entete-label">Nos formules</div>
     <h1>Un abonnement qui <em>vaut vraiment</em><br>son prix.</h1>
     <p>Sans engagement · Résiliable à tout moment · Accès immédiat</p>
-    <a href="login.html" class="entete-scan">Pas encore analysé votre site ? <strong>C'est gratuit →</strong></a>
+    
 </div>
 
 <div class="plans-zone">
 <div class="plans-grille">
 
-    <!-- STARTER -->
+    <!-- ESSENTIEL -->
     <div class="plan">
         <div class="plan-cible">Indépendants &amp; petits sites</div>
-        <div class="plan-nom">Essentiel</div>
+        <div class="plan-nom">Starter</div>
         <div class="plan-accroche">L'essentiel pour être conforme et protégé, sans vous occuper des détails juridiques.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">69</span><span class="p-periode">/ mois</span>
@@ -185,13 +186,13 @@
     <div class="plan vedette">
         <div class="plan-badge">Le plus choisi</div>
         <div class="plan-cible">PME &amp; startups en croissance</div>
-        <div class="plan-nom">Professionnel</div>
+        <div class="plan-nom">Business</div>
         <div class="plan-accroche">La conformité entièrement gérée pour vous. Analyses illimitées et IA disponible 24h/24.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">149</span><span class="p-periode">/ mois</span>
         </div>
         <ul class="p-liste">
-            <div class="p-section">Tout Essentiel, et en plus :</div>
+            <div class="p-section">Tout Starter, et en plus :</div>
             <li><span class="p-coche">✓</span>Analyses de documents illimitées</li>
             <li><span class="p-coche">✓</span>Analyse avancée des risques avec priorités</li>
             <li><span class="p-coche">✓</span>Plan de correction détaillé et priorisé</li>
@@ -205,32 +206,32 @@
             <li><span class="p-coche">✓</span>Historique complet des analyses</li>
             <li><span class="p-coche">✓</span>Support prioritaire (réponse sous 24h)</li>
         </ul>
-        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Professionnel</button>
+        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Business</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
     <!-- PREMIUM -->
     <div class="plan">
         <div class="plan-cible">Agences &amp; entreprises multi-sites</div>
-        <div class="plan-nom">Entreprise</div>
+        <div class="plan-nom">Expert</div>
         <div class="plan-accroche">Pour les structures gérant plusieurs sites. Rapports PDF, API et support VIP.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">299</span><span class="p-periode">/ mois</span>
         </div>
         <ul class="p-liste">
-            <div class="p-section">Tout Professionnel, et en plus :</div>
-            <li><span class="p-coche">✓</span>Audit complet automatisé du site web</li>
+            <div class="p-section">Tout Business, et en plus :</div>
+            <li><span class="p-coche">✓</span>Registre RGPD article 30 automatique</li>
             <li><span class="p-coche">✓</span>Rapports PDF professionnels exportables</li>
             <li><span class="p-coche">✓</span>Conseils personnalisés via IA</li>
             <li><span class="p-coche">✓</span>Analyses multi-sites (jusqu'à 10 sites)</li>
             <div class="p-section">Outils avancés</div>
             <li><span class="p-coche">✓</span>Mise à jour automatique des documents si la loi change</li>
-            <li><span class="p-coche">✓</span>Badge de conformité Audilix pour votre site</li>
+            <li><span class="p-coche">✓</span>Badge de conformité Audilix Verified</li>
             <li><span class="p-coche">✓</span>Accès à notre API</li>
             <div class="p-section">Support</div>
             <li><span class="p-coche">✓</span>Support VIP (réponse le jour même)</li>
         </ul>
-        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Entreprise</button>
+        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Expert</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment</p>
     </div>
 
@@ -244,9 +245,9 @@
         <thead>
             <tr>
                 <th style="text-align:left;">Fonctionnalité</th>
-                <th>Essentiel</th>
-                <th class="col-or">Professionnel</th>
-                <th>Entreprise</th>
+                <th>Starter</th>
+                <th class="col-or">Business</th>
+                <th>Expert</th>
             </tr>
         </thead>
         <tbody>
@@ -261,7 +262,7 @@
             <tr><td>Historique des analyses</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
             <tr><td>Documents personnalisés</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
             <tr><td>Rapports PDF exportables</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
-            <tr><td>Audit complet du site web</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Registre RGPD article 30</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
             <tr><td>Multi-sites</td><td class="non">—</td><td class="col-or non">—</td><td class="limite">Jusqu'à 10</td></tr>
             <tr><td>Badge de conformité Audilix</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
             <tr><td>Accès API</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
@@ -272,11 +273,7 @@
 </div>
 </div>
 
-<div class="banniere">
-    <h2>Pas encore analysé votre site ? <em>C'est gratuit.</em></h2>
-    <p>Obtenez votre score de conformité en moins de 2 minutes, sans inscription.</p>
-    <a href="login.html" class="banniere-btn">Lancer l'analyse gratuite</a>
-</div>
+
 
 <div class="garanties">
     <div class="garanties-inner">
@@ -362,9 +359,5 @@ function tFaq(btn) {
 }
 </script>
 <script src="cookies.js"></script>
-<a href="index.html" style="position:fixed;top:16px;left:16px;z-index:200;display:flex;align-items:center;gap:7px;text-decoration:none;background:white;border:1px solid rgba(27,58,122,0.1);border-radius:6px;padding:7px 12px;font-size:12px;font-weight:600;color:#0F2456;box-shadow:0 2px 8px rgba(27,58,122,0.08);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 14px rgba(27,58,122,0.14)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(27,58,122,0.08)'">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Accueil
-</a>
 </body>
 </html>
