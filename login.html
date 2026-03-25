@@ -20,20 +20,21 @@
         .gauche {
             width: 44%; flex-shrink: 0;
             background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 60%, #2A4F9F 100%);
-            position: relative; overflow: hidden; display: flex;
-            flex-direction: column; justify-content: space-between; padding: 48px;
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between; padding: 48px;
         }
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
         .orb-1 { width: 280px; height: 280px; background: rgba(201,168,76,0.1); bottom: -60px; left: -60px; }
         .orb-2 { width: 180px; height: 180px; background: rgba(42,79,159,0.5); top: 80px; right: -40px; }
         .etoile { position: absolute; color: var(--or); pointer-events: none; }
-        .g-top { position: relative; z-index: 2; }
+
         .g-milieu { position: relative; z-index: 2; padding-top: 20px; }
         .g-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
         .g-label::before { content: ''; width: 24px; height: 1px; background: var(--or); opacity: 0.5; }
         .g-titre { font-size: clamp(28px, 2.8vw, 40px); font-weight: 700; color: white; line-height: 1.14; letter-spacing: -0.02em; margin-bottom: 18px; }
         .g-titre em { color: var(--or); font-style: italic; }
         .g-desc { font-size: 14px; color: rgba(255,255,255,0.36); line-height: 1.8; font-weight: 300; max-width: 320px; }
+
         .g-bas { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; }
         .g-retour { color: rgba(255,255,255,0.2); text-decoration: none; font-size: 12px; font-weight: 500; transition: color 0.2s; }
         .g-retour:hover { color: rgba(255,255,255,0.5); }
@@ -41,14 +42,6 @@
         .g-version { font-size: 11px; color: rgba(255,255,255,0.1); }
 
         .droite { flex: 1; background: white; display: flex; align-items: center; justify-content: center; padding: 48px 52px; position: relative; }
-
-        .btn-accueil {
-            position: absolute; top: 18px; right: 20px;
-            display: flex; align-items: center; gap: 6px;
-            text-decoration: none; color: var(--gris); font-size: 12px; font-weight: 500;
-            opacity: 0.4; transition: opacity 0.2s;
-        }
-        .btn-accueil:hover { opacity: 0.8; }
 
         .form-wrap { width: 100%; max-width: 380px; }
 
@@ -116,9 +109,6 @@
     <div class="etoile" style="top:55%;right:10%;font-size:12px;opacity:0.09;">✦</div>
     <div class="etoile" style="top:68%;left:12%;font-size:8px;opacity:0.13;">✦</div>
     <div class="etoile" style="top:78%;right:20%;font-size:14px;opacity:0.07;">✦</div>
-    <div class="etoile" style="top:42%;right:28%;font-size:9px;opacity:0.10;">✦</div>
-    <div class="etoile" style="top:60%;left:40%;font-size:11px;opacity:0.08;">✦</div>
-    <div class="g-top"></div>
     <div class="g-milieu">
         <div class="g-label">Espace client</div>
         <h1 class="g-titre">La conformité<br>de votre entreprise,<br><em>gérée pour vous.</em></h1>
@@ -131,17 +121,15 @@
 </div>
 
 <div class="droite">
-    <a href="index.html" class="btn-accueil">
+    <a href="index.html" style="position:absolute;top:18px;right:20px;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--gris);font-size:12px;font-weight:500;opacity:0.4;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=0.4">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Accueil
     </a>
 
     <div class="form-wrap">
+        <div class="msg-paiement" id="msg-paiement">✓ Votre paiement est confirmé. Vos identifiants vous ont été envoyés par e-mail.</div>
 
-        <div class="msg-paiement" id="msg-paiement">
-            ✓ Votre paiement est confirmé. Vos identifiants vous ont été envoyés par e-mail.
-        </div>
-
+        <!-- Connexion à gauche, Créer un compte à droite -->
         <div class="onglets">
             <button class="onglet actif" onclick="afficherOnglet('connexion')">Connexion</button>
             <button class="onglet" onclick="afficherOnglet('inscription')">Créer un compte</button>
@@ -173,7 +161,7 @@
         <!-- INSCRIPTION -->
         <div id="form-inscription" style="display:none;">
             <h2 class="form-titre">Commencer</h2>
-            <p class="form-sous">Créez votre espace de conformité Audilix.</p>
+            <p class="form-sous">Lancez votre premier audit de conformité.</p>
             <div class="form-erreur" id="err-inscription"></div>
             <button class="btn-google" onclick="connexionGoogle()">
                 <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.4 30.4 0 24 0 14.7 0 6.5 5.3 2.6 13.2l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6v-6.2H2.6C.9 16.7 0 20.3 0 24s.9 7.3 2.6 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.2 1.5-5 2.3-8.2 2.3-6.3 0-11.6-4.2-13.5-9.9H2.6v6.2C6.5 42.7 14.7 48 24 48z"/><path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h13.1c-.6 3-2.3 5.5-4.8 7.2v6h7.7c4.5-4.1 7-10.2 7-17.5z"/></svg>
@@ -225,7 +213,6 @@
             <button class="btn-soumettre" id="btn-inscription" onclick="sInscrire()">Créer mon compte</button>
             <div class="lien-form" style="margin-top:14px;">Déjà un compte ? <a href="#" onclick="afficherOnglet('connexion')">Se connecter</a></div>
         </div>
-
     </div>
 </div>
 
@@ -234,16 +221,23 @@ var BACKEND = 'https://audilix-backend.onrender.com';
 var GOOGLE_CLIENT_ID = '628750423437-4314e7pj2dkbmb3sj5t6d0svvclql1nq.apps.googleusercontent.com';
 
 // Paiement confirmé
-if (new URLSearchParams(window.location.search).get('payment') === 'success') {
+var params = new URLSearchParams(window.location.search);
+if (params.get('paiement') === 'succes' || params.get('payment') === 'success') {
     document.getElementById('msg-paiement').classList.add('visible');
 }
 
-// Déjà connecté
+// Déjà connecté → dashboard
 if (localStorage.getItem('audilix_token')) {
     window.location.href = 'dashboard.html';
 }
 
-// Onglets
+// Onglet par défaut : Connexion
+afficherOnglet('connexion');
+
+// Gérer ?tab=inscription dans l'URL
+var urlTab = new URLSearchParams(window.location.search).get('tab');
+if (urlTab === 'inscription') afficherOnglet('inscription');
+
 function afficherOnglet(onglet) {
     document.getElementById('form-connexion').style.display = onglet === 'connexion' ? 'block' : 'none';
     document.getElementById('form-inscription').style.display = onglet === 'inscription' ? 'block' : 'none';
@@ -269,7 +263,8 @@ async function seConnecter() {
     btn.disabled = true; btn.textContent = 'Connexion...';
     try {
         var res = await fetch(BACKEND + '/api/auth/login', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: mdp })
         });
         var data = await res.json();
@@ -298,7 +293,8 @@ async function sInscrire() {
     btn.disabled = true; btn.textContent = 'Création...';
     try {
         var res = await fetch(BACKEND + '/api/auth/register', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: prenom, lastname: nom, email: email, company: entreprise, password: mdp, plan: plan })
         });
         var data = await res.json();
@@ -347,7 +343,8 @@ function traiterRetourGoogle() {
             + '<p style="font-size:15px;color:#0F2456;font-weight:600;">Connexion en cours...</p>'
             + '</div>';
         fetch(BACKEND + '/api/auth/login', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: 'google_' + googleId })
         })
         .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
@@ -358,7 +355,8 @@ function traiterRetourGoogle() {
                 window.location.href = 'dashboard.html';
             } else {
                 return fetch(BACKEND + '/api/auth/register', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ firstname: prenom, lastname: nom, email: email, company: '', password: 'google_' + googleId, plan: 'starter' })
                 })
                 .then(function(r2) { return r2.json().then(function(d2) { return { ok: r2.ok, data: d2 }; }); })
@@ -375,14 +373,17 @@ function traiterRetourGoogle() {
             }
         })
         .catch(function(e) { alert('Erreur réseau : ' + e.message); window.location.href = 'login.html'; });
-    } catch(e) { alert('Erreur lors de la connexion Google. Réessayez.'); }
+    } catch(e) {
+        console.error('Erreur Google token:', e);
+        alert('Erreur lors de la connexion Google. Réessayez.');
+    }
 }
 
 traiterRetourGoogle();
 
 document.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        if (document.getElementById('form-inscription').style.display === 'none') seConnecter();
+        if (document.getElementById('form-connexion').style.display !== 'none') seConnecter();
         else sInscrire();
     }
 });
