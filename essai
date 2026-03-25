@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analyse gratuite — Audilix</title>
+<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0B2545; --navy-dark: #0B2545; --gold: #C9A84C;
+    --gold-light: #E8C97A; --gold-pale: #F5EDD6; --cream: #FAF8F4;
+    --gray: #6B7280; --border: rgba(11,37,69,0.08); --rouge: #ef4444;
+    --vert: #22c55e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+/* NAV */
+nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo img { height: 36px; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-link { color: var(--gray); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+.nav-link:hover { color: var(--navy); }
+.nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.nav-cta:hover { background: var(--gold-light); }
+
+/* HERO */
+.hero-essai { text-align: center; padding: 64px 40px 48px; max-width: 680px; margin: 0 auto; }
+.hero-badge-essai { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #16a34a; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+.hero-essai h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero-essai h1 em { color: var(--gold); font-style: italic; }
+.hero-essai p { font-size: 17px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; font-weight: 300; }
+.hero-garanties { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; }
+.hero-garantie { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 5px; }
+.hero-garantie::before { content: '✓'; color: var(--vert); font-weight: 700; }
+
+/* UPLOAD ZONE */
+.upload-zone { max-width: 600px; margin: 0 auto 48px; padding: 0 24px; }
+.upload-box {
+    background: white; border: 2px dashed rgba(11,37,69,0.15); border-radius: 16px;
+    padding: 48px 32px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+}
+.upload-box:hover, .upload-box.dragover { border-color: var(--gold); background: var(--gold-pale); }
+.upload-icon { font-size: 40px; margin-bottom: 16px; }
+.upload-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.upload-sub { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+.upload-formats { font-size: 12px; color: rgba(107,114,128,0.6); }
+.btn-upload { background: var(--navy); color: white; padding: 13px 32px; border-radius: 6px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: inline-block; }
+.btn-upload:hover { background: var(--gold); color: var(--navy); }
+#file-input { display: none; }
+.file-selected { display: none; align-items: center; gap: 10px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #16a34a; font-weight: 500; }
+.file-selected.visible { display: flex; }
+
+/* CHARGEMENT */
+#loading { display: none; text-align: center; padding: 48px 24px; }
+.spinner { width: 48px; height: 48px; border: 3px solid rgba(11,37,69,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.loading-sub { font-size: 13px; color: var(--gray); }
+.loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 280px; margin: 24px auto 0; }
+.loading-step { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.5s; }
+.loading-step.active { opacity: 1; color: var(--navy); font-weight: 500; }
+.loading-step::before { content: '○'; color: var(--gold); }
+.loading-step.active::before { content: '●'; }
+
+/* RÉSULTATS */
+#resultats { display: none; max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* Score */
+.score-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.score-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+.score-cercle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid; }
+.score-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; line-height: 1; }
+.score-sur { font-size: 13px; color: var(--gray); }
+.score-titre { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.score-desc { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 440px; margin: 0 auto; }
+.score-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.score-stat { background: var(--cream); border-radius: 8px; padding: 14px 12px; }
+.score-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+.score-stat-label { font-size: 11px; color: var(--gray); font-weight: 500; margin-top: 2px; }
+
+/* Problèmes révélés */
+.problemes-section { margin-bottom: 24px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-head h3 { font-size: 18px; font-weight: 700; color: var(--navy); }
+.badge-count { background: rgba(239,68,68,0.1); color: var(--rouge); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+.probleme-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 12px; }
+.probleme-gravite { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-top: 2px; }
+.gravite-critique { background: rgba(239,68,68,0.1); color: var(--rouge); }
+.gravite-important { background: rgba(245,158,11,0.1); color: #d97706; }
+.gravite-mineur { background: rgba(107,114,128,0.1); color: var(--gray); }
+.probleme-titre { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.probleme-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+/* Problèmes bloqués */
+.problemes-bloques { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; position: relative; }
+.probleme-flou { padding: 16px 18px; filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.5; }
+.bloquer-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.95) 40%, white 100%);
+    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px;
+}
+
+/* CTA Tunnel */
+.tunnel-cta { background: var(--navy); border-radius: 16px; padding: 36px 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.tunnel-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.tunnel-urgence { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
+.tunnel-cta h2 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
+.tunnel-cta h2 em { color: var(--gold); font-style: italic; }
+.tunnel-cta p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.7; }
+.btn-tunnel { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 6px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.btn-tunnel:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+.tunnel-garanties { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+.tunnel-garantie { font-size: 12px; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 5px; }
+.tunnel-garantie::before { content: '✓'; color: var(--gold); }
+
+/* Points positifs */
+.positifs-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.positifs-section h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.positif-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 8px; }
+.positif-item::before { content: '✓'; color: var(--vert); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* Recommencer */
+.btn-recommencer { background: white; border: 1.5px solid var(--border); color: var(--gray); padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.btn-recommencer:hover { border-color: var(--navy); color: var(--navy); }
+
+@media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .hero-essai { padding: 40px 20px 32px; }
+    .score-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .score-stat-num { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html"><img src="logo.png" alt="Audilix"></a>
+    <div class="nav-right">
+        <a href="login.html" class="nav-link">Connexion</a>
+        <a href="pricing.html" class="nav-cta">Voir les plans</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-essai">
+    <div class="hero-badge-essai">✓ 1 analyse gratuite — sans carte bancaire</div>
+    <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
+    <p>Déposez un document. Notre IA l'analyse en 60 secondes et vous dit exactement où vous êtes exposé.</p>
+    <div class="hero-garanties">
+        <span class="hero-garantie">Résultat en 60 secondes</span>
+        <span class="hero-garantie">Aucune compétence juridique</span>
+        <span class="hero-garantie">Données supprimées après analyse</span>
+    </div>
+</div>
+
+<!-- UPLOAD -->
+<div class="upload-zone" id="zone-upload">
+    <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+        <div class="upload-icon">📄</div>
+        <div class="upload-title">Déposez votre document ici</div>
+        <div class="upload-sub">Politique de confidentialité, CGV, contrat, mentions légales…</div>
+        <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('file-input').click();">Choisir un fichier</button>
+        <div class="upload-formats">PDF · Word (.docx) · Texte (.txt) · Max 10 Mo</div>
+        <div class="file-selected" id="file-selected">
+            <span>📎</span>
+            <span id="file-name"></span>
+        </div>
+    </div>
+    <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" onchange="fichierChoisi(this)">
+    <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
+        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant — c'est gratuit →</button>
+    </div>
+</div>
+
+<!-- CHARGEMENT -->
+<div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyse en cours…</div>
+    <div class="loading-sub">Notre IA examine votre document</div>
+    <div class="loading-steps">
+        <div class="loading-step active" id="step-1">Lecture du document</div>
+        <div class="loading-step" id="step-2">Détection des risques</div>
+        <div class="loading-step" id="step-3">Calcul du score de conformité</div>
+        <div class="loading-step" id="step-4">Génération du rapport</div>
+    </div>
+</div>
+
+<!-- RÉSULTATS -->
+<div id="resultats">
+
+    <!-- Score -->
+    <div class="score-card">
+        <div class="score-label">Compliance Trust Score™</div>
+        <div class="score-cercle" id="score-cercle">
+            <span class="score-num" id="score-num">--</span>
+            <span class="score-sur">/100</span>
+        </div>
+        <div class="score-titre" id="score-titre">Analyse terminée</div>
+        <p class="score-desc" id="score-resume">Voici ce que notre IA a détecté dans votre document.</p>
+        <div class="score-stats">
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-critiques" style="color:var(--rouge);">0</div>
+                <div class="score-stat-label">Problème(s) critique(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-importants" style="color:#d97706;">0</div>
+                <div class="score-stat-label">Problème(s) important(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-mineurs" style="color:var(--gray);">0</div>
+                <div class="score-stat-label">Point(s) mineur(s)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problèmes visibles (2 premiers) -->
+    <div class="problemes-section">
+        <div class="section-head">
+            <h3>Problèmes détectés</h3>
+            <span class="badge-count" id="badge-total">0 problème(s)</span>
+        </div>
+        <div id="problemes-visibles"></div>
+    </div>
+
+    <!-- Problèmes bloqués + CTA -->
+    <div id="bloc-bloque" style="display:none;">
+        <div class="problemes-bloques">
+            <div class="probleme-flou" id="problemes-flous"></div>
+            <div class="bloquer-overlay">
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TUNNEL CTA -->
+    <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
+        <div class="tunnel-urgence">⚠️ Problèmes critiques détectés</div>
+        <h2>Débloquez les corrections<br>et <em>protégez votre entreprise</em></h2>
+        <p>Les recommandations complètes, les documents corrigés et la surveillance continue sont disponibles dans votre espace client.</p>
+        <a href="pricing.html" class="btn-tunnel">Débloquer mon rapport complet →</a>
+        <div class="tunnel-garanties">
+            <span class="tunnel-garantie">À partir de 69€/mois</span>
+            <span class="tunnel-garantie">Sans engagement</span>
+            <span class="tunnel-garantie">Accès immédiat</span>
+        </div>
+    </div>
+
+    <!-- Points positifs -->
+    <div class="positifs-section" id="positifs-section" style="display:none;">
+        <h3>✅ Ce qui est conforme</h3>
+        <div id="positifs-liste"></div>
+    </div>
+
+    <!-- Recommencer -->
+    <div style="text-align:center;margin-top:16px;">
+        <button class="btn-recommencer" onclick="recommencer()">← Analyser un autre document</button>
+    </div>
+</div>
+
+<script>
+var BACKEND = 'https://audilix-backend.onrender.com';
+var fichierActuel = null;
+
+function fichierChoisi(input) {
+    if (!input.files || !input.files[0]) return;
+    fichierActuel = input.files[0];
+    document.getElementById('file-name').textContent = fichierActuel.name;
+    document.getElementById('file-selected').classList.add('visible');
+    var btn = document.getElementById('btn-analyser');
+    btn.style.display = 'inline-block';
+}
+
+function dragOver(e) { e.preventDefault(); document.getElementById('upload-box').classList.add('dragover'); }
+function dragLeave(e) { document.getElementById('upload-box').classList.remove('dragover'); }
+function drop(e) {
+    e.preventDefault();
+    document.getElementById('upload-box').classList.remove('dragover');
+    var files = e.dataTransfer.files;
+    if (files && files[0]) {
+        fichierActuel = files[0];
+        document.getElementById('file-name').textContent = fichierActuel.name;
+        document.getElementById('file-selected').classList.add('visible');
+        document.getElementById('btn-analyser').style.display = 'inline-block';
+    }
+}
+
+function animerSteps() {
+    var steps = ['step-1','step-2','step-3','step-4'];
+    var i = 0;
+    var interval = setInterval(function() {
+        if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
+        if (i < steps.length) {
+            document.getElementById(steps[i]).classList.add('active');
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 800);
+}
+
+async function lancerAnalyse() {
+    if (!fichierActuel) return;
+
+    // Vérifier limite gratuite
+    var dejaUtilise = localStorage.getItem('audilix_essai_utilise');
+    if (dejaUtilise) {
+        document.getElementById('zone-upload').style.display = 'none';
+        document.getElementById('resultats').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        document.body.insertAdjacentHTML('beforeend',
+            '<div style="max-width:500px;margin:60px auto;padding:40px 32px;background:white;border-radius:16px;text-align:center;border:1px solid rgba(11,37,69,0.08);">'
+            + '<div style="font-size:40px;margin-bottom:16px;">🔒</div>'
+            + '<h2 style="font-family:Playfair Display,serif;font-size:24px;color:#0B2545;margin-bottom:12px;">Essai gratuit utilisé</h2>'
+            + '<p style="font-size:14px;color:#6B7280;margin-bottom:24px;line-height:1.7;">Vous avez déjà utilisé votre analyse gratuite. Passez à un plan payant pour des analyses illimitées.</p>'
+            + '<a href="pricing.html" style="background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;">Voir les plans →</a>'
+            + '<p style="font-size:12px;color:#9CA3AF;margin-top:16px;">Déjà client ? <a href="login.html" style="color:#0B2545;font-weight:600;">Se connecter</a></p>'
+            + '</div>'
+        );
+        return;
+    }
+
+    // Lancer l'analyse
+    document.getElementById('zone-upload').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    animerSteps();
+
+    var formData = new FormData();
+    formData.append('document', fichierActuel);
+    formData.append('userId', 'essai_gratuit');
+    formData.append('planUtilisateur', 'gratuit');
+
+    try {
+        var res = await fetch(BACKEND + '/api/analyser-document', {
+            method: 'POST',
+            body: formData
+        });
+        var data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'analyse');
+
+        // Marquer l'essai comme utilisé
+        localStorage.setItem('audilix_essai_utilise', '1');
+
+        // Afficher les résultats
+        afficherResultats(data);
+
+    } catch(e) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('zone-upload').style.display = 'block';
+        alert('Erreur : ' + e.message + '\n\nAssurez-vous que votre document contient du texte lisible.');
+    }
+}
+
+function afficherResultats(data) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('resultats').style.display = 'block';
+
+    var score = data.score || 50;
+    var problemes = data.problemes || [];
+    var positifs = data.points_positifs || [];
+    var resume = data.resume || '';
+
+    // Score couleur
+    var cercle = document.getElementById('score-cercle');
+    var couleur = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
+    cercle.style.borderColor = couleur;
+    document.getElementById('score-num').style.color = couleur;
+    document.getElementById('score-num').textContent = score;
+
+    // Titre selon score
+    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques — action requise';
+    document.getElementById('score-titre').textContent = titre;
+    document.getElementById('score-resume').textContent = resume;
+
+    // Compteurs
+    var critiques = problemes.filter(function(p) { return p.gravite === 'critique'; });
+    var importants = problemes.filter(function(p) { return p.gravite === 'important'; });
+    var mineurs = problemes.filter(function(p) { return p.gravite === 'mineur'; });
+    document.getElementById('nb-critiques').textContent = critiques.length;
+    document.getElementById('nb-importants').textContent = importants.length;
+    document.getElementById('nb-mineurs').textContent = mineurs.length;
+    document.getElementById('badge-total').textContent = problemes.length + ' problème(s)';
+
+    // Afficher 2 premiers problèmes
+    var visibles = document.getElementById('problemes-visibles');
+    var shown = problemes.slice(0, 2);
+    shown.forEach(function(p) {
+        var el = document.createElement('div');
+        el.className = 'probleme-item';
+        el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+            + '<div><div class="probleme-titre">' + (p.titre || '') + '</div>'
+            + '<div class="probleme-desc">' + (p.description || '') + '</div></div>';
+        visibles.appendChild(el);
+    });
+
+    // Problèmes bloqués (le reste)
+    if (problemes.length > 2) {
+        var bloqueEl = document.getElementById('problemes-flous');
+        var bloques = problemes.slice(2);
+        bloques.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'probleme-item';
+            el.style.marginBottom = '10px';
+            el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+                + '<div><div class="probleme-titre">' + (p.titre || '') + '</div></div>';
+            bloqueEl.appendChild(el);
+        });
+        document.getElementById('bloc-bloque').style.display = 'block';
+    }
+
+    // CTA urgence selon score
+    var tunnel = document.getElementById('tunnel-cta');
+    if (score >= 70) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '📋 ' + problemes.length + ' point(s) à optimiser';
+        tunnel.querySelector('h2').innerHTML = 'Obtenez les corrections complètes<br>et <em>maintenez votre conformité</em>';
+    } else if (score < 40) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '🚨 Risques critiques — action urgente';
+        tunnel.querySelector('h2').innerHTML = 'Votre entreprise est exposée.<br><em>Protégez-vous maintenant.</em>';
+    }
+
+    // Points positifs
+    if (positifs && positifs.length > 0) {
+        var listEl = document.getElementById('positifs-liste');
+        positifs.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'positif-item';
+            el.textContent = p;
+            listEl.appendChild(el);
+        });
+        document.getElementById('positifs-section').style.display = 'block';
+    }
+
+    // Scroll vers résultats
+    document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function recommencer() {
+    document.getElementById('resultats').style.display = 'none';
+    document.getElementById('zone-upload').style.display = 'block';
+    document.getElementById('problemes-visibles').innerHTML = '';
+    document.getElementById('problemes-flous').innerHTML = '';
+    document.getElementById('positifs-liste').innerHTML = '';
+    document.getElementById('bloc-bloque').style.display = 'none';
+    document.getElementById('positifs-section').style.display = 'none';
+    document.getElementById('btn-analyser').style.display = 'none';
+    document.getElementById('file-selected').classList.remove('visible');
+    document.getElementById('file-input').value = '';
+    fichierActuel = null;
+    // Reset loading steps
+    ['step-1','step-2','step-3','step-4'].forEach(function(s, i) {
+        var el = document.getElementById(s);
+        el.classList.toggle('active', i === 0);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
