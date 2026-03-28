@@ -11,7 +11,7 @@
             --navy:#1B3A7A; --navy-dark:#0F2456; --navy-mid:#2A4F9F;
             --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6;
             --creme:#FAF8F4; --blanc:#FFFFFF; --gris:#6B7280;
-            --bordure:rgba(27,58,122,0.09);
+            --bordure:rgba(27,58,122,0.09); --border:rgba(27,58,122,0.09);
             --rouge:#ef4444; --orange:#f59e0b; --vert:#22c55e;
             --sidebar:#0A1A3D;
         }
@@ -1095,7 +1095,7 @@ async function envoyerAssistant() {
     assistantHistorique.push({role:'user', content:msg});
 
     try {
-        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:assistantHistorique}) });
+        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg, history:assistantHistorique}) });
         var data = await res.json();
         var reponse = data.reponse || data.reply || 'Une erreur est survenue.';
 
@@ -1231,8 +1231,9 @@ async function genererRegistre() {
         }
 
         html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement || '') + '</div>';
-        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistre(data)">Télécharger</button></div>';
+        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistreGlobal()">Télécharger</button></div>';
 
+        window._registreData = data;
         document.getElementById('resultat-registre').innerHTML = html;
         document.getElementById('resultat-registre').style.display = 'block';
         await chargerDonnees();
