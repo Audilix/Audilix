@@ -407,7 +407,7 @@ app.post("/api/chat", async (req, res) => {
       { role: "user", content: message }
     ];
 
-    const reponse = await callOpenAI(messages, 600);
+    const reponse = await callOpenAI(messages, 250);
     res.json({ reponse });
   } catch(e) {
     console.error("❌ Chat error:", e);
