@@ -151,7 +151,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 <div class="hero-essai">
     <div class="hero-badge-essai">✓ 1 analyse gratuite — sans carte bancaire</div>
     <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
-    <p>Déposez un document. Notre IA l'analyse en 60 secondes et vous dit exactement où vous êtes exposé.</p>
+    <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
     <div class="hero-garanties">
         <span class="hero-garantie">Résultat en 60 secondes</span>
         <span class="hero-garantie">Aucune compétence juridique</span>
@@ -182,7 +182,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 <div id="loading">
     <div class="spinner"></div>
     <div class="loading-text">Analyse en cours…</div>
-    <div class="loading-sub">Notre IA examine votre document</div>
+    <div class="loading-sub">Votre document est en cours d'analyse</div>
     <div class="loading-steps">
         <div class="loading-step active" id="step-1">Lecture du document</div>
         <div class="loading-step" id="step-2">Détection des risques</div>
@@ -202,7 +202,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
             <span class="score-sur">/100</span>
         </div>
         <div class="score-titre" id="score-titre">Analyse terminée</div>
-        <p class="score-desc" id="score-resume">Voici ce que notre IA a détecté dans votre document.</p>
+        <p class="score-desc" id="score-resume">Voici ce que nous avons détecté dans votre document.</p>
         <div class="score-stats">
             <div class="score-stat">
                 <div class="score-stat-num" id="nb-critiques" style="color:var(--rouge);">0</div>
@@ -242,7 +242,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
     <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
         <div class="tunnel-urgence">⚠️ Problèmes critiques détectés</div>
         <h2>Débloquez les corrections<br>et <em>protégez votre entreprise</em></h2>
-        <p>Les recommandations complètes, les documents corrigés et la surveillance continue sont disponibles dans votre espace client.</p>
+        <p>Les recommandations complètes, les documents corrigés et la surveillance continue sont accessibles depuis votre espace client.</p>
         <a href="pricing.html" class="btn-tunnel">Débloquer mon rapport complet →</a>
         <div class="tunnel-garanties">
             <span class="tunnel-garantie">À partir de 69€/mois</span>
