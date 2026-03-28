@@ -149,7 +149,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
 <!-- HERO -->
 <div class="hero-essai">
-    <div class="hero-badge-essai">✓ 1 analyse gratuite — sans carte bancaire</div>
+    <div class="hero-badge-essai">✓ 1 analyse gratuite</div>
     <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
     <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
     <div class="hero-garanties">
