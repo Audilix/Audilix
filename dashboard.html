@@ -277,7 +277,7 @@
     <div class="lat-bas">
         <div class="plan-info">
             <div class="plan-libelle">Ma formule</div>
-            <div class="plan-nom" id="affichage-plan">Essentiel</div>
+            <div class="plan-nom" id="affichage-plan">Starter</div>
             <div class="plan-jauge"><div class="plan-jauge-rempli" id="jauge-analyses" style="width:0%"></div></div>
             <div class="plan-compteur" id="compteur-analyses">— analyses ce mois</div>
         </div>
@@ -423,7 +423,7 @@
                         <div class="analyse-en-cours" id="chargement-analyse">
                             <div class="spinner"></div>
                             <h3>Analyse en cours...</h3>
-                            <p>Notre système examine votre document. Cela prend généralement moins de 30 secondes.</p>
+                            <p>Votre document est en cours d'analyse. Cela prend généralement moins de 30 secondes.</p>
                         </div>
                         <!-- Résultat -->
                         <div class="resultat-analyse" id="resultat-zone">
@@ -545,7 +545,7 @@
                         <div class="analyse-en-cours" id="chargement-doc">
                             <div class="spinner"></div>
                             <h3>Génération en cours...</h3>
-                            <p>Notre système rédige votre document. Cela prend quelques secondes.</p>
+                            <p>Votre document est en cours de rédaction. Cela prend quelques secondes.</p>
                         </div>
                         <div id="apercu-doc" style="display:none;">
                             <div class="modal-avert">⚠️ Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu juridique, faites-le valider par un professionnel du droit.</div>
@@ -589,7 +589,7 @@
                 <div class="carte-corps">
                     <p style="font-size:13px;color:var(--gris);margin-bottom:16px;">Posez vos questions sur la conformité réglementaire, le RGPD, vos documents ou le résultat de vos analyses.</p>
                     <div class="assistant-messages" id="messages-assistant">
-                        <div class="ass-bot">Bonjour. Je suis votre assistant conformité. Posez-moi vos questions sur le RGPD, vos obligations légales, ou demandez-moi d'expliquer un résultat d'analyse.</div>
+                        <div class="ass-bot">Bonjour. Je suis votre assistant conformité Audilix. Je peux répondre à vos questions sur le RGPD, vos obligations légales, ou vous aider à comprendre un résultat d'analyse.</div>
                     </div>
                     <div class="ass-saisie">
                         <input type="text" id="champ-assistant" class="ass-champ" placeholder="Votre question...">
@@ -613,7 +613,7 @@
                         <div class="carte-titre">Déposer un contrat à analyser</div>
                     </div>
                     <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Notre IA détecte les clauses abusives, illégales ou déséquilibrées dans vos contrats — selon le droit français et européen.</p>
+                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Déposez un contrat pour identifier les clauses abusives, illégales ou déséquilibrées selon le droit français et européen.</p>
                         <div class="fichier-selectionne" id="fichier-clause-affiche">
                             <div class="fichier-icone">📄</div>
                             <div><div class="fichier-nom" id="fichier-clause-nom"></div><div class="fichier-taille" id="fichier-clause-taille"></div></div>
@@ -639,7 +639,7 @@
                         <div class="analyse-en-cours" id="chargement-clauses">
                             <div class="spinner"></div>
                             <h3>Analyse en cours...</h3>
-                            <p>Notre IA examine chaque clause de votre contrat.</p>
+                            <p>Chaque clause de votre contrat est examinée en détail.</p>
                         </div>
                         <div id="resultat-clauses" style="display:none;"></div>
                     </div>
@@ -653,7 +653,7 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Générer votre registre des traitements</div></div>
                     <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Notre IA le génère automatiquement selon votre activité.</p>
+                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Renseignez votre activité pour obtenir votre registre personnalisé.</p>
                         <div class="champ-groupe" style="margin-bottom:14px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise</label>
                             <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
@@ -676,7 +676,7 @@
                         <div class="analyse-en-cours" id="chargement-registre">
                             <div class="spinner"></div>
                             <h3>Génération en cours...</h3>
-                            <p>Notre IA construit votre registre des traitements.</p>
+                            <p>Votre registre des traitements est en cours de génération.</p>
                         </div>
                         <div id="resultat-registre" style="display:none;"></div>
                     </div>
@@ -748,7 +748,7 @@ function initialiserDashboard() {
     document.getElementById('avatar-utilisateur').textContent = prenom.charAt(0).toUpperCase();
 
     var plan = utilisateur.plan || 'starter';
-    var nomsPlans = { starter:'Essentiel', business:'Professionnel', expert:'Entreprise' };
+    var nomsPlans = { starter:'Starter', business:'Business', expert:'Expert' };
     var nomPlan = nomsPlans[plan] || plan;
     document.getElementById('affichage-plan').textContent = nomPlan;
     document.getElementById('param-plan').textContent = nomPlan;
@@ -1097,7 +1097,7 @@ async function envoyerAssistant() {
     try {
         var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:assistantHistorique}) });
         var data = await res.json();
-        var reponse = data.reply || 'Une erreur est survenue.';
+        var reponse = data.reponse || data.reply || 'Une erreur est survenue.';
 
         var divBot = document.createElement('div');
         divBot.className = 'ass-bot';
