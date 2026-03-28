@@ -138,7 +138,7 @@ footer{background:#060F1E;padding:56px 40px}
 .footer-links a{text-decoration:none;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
 .footer-links a:hover{color:rgba(255,255,255,.6)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
-#chat-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:68px;height:60px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(15,36,86,0.15),0 0 0 1px rgba(27,58,122,0.07);transition:all 0.3s;border:none}
+#chat-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(11,37,69,0.35);transition:all 0.3s;border:none}
 #chat-btn:hover{transform:scale(1.06)}
 .chat-notif{position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white}
 #chat-panel{position:fixed;bottom:108px;right:32px;z-index:998;width:340px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(11,37,69,.18);border:1px solid var(--border);overflow:hidden;display:none}
@@ -413,67 +413,66 @@ footer{background:#060F1E;padding:56px 40px}
 </section>
 <section style="padding:100px 40px;background:white;">
 <div style="max-width:720px;margin:auto;">
-<div style="text-align:center;margin-bottom:56px;" class="reveal">
+<div style="text-align:center;margin-bottom:48px;" class="reveal">
 <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Questions fréquentes</div>
 <h2 style="font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,46px);font-weight:700;color:var(--navy);letter-spacing:-0.02em;">Tout ce que vous devez savoir<br>avant de vous lancer.</h2>
-<p style="font-size:15px;color:var(--gray);margin-top:16px;font-weight:300;cursor:pointer;" onclick="document.getElementById('faq-body').style.display=document.getElementById('faq-body').style.display==='none'?'block':'none';">Cliquez sur une question pour lire la réponse ↓</p>
 </div>
-<div class="faq-list reveal" id="faq-body" style="transition-delay:0.1s;">
+<div class="reveal" style="transition-delay:0.1s;">
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">À quoi ça sert concrètement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Audilix vérifie automatiquement que vos documents (contrats, CGV, politique de confidentialité…) respectent la loi. En quelques secondes, vous savez ce qui est problématique, ce qu'il faut corriger — et vous évitez les amendes qui peuvent atteindre <strong style="color:var(--navy);">4% de votre chiffre d'affaires annuel</strong>.</div>
-</div>
-
-<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Je risque vraiment une amende si je ne suis pas conforme ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui. Le RGPD prévoit des amendes jusqu'à 20 millions d'euros ou 4% du CA. En France, la CNIL a sanctionné des PME pour des manquements simples : absence de mentions légales, cookies non conformes, politique de confidentialité inexistante. Ce n'est plus réservé aux grandes entreprises — les contrôles se multiplient.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">À quoi ça sert concrètement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Audilix vérifie automatiquement que vos documents (contrats, CGV, politique de confidentialité…) respectent la loi. En quelques secondes, vous savez ce qui est problématique, ce qu'il faut corriger — et vous évitez les amendes qui peuvent atteindre <strong style="color:var(--navy);">4% de votre chiffre d'affaires annuel</strong>.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Comment ça fonctionne exactement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Vous déposez un document dans votre espace client (PDF, Word, texte). Il est analysé en moins de 60 secondes — vous recevez un score de conformité sur 100, la liste des risques et les explications en langage simple sur quoi corriger.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Je risque vraiment une amende si je ne suis pas conforme ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Oui. Le RGPD prévoit des amendes jusqu'à 20 millions d'euros ou 4% du CA. En France, la CNIL a sanctionné des PME pour des manquements simples : absence de mentions légales, cookies non conformes, politique de confidentialité inexistante. Ce n'est plus réservé aux grandes entreprises — les contrôles se multiplient.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Combien de temps dure une analyse ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Moins de 60 secondes pour la grande majorité des documents. Vous récupérez immédiatement votre score, vos risques identifiés et vos recommandations — sans attendre.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Comment ça fonctionne exactement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Vous déposez un document dans votre espace client (PDF, Word, texte). Il est analysé en moins de 60 secondes — vous recevez un score de conformité sur 100, la liste des risques et les explications en langage simple sur quoi corriger.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">L'IA est-elle fiable pour du juridique ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Notre technologie est entraînée sur les textes réglementaires européens en vigueur (RGPD, directives ePrivacy, droit de la consommation…). Elle identifie efficacement les risques courants qui concernent 95% des PME. Pour les situations complexes ou à fort enjeu, nous recommandons toujours de consulter un avocat — chaque rapport le précise.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Combien de temps dure une analyse ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Moins de 60 secondes pour la grande majorité des documents. Vous récupérez immédiatement votre score, vos risques identifiés et vos recommandations — sans attendre.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mes documents sont-ils en sécurité ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Totalement. Vos documents sont analysés puis <strong style="color:var(--navy);">supprimés immédiatement</strong> après traitement. Nous ne les stockons pas, ne les lisons pas et ne les partageons jamais. Hébergement 100% Europe, chiffrement de bout en bout — nous sommes nous-mêmes conformes RGPD.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Audilix est-il fiable pour du juridique ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Notre technologie est entraînée sur les textes réglementaires européens en vigueur (RGPD, directives ePrivacy, droit de la consommation…). Elle identifie efficacement les risques courants qui concernent 95% des PME. Pour les situations complexes ou à fort enjeu, nous recommandons toujours de consulter un avocat — chaque rapport le précise.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Ça remplace un avocat ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Audilix ne remplace pas un avocat — il vous évite d'en avoir besoin pour 90% des cas courants. Pour les PME, la majorité des risques juridiques viennent de documents mal rédigés ou manquants. Audilix détecte ça et génère les documents corrects automatiquement, pour une fraction du coût.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mes documents sont-ils en sécurité ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Totalement. Vos documents sont analysés puis <strong style="color:var(--navy);">supprimés immédiatement</strong> après traitement. Nous ne les stockons pas, ne les lisons pas et ne les partageons jamais. Hébergement 100% Europe, chiffrement de bout en bout.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">69€/mois, est-ce que ça vaut vraiment le coup ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Une mise en demeure CNIL, une clause abusive non détectée dans un contrat, ou une politique de confidentialité non conforme peuvent coûter des milliers d'euros. À 69€/mois, Audilix surveille en permanence et vous alerte avant que ça arrive. C'est une assurance, pas une dépense.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Ça remplace un avocat ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Audilix ne remplace pas un avocat — il vous évite d'en avoir besoin pour 90% des cas courants. La majorité des risques juridiques viennent de documents mal rédigés ou manquants. Audilix détecte ça et génère les documents corrects, pour une fraction du coût.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mon compte est-il créé automatiquement après paiement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, entièrement automatique. Dès que votre paiement est validé par Stripe, votre accès est activé et vos identifiants arrivent par e-mail en quelques minutes. Vous pouvez analyser votre premier document dans la foulée.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">69€/mois, est-ce que ça vaut le coup ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Une mise en demeure CNIL, une clause abusive non détectée, ou une politique de confidentialité non conforme peuvent coûter des milliers d'euros. À 69€/mois, Audilix surveille en permanence et vous alerte avant que ça arrive. C'est une assurance, pas une dépense.</div>
 </div>
 
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="tFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:22px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Je peux annuler quand je veux ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all 0.3s;">+</span></button>
-<div style="display:none;padding-bottom:20px;font-size:14px;color:var(--gray);line-height:1.8;">Oui, sans engagement et sans frais cachés. Résiliation en un clic depuis votre espace client, effective immédiatement. Vous gardez l'accès jusqu'à la fin de la période payée. Aucune mauvaise surprise.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mon compte est-il créé automatiquement après paiement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Oui, entièrement automatique. Dès que votre paiement est validé, votre accès est activé et vos identifiants arrivent par e-mail en quelques minutes.</div>
+</div>
+
+<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Je peux annuler quand je veux ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Oui, sans engagement et sans frais cachés. Résiliation en un clic depuis votre espace client, effective immédiatement. Vous gardez l'accès jusqu'à la fin de la période payée.</div>
 </div>
 
 </div>
 <div style="text-align:center;margin-top:48px;" class="reveal">
-<a href="login.html" class="btn-gold" style="font-size:15px;padding:16px 40px;">Analyser mes documents maintenant →</a>
-<p style="font-size:13px;color:var(--gray);margin-top:14px;">Sans engagement · Résultats en moins de 60 secondes</p>
+<a href="essai.html" class="btn-gold" style="font-size:15px;padding:16px 40px;">Analyser mes documents maintenant →</a>
+<p style="font-size:13px;color:var(--gray);margin-top:14px;">Résultats en moins de 60 secondes</p>
 </div>
 </div>
 </section>
@@ -491,28 +490,33 @@ footer{background:#060F1E;padding:56px 40px}
 </footer>
 <div id="chat-btn" onclick="toggleChat()">
 <div style="position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white;"></div>
-<svg width="52" height="40" viewBox="0 0 380 196" fill="none" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="g-top-cb" x1="0" y1="0" x2="380" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1B3A7A"/><stop offset="35%" stop-color="#C9A84C"/><stop offset="65%" stop-color="#E8C97A"/><stop offset="100%" stop-color="#1B3A7A"/></linearGradient></defs>
-<path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98 C346 148 278 168 232 172 L248 192 L212 174 C148 170 60 148 0 98 Z" fill="white"/>
-<path d="M0 98 C60 148 148 170 212 174 L248 192 L232 172 C278 168 346 148 380 98" stroke="#0F2456" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M0 98 C50 38 118 18 190 18 C262 18 330 38 380 98" stroke="url(#g-top-cb)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="190" cy="93" r="50" fill="#1B3A7A"/>
-<circle cx="190" cy="93" r="50" fill="#0A1630" opacity="0.45"/>
-<circle cx="190" cy="93" r="44" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
-<circle cx="190" cy="93" r="35" stroke="#C9A84C" stroke-width="0.8" fill="none" stroke-dasharray="3 3" opacity="0.5"/>
-<circle cx="190" cy="45" r="2.5" fill="#C9A84C" opacity="0.7"/>
-<circle cx="190" cy="141" r="2.5" fill="#C9A84C" opacity="0.7"/>
-<circle cx="142" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
-<circle cx="238" cy="93" r="2.5" fill="#C9A84C" opacity="0.7"/>
-<circle cx="190" cy="93" r="20" fill="#050E1C"/>
-<ellipse cx="200" cy="82" rx="10" ry="7" fill="white" opacity="0.8" transform="rotate(-25 200 82)"/>
-<circle cx="207" cy="79" r="4" fill="white" opacity="0.45"/>
+<svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Robot head -->
+  <rect x="6" y="10" width="20" height="14" rx="4" fill="#1B3A7A"/>
+  <!-- Eyes -->
+  <rect x="10" y="14" width="4" height="4" rx="1" fill="white"/>
+  <rect x="18" y="14" width="4" height="4" rx="1" fill="white"/>
+  <!-- Pupils -->
+  <rect x="11" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/>
+  <rect x="19" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/>
+  <!-- Mouth -->
+  <rect x="11" y="20" width="10" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+  <rect x="13" y="20" width="2" height="2" rx="0.5" fill="white"/>
+  <rect x="17" y="20" width="2" height="2" rx="0.5" fill="white"/>
+  <!-- Antenna -->
+  <line x1="16" y1="10" x2="16" y2="6" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="16" cy="5" r="2" fill="#C9A84C"/>
+  <!-- Ears -->
+  <rect x="2" y="14" width="4" height="5" rx="2" fill="#1B3A7A"/>
+  <rect x="26" y="14" width="4" height="5" rx="2" fill="#1B3A7A"/>
+  <!-- Document badge on chest -->
+  <rect x="13" y="13" width="0" height="0" rx="0" fill="none"/>
 </svg>
 </div>
 <div id="chat-panel">
 <div class="chat-header">
 <div class="chat-header-icon">
-<svg width="22" height="22" viewBox="0 0 36 36" fill="none"><path d="M3 18 C8 8 28 8 33 18 C28 28 8 28 3 18 Z" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.08)"/><circle cx="18" cy="18" r="6" stroke="#C9A84C" stroke-width="1.2" fill="none"/><circle cx="18" cy="18" r="3" fill="#C9A84C" opacity="0.8"/><circle cx="19.5" cy="16.5" r="0.7" fill="white" opacity="0.9"/></svg>
+<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="6" y="10" width="20" height="14" rx="4" fill="rgba(201,168,76,0.15)"/><rect x="10" y="14" width="4" height="4" rx="1" fill="white" opacity="0.8"/><rect x="18" y="14" width="4" height="4" rx="1" fill="white" opacity="0.8"/><rect x="11" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/><rect x="19" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/><rect x="11" y="20" width="10" height="2" rx="1" fill="rgba(255,255,255,0.3)"/><line x1="16" y1="10" x2="16" y2="7" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="6" r="1.5" fill="#C9A84C"/><rect x="2" y="14" width="4" height="5" rx="2" fill="rgba(201,168,76,0.2)"/><rect x="26" y="14" width="4" height="5" rx="2" fill="rgba(201,168,76,0.2)"/></svg>
 </div>
 <div class="chat-hinfo">
 <div class="chat-name">Assistant Audilix</div>
@@ -590,13 +594,22 @@ function toggleAccordion(btn) {
     btn.nextElementSibling.classList.toggle('open');
 }
 
-function tFaq(btn) {
+function ouvrirFaq(btn) {
     var ico = btn.querySelector('span:last-child');
     var ans = btn.nextElementSibling;
-    var open = ans.style.display === 'block';
-    document.querySelectorAll('.faq-list button + div').forEach(function(d) { d.style.display = 'none'; });
-    document.querySelectorAll('.faq-list button span:last-child').forEach(function(s) { s.textContent = '+'; s.style.background = ''; s.style.color = 'var(--gold)'; });
-    if (!open) { ans.style.display = 'block'; ico.textContent = '×'; ico.style.background = 'var(--gold)'; ico.style.color = 'var(--navy)'; }
+    var isOpen = ans.style.display === 'block';
+    // Close all
+    btn.closest('div').parentElement.querySelectorAll('button + div').forEach(function(d) { d.style.display = 'none'; });
+    btn.closest('div').parentElement.querySelectorAll('button span:last-child').forEach(function(s) {
+        s.textContent = '+'; s.style.background = ''; s.style.color = 'var(--gold)'; s.style.transform = '';
+    });
+    // Open clicked if was closed
+    if (!isOpen) {
+        ans.style.display = 'block';
+        ico.textContent = '×';
+        ico.style.background = 'var(--gold)';
+        ico.style.color = 'white';
+    }
 }
 
 var obs = new IntersectionObserver(function(entries) {
