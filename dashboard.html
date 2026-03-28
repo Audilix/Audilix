@@ -1231,7 +1231,7 @@ async function genererRegistre() {
         }
 
         html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement || '') + '</div>';
-        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(JSON.stringify(data, null, 2)) + ', 'registre-rgpd')">Télécharger</button></div>';
+        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistre(data)">Télécharger</button></div>';
 
         document.getElementById('resultat-registre').innerHTML = html;
         document.getElementById('resultat-registre').style.display = 'block';
@@ -1243,9 +1243,16 @@ async function genererRegistre() {
     }
 }
 
+function telechargerRegistreGlobal() {
+    if (window._registreData) {
+        telechargerDoc(JSON.stringify(window._registreData, null, 2), 'registre-rgpd-audilix');
+    }
+}
+
 function seDeconnecter() {
     localStorage.removeItem('audilix_token');
     localStorage.removeItem('audilix_user');
+    localStorage.removeItem('audilix_souvenir');
     window.location.href = 'login.html';
 }
 </script>
