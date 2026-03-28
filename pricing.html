@@ -1,464 +1,364 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analyse gratuite — Audilix</title>
-<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-    --navy: #0B2545; --navy-dark: #0B2545; --gold: #C9A84C;
-    --gold-light: #E8C97A; --gold-pale: #F5EDD6; --cream: #FAF8F4;
-    --gray: #6B7280; --border: rgba(11,37,69,0.08); --rouge: #ef4444;
-    --vert: #22c55e;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
-h1,h2,h3 { font-family: 'Playfair Display', serif; }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formules — Audilix</title>
+    <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1B3A7A; --navy-dark: #0F2456; --gold: #C9A84C;
+            --gold-light: #E8C97A; --gold-pale: #F5EDD6;
+            --creme: #FAF8F4; --gris: #6B7280; --bordure: rgba(27,58,122,0.1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--creme); color:var(--navy-dark); -webkit-font-smoothing:antialiased; }
+        h1,h2,h3 { font-family:'Playfair Display',serif; }
 
-/* NAV */
-nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.nav-logo img { height: 36px; }
-.nav-right { display: flex; align-items: center; gap: 16px; }
-.nav-link { color: var(--gray); font-size: 13px; text-decoration: none; transition: color 0.2s; }
-.nav-link:hover { color: var(--navy); }
-.nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
-.nav-cta:hover { background: var(--gold-light); }
+        .ligne-or { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
 
-/* HERO */
-.hero-essai { text-align: center; padding: 64px 40px 48px; max-width: 680px; margin: 0 auto; }
-.hero-badge-essai { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #16a34a; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
-.hero-essai h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
-.hero-essai h1 em { color: var(--gold); font-style: italic; }
-.hero-essai p { font-size: 17px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; font-weight: 300; }
-.hero-garanties { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; }
-.hero-garantie { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 5px; }
-.hero-garantie::before { content: '✓'; color: var(--vert); font-weight: 700; }
+        nav { background:white; border-bottom:1px solid var(--border); padding:0 40px; height:68px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+        .nav-logo img { height:38px; }
+        .nav-droite { display:flex; align-items:center; gap:12px; }
+        .nav-retour { color:var(--gris); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s; }
+        .nav-retour::before { content:'← '; }
+        .nav-retour:hover { color:var(--navy-dark); }
+        .nav-analyse { background:var(--gold); color:var(--navy-dark); padding:10px 20px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+        .nav-analyse:hover { background:var(--gold-light); }
 
-/* UPLOAD ZONE */
-.upload-zone { max-width: 600px; margin: 0 auto 48px; padding: 0 24px; }
-.upload-box {
-    background: white; border: 2px dashed rgba(11,37,69,0.15); border-radius: 16px;
-    padding: 48px 32px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
-}
-.upload-box:hover, .upload-box.dragover { border-color: var(--gold); background: var(--gold-pale); }
-.upload-icon { font-size: 40px; margin-bottom: 16px; }
-.upload-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
-.upload-sub { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
-.upload-formats { font-size: 12px; color: rgba(107,114,128,0.6); }
-.btn-upload { background: var(--navy); color: white; padding: 13px 32px; border-radius: 6px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: inline-block; }
-.btn-upload:hover { background: var(--gold); color: var(--navy); }
-#file-input { display: none; }
-.file-selected { display: none; align-items: center; gap: 10px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #16a34a; font-weight: 500; }
-.file-selected.visible { display: flex; }
+        .entete { text-align:center; padding:60px 40px 48px; }
+        .entete-label { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+        .entete h1 { font-size:clamp(32px,4vw,52px); font-weight:700; color:var(--navy-dark); line-height:1.1; margin-bottom:12px; letter-spacing:-0.02em; }
+        .entete h1 em { color:var(--gold); font-style:italic; }
+        .entete p { font-size:16px; color:var(--gris); font-weight:300; margin-bottom:24px; }
+        
+        
+        
 
-/* CHARGEMENT */
-#loading { display: none; text-align: center; padding: 48px 24px; }
-.spinner { width: 48px; height: 48px; border: 3px solid rgba(11,37,69,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
-.loading-sub { font-size: 13px; color: var(--gray); }
-.loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 280px; margin: 24px auto 0; }
-.loading-step { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.5s; }
-.loading-step.active { opacity: 1; color: var(--navy); font-weight: 500; }
-.loading-step::before { content: '○'; color: var(--gold); }
-.loading-step.active::before { content: '●'; }
+        .plans-zone { max-width:1140px; margin:0 auto; padding:0 40px 80px; }
+        .plans-grille { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
 
-/* RÉSULTATS */
-#resultats { display: none; max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+        .plan { background:white; border:1px solid var(--border); border-radius:14px; padding:36px 28px; position:relative; transition:transform 0.3s,box-shadow 0.3s; }
+        .plan:hover { transform:translateY(-4px); box-shadow:0 18px 48px rgba(27,58,122,0.07); }
+        .plan.vedette { background:var(--navy-dark); border-color:transparent; transform:scale(1.04); }
+        .plan.vedette:hover { transform:scale(1.04) translateY(-4px); box-shadow:0 24px 60px rgba(15,36,86,0.28); }
+        .plan.vedette::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:14px 14px 0 0; }
+        .plan-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--navy-dark); font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 14px; border-radius:40px; white-space:nowrap; }
+        .plan-cible { display:inline-block; background:var(--gold-pale); color:#8B6914; font-size:11px; font-weight:600; padding:3px 10px; border-radius:40px; margin-bottom:10px; }
+        .plan.vedette .plan-cible { background:rgba(201,168,76,0.12); color:var(--gold); }
+        .plan-nom { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--navy-dark); margin-bottom:5px; }
+        .plan.vedette .plan-nom { color:white; }
+        .plan-accroche { font-size:13px; color:var(--gris); margin-bottom:20px; font-weight:300; line-height:1.5; }
+        .plan.vedette .plan-accroche { color:rgba(255,255,255,0.36); }
+        .plan-prix { display:flex; align-items:baseline; gap:2px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--border); }
+        .plan.vedette .plan-prix { border-color:rgba(255,255,255,0.08); }
+        .p-devise { font-size:18px; color:var(--gris); }
+        .plan.vedette .p-devise { color:rgba(255,255,255,0.35); }
+        .p-montant { font-family:'Playfair Display',serif; font-size:52px; font-weight:700; color:var(--navy-dark); line-height:1; }
+        .plan.vedette .p-montant { color:var(--gold); }
+        .p-periode { font-size:13px; color:var(--gris); font-weight:300; margin-left:3px; }
+        .plan.vedette .p-periode { color:rgba(255,255,255,0.35); }
 
-/* Score */
-.score-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
-.score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
-.score-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
-.score-cercle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid; }
-.score-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; line-height: 1; }
-.score-sur { font-size: 13px; color: var(--gray); }
-.score-titre { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-.score-desc { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 440px; margin: 0 auto; }
-.score-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
-.score-stat { background: var(--cream); border-radius: 8px; padding: 14px 12px; }
-.score-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
-.score-stat-label { font-size: 11px; color: var(--gray); font-weight: 500; margin-top: 2px; }
+        .p-section { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin:14px 0 7px; }
+        .p-liste { list-style:none; margin-bottom:26px; display:flex; flex-direction:column; gap:8px; }
+        .p-liste li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--navy-dark); line-height:1.5; }
+        .plan.vedette .p-liste li { color:rgba(255,255,255,0.72); }
+        .p-coche { width:16px; height:16px; flex-shrink:0; background:var(--gold-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; color:var(--gold); margin-top:1px; }
+        .plan.vedette .p-coche { background:rgba(201,168,76,0.15); }
 
-/* Problèmes révélés */
-.problemes-section { margin-bottom: 24px; }
-.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.section-head h3 { font-size: 18px; font-weight: 700; color: var(--navy); }
-.badge-count { background: rgba(239,68,68,0.1); color: var(--rouge); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+        .plan-btn { display:block; width:100%; padding:14px; text-align:center; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.25s; border:none; }
+        .btn-contour { background:transparent; border:1.5px solid rgba(27,58,122,0.18); color:var(--navy-dark); }
+        .btn-contour:hover { background:var(--navy-dark); color:white; border-color:var(--navy-dark); }
+        .btn-or { background:var(--gold); color:var(--navy-dark); }
+        .btn-or:hover { background:var(--gold-light); box-shadow:0 6px 20px rgba(201,168,76,0.28); transform:translateY(-1px); }
+        .plan-note { text-align:center; font-size:11px; color:var(--gris); margin-top:8px; }
+        .plan.vedette .plan-note { color:rgba(255,255,255,0.22); }
 
-.probleme-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 12px; }
-.probleme-gravite { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-top: 2px; }
-.gravite-critique { background: rgba(239,68,68,0.1); color: var(--rouge); }
-.gravite-important { background: rgba(245,158,11,0.1); color: #d97706; }
-.gravite-mineur { background: rgba(107,114,128,0.1); color: var(--gray); }
-.probleme-titre { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.probleme-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+        /* Comparaison rapide */
+        .comparaison { max-width:800px; margin:0 auto 60px; padding:0 40px; }
+        .comparaison h2 { font-size:26px; font-weight:700; color:var(--navy-dark); margin-bottom:24px; text-align:center; }
+        .tableau { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; border:1px solid var(--border); font-size:13px; }
+        .tableau thead tr { background:var(--navy-dark); }
+        .tableau thead th { padding:14px 16px; text-align:center; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.7); }
+        .tableau thead th:first-child { text-align:left; color:rgba(255,255,255,0.4); }
+        .tableau tbody tr { border-bottom:1px solid var(--border); transition:background 0.2s; }
+        .tableau tbody tr:last-child { border-bottom:none; }
+        .tableau tbody tr:hover { background:var(--creme); }
+        .tableau td { padding:12px 16px; color:var(--navy-dark); }
+        .tableau td:not(:first-child) { text-align:center; }
+        .tableau td:first-child { font-size:13px; font-weight:500; }
+        .oui { color:#16a34a; font-size:16px; }
+        .non { color:rgba(107,114,128,0.3); font-size:14px; }
+        .limite { color:var(--gold); font-size:12px; font-weight:600; }
+        .col-or { background:rgba(201,168,76,0.04); }
 
-/* Problèmes bloqués */
-.problemes-bloques { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; position: relative; }
-.probleme-flou { padding: 16px 18px; filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.5; }
-.bloquer-overlay {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.95) 40%, white 100%);
-    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px;
-}
+        .banniere { background:var(--navy-dark); padding:44px 40px; text-align:center; position:relative; }
+        .banniere::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+        .banniere h2 { font-size:26px; font-weight:600; color:white; margin-bottom:10px; }
+        .banniere h2 em { color:var(--gold); font-style:italic; }
+        .banniere p { font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:22px; }
+        .banniere-btn { display:inline-block; background:var(--gold); color:var(--navy-dark); padding:13px 28px; border-radius:4px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+        .banniere-btn:hover { background:var(--gold-light); transform:translateY(-1px); }
 
-/* CTA Tunnel */
-.tunnel-cta { background: var(--navy); border-radius: 16px; padding: 36px 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
-.tunnel-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
-.tunnel-urgence { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
-.tunnel-cta h2 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
-.tunnel-cta h2 em { color: var(--gold); font-style: italic; }
-.tunnel-cta p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.7; }
-.btn-tunnel { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 6px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
-.btn-tunnel:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
-.tunnel-garanties { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
-.tunnel-garantie { font-size: 12px; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 5px; }
-.tunnel-garantie::before { content: '✓'; color: var(--gold); }
+        .garanties { padding:52px 40px; border-top:1px solid var(--border); background:white; }
+        .garanties-inner { max-width:960px; margin:auto; display:grid; grid-template-columns:repeat(4,1fr); gap:36px; text-align:center; }
+        .g-icone { font-size:24px; margin-bottom:10px; }
+        .g-titre { font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:6px; }
+        .g-texte { font-size:13px; color:var(--gris); line-height:1.6; }
 
-/* Points positifs */
-.positifs-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-.positifs-section h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-.positif-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 8px; }
-.positif-item::before { content: '✓'; color: var(--vert); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .faq { max-width:680px; margin:0 auto; padding:60px 40px 80px; }
+        .faq h2 { font-size:28px; font-weight:700; color:var(--navy-dark); margin-bottom:32px; text-align:center; }
+        .faq-item { border-bottom:1px solid var(--border); }
+        .faq-q { width:100%; background:none; border:none; display:flex; align-items:center; justify-content:space-between; padding:18px 0; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--navy-dark); text-align:left; gap:14px; transition:color 0.2s; }
+        .faq-q:hover { color:var(--gold); }
+        .faq-ico { width:24px; height:24px; flex-shrink:0; border-radius:50%; border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:15px; transition:all 0.3s; }
+        .faq-q.ouvert .faq-ico { background:var(--gold); color:var(--navy-dark); transform:rotate(45deg); }
+        .faq-r { display:none; padding:0 0 18px; font-size:14px; color:var(--gris); line-height:1.8; font-weight:300; }
+        .faq-r.ouvert { display:block; }
 
-/* Recommencer */
-.btn-recommencer { background: white; border: 1.5px solid var(--border); color: var(--gray); padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
-.btn-recommencer:hover { border-color: var(--navy); color: var(--navy); }
+        footer { background:#0A1A3D; padding:44px 40px; text-align:center; }
+        footer p { font-size:12px; color:rgba(255,255,255,0.18); }
+        footer a { color:rgba(255,255,255,0.25); text-decoration:none; margin:0 8px; }
+        footer a:hover { color:var(--gold); }
 
-@media (max-width: 640px) {
-    nav { padding: 0 20px; }
-    .hero-essai { padding: 40px 20px 32px; }
-    .score-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .score-stat-num { font-size: 22px; }
-}
-</style>
+        #chargement { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,36,86,0.72); z-index:9999; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+        #chargement.actif { display:flex; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        @media(max-width:900px) { .plans-grille{grid-template-columns:1fr;max-width:460px;margin:auto} .plan.vedette{transform:none} .garanties-inner{grid-template-columns:1fr 1fr} .comparaison{padding:0 20px} }
+        @media(max-width:640px) { nav{padding:0 20px} .entete{padding:48px 20px 36px} .plans-zone{padding:0 20px 60px} .garanties-inner{grid-template-columns:1fr} .tableau{font-size:11px} .tableau td{padding:10px 10px} }
+    </style>
 </head>
 <body>
+<a href="index.html" style="position:fixed;top:18px;left:18px;z-index:999;display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.10);border-radius:8px;padding:8px 14px;text-decoration:none;color:#1B3A7A;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 10px rgba(15,36,86,0.09);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 18px rgba(15,36,86,0.16)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(15,36,86,0.09)'">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  Accueil
+</a>
 
+<div class="ligne-or"></div>
 <nav>
-    <a href="index.html"><img src="logo.png" alt="Audilix"></a>
-    <div class="nav-right">
-        <a href="login.html" class="nav-link">Connexion</a>
-        <a href="pricing.html" class="nav-cta">Voir les plans</a>
+    <a href="index.html"><img src="logo.png" alt="Audilix" style="height:38px;"></a>
+    <div class="nav-droite">
+        <a href="index.html" class="nav-retour">Retour</a>
+        <a href="login.html" class="nav-cta">Commencer →</a>
     </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero-essai">
-    <div class="hero-badge-essai">✓ 1 analyse gratuite — sans carte bancaire</div>
-    <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
-    <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
-    <div class="hero-garanties">
-        <span class="hero-garantie">Résultat en 60 secondes</span>
-        <span class="hero-garantie">Aucune compétence juridique</span>
-        <span class="hero-garantie">Données supprimées après analyse</span>
+<div class="entete">
+    <div class="entete-label">Nos formules</div>
+    <h1>Un abonnement qui <em>vaut vraiment</em><br>son prix.</h1>
+    <p>Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe · Accès immédiat</p>
+    
+</div>
+
+<div class="plans-zone">
+<div class="plans-grille">
+
+    <!-- ESSENTIEL -->
+    <div class="plan">
+        <div class="plan-cible">Indépendants &amp; petits sites</div>
+        <div class="plan-nom">Starter</div>
+        <div style="display:inline-block;background:rgba(34,197,94,0.1);color:#16a34a;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:4px 10px;border-radius:20px;margin-bottom:8px;">✓ 1 analyse gratuite incluse</div>
+        <div class="plan-accroche">Protégez votre entreprise dès aujourd'hui. Évitez les amendes CNIL sans connaissances juridiques.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">69</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Analyses &amp; Score</div>
+            <li><span class="p-coche">✓</span>10 analyses de documents par mois</li>
+            <li><span class="p-coche">✓</span>Score de conformité complet /100</li>
+            <li><span class="p-coche">✓</span>Rapport détaillé envoyé par e-mail</li>
+            <li><span class="p-coche">✓</span>Recommandations claires et actionnables</li>
+            <div class="p-section">Documents générés</div>
+            <li><span class="p-coche">✓</span>Politique de confidentialité</li>
+            <li><span class="p-coche">✓</span>Mentions légales</li>
+            <li><span class="p-coche">✓</span>Politique de gestion des cookies</li>
+            <div class="p-section">Surveillance</div>
+            <li><span class="p-coche">✓</span>Surveillance mensuelle automatique</li>
+            <li><span class="p-coche">✓</span>Alertes e-mail si anomalie détectée</li>
+            <li><span class="p-coche">✓</span>Support par e-mail (réponse sous 48h)</li>
+        </ul>
+        <button class="plan-btn btn-contour" onclick="payer('starter')">Commencer →</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan vedette">
+        <div class="plan-badge">Le plus choisi</div>
+        <div class="plan-cible">PME &amp; startups en croissance</div>
+        <div class="plan-nom">Business</div>
+        <div class="plan-accroche">Zéro limite, zéro stress. L'IA surveille, alerte et corrige pour vous — 24h/24, 7j/7.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">149</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Tout Starter, et en plus :</div>
+            <li><span class="p-coche">✓</span>Analyses de documents illimitées</li>
+            <li><span class="p-coche">✓</span>Analyse avancée des risques avec priorités</li>
+            <li><span class="p-coche">✓</span>Plan de correction détaillé et priorisé</li>
+            <li><span class="p-coche">✓</span>Documents personnalisés selon votre activité</li>
+            <div class="p-section">IA &amp; Automatisation</div>
+            <li><span class="p-coche">✓</span>Assistant conformité IA disponible 24h/24</li>
+            <li><span class="p-coche">✓</span>Veille réglementaire automatique (RGPD, AI Act…)</li>
+            <li><span class="p-coche">✓</span>Surveillance hebdomadaire automatique</li>
+            <li><span class="p-coche">✓</span>Alertes en temps réel</li>
+            <div class="p-section">Historique &amp; Support</div>
+            <li><span class="p-coche">✓</span>Historique complet des analyses</li>
+            <li><span class="p-coche">✓</span>Support prioritaire (réponse sous 24h)</li>
+        </ul>
+        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Business — le plus populaire →</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="plan">
+        <div class="plan-cible">Agences &amp; entreprises multi-sites</div>
+        <div class="plan-nom">Expert</div>
+        <div class="plan-accroche">La conformité comme un grand groupe, au prix d'une PME. API, multi-sites et support VIP.</div>
+        <div class="plan-prix">
+            <span class="p-devise">€</span><span class="p-montant">299</span><span class="p-periode">/ mois</span>
+        </div>
+        <ul class="p-liste">
+            <div class="p-section">Tout Business, et en plus :</div>
+            <li><span class="p-coche">✓</span>Registre RGPD article 30 automatique</li>
+            <li><span class="p-coche">✓</span>Rapports PDF professionnels exportables</li>
+            <li><span class="p-coche">✓</span>Conseils personnalisés via IA</li>
+            <li><span class="p-coche">✓</span>Analyses multi-sites (jusqu'à 10 sites)</li>
+            <div class="p-section">Outils avancés</div>
+            <li><span class="p-coche">✓</span>Mise à jour automatique des documents si la loi change</li>
+            <li><span class="p-coche">✓</span>Badge de conformité Audilix Verified</li>
+            <li><span class="p-coche">✓</span>Accès à notre API</li>
+            <div class="p-section">Support</div>
+            <li><span class="p-coche">✓</span>Support VIP (réponse le jour même)</li>
+        </ul>
+        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Expert</button>
+        <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
+    </div>
+
+</div>
+
+<!-- TABLEAU COMPARATIF -->
+<div style="margin-top:64px;">
+<div class="comparaison">
+    <h2>Comparaison rapide</h2>
+    <table class="tableau">
+        <thead>
+            <tr>
+                <th style="text-align:left;">Fonctionnalité</th>
+                <th>Starter</th>
+                <th class="col-or">Business</th>
+                <th>Expert</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Analyses de documents</td><td class="limite">10/mois</td><td class="col-or oui">∞</td><td class="oui">∞</td></tr>
+            <tr><td>Score de conformité /100</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Rapport détaillé par e-mail</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Documents juridiques générés</td><td class="oui">✓</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Surveillance automatique</td><td class="limite">Mensuelle</td><td class="col-or limite">Hebdomadaire</td><td class="limite">Quotidienne</td></tr>
+            <tr><td>Alertes en temps réel</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Assistant conformité IA 24h/24</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Veille réglementaire auto.</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Historique des analyses</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Documents personnalisés</td><td class="non">—</td><td class="col-or oui">✓</td><td class="oui">✓</td></tr>
+            <tr><td>Rapports PDF exportables</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Registre RGPD article 30</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Multi-sites</td><td class="non">—</td><td class="col-or non">—</td><td class="limite">Jusqu'à 10</td></tr>
+            <tr><td>Badge de conformité Audilix</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Accès API</td><td class="non">—</td><td class="col-or non">—</td><td class="oui">✓</td></tr>
+            <tr><td>Support</td><td class="limite">E-mail (48h)</td><td class="col-or limite">Prioritaire (24h)</td><td class="limite">VIP (jour même)</td></tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+
+
+<div class="garanties">
+    <div class="garanties-inner">
+        <div><div class="g-icone">🔒</div><div class="g-titre">Paiement sécurisé</div><p class="g-texte">Chiffrement SSL via Stripe. Vos données bancaires ne sont jamais stockées.</p></div>
+        <div><div class="g-icone">🔄</div><div class="g-titre">Sans engagement</div><p class="g-texte">Résiliez à tout moment depuis votre espace client, sans frais.</p></div>
+        <div><div class="g-icone">⚡</div><div class="g-titre">Accès immédiat</div><p class="g-texte">Votre compte est activé dès la confirmation du paiement.</p></div>
+        <div><div class="g-icone">🇪🇺</div><div class="g-titre">Données en Europe</div><p class="g-texte">Hébergement européen. Conformité RGPD garantie sur toute la chaîne.</p></div>
     </div>
 </div>
 
-<!-- UPLOAD -->
-<div class="upload-zone" id="zone-upload">
-    <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
-        <div class="upload-icon">📄</div>
-        <div class="upload-title">Déposez votre document ici</div>
-        <div class="upload-sub">Politique de confidentialité, CGV, contrat, mentions légales…</div>
-        <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('file-input').click();">Choisir un fichier</button>
-        <div class="upload-formats">PDF · Word (.docx) · Texte (.txt) · Max 10 Mo</div>
-        <div class="file-selected" id="file-selected">
-            <span>📎</span>
-            <span id="file-name"></span>
-        </div>
+<div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Quelle formule choisir ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Si vous êtes indépendant ou gérez un seul site, le Starter est suffisant. Pour une PME qui veut automatiser totalement sa conformité, le Pro est le choix idéal. Le Premium est fait pour les agences et entreprises gérant plusieurs sites.</div>
     </div>
-    <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" onchange="fichierChoisi(this)">
-    <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
-        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant — c'est gratuit →</button>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Comment fonctionne l'analyse de documents ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Depuis votre espace client, déposez un document (PDF, Word, TXT). Il est analysé en moins de 30 secondes — vous recevez un score, la liste des problèmes détectés et les recommandations pour corriger.</div>
     </div>
-</div>
-
-<!-- CHARGEMENT -->
-<div id="loading">
-    <div class="spinner"></div>
-    <div class="loading-text">Analyse en cours…</div>
-    <div class="loading-sub">Votre document est en cours d'analyse</div>
-    <div class="loading-steps">
-        <div class="loading-step active" id="step-1">Lecture du document</div>
-        <div class="loading-step" id="step-2">Détection des risques</div>
-        <div class="loading-step" id="step-3">Calcul du score de conformité</div>
-        <div class="loading-step" id="step-4">Génération du rapport</div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Les documents juridiques sont-ils valables légalement ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Nos documents sont générés selon les textes réglementaires européens en vigueur. Ils constituent une base sérieuse et conforme. Pour les situations à fort enjeu, nous recommandons de les faire valider par un professionnel du droit.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">C'est quoi l'assistant conformité ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Disponible dans votre espace client (formules Business et Expert), c'est un assistant qui répond à vos questions sur la conformité en langage simple, explique les résultats de vos analyses et vous guide dans les corrections à apporter.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Comment créer mon compte après le paiement ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Vous n'avez rien à faire. Après validation de votre paiement, votre compte est créé automatiquement et vos identifiants sont envoyés par e-mail. Vous pouvez vous connecter immédiatement et modifier votre mot de passe depuis les paramètres.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Puis-je résilier à tout moment ? <span class="faq-ico">+</span></button>
+        <div class="faq-r">Oui, sans engagement et sans frais. Résiliez depuis votre espace client en un clic. La résiliation est effective immédiatement.</div>
     </div>
 </div>
 
-<!-- RÉSULTATS -->
-<div id="resultats">
+<footer>
+    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="/cdn-cgi/l/email-protection#35565a5b415456411b5440515c595c4d755258545c591b565a58">Contact</a></p>
+</footer>
 
-    <!-- Score -->
-    <div class="score-card">
-        <div class="score-label">Compliance Trust Score™</div>
-        <div class="score-cercle" id="score-cercle">
-            <span class="score-num" id="score-num">--</span>
-            <span class="score-sur">/100</span>
-        </div>
-        <div class="score-titre" id="score-titre">Analyse terminée</div>
-        <p class="score-desc" id="score-resume">Voici ce que nous avons détecté dans votre document.</p>
-        <div class="score-stats">
-            <div class="score-stat">
-                <div class="score-stat-num" id="nb-critiques" style="color:var(--rouge);">0</div>
-                <div class="score-stat-label">Problème(s) critique(s)</div>
-            </div>
-            <div class="score-stat">
-                <div class="score-stat-num" id="nb-importants" style="color:#d97706;">0</div>
-                <div class="score-stat-label">Problème(s) important(s)</div>
-            </div>
-            <div class="score-stat">
-                <div class="score-stat-num" id="nb-mineurs" style="color:var(--gray);">0</div>
-                <div class="score-stat-label">Point(s) mineur(s)</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Problèmes visibles (2 premiers) -->
-    <div class="problemes-section">
-        <div class="section-head">
-            <h3>Problèmes détectés</h3>
-            <span class="badge-count" id="badge-total">0 problème(s)</span>
-        </div>
-        <div id="problemes-visibles"></div>
-    </div>
-
-    <!-- Problèmes bloqués + CTA -->
-    <div id="bloc-bloque" style="display:none;">
-        <div class="problemes-bloques">
-            <div class="probleme-flou" id="problemes-flous"></div>
-            <div class="bloquer-overlay">
-                <div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TUNNEL CTA -->
-    <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
-        <div class="tunnel-urgence">⚠️ Problèmes critiques détectés</div>
-        <h2>Débloquez les corrections<br>et <em>protégez votre entreprise</em></h2>
-        <p>Les recommandations complètes, les documents corrigés et la surveillance continue sont accessibles depuis votre espace client.</p>
-        <a href="pricing.html" class="btn-tunnel">Débloquer mon rapport complet →</a>
-        <div class="tunnel-garanties">
-            <span class="tunnel-garantie">À partir de 69€/mois</span>
-            <span class="tunnel-garantie">Sans engagement</span>
-            <span class="tunnel-garantie">Accès immédiat</span>
-        </div>
-    </div>
-
-    <!-- Points positifs -->
-    <div class="positifs-section" id="positifs-section" style="display:none;">
-        <h3>✅ Ce qui est conforme</h3>
-        <div id="positifs-liste"></div>
-    </div>
-
-    <!-- Recommencer -->
-    <div style="text-align:center;margin-top:16px;">
-        <button class="btn-recommencer" onclick="recommencer()">← Analyser un autre document</button>
+<div id="chargement">
+    <div style="background:white;border-radius:14px;padding:44px;text-align:center;max-width:290px;">
+        <div style="width:44px;height:44px;border:3px solid rgba(27,58,122,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 18px;"></div>
+        <div style="font-size:15px;font-weight:700;color:#0F2456;margin-bottom:5px;">Redirection en cours...</div>
+        <div style="font-size:13px;color:#6B7280;">Paiement sécurisé par Stripe 🔒</div>
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var BACKEND = 'https://audilix-backend.onrender.com';
-var fichierActuel = null;
+var PRIX = { starter:'price_1TBEp1L1yZKJczeCtlqQ4u3F', business:'price_1TBEt9L1yZKJczeC28lX4VMH', expert:'price_1TBEuYL1yZKJczeCXrgBEFcu' };
 
-function fichierChoisi(input) {
-    if (!input.files || !input.files[0]) return;
-    fichierActuel = input.files[0];
-    document.getElementById('file-name').textContent = fichierActuel.name;
-    document.getElementById('file-selected').classList.add('visible');
-    var btn = document.getElementById('btn-analyser');
-    btn.style.display = 'inline-block';
-}
-
-function dragOver(e) { e.preventDefault(); document.getElementById('upload-box').classList.add('dragover'); }
-function dragLeave(e) { document.getElementById('upload-box').classList.remove('dragover'); }
-function drop(e) {
-    e.preventDefault();
-    document.getElementById('upload-box').classList.remove('dragover');
-    var files = e.dataTransfer.files;
-    if (files && files[0]) {
-        fichierActuel = files[0];
-        document.getElementById('file-name').textContent = fichierActuel.name;
-        document.getElementById('file-selected').classList.add('visible');
-        document.getElementById('btn-analyser').style.display = 'inline-block';
-    }
-}
-
-function animerSteps() {
-    var steps = ['step-1','step-2','step-3','step-4'];
-    var i = 0;
-    var interval = setInterval(function() {
-        if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
-        if (i < steps.length) {
-            document.getElementById(steps[i]).classList.add('active');
-            i++;
-        } else {
-            clearInterval(interval);
-        }
-    }, 800);
-}
-
-async function lancerAnalyse() {
-    if (!fichierActuel) return;
-
-    // Vérifier limite gratuite
-    var dejaUtilise = localStorage.getItem('audilix_essai_utilise');
-    if (dejaUtilise) {
-        document.getElementById('zone-upload').style.display = 'none';
-        document.getElementById('resultats').style.display = 'none';
-        document.getElementById('loading').style.display = 'none';
-        document.body.insertAdjacentHTML('beforeend',
-            '<div style="max-width:500px;margin:60px auto;padding:40px 32px;background:white;border-radius:16px;text-align:center;border:1px solid rgba(11,37,69,0.08);">'
-            + '<div style="font-size:40px;margin-bottom:16px;">🔒</div>'
-            + '<h2 style="font-family:Playfair Display,serif;font-size:24px;color:#0B2545;margin-bottom:12px;">Essai gratuit utilisé</h2>'
-            + '<p style="font-size:14px;color:#6B7280;margin-bottom:24px;line-height:1.7;">Vous avez déjà utilisé votre analyse gratuite. Passez à un plan payant pour des analyses illimitées.</p>'
-            + '<a href="pricing.html" style="background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;">Voir les plans →</a>'
-            + '<p style="font-size:12px;color:#9CA3AF;margin-top:16px;">Déjà client ? <a href="login.html" style="color:#0B2545;font-weight:600;">Se connecter</a></p>'
-            + '</div>'
-        );
-        return;
-    }
-
-    // Lancer l'analyse
-    document.getElementById('zone-upload').style.display = 'none';
-    document.getElementById('loading').style.display = 'block';
-    animerSteps();
-
-    var formData = new FormData();
-    formData.append('document', fichierActuel);
-    formData.append('userId', 'essai_gratuit');
-    formData.append('planUtilisateur', 'gratuit');
-
+async function payer(plan) {
+    var userStr = localStorage.getItem('audilix_user');
+    var user = userStr ? JSON.parse(userStr) : null;
+    document.getElementById('chargement').classList.add('actif');
     try {
-        var res = await fetch(BACKEND + '/api/analyser-document', {
+        var res = await fetch(BACKEND + '/api/stripe/checkout', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                plan: plan, priceId: PRIX[plan],
+                userId: user ? user.id : null,
+                email: user ? user.email : null,
+                successUrl: window.location.origin + '/login.html?paiement=succes',
+                cancelUrl: window.location.origin + '/pricing.html'
+            })
         });
         var data = await res.json();
-
-        if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'analyse');
-
-        // Marquer l'essai comme utilisé
-        localStorage.setItem('audilix_essai_utilise', '1');
-
-        // Afficher les résultats
-        afficherResultats(data);
-
+        if (data.url) { window.location.href = data.url; }
+        else throw new Error(data.error || 'Erreur');
     } catch(e) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('zone-upload').style.display = 'block';
-        alert('Erreur : ' + e.message + '\n\nAssurez-vous que votre document contient du texte lisible.');
+        document.getElementById('chargement').classList.remove('actif');
+        alert('Une erreur est survenue. Veuillez réessayer.');
     }
 }
 
-function afficherResultats(data) {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('resultats').style.display = 'block';
-
-    var score = data.score || 50;
-    var problemes = data.problemes || [];
-    var positifs = data.points_positifs || [];
-    var resume = data.resume || '';
-
-    // Score couleur
-    var cercle = document.getElementById('score-cercle');
-    var couleur = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
-    cercle.style.borderColor = couleur;
-    document.getElementById('score-num').style.color = couleur;
-    document.getElementById('score-num').textContent = score;
-
-    // Titre selon score
-    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques — action requise';
-    document.getElementById('score-titre').textContent = titre;
-    document.getElementById('score-resume').textContent = resume;
-
-    // Compteurs
-    var critiques = problemes.filter(function(p) { return p.gravite === 'critique'; });
-    var importants = problemes.filter(function(p) { return p.gravite === 'important'; });
-    var mineurs = problemes.filter(function(p) { return p.gravite === 'mineur'; });
-    document.getElementById('nb-critiques').textContent = critiques.length;
-    document.getElementById('nb-importants').textContent = importants.length;
-    document.getElementById('nb-mineurs').textContent = mineurs.length;
-    document.getElementById('badge-total').textContent = problemes.length + ' problème(s)';
-
-    // Afficher 2 premiers problèmes
-    var visibles = document.getElementById('problemes-visibles');
-    var shown = problemes.slice(0, 2);
-    shown.forEach(function(p) {
-        var el = document.createElement('div');
-        el.className = 'probleme-item';
-        el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
-            + '<div><div class="probleme-titre">' + (p.titre || '') + '</div>'
-            + '<div class="probleme-desc">' + (p.description || '') + '</div></div>';
-        visibles.appendChild(el);
-    });
-
-    // Problèmes bloqués (le reste)
-    if (problemes.length > 2) {
-        var bloqueEl = document.getElementById('problemes-flous');
-        var bloques = problemes.slice(2);
-        bloques.forEach(function(p) {
-            var el = document.createElement('div');
-            el.className = 'probleme-item';
-            el.style.marginBottom = '10px';
-            el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
-                + '<div><div class="probleme-titre">' + (p.titre || '') + '</div></div>';
-            bloqueEl.appendChild(el);
-        });
-        document.getElementById('bloc-bloque').style.display = 'block';
-    }
-
-    // CTA urgence selon score
-    var tunnel = document.getElementById('tunnel-cta');
-    if (score >= 70) {
-        tunnel.querySelector('.tunnel-urgence').textContent = '📋 ' + problemes.length + ' point(s) à optimiser';
-        tunnel.querySelector('h2').innerHTML = 'Obtenez les corrections complètes<br>et <em>maintenez votre conformité</em>';
-    } else if (score < 40) {
-        tunnel.querySelector('.tunnel-urgence').textContent = '🚨 Risques critiques — action urgente';
-        tunnel.querySelector('h2').innerHTML = 'Votre entreprise est exposée.<br><em>Protégez-vous maintenant.</em>';
-    }
-
-    // Points positifs
-    if (positifs && positifs.length > 0) {
-        var listEl = document.getElementById('positifs-liste');
-        positifs.forEach(function(p) {
-            var el = document.createElement('div');
-            el.className = 'positif-item';
-            el.textContent = p;
-            listEl.appendChild(el);
-        });
-        document.getElementById('positifs-section').style.display = 'block';
-    }
-
-    // Scroll vers résultats
-    document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function recommencer() {
-    document.getElementById('resultats').style.display = 'none';
-    document.getElementById('zone-upload').style.display = 'block';
-    document.getElementById('problemes-visibles').innerHTML = '';
-    document.getElementById('problemes-flous').innerHTML = '';
-    document.getElementById('positifs-liste').innerHTML = '';
-    document.getElementById('bloc-bloque').style.display = 'none';
-    document.getElementById('positifs-section').style.display = 'none';
-    document.getElementById('btn-analyser').style.display = 'none';
-    document.getElementById('file-selected').classList.remove('visible');
-    document.getElementById('file-input').value = '';
-    fichierActuel = null;
-    // Reset loading steps
-    ['step-1','step-2','step-3','step-4'].forEach(function(s, i) {
-        var el = document.getElementById(s);
-        el.classList.toggle('active', i === 0);
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function tFaq(btn) {
+    btn.classList.toggle('ouvert');
+    btn.nextElementSibling.classList.toggle('ouvert');
 }
 </script>
+<script src="cookies.js"></script>
 </body>
 </html>
