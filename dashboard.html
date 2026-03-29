@@ -8,29 +8,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy:#1B3A7A; --navy-dark:#0F2456; --navy-mid:#2A4F9F;
-            --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6;
-            --creme:#FAF8F4; --blanc:#FFFFFF; --gris:#6B7280;
-            --bordure:rgba(27,58,122,0.09); --border:rgba(27,58,122,0.09);
-            --rouge:#ef4444; --orange:#f59e0b; --vert:#22c55e;
-            --sidebar:#0A1A3D;
+            --navy:#1B3A7A; --navy-dark:#0F2456; --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6;
+            --creme:#FAF8F4; --gris:#6B7280; --border:rgba(27,58,122,0.09);
+            --rouge:#ef4444; --orange:#f59e0b; --vert:#22c55e; --sidebar:#0A1A3D;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'DM Sans',sans-serif; background:var(--creme); color:var(--navy-dark); -webkit-font-smoothing:antialiased; display:flex; min-height:100vh; }
         h1,h2,h3 { font-family:'Playfair Display',serif; }
 
-        /* BARRE LATÉRALE */
+        /* SIDEBAR */
         .barre-lat { width:252px; flex-shrink:0; background:var(--sidebar); min-height:100vh; display:flex; flex-direction:column; position:fixed; left:0; top:0; bottom:0; z-index:50; }
         .lat-logo { padding:24px 20px; border-bottom:1px solid rgba(255,255,255,0.05); }
         .lat-logo a { display:flex; align-items:center; text-decoration:none; }
         .lat-logo img { height:28px; }
-        .lat-nav { flex:1; padding:16px 10px; }
+        .lat-nav { flex:1; padding:16px 10px; overflow-y:auto; }
         .nav-section { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.18); padding:0 10px; margin:18px 0 6px; }
         .nav-lien { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:5px; color:rgba(255,255,255,0.42); font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s; text-decoration:none; margin-bottom:2px; border:none; background:none; width:100%; font-family:'DM Sans',sans-serif; }
         .nav-lien:hover { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.75); }
         .nav-lien.actif { background:rgba(201,168,76,0.1); color:var(--gold); }
         .nav-lien svg { width:16px; height:16px; flex-shrink:0; }
-        .nav-badge { margin-left:auto; background:var(--rouge); color:white; font-size:9px; font-weight:700; padding:2px 6px; border-radius:40px; }
         .lat-bas { padding:16px 10px; border-top:1px solid rgba(255,255,255,0.05); }
         .plan-info { background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.14); border-radius:7px; padding:12px; margin-bottom:10px; }
         .plan-libelle { font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
@@ -48,7 +44,7 @@
         .btn-deconnexion { margin-left:auto; font-size:12px; color:rgba(255,255,255,0.2); cursor:pointer; padding:4px; transition:color 0.2s; background:none; border:none; }
         .btn-deconnexion:hover { color:var(--rouge); }
 
-        /* CONTENU PRINCIPAL */
+        /* MAIN */
         .principal { margin-left:252px; flex:1; min-height:100vh; }
         .topbar { background:white; border-bottom:1px solid var(--border); padding:0 36px; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
         .topbar-titre { font-size:16px; font-weight:600; color:var(--navy-dark); }
@@ -56,30 +52,25 @@
         .topbar-date { font-size:12px; color:var(--gris); }
         .btn-analyser { background:var(--gold); color:var(--navy-dark); padding:9px 18px; border-radius:4px; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
         .btn-analyser:hover { background:var(--gold-light); }
-
         .contenu { padding:32px 36px; }
 
-        /* BANNIÈRE ACCUEIL */
+        /* BANNIÈRE */
         .banniere { background:var(--navy-dark); border-radius:10px; padding:28px 32px; margin-bottom:24px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between; }
         .banniere::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
         .banniere-texte h2 { font-size:22px; font-weight:700; color:white; margin-bottom:4px; }
         .banniere-texte p { font-size:14px; color:rgba(255,255,255,0.38); }
-        .banniere-score { text-align:center; }
         .score-chiffre { font-family:'Playfair Display',serif; font-size:52px; font-weight:700; line-height:1; }
         .score-libelle { font-size:11px; color:rgba(255,255,255,0.32); text-transform:uppercase; letter-spacing:0.08em; margin-top:3px; }
 
-        /* STATISTIQUES */
+        /* STATS */
         .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
         .stat { background:white; border:1px solid var(--border); border-radius:8px; padding:20px; position:relative; overflow:hidden; }
         .stat::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
-        .stat.or::before { background:var(--gold); }
-        .stat.vert::before { background:var(--vert); }
-        .stat.orange::before { background:var(--orange); }
-        .stat.rouge::before { background:var(--rouge); }
+        .stat.or::before { background:var(--gold); } .stat.vert::before { background:var(--vert); }
+        .stat.orange::before { background:var(--orange); } .stat.rouge::before { background:var(--rouge); }
         .stat-valeur { font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:var(--navy-dark); line-height:1; margin-bottom:4px; }
         .stat-libelle { font-size:11px; font-weight:500; color:var(--gris); text-transform:uppercase; letter-spacing:0.07em; }
 
-        /* GRILLES */
         .grille-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
 
         /* CARTES */
@@ -90,7 +81,7 @@
         .carte-action:hover { color:var(--gold-light); }
         .carte-corps { padding:20px; }
 
-        /* ZONE UPLOAD */
+        /* UPLOAD */
         .zone-upload { border:2px dashed var(--border); border-radius:8px; padding:40px 24px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
         .zone-upload:hover, .zone-upload.survol { border-color:var(--gold); background:var(--gold-pale); }
         .zone-upload input[type="file"] { position:absolute; top:0; left:0; right:0; bottom:0; opacity:0; cursor:pointer; }
@@ -100,7 +91,6 @@
         .upload-formats { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
         .upload-format { background:var(--creme); border:1px solid var(--border); padding:3px 10px; border-radius:40px; font-size:11px; font-weight:500; color:var(--navy-dark); }
 
-        /* FICHIER SÉLECTIONNÉ */
         .fichier-selectionne { display:none; background:var(--gold-pale); border:1px solid var(--gold); border-radius:7px; padding:14px 16px; margin-bottom:14px; }
         .fichier-selectionne.visible { display:flex; align-items:center; gap:12px; }
         .fichier-icone { font-size:24px; flex-shrink:0; }
@@ -113,7 +103,7 @@
         .btn-lancer:hover { background:var(--gold); color:var(--navy-dark); }
         .btn-lancer:disabled { opacity:0.5; cursor:not-allowed; }
 
-        /* RÉSULTAT ANALYSE */
+        /* RÉSULTAT */
         .resultat-analyse { display:none; }
         .resultat-analyse.visible { display:block; }
         .resultat-entete { display:flex; align-items:center; gap:16px; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--border); }
@@ -140,28 +130,22 @@
         .positif-item { display:flex; gap:8px; font-size:13px; color:var(--navy-dark); margin-bottom:6px; }
         .positif-item::before { content:'✓'; color:var(--vert); font-size:11px; flex-shrink:0; margin-top:1px; }
 
-        /* LISTE ANALYSES */
+        /* LISTES */
         .analyse-ligne { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--border); }
         .analyse-ligne:last-child { border-bottom:none; }
         .analyse-type-icone { width:34px; height:34px; border-radius:7px; background:var(--gold-pale); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
         .analyse-nom { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:2px; }
         .analyse-date { font-size:11px; color:var(--gris); }
         .analyse-score { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; flex-shrink:0; }
-        .score-vert { color:var(--vert); }
-        .score-orange { color:var(--orange); }
-        .score-rouge { color:var(--rouge); }
-        .analyse-detail { width:28px; height:28px; background:var(--creme); border-radius:5px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; transition:background 0.2s; border:none; }
-        .analyse-detail:hover { background:var(--gold-pale); }
+        .score-vert { color:var(--vert); } .score-orange { color:var(--orange); } .score-rouge { color:var(--rouge); }
 
-        /* GÉNÉRATION DOCUMENTS */
+        /* DOCS */
         .doc-grille { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .doc-carte { background:var(--creme); border:1px solid var(--border); border-radius:7px; padding:14px; cursor:pointer; transition:all 0.2s; }
         .doc-carte:hover { border-color:var(--gold); background:var(--gold-pale); }
         .doc-icone { font-size:22px; margin-bottom:8px; }
         .doc-nom { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:3px; }
         .doc-desc { font-size:11px; color:var(--gris); }
-
-        /* DOCS GÉNÉRÉS */
         .doc-genere { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
         .doc-genere:last-child { border-bottom:none; }
         .doc-genere-icone { font-size:20px; flex-shrink:0; }
@@ -170,15 +154,15 @@
         .doc-genere-actions { margin-left:auto; display:flex; gap:6px; }
         .doc-btn-action { padding:5px 10px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; transition:all 0.2s; }
         .doc-btn-voir { background:var(--creme); color:var(--navy-dark); border:1px solid var(--border); }
-        .doc-btn-voir:hover { border-color:var(--navy); }
+        .doc-btn-voir:hover { border-color:var(--navy-dark); }
         .doc-btn-telecharger { background:var(--gold); color:var(--navy-dark); }
         .doc-btn-telecharger:hover { background:var(--gold-light); }
 
-        /* MODAL DOCUMENT */
+        /* MODAL */
         .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,36,86,0.65); z-index:1000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
         .modal-overlay.visible { display:flex; }
         .modal { background:white; border-radius:12px; padding:32px; max-width:680px; width:90%; max-height:85vh; overflow-y:auto; position:relative; }
-        .modal-fermer { position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; color:var(--gris); transition:color 0.2s; }
+        .modal-fermer { position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; color:var(--gris); }
         .modal-fermer:hover { color:var(--rouge); }
         .modal-titre { font-size:22px; font-weight:700; color:var(--navy-dark); margin-bottom:8px; }
         .modal-avert { background:var(--gold-pale); border:1px solid var(--gold); border-radius:6px; padding:10px 14px; font-size:12px; color:#8B6914; margin-bottom:16px; }
@@ -186,11 +170,11 @@
         .modal-actions { display:flex; gap:10px; margin-top:16px; }
         .modal-btn { padding:11px 22px; border-radius:5px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; transition:all 0.2s; }
         .modal-btn-copier { background:var(--creme); color:var(--navy-dark); border:1px solid var(--border); }
-        .modal-btn-copier:hover { border-color:var(--navy); }
+        .modal-btn-copier:hover { border-color:var(--navy-dark); }
         .modal-btn-telecharger { background:var(--gold); color:var(--navy-dark); }
         .modal-btn-telecharger:hover { background:var(--gold-light); }
 
-        /* ANALYSE EN COURS */
+        /* SPINNER */
         .analyse-en-cours { display:none; text-align:center; padding:40px 20px; }
         .analyse-en-cours.visible { display:block; }
         .spinner { width:48px; height:48px; border:3px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:tourner 0.8s linear infinite; margin:0 auto 16px; }
@@ -209,7 +193,7 @@
         .vide-desc { font-size:13px; color:var(--gris); }
 
         /* ASSISTANT */
-        .assistant-messages { max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+        .assistant-messages { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
         .ass-bot { background:var(--creme); border:1px solid var(--border); border-radius:9px 9px 9px 2px; padding:11px 13px; font-size:13px; line-height:1.6; color:var(--navy-dark); max-width:90%; }
         .ass-client { background:var(--navy-dark); color:white; border-radius:9px 9px 2px 9px; padding:11px 13px; font-size:13px; line-height:1.6; max-width:90%; align-self:flex-end; }
         .ass-saisie { display:flex; gap:8px; }
@@ -223,55 +207,39 @@
     </style>
 </head>
 <body>
-<a href="index.html" style="position:fixed;top:18px;left:18px;z-index:999;display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.10);border-radius:8px;padding:8px 14px;text-decoration:none;color:#1B3A7A;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 10px rgba(15,36,86,0.09);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 18px rgba(15,36,86,0.16)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(15,36,86,0.09)'">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-  Accueil
-</a>
 
-<!-- BARRE LATÉRALE -->
 <aside class="barre-lat">
-    <div class="lat-logo">
-        <a href="index.html"><img src="logo.png" alt="Audilix"></a>
-    </div>
+    <div class="lat-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
     <nav class="lat-nav">
         <div class="nav-section">Principal</div>
-        <button class="nav-lien actif" onclick="afficherPage('accueil', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Vue d'ensemble
+        <button class="nav-lien actif" id="nav-accueil" onclick="afficherPage('accueil',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Vue d'ensemble
         </button>
-        <button class="nav-lien" onclick="afficherPage('analyser', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            Analyser un document
+        <button class="nav-lien" id="nav-analyser" onclick="afficherPage('analyser',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Analyser un document
         </button>
-        <button class="nav-lien" onclick="afficherPage('historique', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Historique des analyses
+        <button class="nav-lien" id="nav-historique" onclick="afficherPage('historique',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Historique des analyses
         </button>
         <div class="nav-section">Documents</div>
-        <button class="nav-lien" onclick="afficherPage('generer', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            Générer un document
+        <button class="nav-lien" id="nav-generer" onclick="afficherPage('generer',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Générer un document
         </button>
-        <button class="nav-lien" onclick="afficherPage('mes-documents', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            Mes documents
+        <button class="nav-lien" id="nav-mes-documents" onclick="afficherPage('mes-documents',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Mes documents
         </button>
         <div class="nav-section">Assistance</div>
-        <button class="nav-lien" onclick="afficherPage('assistant', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Assistant conformité
+        <button class="nav-lien" id="nav-assistant" onclick="afficherPage('assistant',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Assistant conformité
         </button>
-        <button class="nav-lien" onclick="afficherPage('clauses', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Détection de clauses
+        <button class="nav-lien" id="nav-clauses" onclick="afficherPage('clauses',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Détection de clauses
         </button>
-        <button class="nav-lien" onclick="afficherPage('registre', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            Registre des traitements
+        <button class="nav-lien" id="nav-registre" onclick="afficherPage('registre',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Registre des traitements
         </button>
-        <button class="nav-lien" onclick="afficherPage('parametres', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Paramètres
+        <button class="nav-lien" id="nav-parametres" onclick="afficherPage('parametres',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres
         </button>
     </nav>
     <div class="lat-bas">
@@ -283,7 +251,7 @@
         </div>
         <a href="pricing.html" class="plan-upgrade">Changer de formule</a>
         <div class="utilisateur" style="margin-top:8px;">
-            <div class="user-avatar" id="avatar-utilisateur">U</div>
+            <div class="user-avatar" id="avatar-utilisateur">?</div>
             <div>
                 <div class="user-nom" id="nom-utilisateur">Chargement...</div>
                 <div class="user-email" id="email-utilisateur"></div>
@@ -293,31 +261,30 @@
     </div>
 </aside>
 
-<!-- CONTENU PRINCIPAL -->
 <main class="principal">
     <div class="topbar">
         <div class="topbar-titre" id="titre-page">Vue d'ensemble</div>
         <div class="topbar-droite">
             <span class="topbar-date" id="date-topbar"></span>
-            <button class="btn-analyser" onclick="afficherPage('analyser', null)">+ Analyser un document</button>
+            <button class="btn-analyser" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Analyser un document</button>
         </div>
     </div>
 
     <div class="contenu">
 
-        <!-- PAGE : VUE D'ENSEMBLE -->
+        <!-- VUE D'ENSEMBLE -->
         <div class="page active" id="page-accueil">
             <div class="banniere">
                 <div class="banniere-texte">
                     <h2>Bonjour, <span id="prenom-accueil">—</span> 👋</h2>
-                    <p id="banniere-sous">Voici l'état de la conformité de votre activité.</p>
+                    <p>Voici l'état de la conformité de votre activité.</p>
                 </div>
-                <div class="banniere-score">
+                <div style="text-align:center;">
                     <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.3);">—</div>
                     <div class="score-libelle">Score global / 100</div>
                 </div>
             </div>
-            <!-- Onboarding premier accès -->
+
             <div id="onboarding-banner" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:16px 20px;margin-bottom:20px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                 <div>
                     <div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">🚀 Commencez par analyser votre premier document</div>
@@ -325,241 +292,116 @@
                 </div>
                 <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
                     <button id="ob-btn-go" style="background:var(--gold);color:var(--navy-dark);border:none;padding:10px 18px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Analyser un document →</button>
-                    <button id="ob-btn-close" style="background:none;border:none;color:var(--gris);font-size:18px;cursor:pointer;padding:4px;">✕</button>
+                    <button id="ob-btn-close" style="background:none;border:none;color:var(--gris);font-size:20px;cursor:pointer;padding:4px;">✕</button>
                 </div>
             </div>
 
             <div class="stats">
-                <div class="stat or">
-                    <div class="stat-valeur" id="stat-score">—</div>
-                    <div class="stat-libelle">Score de conformité</div>
-                </div>
-                <div class="stat vert">
-                    <div class="stat-valeur" id="stat-analyses">0</div>
-                    <div class="stat-libelle">Analyses réalisées</div>
-                </div>
-                <div class="stat orange">
-                    <div class="stat-valeur" id="stat-problemes">0</div>
-                    <div class="stat-libelle">Problèmes détectés</div>
-                </div>
-                <div class="stat rouge">
-                    <div class="stat-valeur" id="stat-critiques">0</div>
-                    <div class="stat-libelle">Points critiques</div>
-                </div>
+                <div class="stat or"><div class="stat-valeur" id="stat-score">—</div><div class="stat-libelle">Score de conformité</div></div>
+                <div class="stat vert"><div class="stat-valeur" id="stat-analyses">0</div><div class="stat-libelle">Analyses réalisées</div></div>
+                <div class="stat orange"><div class="stat-valeur" id="stat-problemes">0</div><div class="stat-libelle">Problèmes détectés</div></div>
+                <div class="stat rouge"><div class="stat-valeur" id="stat-critiques">0</div><div class="stat-libelle">Points critiques</div></div>
             </div>
 
             <div class="grille-2">
                 <div class="carte">
                     <div class="carte-entete">
                         <div class="carte-titre">Analyses récentes</div>
-                        <button class="carte-action" onclick="afficherPage('historique', null)">Voir tout</button>
+                        <button class="carte-action" onclick="afficherPage('historique',document.getElementById('nav-historique'))">Voir tout</button>
                     </div>
-                    <div class="carte-corps">
-                        <div id="apercu-analyses">
-                            <div class="vide">
-                                <div class="vide-icone">📋</div>
-                                <div class="vide-titre">Aucune analyse</div>
-                                <div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="carte-corps"><div id="apercu-analyses"><div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div></div></div>
                 </div>
-
                 <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Recommandations prioritaires</div>
-                    </div>
-                    <div class="carte-corps">
-                        <div id="apercu-recos">
-                            <div class="vide">
-                                <div class="vide-icone">✅</div>
-                                <div class="vide-titre">Aucune recommandation</div>
-                                <div class="vide-desc">Analysez un document pour recevoir des recommandations personnalisées.</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="carte-entete"><div class="carte-titre">Recommandations prioritaires</div></div>
+                    <div class="carte-corps"><div id="apercu-recos"><div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div><div class="vide-desc">Analysez un document pour recevoir des recommandations.</div></div></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE : ANALYSER UN DOCUMENT -->
+        <!-- ANALYSER -->
         <div class="page" id="page-analyser">
             <div class="grille-2">
                 <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Déposer un document</div>
-                    </div>
+                    <div class="carte-entete"><div class="carte-titre">Déposer un document</div></div>
                     <div class="carte-corps">
                         <div class="fichier-selectionne" id="fichier-affiche">
                             <div class="fichier-icone">📄</div>
-                            <div>
-                                <div class="fichier-nom" id="fichier-nom"></div>
-                                <div class="fichier-taille" id="fichier-taille"></div>
-                            </div>
+                            <div><div class="fichier-nom" id="fichier-nom"></div><div class="fichier-taille" id="fichier-taille"></div></div>
                             <button class="fichier-suppr" onclick="supprimerFichier()">✕</button>
                         </div>
-
                         <div class="zone-upload" id="zone-upload" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')" ondrop="deposerFichier(event)">
                             <input type="file" id="input-fichier" accept=".pdf,.txt,.html,.doc,.docx" onchange="selectionnerFichier(this.files[0])">
                             <div class="upload-icone">📂</div>
                             <div class="upload-titre">Déposez votre document ici</div>
                             <div class="upload-sous">ou cliquez pour sélectionner un fichier</div>
-                            <div class="upload-formats">
-                                <span class="upload-format">PDF</span>
-                                <span class="upload-format">TXT</span>
-                                <span class="upload-format">HTML</span>
-                                <span class="upload-format">DOCX</span>
-                            </div>
+                            <div class="upload-formats"><span class="upload-format">PDF</span><span class="upload-format">TXT</span><span class="upload-format">HTML</span><span class="upload-format">DOCX</span></div>
                         </div>
-
-                        <button class="btn-lancer" id="btn-lancer" onclick="lancerAnalyse()" style="margin-top:14px;" disabled>
-                            Lancer l'analyse
-                        </button>
-                        <p style="font-size:11px;color:var(--gris);text-align:center;margin-top:8px;">Fichier max. 10 Mo · Analyse en moins de 30 secondes</p>
+                        <button class="btn-lancer" id="btn-lancer" onclick="lancerAnalyse()" style="margin-top:14px;" disabled>Lancer l'analyse</button>
+                        <p style="font-size:11px;color:var(--gris);text-align:center;margin-top:8px;">Fichier max. 10 Mo · Résultat en moins de 30 secondes</p>
                     </div>
                 </div>
-
-                <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Résultat de l'analyse</div>
-                    </div>
+                <div class="carte" id="carte-resultat-analyse">
+                    <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
                     <div class="carte-corps">
-                        <!-- État vide -->
-                        <div id="etat-vide-analyse" class="vide">
-                            <div class="vide-icone">🔍</div>
-                            <div class="vide-titre">En attente d'un document</div>
-                            <div class="vide-desc">Déposez un document à gauche pour lancer l'analyse de conformité.</div>
-                        </div>
-                        <!-- Chargement -->
-                        <div class="analyse-en-cours" id="chargement-analyse">
-                            <div class="spinner"></div>
-                            <h3>Analyse en cours...</h3>
-                            <p>Votre document est en cours d'analyse. Cela prend généralement moins de 30 secondes.</p>
-                        </div>
-                        <!-- Résultat -->
+                        <div id="etat-vide-analyse" class="vide"><div class="vide-icone">🔍</div><div class="vide-titre">En attente d'un document</div><div class="vide-desc">Déposez un document à gauche pour lancer l'analyse.</div></div>
+                        <div class="analyse-en-cours" id="chargement-analyse"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Votre document est en cours d'analyse. Moins de 30 secondes.</p></div>
                         <div class="resultat-analyse" id="resultat-zone">
                             <div class="resultat-entete">
-                                <div class="resultat-score-cercle" id="resultat-cercle">
-                                    <div class="resultat-score-num" id="resultat-score-num">—</div>
-                                    <div class="resultat-score-sur">/100</div>
-                                </div>
-                                <div class="resultat-info">
-                                    <h3 id="resultat-type">—</h3>
-                                    <p id="resultat-resume">—</p>
-                                </div>
+                                <div class="resultat-score-cercle" id="resultat-cercle"><div class="resultat-score-num" id="resultat-score-num">—</div><div class="resultat-score-sur">/100</div></div>
+                                <div class="resultat-info"><h3 id="resultat-type">—</h3><p id="resultat-resume">—</p></div>
                             </div>
-
-                            <div class="resultat-section" id="section-problemes">
-                                <div class="resultat-section-titre" style="color:var(--rouge);">Problèmes détectés</div>
-                                <div id="liste-problemes"></div>
-                            </div>
-
-                            <div class="resultat-section" id="section-positifs">
-                                <div class="resultat-section-titre" style="color:var(--vert);">Points positifs</div>
-                                <div id="liste-positifs"></div>
-                            </div>
-
-                            <div class="resultat-section" id="section-recos">
-                                <div class="resultat-section-titre" style="color:var(--gold);">Recommandations</div>
-                                <div id="liste-recos"></div>
-                            </div>
+                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--rouge);">Problèmes détectés</div><div id="liste-problemes"></div></div>
+                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--vert);">Points positifs</div><div id="liste-positifs"></div></div>
+                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--gold);">Recommandations</div><div id="liste-recos"></div></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE : HISTORIQUE -->
+        <!-- HISTORIQUE -->
         <div class="page" id="page-historique">
             <div class="carte">
                 <div class="carte-entete">
                     <div class="carte-titre">Toutes mes analyses</div>
-                    <button class="carte-action" onclick="afficherPage('analyser', null)">+ Nouvelle analyse</button>
+                    <button class="carte-action" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Nouvelle analyse</button>
                 </div>
-                <div class="carte-corps">
-                    <div id="liste-historique">
-                        <div class="vide">
-                            <div class="vide-icone">📋</div>
-                            <div class="vide-titre">Aucune analyse pour l'instant</div>
-                            <div class="vide-desc">Vos analyses apparaîtront ici après avoir déposé votre premier document.</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="carte-corps"><div id="liste-historique"><div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div></div></div>
             </div>
         </div>
 
-        <!-- PAGE : GÉNÉRER UN DOCUMENT -->
+        <!-- GÉNÉRER UN DOCUMENT -->
         <div class="page" id="page-generer">
             <div class="grille-2">
                 <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Choisir un document à générer</div>
-                    </div>
+                    <div class="carte-entete"><div class="carte-titre">Choisir un document à générer</div></div>
                     <div class="carte-corps">
                         <div class="doc-grille" style="margin-bottom:20px;grid-template-columns:1fr 1fr 1fr;">
-                            <div class="doc-carte" onclick="choisirTypeDoc('confidentialite', this)">
-                                <div class="doc-icone">🔐</div>
-                                <div class="doc-nom">Politique de confidentialité</div>
-                                <div class="doc-desc">Conforme au RGPD</div>
-                            </div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('mentions', this)">
-                                <div class="doc-icone">⚖️</div>
-                                <div class="doc-nom">Mentions légales</div>
-                                <div class="doc-desc">Obligatoires en France</div>
-                            </div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cookies', this)">
-                                <div class="doc-icone">🍪</div>
-                                <div class="doc-nom">Politique de cookies</div>
-                                <div class="doc-desc">Directive ePrivacy</div>
-                            </div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cgu', this)">
-                                <div class="doc-icone">📝</div>
-                                <div class="doc-nom">CGU / CGV</div>
-                                <div class="doc-desc">Conditions générales</div>
-                            </div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('nda', this)">
-                                <div class="doc-icone">🤝</div>
-                                <div class="doc-nom">NDA</div>
-                                <div class="doc-desc">Accord de confidentialité</div>
-                            </div>
-                            <div class="doc-carte" onclick="afficherPage('registre', null)" style="border-color:var(--gold);background:var(--gold-pale);">
-                                <div class="doc-icone">📋</div>
-                                <div class="doc-nom">Registre RGPD</div>
-                                <div class="doc-desc">Article 30 RGPD</div>
-                            </div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('confidentialite',this)"><div class="doc-icone">🔐</div><div class="doc-nom">Politique de confidentialité</div><div class="doc-desc">Conforme au RGPD</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('mentions',this)"><div class="doc-icone">⚖️</div><div class="doc-nom">Mentions légales</div><div class="doc-desc">Obligatoires en France</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('cookies',this)"><div class="doc-icone">🍪</div><div class="doc-nom">Politique de cookies</div><div class="doc-desc">Directive ePrivacy</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('cgu',this)"><div class="doc-icone">📝</div><div class="doc-nom">CGU / CGV</div><div class="doc-desc">Conditions générales</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('nda',this)"><div class="doc-icone">🤝</div><div class="doc-nom">NDA</div><div class="doc-desc">Accord de confidentialité</div></div>
+                            <div class="doc-carte" onclick="afficherPage('registre',document.getElementById('nav-registre'))" style="border-color:var(--gold);background:var(--gold-pale);"><div class="doc-icone">📋</div><div class="doc-nom">Registre RGPD</div><div class="doc-desc">Article 30 RGPD</div></div>
                         </div>
-
                         <div style="margin-bottom:14px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Votre entreprise</label>
-                            <input type="text" id="gen-entreprise" placeholder="Nom ou description de votre entreprise" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;">
+                            <input type="text" id="gen-entreprise" placeholder="Nom ou description de votre entreprise" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
                         </div>
                         <div style="margin-bottom:16px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
-                            <input type="text" id="gen-activite" placeholder="Ex : e-commerce, conseil, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;">
+                            <input type="text" id="gen-activite" placeholder="Ex : e-commerce, conseil, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
                         </div>
-                        <button class="btn-lancer" id="btn-generer" onclick="genererDocument()" disabled>
-                            Générer le document
-                        </button>
+                        <button class="btn-lancer" id="btn-generer" onclick="genererDocument()" disabled>Générer le document</button>
                     </div>
                 </div>
-
                 <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Aperçu du document</div>
-                    </div>
+                    <div class="carte-entete"><div class="carte-titre">Aperçu du document</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-doc" class="vide">
-                            <div class="vide-icone">📄</div>
-                            <div class="vide-titre">Sélectionnez un type de document</div>
-                            <div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div>
-                        </div>
-                        <div class="analyse-en-cours" id="chargement-doc">
-                            <div class="spinner"></div>
-                            <h3>Génération en cours...</h3>
-                            <p>Votre document est en cours de rédaction. Cela prend quelques secondes.</p>
-                        </div>
+                        <div id="etat-vide-doc" class="vide"><div class="vide-icone">📄</div><div class="vide-titre">Sélectionnez un type de document</div><div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div></div>
+                        <div class="analyse-en-cours" id="chargement-doc"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre document est en cours de rédaction.</p></div>
                         <div id="apercu-doc" style="display:none;">
-                            <div class="modal-avert">⚠️ Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu juridique, faites-le valider par un professionnel du droit.</div>
+                            <div class="modal-avert">⚠️ Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.</div>
                             <div class="modal-contenu" id="contenu-doc-apercu" style="max-height:340px;overflow-y:auto;font-size:12px;"></div>
                             <div class="modal-actions">
                                 <button class="modal-btn modal-btn-copier" onclick="copierDocument()">Copier le texte</button>
@@ -571,26 +413,18 @@
             </div>
         </div>
 
-        <!-- PAGE : MES DOCUMENTS -->
+        <!-- MES DOCUMENTS -->
         <div class="page" id="page-mes-documents">
             <div class="carte">
                 <div class="carte-entete">
                     <div class="carte-titre">Documents générés</div>
-                    <button class="carte-action" onclick="afficherPage('generer', null)">+ Nouveau document</button>
+                    <button class="carte-action" onclick="afficherPage('generer',document.getElementById('nav-generer'))">+ Nouveau document</button>
                 </div>
-                <div class="carte-corps">
-                    <div id="liste-mes-documents">
-                        <div class="vide">
-                            <div class="vide-icone">📁</div>
-                            <div class="vide-titre">Aucun document généré</div>
-                            <div class="vide-desc">Vos documents apparaîtront ici après leur génération.</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="carte-corps"><div id="liste-mes-documents"><div class="vide"><div class="vide-icone">📁</div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici après leur génération.</div></div></div></div>
             </div>
         </div>
 
-        <!-- PAGE : ASSISTANT -->
+        <!-- ASSISTANT -->
         <div class="page" id="page-assistant">
             <div class="carte" style="max-width:720px;">
                 <div class="carte-entete">
@@ -600,7 +434,7 @@
                 <div class="carte-corps">
                     <p style="font-size:13px;color:var(--gris);margin-bottom:16px;">Posez vos questions sur la conformité réglementaire, le RGPD, vos documents ou le résultat de vos analyses.</p>
                     <div class="assistant-messages" id="messages-assistant">
-                        <div class="ass-bot">Bonjour. Je suis votre assistant conformité Audilix. Je peux répondre à vos questions sur le RGPD, vos obligations légales, ou vous aider à comprendre un résultat d'analyse.</div>
+                        <div class="ass-bot">Bonjour. Je suis votre assistant conformité Audilix. Posez-moi vos questions sur le RGPD, vos obligations légales, ou demandez-moi d'expliquer un résultat d'analyse.</div>
                     </div>
                     <div class="ass-saisie">
                         <input type="text" id="champ-assistant" class="ass-champ" placeholder="Votre question...">
@@ -616,13 +450,11 @@
             </div>
         </div>
 
-        <!-- PAGE : DÉTECTION CLAUSES -->
+        <!-- CLAUSES -->
         <div class="page" id="page-clauses">
             <div class="grille-2">
                 <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Déposer un contrat à analyser</div>
-                    </div>
+                    <div class="carte-entete"><div class="carte-titre">Déposer un contrat à analyser</div></div>
                     <div class="carte-corps">
                         <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Déposez un contrat pour identifier les clauses abusives, illégales ou déséquilibrées selon le droit français et européen.</p>
                         <div class="fichier-selectionne" id="fichier-clause-affiche">
@@ -642,34 +474,26 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-clauses" class="vide">
-                            <div class="vide-icone">🔍</div>
-                            <div class="vide-titre">En attente d'un contrat</div>
-                            <div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div>
-                        </div>
-                        <div class="analyse-en-cours" id="chargement-clauses">
-                            <div class="spinner"></div>
-                            <h3>Analyse en cours...</h3>
-                            <p>Chaque clause de votre contrat est examinée en détail.</p>
-                        </div>
+                        <div id="etat-vide-clauses" class="vide"><div class="vide-icone">🔍</div><div class="vide-titre">En attente d'un contrat</div><div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div></div>
+                        <div class="analyse-en-cours" id="chargement-clauses"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Chaque clause est examinée en détail.</p></div>
                         <div id="resultat-clauses" style="display:none;"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE : REGISTRE RGPD -->
+        <!-- REGISTRE -->
         <div class="page" id="page-registre">
             <div class="grille-2">
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Générer votre registre des traitements</div></div>
                     <div class="carte-corps">
                         <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Renseignez votre activité pour obtenir votre registre personnalisé.</p>
-                        <div class="champ-groupe" style="margin-bottom:14px;">
+                        <div style="margin-bottom:14px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise</label>
                             <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
                         </div>
-                        <div class="champ-groupe" style="margin-bottom:16px;">
+                        <div style="margin-bottom:16px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
                             <input type="text" id="reg-activite" placeholder="Ex : e-commerce, conseil RH, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
                         </div>
@@ -679,23 +503,15 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Votre registre des traitements</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-registre" class="vide">
-                            <div class="vide-icone">📋</div>
-                            <div class="vide-titre">Registre non généré</div>
-                            <div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div>
-                        </div>
-                        <div class="analyse-en-cours" id="chargement-registre">
-                            <div class="spinner"></div>
-                            <h3>Génération en cours...</h3>
-                            <p>Votre registre des traitements est en cours de génération.</p>
-                        </div>
+                        <div id="etat-vide-registre" class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Registre non généré</div><div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div></div>
+                        <div class="analyse-en-cours" id="chargement-registre"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre registre est en cours de génération.</p></div>
                         <div id="resultat-registre" style="display:none;"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE : PARAMÈTRES -->
+        <!-- PARAMÈTRES -->
         <div class="page" id="page-parametres">
             <div class="carte" style="max-width:560px;">
                 <div class="carte-entete"><div class="carte-titre">Paramètres du compte</div></div>
@@ -706,9 +522,9 @@
                     </div>
                     <div style="margin-bottom:18px;">
                         <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Formule actuelle</label>
-                        <div style="padding:12px 14px;background:var(--creme);border:1px solid var(--border);border-radius:6px;font-size:13px;font-weight:600;color:var(--navy-dark);" id="param-plan">—</div>
+                        <div id="param-plan" style="padding:12px 14px;background:var(--creme);border:1px solid var(--border);border-radius:6px;font-size:13px;font-weight:600;color:var(--navy-dark);">—</div>
                     </div>
-                    <a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:11px 22px;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;">Changer de formule</a>
+                    <a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:11px 22px;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;">Changer de formule</a>
                 </div>
             </div>
         </div>
@@ -716,7 +532,7 @@
     </div>
 </main>
 
-<!-- MODAL VISUALISATION DOCUMENT -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-doc">
     <div class="modal">
         <button class="modal-fermer" onclick="fermerModal()">✕</button>
@@ -731,30 +547,34 @@
 </div>
 
 <script>
-const BACKEND = 'https://audilix-backend.onrender.com';
-let utilisateur = null;
-let fichierCourant = null;
-let typeDocChoisi = null;
-let docGenereContenu = '';
-let docGenereModalContenu = '';
-let assistantHistorique = [];
-let analysesCache = [];
-let docsCache = [];
+var BACKEND = 'https://audilix-backend.onrender.com';
+var utilisateur = null;
+var token = localStorage.getItem('audilix_token');
+var fichierCourant = null;
+var typeDocChoisi = null;
+var docGenereContenu = '';
+var docGenereModalContenu = '';
+var assistantHistorique = [];
+var analysesCache = [];
+var docsCache = [];
 
-// AUTH
-const token = localStorage.getItem('audilix_token');
-if (!token) { window.location.href = 'login.html'; }
-else {
-    try { utilisateur = JSON.parse(localStorage.getItem('audilix_user')); }
-    catch(e) { utilisateur = null; }
+// ── AUTH ──
+if (!token) {
+    window.location.href = 'login.html';
+} else {
+    try { utilisateur = JSON.parse(localStorage.getItem('audilix_user')); } catch(e) { utilisateur = null; }
     if (!utilisateur) { window.location.href = 'login.html'; }
     else { initialiserDashboard(); }
 }
 
+function authHeaders() { return { 'Authorization': 'Bearer ' + token }; }
+function jsonHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
+
 function initialiserDashboard() {
-    var prenom = utilisateur.firstname || 'Client';
+    var prenom = utilisateur.firstname || utilisateur.prenom || utilisateur.nom || 'Client';
     document.getElementById('prenom-accueil').textContent = prenom;
-    document.getElementById('nom-utilisateur').textContent = (utilisateur.firstname || '') + ' ' + (utilisateur.lastname || '');
+    var nomComplet = ((utilisateur.firstname || utilisateur.prenom || '') + ' ' + (utilisateur.lastname || utilisateur.nom || '')).trim();
+    document.getElementById('nom-utilisateur').textContent = nomComplet || prenom;
     document.getElementById('email-utilisateur').textContent = utilisateur.email || '';
     document.getElementById('avatar-utilisateur').textContent = prenom.charAt(0).toUpperCase();
 
@@ -769,18 +589,17 @@ function initialiserDashboard() {
     document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
     chargerDonnees();
-    // Show onboarding on first visit
+
+    // Onboarding
     if (!localStorage.getItem('audilix_onboarded')) {
         var ob = document.getElementById('onboarding-banner');
         if (ob) ob.style.display = 'flex';
-        var obGo = document.getElementById('ob-btn-go');
-        if (obGo) obGo.addEventListener('click', function() {
+        document.getElementById('ob-btn-go').addEventListener('click', function() {
             ob.style.display = 'none';
             localStorage.setItem('audilix_onboarded', '1');
-            afficherPage('analyser', null);
+            afficherPage('analyser', document.getElementById('nav-analyser'));
         });
-        var obClose = document.getElementById('ob-btn-close');
-        if (obClose) obClose.addEventListener('click', function() {
+        document.getElementById('ob-btn-close').addEventListener('click', function() {
             ob.style.display = 'none';
             localStorage.setItem('audilix_onboarded', '1');
         });
@@ -790,102 +609,73 @@ function initialiserDashboard() {
 async function chargerDonnees() {
     if (!utilisateur || !utilisateur.id) return;
     try {
-        // Charger analyses
-        var r1 = await fetch(BACKEND + '/api/analyses/' + utilisateur.id);
-        analysesCache = await r1.json();
-        if (!Array.isArray(analysesCache)) analysesCache = [];
+        var r1 = await fetch(BACKEND + '/api/analyses/' + utilisateur.id, { headers: authHeaders() });
+        if (r1.ok) { analysesCache = await r1.json(); if (!Array.isArray(analysesCache)) analysesCache = []; }
 
-        // Charger documents générés
-        var r2 = await fetch(BACKEND + '/api/documents/' + utilisateur.id);
-        docsCache = await r2.json();
-        if (!Array.isArray(docsCache)) docsCache = [];
+        var r2 = await fetch(BACKEND + '/api/documents/' + utilisateur.id, { headers: authHeaders() });
+        if (r2.ok) { docsCache = await r2.json(); if (!Array.isArray(docsCache)) docsCache = []; }
 
         mettreAJourStats();
         afficherApercuAnalyses();
         afficherHistorique();
         afficherMesDocuments();
         mettreAJourCompteurPlan();
-    } catch(e) {
-        console.error('Erreur chargement:', e);
-    }
+    } catch(e) { console.error('Erreur chargement données:', e); }
 }
 
 function mettreAJourStats() {
     document.getElementById('stat-analyses').textContent = analysesCache.length;
-
     if (analysesCache.length > 0) {
-        var dernierScore = analysesCache[0].score || 0;
-        var couleurScore = dernierScore >= 70 ? 'var(--vert)' : dernierScore >= 40 ? 'var(--orange)' : 'var(--rouge)';
-        document.getElementById('score-global').textContent = dernierScore;
-        document.getElementById('score-global').style.color = couleurScore;
-        document.getElementById('stat-score').textContent = dernierScore;
+        var s = analysesCache[0].score || 0;
+        var col = s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)';
+        document.getElementById('score-global').textContent = s;
+        document.getElementById('score-global').style.color = col;
+        document.getElementById('stat-score').textContent = s;
     }
-
-    // Compter problèmes
-    var totalProblemes = 0, totalCritiques = 0;
+    var totalP = 0, totalC = 0;
     analysesCache.forEach(function(a) {
         if (a.problemes && Array.isArray(a.problemes)) {
-            totalProblemes += a.problemes.length;
-            totalCritiques += a.problemes.filter(function(p) { return p.gravite === 'critique'; }).length;
+            totalP += a.problemes.length;
+            totalC += a.problemes.filter(function(p) { return p.gravite === 'critique'; }).length;
         }
     });
-    document.getElementById('stat-problemes').textContent = totalProblemes;
-    document.getElementById('stat-critiques').textContent = totalCritiques;
+    document.getElementById('stat-problemes').textContent = totalP;
+    document.getElementById('stat-critiques').textContent = totalC;
 }
 
 function mettreAJourCompteurPlan() {
     var plan = utilisateur.plan || 'starter';
-    var limites = { starter:10, business:-1, expert:-1 };
-    var limite = limites[plan] || 10;
+    var limite = plan === 'starter' ? 10 : -1;
     var now = new Date();
-    var debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
-    var nbMois = analysesCache.filter(function(a) { return new Date(a.created_at) >= debutMois; }).length;
-
+    var debut = new Date(now.getFullYear(), now.getMonth(), 1);
+    var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
     if (limite === -1) {
-        document.getElementById('compteur-analyses').textContent = nbMois + ' analyse(s) ce mois — illimité';
-        document.getElementById('jauge-analyses').style.width = '15%';
+        document.getElementById('compteur-analyses').textContent = nb + ' analyse(s) ce mois — illimité';
+        document.getElementById('jauge-analyses').style.width = '10%';
     } else {
-        var pct = Math.min(100, Math.round(nbMois / limite * 100));
-        document.getElementById('compteur-analyses').textContent = nbMois + '/' + limite + ' analyses ce mois';
-        document.getElementById('jauge-analyses').style.width = pct + '%';
+        document.getElementById('compteur-analyses').textContent = nb + '/' + limite + ' analyses ce mois';
+        document.getElementById('jauge-analyses').style.width = Math.min(100, Math.round(nb / limite * 100)) + '%';
     }
 }
 
-function scoreClasse(score) {
-    if (score >= 70) return 'score-vert';
-    if (score >= 40) return 'score-orange';
-    return 'score-rouge';
-}
-
-function scoreCouleur(score) {
-    if (score >= 70) return 'var(--vert)';
-    if (score >= 40) return 'var(--orange)';
-    return 'var(--rouge)';
-}
+function scoreClasse(s) { return s >= 70 ? 'score-vert' : s >= 40 ? 'score-orange' : 'score-rouge'; }
+function scoreCouleur(s) { return s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)'; }
 
 function afficherApercuAnalyses() {
     var zone = document.getElementById('apercu-analyses');
     var recos = document.getElementById('apercu-recos');
-
     if (analysesCache.length === 0) {
         zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div>';
-        recos.innerHTML = '<div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div><div class="vide-desc">Vos recommandations apparaîtront ici après analyse.</div></div>';
+        recos.innerHTML = '<div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div></div>';
         return;
     }
-
-    var html = analysesCache.slice(0, 4).map(function(a) {
+    zone.innerHTML = analysesCache.slice(0,4).map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'short',year:'numeric'});
         return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' — ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
     }).join('');
-    zone.innerHTML = html;
-
-    // Recommandations de la dernière analyse
-    var derniere = analysesCache[0];
-    if (derniere && derniere.recommandations && derniere.recommandations.length > 0) {
-        var recoHtml = derniere.recommandations.slice(0, 4).map(function(r) {
-            return '<div class="reco-item">' + r + '</div>';
-        }).join('');
-        recos.innerHTML = recoHtml;
+    var d = analysesCache[0];
+    if (d && d.recommandations && d.recommandations.length > 0) {
+        recos.innerHTML = d.recommandations.slice(0,4).map(function(r) { return '<div class="reco-item">' + r + '</div>'; }).join('');
     } else {
         recos.innerHTML = '<div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div></div>';
     }
@@ -893,10 +683,7 @@ function afficherApercuAnalyses() {
 
 function afficherHistorique() {
     var zone = document.getElementById('liste-historique');
-    if (analysesCache.length === 0) {
-        zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>';
-        return;
-    }
+    if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = analysesCache.map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
         return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' — ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
@@ -905,37 +692,43 @@ function afficherHistorique() {
 
 function afficherMesDocuments() {
     var zone = document.getElementById('liste-mes-documents');
-    if (docsCache.length === 0) {
-        zone.innerHTML = '<div class="vide"><div class="vide-icone">📁</div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici.</div></div>';
-        return;
-    }
+    if (docsCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone">📁</div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = docsCache.map(function(d) {
         var date = new Date(d.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="doc-genere"><div class="doc-genere-icone">📄</div><div style="flex:1"><div class="doc-genere-titre">' + (d.titre||d.type_document) + '</div><div class="doc-genere-date">' + date + '</div></div><div class="doc-genere-actions"><button class="doc-btn-action doc-btn-voir" onclick="voirDocument(' + JSON.stringify(d).replace(/"/g, '&quot;') + ')">Voir</button><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(d.contenu||'').replace(/"/g, '&quot;') + ', ' + JSON.stringify(d.titre||'document').replace(/"/g, '&quot;') + ')">Télécharger</button></div></div>';
+        return '<div class="doc-genere"><div class="doc-genere-icone">📄</div><div style="flex:1"><div class="doc-genere-titre">' + (d.titre||d.type_document||'Document') + '</div><div class="doc-genere-date">' + date + '</div></div><div class="doc-genere-actions"><button class="doc-btn-action doc-btn-voir" onclick=\'voirDocument(' + JSON.stringify(JSON.stringify(d)) + ')\'>Voir</button><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(d.contenu||'').replace(/'/g,'&#39;') + ', \'' + (d.titre||'document').replace(/'/g,'&#39;') + '\')">Télécharger</button></div></div>';
     }).join('');
 }
 
-// NAVIGATION
-var titresPages = { accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses", generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité", clauses:"Détection de clauses abusives", registre:"Registre des traitements RGPD", parametres:"Paramètres" };
+// ── NAVIGATION ──
+var titresPages = {
+    accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses",
+    generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité",
+    clauses:"Détection de clauses", registre:"Registre des traitements RGPD", parametres:"Paramètres"
+};
 
-function afficherPage(id, btnClique) {
+function afficherPage(id, btn) {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     var page = document.getElementById('page-' + id);
     if (page) page.classList.add('active');
     document.getElementById('titre-page').textContent = titresPages[id] || id;
     document.querySelectorAll('.nav-lien').forEach(function(l) { l.classList.remove('actif'); });
-    if (btnClique) btnClique.classList.add('actif');
+    if (btn) {
+        btn.classList.add('actif');
+    } else {
+        var navBtn = document.getElementById('nav-' + id);
+        if (navBtn) navBtn.classList.add('actif');
+    }
+    window.scrollTo(0, 0);
 }
 
-// UPLOAD
+// ── UPLOAD ANALYSE ──
 function selectionnerFichier(fichier) {
     if (!fichier) return;
     fichierCourant = fichier;
     document.getElementById('zone-upload').style.display = 'none';
-    var affiche = document.getElementById('fichier-affiche');
-    affiche.classList.add('visible');
+    document.getElementById('fichier-affiche').classList.add('visible');
     document.getElementById('fichier-nom').textContent = fichier.name;
-    document.getElementById('fichier-taille').textContent = (fichier.size / 1024).toFixed(0) + ' Ko';
+    document.getElementById('fichier-taille').textContent = (fichier.size/1024).toFixed(0) + ' Ko';
     document.getElementById('btn-lancer').disabled = false;
 }
 
@@ -945,25 +738,20 @@ function supprimerFichier() {
     document.getElementById('fichier-affiche').classList.remove('visible');
     document.getElementById('input-fichier').value = '';
     document.getElementById('btn-lancer').disabled = true;
-    reinitialiserResultat();
-}
-
-function deposerFichier(e) {
-    e.preventDefault();
-    document.getElementById('zone-upload').classList.remove('survol');
-    var fichier = e.dataTransfer.files[0];
-    if (fichier) selectionnerFichier(fichier);
-}
-
-function reinitialiserResultat() {
     document.getElementById('etat-vide-analyse').style.display = 'block';
     document.getElementById('chargement-analyse').classList.remove('visible');
     document.getElementById('resultat-zone').classList.remove('visible');
 }
 
+function deposerFichier(e) {
+    e.preventDefault();
+    document.getElementById('zone-upload').classList.remove('survol');
+    var f = e.dataTransfer.files[0];
+    if (f) selectionnerFichier(f);
+}
+
 async function lancerAnalyse() {
     if (!fichierCourant || !utilisateur) return;
-
     document.getElementById('etat-vide-analyse').style.display = 'none';
     document.getElementById('chargement-analyse').classList.add('visible');
     document.getElementById('resultat-zone').classList.remove('visible');
@@ -974,26 +762,14 @@ async function lancerAnalyse() {
     formData.append('planUtilisateur', utilisateur.plan || 'starter');
 
     try {
-        var res = await fetch(BACKEND + '/api/analyser-document', { method:'POST', body:formData });
+        var res = await fetch(BACKEND + '/api/analyser-document', { method:'POST', headers: authHeaders(), body: formData });
         var data = await res.json();
-
         document.getElementById('chargement-analyse').classList.remove('visible');
 
         if (!res.ok) {
             if (data.limitAtteinte) {
-                document.getElementById('etat-vide-analyse').style.display = 'none';
-                document.getElementById('chargement-analyse').classList.remove('visible');
-                document.getElementById('resultat-zone').classList.remove('visible');
-                // Show upgrade prompt
-                var zone = document.querySelector('#page-analyser .carte:last-child .carte-corps');
-                zone.innerHTML = '<div style="text-align:center;padding:40px 20px;">'
-                    + '<div style="font-size:36px;margin-bottom:16px;">📊</div>'
-                    + '<div style="font-family:Playfair Display,serif;font-size:20px;font-weight:700;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</div>'
-                    + '<p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.<br>Vos documents en attente restent non vérifiés.</p>'
-                    + '<p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p>'
-                    + '<a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;">Passer à Business — illimité →</a>'
-                    + '<p style="font-size:11px;color:var(--gris);margin-top:12px;">Sans engagement · Accès immédiat</p>'
-                    + '</div>';
+                var corps = document.querySelector('#carte-resultat-analyse .carte-corps');
+                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business — illimité →</a></div>';
             } else {
                 alert(data.error || 'Erreur lors de l\'analyse');
                 document.getElementById('etat-vide-analyse').style.display = 'block';
@@ -1002,61 +778,37 @@ async function lancerAnalyse() {
         }
 
         afficherResultatAnalyse(data);
-
-        // Recharger les données
         await chargerDonnees();
-
     } catch(e) {
         document.getElementById('chargement-analyse').classList.remove('visible');
         document.getElementById('etat-vide-analyse').style.display = 'block';
-        alert('Erreur de connexion. Veuillez réessayer.');
+        alert('Erreur de connexion. Vérifiez votre connexion et réessayez.');
     }
 }
 
 function afficherResultatAnalyse(data) {
     var score = data.score || 0;
     var couleur = scoreCouleur(score);
-
-    var cercle = document.getElementById('resultat-cercle');
-    cercle.style.borderColor = couleur;
+    document.getElementById('resultat-cercle').style.borderColor = couleur;
     document.getElementById('resultat-score-num').textContent = score;
     document.getElementById('resultat-score-num').style.color = couleur;
-
     document.getElementById('resultat-type').textContent = data.type_document || data.nomFichier || 'Document';
     document.getElementById('resultat-resume').textContent = data.resume || '';
 
-    // Problèmes
     var problemes = data.problemes || [];
-    var htmlProblemes = '';
-    if (problemes.length > 0) {
-        htmlProblemes = problemes.map(function(p) {
-            var gravite = p.gravite || 'mineur';
-            return '<div class="probleme-item ' + gravite + '"><div class="probleme-point"></div><div><div class="probleme-titre">' + (p.titre||'') + '</div><div class="probleme-desc">' + (p.description||'') + '</div>' + (p.article_reference ? '<div class="probleme-ref">Réf : ' + p.article_reference + '</div>' : '') + '</div></div>';
-        }).join('');
-    } else {
-        htmlProblemes = '<div style="font-size:13px;color:var(--vert);">Aucun problème majeur détecté ✓</div>';
-    }
-    document.getElementById('liste-problemes').innerHTML = htmlProblemes;
+    document.getElementById('liste-problemes').innerHTML = problemes.length > 0
+        ? problemes.map(function(p) { return '<div class="probleme-item ' + (p.gravite||'mineur') + '"><div class="probleme-point"></div><div><div class="probleme-titre">' + (p.titre||'') + '</div><div class="probleme-desc">' + (p.description||'') + '</div>' + (p.article_reference ? '<div class="probleme-ref">Réf : ' + p.article_reference + '</div>' : '') + '</div></div>'; }).join('')
+        : '<div style="font-size:13px;color:var(--vert);">Aucun problème majeur détecté ✓</div>';
 
-    // Points positifs
-    var positifs = data.points_positifs || [];
-    document.getElementById('liste-positifs').innerHTML = positifs.map(function(p) {
-        return '<div class="positif-item">' + p + '</div>';
-    }).join('') || '<div style="font-size:13px;color:var(--gris);">—</div>';
-
-    // Recommandations
-    var recos = data.recommandations || [];
-    document.getElementById('liste-recos').innerHTML = recos.map(function(r) {
-        return '<div class="reco-item">' + r + '</div>';
-    }).join('') || '<div style="font-size:13px;color:var(--gris);">Aucune recommandation</div>';
-
+    document.getElementById('liste-positifs').innerHTML = (data.points_positifs||[]).map(function(p) { return '<div class="positif-item">' + p + '</div>'; }).join('') || '<div style="font-size:13px;color:var(--gris);">—</div>';
+    document.getElementById('liste-recos').innerHTML = (data.recommandations||[]).map(function(r) { return '<div class="reco-item">' + r + '</div>'; }).join('') || '<div style="font-size:13px;color:var(--gris);">Aucune recommandation</div>';
     document.getElementById('resultat-zone').classList.add('visible');
 }
 
-// GÉNÉRATION DOCUMENTS
+// ── GÉNÉRATION ──
 function choisirTypeDoc(type, el) {
     typeDocChoisi = type;
-    document.querySelectorAll('.doc-carte').forEach(function(c) { c.style.borderColor = ''; c.style.background = ''; });
+    document.querySelectorAll('.doc-carte').forEach(function(c) { c.style.borderColor=''; c.style.background=''; });
     el.style.borderColor = 'var(--gold)';
     el.style.background = 'var(--gold-pale)';
     document.getElementById('btn-generer').disabled = false;
@@ -1064,28 +816,20 @@ function choisirTypeDoc(type, el) {
 
 async function genererDocument() {
     if (!typeDocChoisi) return;
-    var entreprise = document.getElementById('gen-entreprise').value.trim();
-    var activite = document.getElementById('gen-activite').value.trim();
-
     document.getElementById('etat-vide-doc').style.display = 'none';
     document.getElementById('chargement-doc').classList.add('visible');
     document.getElementById('apercu-doc').style.display = 'none';
-
     try {
         var res = await fetch(BACKEND + '/api/generer-document', {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({ type:typeDocChoisi, entreprise:entreprise, activite:activite, userId:utilisateur.id })
+            method:'POST', headers: jsonHeaders(),
+            body: JSON.stringify({ type:typeDocChoisi, entreprise:document.getElementById('gen-entreprise').value.trim(), activite:document.getElementById('gen-activite').value.trim(), userId:utilisateur.id })
         });
         var data = await res.json();
         document.getElementById('chargement-doc').classList.remove('visible');
-
-        if (!res.ok) { alert(data.error || 'Erreur'); document.getElementById('etat-vide-doc').style.display = 'block'; return; }
-
+        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-doc').style.display='block'; return; }
         docGenereContenu = data.contenu || '';
         document.getElementById('contenu-doc-apercu').textContent = docGenereContenu;
         document.getElementById('apercu-doc').style.display = 'block';
-
         await chargerDonnees();
     } catch(e) {
         document.getElementById('chargement-doc').classList.remove('visible');
@@ -1094,92 +838,64 @@ async function genererDocument() {
     }
 }
 
-function copierDocument() {
-    navigator.clipboard.writeText(docGenereContenu).then(function() { alert('Texte copié !'); });
-}
-
-function telechargerDocument() {
-    telechargerDoc(docGenereContenu, 'document-audilix');
-}
+function copierDocument() { navigator.clipboard.writeText(docGenereContenu).then(function() { alert('Texte copié !'); }); }
+function telechargerDocument() { telechargerDoc(docGenereContenu, 'document-audilix'); }
 
 function telechargerDoc(contenu, nom) {
     var blob = new Blob([contenu], {type:'text/plain;charset=utf-8'});
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = url; a.download = nom + '.txt'; a.click();
+    a.href = url; a.download = (nom||'document') + '.txt'; a.click();
     URL.revokeObjectURL(url);
 }
 
-function voirDocument(doc) {
+function voirDocument(docJson) {
+    var doc = typeof docJson === 'string' ? JSON.parse(docJson) : docJson;
     document.getElementById('modal-doc-titre').textContent = doc.titre || 'Document';
     docGenereModalContenu = doc.contenu || '';
     document.getElementById('modal-doc-contenu').textContent = docGenereModalContenu;
     document.getElementById('modal-doc').classList.add('visible');
 }
-
 function fermerModal() { document.getElementById('modal-doc').classList.remove('visible'); }
 function copierModalDoc() { navigator.clipboard.writeText(docGenereModalContenu).then(function() { alert('Texte copié !'); }); }
 function telechargerModalDoc() { telechargerDoc(docGenereModalContenu, 'document-audilix'); }
 
-// ASSISTANT
+// ── ASSISTANT ──
 async function envoyerAssistant() {
     var champ = document.getElementById('champ-assistant');
     var msg = champ.value.trim();
     if (!msg) return;
     champ.value = '';
-
     var zone = document.getElementById('messages-assistant');
-    var divUser = document.createElement('div');
-    divUser.className = 'ass-client';
-    divUser.textContent = msg;
-    zone.appendChild(divUser);
-    zone.scrollTop = zone.scrollHeight;
-
+    var divU = document.createElement('div');
+    divU.className = 'ass-client'; divU.textContent = msg; zone.appendChild(divU); zone.scrollTop = zone.scrollHeight;
     assistantHistorique.push({role:'user', content:msg});
-
     try {
-        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg, history:assistantHistorique}) });
+        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers: jsonHeaders(), body: JSON.stringify({ message:msg, history:assistantHistorique }) });
         var data = await res.json();
-        var reponse = data.reponse || data.reply || 'Une erreur est survenue.';
-
-        var divBot = document.createElement('div');
-        divBot.className = 'ass-bot';
-        divBot.textContent = reponse;
-        zone.appendChild(divBot);
-        zone.scrollTop = zone.scrollHeight;
-
-        assistantHistorique.push({role:'assistant', content:reponse});
+        var rep = data.reponse || data.reply || 'Une erreur est survenue.';
+        var divB = document.createElement('div');
+        divB.className = 'ass-bot'; divB.textContent = rep; zone.appendChild(divB); zone.scrollTop = zone.scrollHeight;
+        assistantHistorique.push({role:'assistant', content:rep});
     } catch(e) {
-        var divErr = document.createElement('div');
-        divErr.className = 'ass-bot';
-        divErr.textContent = 'Erreur de connexion. Réessayez.';
-        zone.appendChild(divErr);
+        var divE = document.createElement('div');
+        divE.className = 'ass-bot'; divE.textContent = 'Erreur de connexion. Réessayez.'; zone.appendChild(divE);
     }
 }
+function questionAssistant(msg) { document.getElementById('champ-assistant').value = msg; envoyerAssistant(); }
+document.getElementById('champ-assistant').addEventListener('keypress', function(e) { if (e.key==='Enter') envoyerAssistant(); });
 
-function questionAssistant(msg) {
-    document.getElementById('champ-assistant').value = msg;
-    envoyerAssistant();
-}
-
-document.getElementById('champ-assistant').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') envoyerAssistant();
-});
-
-// DÉTECTION CLAUSES
+// ── CLAUSES ──
 var fichierClause = null;
-
-function selectionnerFichierClause(fichier) {
-    if (!fichier) return;
-    fichierClause = fichier;
+function selectionnerFichierClause(f) {
+    if (!f) return;
+    fichierClause = f;
     document.getElementById('zone-upload-clause').style.display = 'none';
-    var affiche = document.getElementById('fichier-clause-affiche');
-    affiche.classList.add('visible');
-    document.getElementById('fichier-clause-nom').textContent = fichier.name;
-    document.getElementById('fichier-clause-taille').textContent = (fichier.size / 1024).toFixed(0) + ' Ko';
+    document.getElementById('fichier-clause-affiche').classList.add('visible');
+    document.getElementById('fichier-clause-nom').textContent = f.name;
+    document.getElementById('fichier-clause-taille').textContent = (f.size/1024).toFixed(0) + ' Ko';
     document.getElementById('btn-clauses').disabled = false;
 }
-
 function supprimerFichierClause() {
     fichierClause = null;
     document.getElementById('zone-upload-clause').style.display = 'block';
@@ -1189,46 +905,29 @@ function supprimerFichierClause() {
     document.getElementById('resultat-clauses').style.display = 'none';
     document.getElementById('etat-vide-clauses').style.display = 'block';
 }
-
 async function analyserClauses() {
     if (!fichierClause) return;
     document.getElementById('etat-vide-clauses').style.display = 'none';
     document.getElementById('chargement-clauses').classList.add('visible');
     document.getElementById('resultat-clauses').style.display = 'none';
-
-    var formData = new FormData();
-    formData.append('document', fichierClause);
-    formData.append('userId', utilisateur.id);
-
+    var fd = new FormData();
+    fd.append('document', fichierClause);
+    fd.append('userId', utilisateur.id);
     try {
-        var res = await fetch(BACKEND + '/api/detecter-clauses', { method: 'POST', body: formData });
+        var res = await fetch(BACKEND + '/api/detecter-clauses', { method:'POST', headers: authHeaders(), body: fd });
         var data = await res.json();
         document.getElementById('chargement-clauses').classList.remove('visible');
-
-        if (!res.ok) { alert(data.error || 'Erreur'); document.getElementById('etat-vide-clauses').style.display = 'block'; return; }
-
-        var html = '<div style="margin-bottom:16px;"><div style="font-size:22px;font-weight:700;color:' + scoreCouleur(data.score_equite) + ';">' + data.score_equite + '/100</div><div style="font-size:12px;color:var(--gris);">Score d'équité du contrat</div></div>';
-        html += '<p style="font-size:13px;color:var(--gris);margin-bottom:16px;">' + (data.resume || '') + '</p>';
-
+        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-clauses').style.display='block'; return; }
+        var html = '<div style="margin-bottom:16px;"><div style="font-size:22px;font-weight:700;color:' + scoreCouleur(data.score_equite) + ';">' + data.score_equite + '/100</div><div style="font-size:12px;color:var(--gris);">Score d\'équité du contrat</div></div>';
+        html += '<p style="font-size:13px;color:var(--gris);margin-bottom:16px;">' + (data.resume||'') + '</p>';
         if (data.clauses_abusives && data.clauses_abusives.length > 0) {
             html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);margin-bottom:8px;">Clauses problématiques</div>';
-            data.clauses_abusives.forEach(function(c) {
-                var couleur = c.gravite === 'critique' ? 'var(--rouge)' : c.gravite === 'important' ? 'var(--orange)' : 'var(--vert)';
-                html += '<div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:7px;padding:12px;margin-bottom:8px;">';
-                html += '<div style="font-size:13px;font-weight:600;color:var(--navy-dark);margin-bottom:4px;">' + (c.clause || '') + '</div>';
-                html += '<div style="font-size:12px;color:var(--gris);">' + (c.probleme || '') + '</div>';
-                if (c.reference_legale) html += '<div style="font-size:10px;color:var(--gold);margin-top:4px;">Réf : ' + c.reference_legale + '</div>';
-                html += '</div>';
-            });
+            data.clauses_abusives.forEach(function(c) { html += '<div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:7px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--navy-dark);margin-bottom:4px;">' + (c.clause||'') + '</div><div style="font-size:12px;color:var(--gris);">' + (c.probleme||'') + '</div>' + (c.reference_legale ? '<div style="font-size:10px;color:var(--gold);margin-top:4px;">Réf : ' + c.reference_legale + '</div>' : '') + '</div>'; });
         }
-
         if (data.clauses_manquantes && data.clauses_manquantes.length > 0) {
             html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin:12px 0 8px;">Clauses manquantes</div>';
-            data.clauses_manquantes.forEach(function(c) {
-                html += '<div style="display:flex;gap:8px;font-size:13px;color:var(--navy-dark);margin-bottom:6px;"><span style="color:var(--orange);">!</span>' + c + '</div>';
-            });
+            data.clauses_manquantes.forEach(function(c) { html += '<div style="display:flex;gap:8px;font-size:13px;color:var(--navy-dark);margin-bottom:6px;"><span style="color:var(--orange);">!</span>' + c + '</div>'; });
         }
-
         document.getElementById('resultat-clauses').innerHTML = html;
         document.getElementById('resultat-clauses').style.display = 'block';
     } catch(e) {
@@ -1238,44 +937,30 @@ async function analyserClauses() {
     }
 }
 
-// REGISTRE RGPD
+// ── REGISTRE ──
 async function genererRegistre() {
     var entreprise = document.getElementById('reg-entreprise').value.trim();
-    var activite = document.getElementById('reg-activite').value.trim();
     if (!entreprise) { alert('Veuillez renseigner le nom de votre entreprise.'); return; }
-
     document.getElementById('etat-vide-registre').style.display = 'none';
     document.getElementById('chargement-registre').classList.add('visible');
     document.getElementById('resultat-registre').style.display = 'none';
-
     try {
         var res = await fetch(BACKEND + '/api/registre-traitements', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ entreprise: entreprise, activite: activite, userId: utilisateur.id })
+            method:'POST', headers: jsonHeaders(),
+            body: JSON.stringify({ entreprise: entreprise, activite: document.getElementById('reg-activite').value.trim(), userId: utilisateur.id })
         });
         var data = await res.json();
         document.getElementById('chargement-registre').classList.remove('visible');
-
-        if (!res.ok) { alert(data.error || 'Erreur'); document.getElementById('etat-vide-registre').style.display = 'block'; return; }
-
-        var html = '<div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">' + (data.titre || 'Registre des traitements') + '</div>';
-        html += '<div style="font-size:11px;color:var(--gris);margin-bottom:16px;">Généré le ' + data.date_creation + '</div>';
-
+        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-registre').style.display='block'; return; }
+        var html = '<div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">' + (data.titre||'Registre des traitements') + '</div>';
+        html += '<div style="font-size:11px;color:var(--gris);margin-bottom:16px;">Généré le ' + (data.date_creation||new Date().toLocaleDateString('fr-FR')) + '</div>';
         if (data.traitements && data.traitements.length > 0) {
             data.traitements.forEach(function(t, i) {
-                html += '<div style="background:var(--creme);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:8px;">';
-                html += '<div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">' + (i+1) + '. ' + (t.nom || '') + '</div>';
-                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Finalité :</strong> ' + (t.finalite || '') + '</div>';
-                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Base légale :</strong> ' + (t.base_legale || '') + '</div>';
-                html += '<div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Conservation :</strong> ' + (t.duree_conservation || '') + '</div>';
-                html += '</div>';
+                html += '<div style="background:var(--creme);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">' + (i+1) + '. ' + (t.nom||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Finalité :</strong> ' + (t.finalite||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Base légale :</strong> ' + (t.base_legale||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Conservation :</strong> ' + (t.duree_conservation||'') + '</div></div>';
             });
         }
-
-        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement || '') + '</div>';
-        html += '<div style="display:flex;gap:8px;margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistreGlobal()">Télécharger</button></div>';
-
+        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement||'Ce document est fourni à titre informatif. Faites-le valider par un professionnel du droit.') + '</div>';
+        html += '<div style="margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistreGlobal()">Télécharger le registre</button></div>';
         window._registreData = data;
         document.getElementById('resultat-registre').innerHTML = html;
         document.getElementById('resultat-registre').style.display = 'block';
@@ -1288,9 +973,7 @@ async function genererRegistre() {
 }
 
 function telechargerRegistreGlobal() {
-    if (window._registreData) {
-        telechargerDoc(JSON.stringify(window._registreData, null, 2), 'registre-rgpd-audilix');
-    }
+    if (window._registreData) telechargerDoc(JSON.stringify(window._registreData, null, 2), 'registre-rgpd-audilix');
 }
 
 function seDeconnecter() {
