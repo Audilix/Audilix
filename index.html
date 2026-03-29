@@ -138,7 +138,7 @@ footer{background:#060F1E;padding:56px 40px}
 .footer-links a{text-decoration:none;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .2s}
 .footer-links a:hover{color:rgba(255,255,255,.6)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
-#chat-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(11,37,69,0.35);transition:all 0.3s;border:none}
+#chat-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:62px;height:62px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(11,37,69,0.18),0 0 0 1px rgba(11,37,69,0.08);transition:all 0.3s;border:none;position:fixed}
 #chat-btn:hover{transform:scale(1.06)}
 .chat-notif{position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white}
 #chat-panel{position:fixed;bottom:108px;right:32px;z-index:998;width:340px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(11,37,69,.18);border:1px solid var(--border);overflow:hidden;display:none}
@@ -195,8 +195,8 @@ footer{background:#060F1E;padding:56px 40px}
 <li><a href="/cdn-cgi/l/email-protection#60030f0e140103144e011504090c091820070d01090c4e030f0d">Contact</a></li>
 </ul>
 <div class="nav-right">
-<a href="login.html" class="nav-client">Espace client</a>
 <a href="login.html" class="nav-cta">Commencer</a>
+<a href="login.html" class="nav-client">Espace client</a>
 </div>
 </div>
 </nav>
@@ -205,7 +205,7 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="reveal">
 <div class="hero-badge">Conformité Réglementaire — Audilix</div>
 <h1>Évitez les amendes RGPD.<br>Protégez votre entreprise,<br><em>en 60 secondes.</em></h1>
-<p class="hero-sub">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter — clairement expliqués, sans jargon juridique.</p>
+<p class="hero-sub">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
 <div class="hero-actions">
 <a href="essai.html" class="btn-gold">Analyser ma conformité gratuitement →</a>
 <a href="#solutions" class="btn-ghost">Comment ça marche</a>
@@ -489,34 +489,29 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 </footer>
 <div id="chat-btn" onclick="toggleChat()">
-<div style="position:absolute;top:-2px;right:-2px;width:11px;height:11px;background:var(--gold);border-radius:50%;border:2px solid white;"></div>
-<svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Robot head -->
-  <rect x="6" y="10" width="20" height="14" rx="4" fill="#1B3A7A"/>
-  <!-- Eyes -->
-  <rect x="10" y="14" width="4" height="4" rx="1" fill="white"/>
-  <rect x="18" y="14" width="4" height="4" rx="1" fill="white"/>
-  <!-- Pupils -->
-  <rect x="11" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/>
-  <rect x="19" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/>
-  <!-- Mouth -->
-  <rect x="11" y="20" width="10" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
-  <rect x="13" y="20" width="2" height="2" rx="0.5" fill="white"/>
-  <rect x="17" y="20" width="2" height="2" rx="0.5" fill="white"/>
-  <!-- Antenna -->
-  <line x1="16" y1="10" x2="16" y2="6" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="16" cy="5" r="2" fill="#C9A84C"/>
-  <!-- Ears -->
-  <rect x="2" y="14" width="4" height="5" rx="2" fill="#1B3A7A"/>
-  <rect x="26" y="14" width="4" height="5" rx="2" fill="#1B3A7A"/>
-  <!-- Document badge on chest -->
-  <rect x="13" y="13" width="0" height="0" rx="0" fill="none"/>
+<div style="position:absolute;top:-2px;right:-2px;width:10px;height:10px;background:#22c55e;border-radius:50%;border:2px solid white;"></div>
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Forme œil Audilix : amande horizontale -->
+  <path d="M6 22 C10 13 18 9 22 9 C26 9 34 13 38 22 C34 31 26 35 22 35 C18 35 10 31 6 22 Z" fill="#0B2545"/>
+  <!-- Contour supérieur or -->
+  <path d="M6 22 C10 13 18 9 22 9 C26 9 34 13 38 22" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Iris -->
+  <circle cx="22" cy="22" r="7" fill="#1B3A7A"/>
+  <!-- Anneau or -->
+  <circle cx="22" cy="22" r="6" stroke="#C9A84C" stroke-width="1" fill="none"/>
+  <!-- Pupille -->
+  <circle cx="22" cy="22" r="3.5" fill="#050E1C"/>
+  <!-- Reflet blanc -->
+  <ellipse cx="24" cy="20" rx="1.8" ry="1.2" fill="white" opacity="0.85" transform="rotate(-20 24 20)"/>
+  <!-- Points dorés axes -->
+  <circle cx="22" cy="16" r="1.2" fill="#C9A84C" opacity="0.7"/>
+  <circle cx="22" cy="28" r="1.2" fill="#C9A84C" opacity="0.7"/>
 </svg>
 </div>
 <div id="chat-panel">
 <div class="chat-header">
 <div class="chat-header-icon">
-<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="6" y="10" width="20" height="14" rx="4" fill="rgba(201,168,76,0.15)"/><rect x="10" y="14" width="4" height="4" rx="1" fill="white" opacity="0.8"/><rect x="18" y="14" width="4" height="4" rx="1" fill="white" opacity="0.8"/><rect x="11" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/><rect x="19" y="15" width="2" height="2" rx="0.5" fill="#C9A84C"/><rect x="11" y="20" width="10" height="2" rx="1" fill="rgba(255,255,255,0.3)"/><line x1="16" y1="10" x2="16" y2="7" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="6" r="1.5" fill="#C9A84C"/><rect x="2" y="14" width="4" height="5" rx="2" fill="rgba(201,168,76,0.2)"/><rect x="26" y="14" width="4" height="5" rx="2" fill="rgba(201,168,76,0.2)"/></svg>
+<svg width="22" height="22" viewBox="0 0 44 44" fill="none"><path d="M6 22 C10 13 18 9 22 9 C26 9 34 13 38 22 C34 31 26 35 22 35 C18 35 10 31 6 22 Z" fill="rgba(201,168,76,0.12)"/><path d="M6 22 C10 13 18 9 22 9 C26 9 34 13 38 22" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="22" r="7" fill="rgba(27,58,122,0.5)"/><circle cx="22" cy="22" r="6" stroke="#C9A84C" stroke-width="1" fill="none"/><circle cx="22" cy="22" r="3.5" fill="rgba(5,14,28,0.9)"/><ellipse cx="24" cy="20" rx="1.5" ry="1" fill="white" opacity="0.85" transform="rotate(-20 24 20)"/></svg>
 </div>
 <div class="chat-hinfo">
 <div class="chat-name">Assistant Audilix</div>
