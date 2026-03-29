@@ -309,12 +309,23 @@
         <div class="page active" id="page-accueil">
             <div class="banniere">
                 <div class="banniere-texte">
-                    <h2>Bonjour, <span id="prenom-accueil">—</span></h2>
-                    <p>Voici l'état de la conformité de votre activité.</p>
+                    <h2>Bonjour, <span id="prenom-accueil">—</span> 👋</h2>
+                    <p id="banniere-sous">Voici l'état de la conformité de votre activité.</p>
                 </div>
                 <div class="banniere-score">
                     <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.3);">—</div>
                     <div class="score-libelle">Score global / 100</div>
+                </div>
+            </div>
+            <!-- Onboarding premier accès -->
+            <div id="onboarding-banner" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:16px 20px;margin-bottom:20px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                <div>
+                    <div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">🚀 Commencez par analyser votre premier document</div>
+                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV ou une politique de confidentialité — résultat en 30 secondes.</div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
+                    <button id="ob-btn-go" style="background:var(--gold);color:var(--navy-dark);border:none;padding:10px 18px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Analyser un document →</button>
+                    <button id="ob-btn-close" style="background:none;border:none;color:var(--gris);font-size:18px;cursor:pointer;padding:4px;">✕</button>
                 </div>
             </div>
 
@@ -758,6 +769,22 @@ function initialiserDashboard() {
     document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
     chargerDonnees();
+    // Show onboarding on first visit
+    if (!localStorage.getItem('audilix_onboarded')) {
+        var ob = document.getElementById('onboarding-banner');
+        if (ob) ob.style.display = 'flex';
+        var obGo = document.getElementById('ob-btn-go');
+        if (obGo) obGo.addEventListener('click', function() {
+            ob.style.display = 'none';
+            localStorage.setItem('audilix_onboarded', '1');
+            afficherPage('analyser', null);
+        });
+        var obClose = document.getElementById('ob-btn-close');
+        if (obClose) obClose.addEventListener('click', function() {
+            ob.style.display = 'none';
+            localStorage.setItem('audilix_onboarded', '1');
+        });
+    }
 }
 
 async function chargerDonnees() {
@@ -953,8 +980,24 @@ async function lancerAnalyse() {
         document.getElementById('chargement-analyse').classList.remove('visible');
 
         if (!res.ok) {
-            alert(data.error || 'Erreur lors de l\'analyse');
-            document.getElementById('etat-vide-analyse').style.display = 'block';
+            if (data.limitAtteinte) {
+                document.getElementById('etat-vide-analyse').style.display = 'none';
+                document.getElementById('chargement-analyse').classList.remove('visible');
+                document.getElementById('resultat-zone').classList.remove('visible');
+                // Show upgrade prompt
+                var zone = document.querySelector('#page-analyser .carte:last-child .carte-corps');
+                zone.innerHTML = '<div style="text-align:center;padding:40px 20px;">'
+                    + '<div style="font-size:36px;margin-bottom:16px;">📊</div>'
+                    + '<div style="font-family:Playfair Display,serif;font-size:20px;font-weight:700;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</div>'
+                    + '<p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.<br>Vos documents en attente restent non vérifiés.</p>'
+                    + '<p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p>'
+                    + '<a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;">Passer à Business — illimité →</a>'
+                    + '<p style="font-size:11px;color:var(--gris);margin-top:12px;">Sans engagement · Accès immédiat</p>'
+                    + '</div>';
+            } else {
+                alert(data.error || 'Erreur lors de l\'analyse');
+                document.getElementById('etat-vide-analyse').style.display = 'block';
+            }
             return;
         }
 
