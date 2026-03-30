@@ -642,6 +642,183 @@ app.post("/api/registre-traitements", async (req, res) => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // HEALTH CHECK
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ESSAI GRATUIT — Inscription après analyse
+// Crée le compte, sauvegarde l'analyse, envoie les identifiants
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+app.post("/api/essai-inscription", async (req, res) => {
+  try {
+    const { email, analyseData } = req.body;
+    if (!email) return res.status(400).json({ error: "Email requis" });
+
+    // Vérifier si compte existe déjà
+    const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}`);
+    if (existing && existing.length > 0) {
+      // Compte déjà existant → rediriger vers login
+      return res.json({ 
+        success: true, 
+        dejaClient: true,
+        message: "Compte déjà existant, connectez-vous"
+      });
+    }
+
+    // Générer un mot de passe temporaire lisible
+    const motsPasse = ["Confor", "Secure", "Audit", "Legal", "Rgpd"];
+    const nums = Math.floor(1000 + Math.random() * 9000);
+    const mdpClair = motsPasse[Math.floor(Math.random() * motsPasse.length)] + nums + "!";
+
+    // Créer le compte Starter
+    const user = await sbInsert("users", {
+      email,
+      password_hash: hashPassword(mdpClair),
+      firstname: "",
+      lastname: "",
+      plan: "starter"
+    });
+
+    if (!user || !user.id) {
+      return res.status(500).json({ error: "Erreur création du compte" });
+    }
+
+    // Sauvegarder l'analyse en base si fournie
+    if (analyseData && user.id) {
+      try {
+        await sbInsert("analyses", {
+          user_id: user.id,
+          nom_fichier: analyseData.nom_fichier || "Document essai",
+          type_document: analyseData.type_document || "Document",
+          score: analyseData.score || 0,
+          resume: analyseData.resume || "",
+          problemes: analyseData.problemes || [],
+          points_positifs: analyseData.points_positifs || [],
+          recommandations: analyseData.recommandations || []
+        });
+      } catch(e) {
+        console.warn("⚠️ Analyse non sauvegardée:", e.message);
+      }
+    }
+
+    const token = generateToken(user.id);
+
+    // Email de bienvenue avec identifiants
+    const score = analyseData ? analyseData.score : null;
+    const nbProblemes = analyseData && analyseData.problemes ? analyseData.problemes.length : 0;
+    const scoreColor = score >= 70 ? "#22c55e" : score >= 40 ? "#f59e0b" : "#ef4444";
+    const scoreTexte = score !== null ? `<div style="text-align:center;margin:20px 0;padding:20px;background:#0F2456;border-radius:8px;"><div style="font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Votre Compliance Trust Score™</div><div style="font-size:52px;font-weight:700;color:${scoreColor};line-height:1;">${score}</div><div style="color:rgba(255,255,255,0.4);font-size:13px;">/100 — ${nbProblemes} problème(s) détecté(s)</div></div>` : "";
+
+    await sendEmail(
+      email,
+      "Votre rapport de conformité Audilix — Identifiants de connexion",
+      `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;background:#FAF8F4;border-radius:12px;overflow:hidden;">
+        <div style="background:#0B2545;padding:32px 40px;text-align:center;">
+          <div style="font-size:28px;font-weight:700;color:#C9A84C;letter-spacing:-0.02em;">Audilix</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:4px;">Conformité réglementaire</div>
+        </div>
+        <div style="padding:32px 40px;">
+          <h2 style="color:#0B2545;font-size:22px;margin-bottom:8px;">Votre rapport est prêt.</h2>
+          <p style="color:#6B7280;font-size:14px;line-height:1.7;margin-bottom:20px;">Votre compte Audilix a été créé. Connectez-vous pour accéder à votre rapport complet.</p>
+          ${scoreTexte}
+          <div style="background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:20px;margin:20px 0;">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;margin-bottom:12px;">Vos identifiants</div>
+            <div style="margin-bottom:8px;"><span style="color:#6B7280;font-size:13px;">Email : </span><strong style="color:#0B2545;">${email}</strong></div>
+            <div><span style="color:#6B7280;font-size:13px;">Mot de passe : </span><strong style="color:#0B2545;font-size:16px;letter-spacing:0.05em;">${mdpClair}</strong></div>
+          </div>
+          <div style="text-align:center;margin:24px 0;">
+            <a href="https://audilix.com/login.html" style="display:inline-block;background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Accéder à mon rapport →</a>
+          </div>
+          <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px;">Vous pouvez modifier votre mot de passe depuis les paramètres de votre compte.</p>
+        </div>
+        <div style="background:#0B2545;padding:20px 40px;text-align:center;">
+          <p style="color:rgba(255,255,255,0.3);font-size:11px;margin:0;">© 2026 Audilix · <a href="https://audilix.com" style="color:rgba(255,255,255,0.4);">audilix.com</a></p>
+        </div>
+      </div>`
+    );
+
+    // Programmer email de relance J+1 (via flag en base)
+    try {
+      await sbInsert("relances_email", {
+        user_id: user.id,
+        email: email,
+        type: "relance_j1",
+        score: score,
+        nb_problemes: nbProblemes,
+        envoyer_le: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        envoye: false
+      });
+    } catch(e) {
+      console.warn("⚠️ Relance non programmée (table manquante?):", e.message);
+    }
+
+    const { password_hash, ...safeUser } = user;
+    console.log(`✅ Essai inscrit: ${email} — score: ${score}`);
+    res.json({ success: true, token, user: safeUser, mdp: mdpClair });
+
+  } catch(e) {
+    console.error("❌ Essai inscription error:", e);
+    res.status(500).json({ error: "Erreur serveur", details: String(e) });
+  }
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EMAIL RELANCE J+1 — À appeler par un cron ou manuellement
+// GET /api/envoyer-relances
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+app.get("/api/envoyer-relances", async (req, res) => {
+  try {
+    const now = new Date().toISOString();
+    const relances = await sbGet("relances_email", `?envoye=eq.false&envoyer_le=lte.${now}`);
+    
+    if (!Array.isArray(relances) || relances.length === 0) {
+      return res.json({ envoyes: 0, message: "Aucune relance à envoyer" });
+    }
+
+    let envoyes = 0;
+    for (const r of relances) {
+      const scoreColor = r.score >= 70 ? "#22c55e" : r.score >= 40 ? "#f59e0b" : "#ef4444";
+      await sendEmail(
+        r.email,
+        `⚠️ Vos ${r.nb_problemes} risques Audilix sont toujours non corrigés`,
+        `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;background:#FAF8F4;border-radius:12px;overflow:hidden;">
+          <div style="background:#0B2545;padding:32px 40px;text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:#C9A84C;">Audilix</div>
+          </div>
+          <div style="padding:32px 40px;">
+            <h2 style="color:#0B2545;font-size:20px;margin-bottom:12px;">Vos risques n'ont pas disparu.</h2>
+            <p style="color:#6B7280;font-size:14px;line-height:1.7;margin-bottom:20px;">Hier, votre analyse a révélé <strong style="color:#0B2545;">${r.nb_problemes} problème(s)</strong> avec un score de <strong style="color:${scoreColor};">${r.score}/100</strong>. Chaque jour sans correction, c'est un risque d'amende qui reste ouvert.</p>
+            <div style="background:#fff3cd;border:1px solid #f59e0b;border-radius:8px;padding:16px;margin-bottom:20px;">
+              <div style="font-size:13px;color:#92400e;font-weight:600;">💡 Le saviez-vous ?</div>
+              <div style="font-size:13px;color:#78350f;margin-top:4px;">La CNIL peut sanctionner une PME jusqu'à 20 000€ pour une politique de confidentialité non conforme.</div>
+            </div>
+            <div style="text-align:center;margin:24px 0;">
+              <a href="https://audilix.com/login.html" style="display:inline-block;background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Corriger mes risques maintenant →</a>
+            </div>
+            <p style="color:#9CA3AF;font-size:12px;text-align:center;">À partir de 69€/mois · Sans engagement · Accès immédiat</p>
+          </div>
+        </div>`
+      );
+
+      // Marquer comme envoyé
+      await fetch(`${SUPABASE_URL}/rest/v1/relances_email?id=eq.${r.id}`, {
+        method: "PATCH",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ envoye: true, envoye_le: new Date().toISOString() })
+      });
+      envoyes++;
+    }
+
+    console.log(`✅ ${envoyes} relance(s) envoyée(s)`);
+    res.json({ envoyes, message: `${envoyes} email(s) envoyé(s)` });
+  } catch(e) {
+    console.error("❌ Relances error:", e);
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+
 app.get("/", (req, res) => {
   res.json({ status: "Audilix backend en ligne ✅", version: "5.0" });
 });
