@@ -238,14 +238,46 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
         </div>
     </div>
 
-    <!-- TUNNEL CTA -->
+    <!-- TUNNEL CTA — Formulaire création compte -->
     <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
-        <div class="tunnel-urgence">⚠️ Problèmes critiques détectés</div>
-        <h2>Débloquez les corrections<br>et <em>protégez votre entreprise</em></h2>
-        <p>Les recommandations complètes, les documents corrigés et la surveillance continue sont accessibles depuis votre espace client.</p>
-        <a href="pricing.html" class="btn-tunnel">Débloquer mon rapport complet →</a>
-        <div class="tunnel-garanties">
-            <span class="tunnel-garantie">À partir de 69€/mois</span>
+        <div class="tunnel-urgence" id="tunnel-label">⚠️ Problèmes critiques détectés</div>
+        <h2 id="tunnel-titre">Débloquez votre rapport complet<br>et <em>protégez votre entreprise</em></h2>
+        <p id="tunnel-desc">Créez votre compte gratuit pour accéder aux recommandations complètes, aux documents corrigés et à la surveillance continue.</p>
+
+        <!-- Formulaire email -->
+        <div id="form-inscription" style="max-width:380px;margin:0 auto;">
+            <input type="email" id="essai-email" placeholder="Votre adresse email professionnelle"
+                style="width:100%;padding:14px 18px;border-radius:6px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+            <button onclick="inscrireEssai()" id="btn-inscrire"
+                style="width:100%;background:var(--gold);color:var(--navy);padding:15px;border-radius:6px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">
+                Recevoir mon rapport complet →
+            </button>
+            <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:10px;">Vos identifiants arrivent par email · Accès immédiat · Gratuit</p>
+        </div>
+
+        <!-- État chargement -->
+        <div id="form-chargement" style="display:none;text-align:center;padding:10px 0;">
+            <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+            <p style="color:rgba(255,255,255,0.6);font-size:13px;">Création de votre compte en cours…</p>
+        </div>
+
+        <!-- Succès -->
+        <div id="form-succes" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:40px;margin-bottom:12px;">✉️</div>
+            <div style="font-size:18px;font-weight:700;color:white;margin-bottom:8px;">Vérifiez vos emails !</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">Vos identifiants ont été envoyés à <strong style="color:white;" id="email-confirme"></strong></p>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
+
+        <!-- Déjà client -->
+        <div id="form-deja-client" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">Un compte existe déjà avec cet email.</div>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
+
+        <div class="tunnel-garanties" style="margin-top:20px;">
+            <span class="tunnel-garantie">Rapport complet</span>
             <span class="tunnel-garantie">Sans engagement</span>
             <span class="tunnel-garantie">Accès immédiat</span>
         </div>
@@ -438,7 +470,79 @@ function afficherResultats(data) {
 
     // Scroll vers résultats
     document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Stocker les données d'analyse pour l'inscription
+    window._analyseData = {
+        nom_fichier: fichierActuel ? fichierActuel.name : 'Document',
+        type_document: data.type_document || 'Document',
+        score: data.score || 0,
+        resume: data.resume || '',
+        problemes: data.problemes || [],
+        points_positifs: data.points_positifs || [],
+        recommandations: data.recommandations || []
+    };
 }
+
+async function inscrireEssai() {
+    var email = document.getElementById('essai-email').value.trim();
+    if (!email || !email.includes('@')) {
+        document.getElementById('essai-email').style.borderColor = 'var(--rouge)';
+        document.getElementById('essai-email').placeholder = 'Email invalide — réessayez';
+        return;
+    }
+
+    document.getElementById('form-inscription').style.display = 'none';
+    document.getElementById('form-chargement').style.display = 'block';
+
+    try {
+        var res = await fetch(BACKEND + '/api/essai-inscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                analyseData: window._analyseData || null
+            })
+        });
+        var data = await res.json();
+        document.getElementById('form-chargement').style.display = 'none';
+
+        if (!res.ok) {
+            document.getElementById('form-inscription').style.display = 'block';
+            alert('Une erreur est survenue. Réessayez.');
+            return;
+        }
+
+        if (data.dejaClient) {
+            document.getElementById('form-deja-client').style.display = 'block';
+            return;
+        }
+
+        // Succès — sauvegarder token et user
+        if (data.token && data.user) {
+            localStorage.setItem('audilix_token', data.token);
+            localStorage.setItem('audilix_user', JSON.stringify(data.user));
+            localStorage.setItem('audilix_souvenir', 'oui');
+        }
+
+        document.getElementById('email-confirme').textContent = email;
+        document.getElementById('form-succes').style.display = 'block';
+
+    } catch(e) {
+        document.getElementById('form-chargement').style.display = 'none';
+        document.getElementById('form-inscription').style.display = 'block';
+        alert('Erreur de connexion. Réessayez.');
+    }
+}
+
+// Permettre validation avec Entrée
+document.addEventListener('DOMContentLoaded', function() {
+    var emailInput = document.getElementById('essai-email');
+    if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') inscrireEssai();
+        });
+    }
+});
 
 function recommencer() {
     document.getElementById('resultats').style.display = 'none';
