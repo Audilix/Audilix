@@ -1117,7 +1117,7 @@ function activerDouble() {
     var tel = document.getElementById('param-telephone').value.trim();
     if (!tel) { afficherMsg('msg-double', 'Entrez votre numéro de téléphone.', false); return; }
     // Pour l'instant : confirmation visuelle — la logique SMS sera ajoutée avec un prestataire
-    afficherMsg('msg-double', 'Demande enregistrée. Vous serez notifié par email dès l'activation.', true);
+    afficherMsg("msg-double", "Demande enregistrée. Vous serez notifié par email.", true);
 }
 
 function confirmerSuppression() {
