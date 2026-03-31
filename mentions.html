@@ -1,97 +1,116 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="logo.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mentions légales — Audilix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --navy: #0B2545; --gold: #C9A84C; --gold-light: #E8C97A; --cream: #FAF8F4; --gray: #6B7280; --border: rgba(11,37,69,0.08); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
-        h1,h2,h3 { font-family: 'Playfair Display', serif; }
-        .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
-        nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 70px; display: flex; align-items: center; justify-content: space-between; }
-        nav img { height: 30px; }
-        nav a { color: var(--gray); text-decoration: none; font-size: 13px; }
-        nav a:hover { color: var(--navy); }
-        .container { max-width: 760px; margin: 0 auto; padding: 64px 40px 80px; }
-        .doc-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-        h1 { font-size: 42px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
-        .doc-date { font-size: 14px; color: var(--gray); margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
-        h2 { font-size: 22px; font-weight: 600; color: var(--navy); margin: 40px 0 16px; }
-        p { font-size: 15px; line-height: 1.8; color: #374151; margin-bottom: 16px; }
-        ul { padding-left: 20px; margin-bottom: 16px; }
-        li { font-size: 15px; line-height: 1.8; color: #374151; margin-bottom: 6px; }
-        .highlight { background: white; border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 4px; padding: 20px 24px; margin: 24px 0; }
-        .highlight p { margin: 0; line-height: 1.9; }
-        footer { background: #060F1E; padding: 32px 40px; text-align: center; }
-        footer p { font-size: 12px; color: rgba(255,255,255,0.2); }
-        footer a { color: rgba(255,255,255,0.3); text-decoration: none; }
-        footer a:hover { color: var(--gold); }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentions légales — Audilix</title>
+<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --navy:#0B2545; --gold:#C9A84C; --gold-light:#E8C97A; --cream:#FAF8F4; --gray:#6B7280; --border:rgba(11,37,69,0.08); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--navy); -webkit-font-smoothing:antialiased; }
+h1,h2 { font-family:'Playfair Display',serif; }
+nav { background:white; border-bottom:1px solid var(--border); padding:0 40px; height:68px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.nav-logo img { height:36px; width:auto; display:block; }
+.nav-right { display:flex; align-items:center; gap:16px; }
+.nav-link { color:var(--gray); font-size:13px; text-decoration:none; }
+.nav-link:hover { color:var(--navy); }
+.nav-cta { background:var(--gold); color:var(--navy); padding:10px 22px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; }
+.contenu { max-width:760px; margin:0 auto; padding:64px 40px 100px; }
+.page-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+.page-titre { font-size:clamp(32px,4vw,48px); font-weight:700; color:var(--navy); margin-bottom:12px; line-height:1.1; }
+.page-date { font-size:13px; color:var(--gray); margin-bottom:48px; }
+.section { margin-bottom:40px; }
+.section h2 { font-size:20px; font-weight:700; color:var(--navy); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+.section p { font-size:15px; color:#374151; line-height:1.85; margin-bottom:12px; font-weight:300; }
+.section p strong { color:var(--navy); font-weight:600; }
+.section a { color:var(--gold); text-decoration:none; font-weight:500; }
+footer { background:#0A1A3D; padding:40px; text-align:center; }
+footer p { font-size:12px; color:rgba(255,255,255,0.2); }
+footer a { color:rgba(255,255,255,0.3); text-decoration:none; margin:0 8px; }
+footer a:hover { color:var(--gold); }
+@media(max-width:640px) { nav { padding:0 20px; } .contenu { padding:40px 20px 80px; } }
+</style>
 </head>
 <body>
-<a href="index.html" style="position:fixed;top:18px;left:18px;z-index:999;display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.10);border-radius:8px;padding:8px 14px;text-decoration:none;color:#1B3A7A;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 10px rgba(15,36,86,0.09);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 18px rgba(15,36,86,0.16)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(15,36,86,0.09)'">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-  Accueil
-</a>
 
-<div class="gold-line"></div>
-<nav>
-    <a href="index.html"><img src="logo.png" alt="Audilix"></a>
-    <a href="index.html">← Retour au site</a>
+<div style="height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);"></div>
+<nav style="background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(11,37,69,0.08);position:sticky;top:0;z-index:100;">
+    <div style="max-width:1280px;margin:auto;padding:0 40px;height:76px;display:flex;align-items:center;justify-content:space-between;">
+        <!-- GAUCHE : logo seul -->
+        <a href="index.html" style="display:flex;align-items:center;text-decoration:none;"><img src="logo.png" alt="Audilix" style="height:48px;width:auto;display:block;"></a>
+        <!-- DROITE : retour + espace client -->
+        <div style="display:flex;align-items:center;gap:16px;">
+            <a href="javascript:history.back()" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0B2545;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>Retour</a>
+            <a href="login.html" style="background:#C9A84C;color:#0B2545;padding:10px 22px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#E8C97A'" onmouseout="this.style.background='#C9A84C'">Espace client</a>
+        </div>
+    </div>
 </nav>
-<div class="container">
-    <div class="doc-label">Document légal</div>
-    <h1>Mentions légales</h1>
-    <div class="doc-date">Dernière mise à jour : 15 mars 2026</div>
 
-    <h2>1. Éditeur du site</h2>
-    <div class="highlight">
-        <p>
-        <strong>Nom :</strong> Mohamed Azouzi<br>
-        <strong>Statut :</strong> Personne physique (en cours de création d'entreprise individuelle)<br>
-        <strong>Adresse :</strong> Pamiers, France<br>
-        <strong>Email :</strong> <a href="/cdn-cgi/l/email-protection#c4a7abaab0a5a7b0eaa5b1a0ada8adbc84a3a9a5ada8eaa7aba9"><span class="__cf_email__" data-cfemail="187b77766c797b6c36796d7c71747160587f75797174367b7775">[email&#160;protected]</span></a><br>
-        <strong>Site web :</strong> <a href="https://audilix.com">https://audilix.com</a>
-        </p>
+<div class="contenu">
+    <div class="page-label">Informations légales</div>
+    <h1 class="page-titre">Mentions légales</h1>
+    <p class="page-date">Dernière mise à jour : mars 2026</p>
+
+    <div class="section">
+        <h2>1. Éditeur du site</h2>
+        <p>Le site <strong>audilix.com</strong> est édité par :</p>
+        <p><strong>Mohamed Azouzi</strong><br>
+        Micro-entrepreneur (en cours d'immatriculation)<br>
+        Ariège (09), France<br>
+        Email : <a href="/cdn-cgi/l/email-protection#c7a4a8a9b3a6a4b3e9a6b2a3aeabaebf87a0aaa6aeabe9a4a8aa"><span class="__cf_email__" data-cfemail="50333f3e243133247e312534393c392810373d31393c7e333f3d">[email&#160;protected]</span></a></p>
     </div>
 
-    <h2>2. Directeur de la publication</h2>
-    <p>Mohamed Azouzi — <a href="/cdn-cgi/l/email-protection#c4a7abaab0a5a7b0eaa5b1a0ada8adbc84a3a9a5ada8eaa7aba9"><span class="__cf_email__" data-cfemail="dab9b5b4aebbb9aef4bbafbeb3b6b3a29abdb7bbb3b6f4b9b5b7">[email&#160;protected]</span></a></p>
-
-    <h2>3. Hébergement</h2>
-    <div class="highlight">
-        <p>
-        <strong>Site web :</strong> Render Services, Inc. — 525 Brannan Street, San Francisco, CA 94107, USA<br>
-        <strong>Base de données :</strong> Supabase Inc. — hébergement région Europe (Irlande)<br>
-        <strong>Site :</strong> <a href="https://render.com" target="_blank">render.com</a> / <a href="https://supabase.com" target="_blank">supabase.com</a>
-        </p>
+    <div class="section">
+        <h2>2. Directeur de la publication</h2>
+        <p><strong>Mohamed Azouzi</strong>, créateur et responsable du service Audilix.</p>
     </div>
 
-    <h2>4. Propriété intellectuelle</h2>
-    <p>L'ensemble du contenu du site <strong>audilix.com</strong> (textes, logos, design, code, rapports générés) est la propriété exclusive de Mohamed Azouzi, sauf mention contraire.</p>
-    <p>Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable.</p>
+    <div class="section">
+        <h2>3. Hébergement</h2>
+        <p>Le site est hébergé par :<br>
+        <strong>Render Services, Inc.</strong><br>
+        525 Brannan Street, Suite 300, San Francisco, CA 94107, États-Unis</p>
+        <p>Les données utilisateurs sont stockées par :<br>
+        <strong>Supabase Inc.</strong> — Hébergement Europe (Frankfurt, Allemagne)</p>
+    </div>
 
-    <h2>5. Activité du site</h2>
-    <p>Audilix est une plateforme SaaS d'audit de conformité automatisé par intelligence artificielle. Le service analyse les sites web et génère des rapports de conformité concernant le RGPD, la cybersécurité, le RSE et l'AI Act.</p>
-    <p><strong>Avertissement :</strong> Les rapports générés par Audilix sont produits automatiquement par intelligence artificielle à titre informatif. Ils ne constituent pas un avis juridique et ne sauraient remplacer les conseils d'un professionnel du droit. Pour toute décision juridique importante, nous recommandons de consulter un avocat spécialisé.</p>
+    <div class="section">
+        <h2>4. Propriété intellectuelle</h2>
+        <p>L'ensemble des éléments du site audilix.com — textes, graphismes, logo, code, structure — est la propriété exclusive de Mohamed Azouzi. Toute reproduction sans autorisation écrite préalable est interdite.</p>
+    </div>
 
-    <h2>6. Données personnelles</h2>
-    <p>Le traitement des données personnelles collectées sur ce site est décrit dans notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
-    <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez de droits d'accès, rectification, effacement et opposition sur vos données. Pour les exercer : <a href="/cdn-cgi/l/email-protection#e5868a8b91848691cb8490818c898c9da58288848c89cb868a88"><span class="__cf_email__" data-cfemail="197a76776d787a6d37786c7d70757061597e74787075377a7674">[email&#160;protected]</span></a></p>
+    <div class="section">
+        <h2>5. Limitation de responsabilité</h2>
+        <p>Les analyses et documents générés par Audilix sont fournis à titre informatif et d'aide à la décision. Ils ne constituent pas un conseil juridique. Pour toute situation à fort enjeu, la consultation d'un professionnel du droit est recommandée.</p>
+    </div>
 
-    <h2>7. Cookies</h2>
-    <p>Le site utilise des cookies techniques nécessaires à son fonctionnement. Aucun cookie publicitaire ou de tracking tiers n'est déposé sans votre consentement. Pour en savoir plus, consultez notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+    <div class="section">
+        <h2>6. Données personnelles</h2>
+        <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits : <a href="/cdn-cgi/l/email-protection#8be8e4e5ffeae8ffa5eafeefe2e7e2f3cbece6eae2e7a5e8e4e6"><span class="__cf_email__" data-cfemail="0e6d61607a6f6d7a206f7b6a676267764e69636f6762206d6163">[email&#160;protected]</span></a></p>
+        <p>Pour plus d'informations, consultez notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
+    </div>
 
-    <h2>8. Paiements</h2>
-    <p>Les paiements sont traités par <strong>Stripe</strong> (Stripe Payments Europe Ltd, 1 Grand Canal Street Lower, Dublin 2, Irlande). Audilix ne stocke aucune donnée bancaire. Stripe est certifié PCI DSS niveau 1.</p>
+    <div class="section">
+        <h2>7. Cookies</h2>
+        <p>Le site utilise uniquement des cookies techniques nécessaires à son fonctionnement. Aucun cookie publicitaire ou de traçage tiers n'est utilisé.</p>
+    </div>
 
-    <h2>9. Limitation de responsabilité</h2>
-    <p>Audilix s'efforce de fournir des informations exactes et à jour. Cependant, nous ne pouvons garantir l'exactitude, la complétude ou l'actualité des rapports générés automatiquement par IA, qui dépendent des informations disponibles publiquement sur les sites analysés.</p>
-    <p>Audilix ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation des rapports générés par le service.</p>
+    <div class="section">
+        <h2>8. Droit applicable</h2>
+        <p>Le présent site est soumis au droit français. En cas de litige, et après tentative de résolution amiable, les tribunaux français seront seuls compétents.</p>
+    </div>
 
-    <h2>10. Droit applicable</h2>
-    <p>Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux compétents sont ceux du ressort de Pamiers (Fran
+    <div class="section">
+        <h2>9. Contact</h2>
+        <p><a hre</a></p>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Audilix · <a href="mentions.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="pricing.html">Tarifs</a></p>
+</footer>
+
+</body>
+</html>
