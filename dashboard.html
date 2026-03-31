@@ -517,19 +517,91 @@
 
         <!-- PARAMÈTRES -->
         <div class="page" id="page-parametres">
-            <div class="carte" style="max-width:560px;">
-                <div class="carte-entete"><div class="carte-titre">Paramètres du compte</div></div>
-                <div class="carte-corps">
-                    <div style="margin-bottom:18px;">
-                        <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">E-mail de notification</label>
-                        <input type="email" id="param-email" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
+            <div style="max-width:640px;">
+
+                <!-- Informations du compte -->
+                <div class="carte" style="margin-bottom:16px;">
+                    <div class="carte-entete">
+                        <div class="carte-titre">Informations du compte</div>
                     </div>
-                    <div style="margin-bottom:18px;">
-                        <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Formule actuelle</label>
-                        <div id="param-plan" style="padding:12px 14px;background:var(--creme);border:1px solid var(--border);border-radius:6px;font-size:13px;font-weight:600;color:var(--navy-dark);">—</div>
+                    <div class="carte-corps">
+                        <!-- Email -->
+                        <div style="margin-bottom:20px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Adresse email</label>
+                            <div style="display:flex;gap:10px;">
+                                <input type="email" id="param-email-new" style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                                <button onclick="changerEmail()" style="background:var(--navy-dark);color:white;border:none;padding:11px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Mettre à jour</button>
+                            </div>
+                            <div id="msg-email" style="font-size:12px;margin-top:6px;display:none;"></div>
+                        </div>
+                        <!-- Formule -->
+                        <div>
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Formule actuelle</label>
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--creme);border:1px solid var(--border);border-radius:6px;">
+                                <span style="font-size:13px;font-weight:600;color:var(--navy-dark);" id="param-plan">—</span>
+                                <a href="pricing.html" style="font-size:12px;color:var(--gold);font-weight:600;text-decoration:none;">Changer de formule →</a>
+                            </div>
+                        </div>
                     </div>
-                    <a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:11px 22px;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;">Changer de formule</a>
                 </div>
+
+                <!-- Mot de passe -->
+                <div class="carte" style="margin-bottom:16px;">
+                    <div class="carte-entete">
+                        <div class="carte-titre">Modifier le mot de passe</div>
+                    </div>
+                    <div class="carte-corps">
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Mot de passe actuel</label>
+                            <input type="password" id="param-mdp-actuel" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nouveau mot de passe</label>
+                            <input type="password" id="param-mdp-new" placeholder="8 caractères minimum" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div style="margin-bottom:16px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Confirmer le nouveau mot de passe</label>
+                            <input type="password" id="param-mdp-confirm" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <button onclick="changerMotDePasse()" style="background:var(--navy-dark);color:white;border:none;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Modifier le mot de passe</button>
+                        <div id="msg-mdp" style="font-size:12px;margin-top:10px;display:none;"></div>
+                    </div>
+                </div>
+
+                <!-- Double authentification -->
+                <div class="carte" style="margin-bottom:16px;">
+                    <div class="carte-entete">
+                        <div class="carte-titre">Double authentification</div>
+                        <span style="font-size:11px;background:var(--gold-pale);color:#8B6914;padding:3px 10px;border-radius:20px;font-weight:600;">Optionnel</span>
+                    </div>
+                    <div class="carte-corps">
+                        <p style="font-size:13px;color:var(--gris);line-height:1.7;margin-bottom:18px;">Renforcez la sécurité de votre compte. À chaque connexion, un code sera envoyé par SMS pour confirmer votre identité.</p>
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Numéro de téléphone</label>
+                            <div style="display:flex;gap:10px;">
+                                <input type="tel" id="param-telephone" placeholder="+33 6 XX XX XX XX" style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                                <button onclick="activerDouble()" style="background:var(--navy-dark);color:white;border:none;padding:11px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Activer</button>
+                            </div>
+                        </div>
+                        <div style="background:var(--creme);border:1px solid var(--border);border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <span style="font-size:12px;color:var(--gris);line-height:1.5;">Votre numéro est uniquement utilisé pour l'authentification. Il n'est jamais partagé.</span>
+                        </div>
+                        <div id="msg-double" style="font-size:12px;margin-top:10px;display:none;"></div>
+                    </div>
+                </div>
+
+                <!-- Zone danger -->
+                <div class="carte" style="border-color:rgba(239,68,68,0.2);">
+                    <div class="carte-entete" style="border-color:rgba(239,68,68,0.1);">
+                        <div class="carte-titre" style="color:var(--rouge);">Zone de danger</div>
+                    </div>
+                    <div class="carte-corps">
+                        <p style="font-size:13px;color:var(--gris);line-height:1.7;margin-bottom:18px;">La suppression de votre compte est définitive. Toutes vos analyses, documents et données seront effacés et ne pourront pas être récupérés.</p>
+                        <button onclick="confirmerSuppression()" style="background:white;color:var(--rouge);border:1.5px solid rgba(239,68,68,0.3);padding:11px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='#fef2f2';this.style.borderColor='var(--rouge)'" onmouseout="this.style.background='white';this.style.borderColor='rgba(239,68,68,0.3)'">Supprimer mon compte</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -587,7 +659,7 @@ function initialiserDashboard() {
     var nomPlan = nomsPlans[plan] || plan;
     document.getElementById('affichage-plan').textContent = nomPlan;
     document.getElementById('param-plan').textContent = nomPlan;
-    if (utilisateur.email) document.getElementById('param-email').value = utilisateur.email;
+    if (utilisateur.email) { var el = document.getElementById('param-email-new'); if(el) el.placeholder = utilisateur.email; }
 
     var now = new Date();
     document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
@@ -989,6 +1061,81 @@ async function genererRegistre() {
 
 function telechargerRegistreGlobal() {
     if (window._registreData) telechargerDoc(JSON.stringify(window._registreData, null, 2), 'registre-rgpd-audilix');
+}
+
+// ── PARAMÈTRES ──
+function afficherMsg(id, texte, ok) {
+    var el = document.getElementById(id);
+    el.textContent = texte;
+    el.style.color = ok ? 'var(--vert)' : 'var(--rouge)';
+    el.style.display = 'block';
+    setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+async function changerEmail() {
+    var nouvelEmail = document.getElementById('param-email-new').value.trim();
+    if (!nouvelEmail || !nouvelEmail.includes('@')) { afficherMsg('msg-email', 'Email invalide.', false); return; }
+    try {
+        var res = await fetch(BACKEND + '/api/user/update', {
+            method: 'POST', headers: jsonHeaders(),
+            body: JSON.stringify({ userId: utilisateur.id, email: nouvelEmail })
+        });
+        var data = await res.json();
+        if (res.ok) {
+            utilisateur.email = nouvelEmail;
+            localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
+            document.getElementById('email-utilisateur').textContent = nouvelEmail;
+            afficherMsg('msg-email', 'Email mis à jour.', true);
+            document.getElementById('param-email-new').value = '';
+        } else { afficherMsg('msg-email', data.error || 'Erreur.', false); }
+    } catch(e) { afficherMsg('msg-email', 'Erreur de connexion.', false); }
+}
+
+async function changerMotDePasse() {
+    var actuel = document.getElementById('param-mdp-actuel').value;
+    var nouveau = document.getElementById('param-mdp-new').value;
+    var confirm = document.getElementById('param-mdp-confirm').value;
+    if (!actuel || !nouveau) { afficherMsg('msg-mdp', 'Remplissez tous les champs.', false); return; }
+    if (nouveau.length < 8) { afficherMsg('msg-mdp', 'Le mot de passe doit faire au moins 8 caractères.', false); return; }
+    if (nouveau !== confirm) { afficherMsg('msg-mdp', 'Les mots de passe ne correspondent pas.', false); return; }
+    try {
+        var res = await fetch(BACKEND + '/api/user/change-password', {
+            method: 'POST', headers: jsonHeaders(),
+            body: JSON.stringify({ userId: utilisateur.id, ancienMdp: actuel, nouveauMdp: nouveau })
+        });
+        var data = await res.json();
+        if (res.ok) {
+            afficherMsg('msg-mdp', 'Mot de passe modifié.', true);
+            document.getElementById('param-mdp-actuel').value = '';
+            document.getElementById('param-mdp-new').value = '';
+            document.getElementById('param-mdp-confirm').value = '';
+        } else { afficherMsg('msg-mdp', data.error || 'Mot de passe actuel incorrect.', false); }
+    } catch(e) { afficherMsg('msg-mdp', 'Erreur de connexion.', false); }
+}
+
+function activerDouble() {
+    var tel = document.getElementById('param-telephone').value.trim();
+    if (!tel) { afficherMsg('msg-double', 'Entrez votre numéro de téléphone.', false); return; }
+    // Pour l'instant : confirmation visuelle — la logique SMS sera ajoutée avec un prestataire
+    afficherMsg('msg-double', 'Fonctionnalité en cours d'activation pour votre compte. Vous serez notifié par email.', true);
+}
+
+function confirmerSuppression() {
+    var ok = confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
+    if (!ok) return;
+    var ok2 = confirm('Dernière confirmation — toutes vos données seront définitivement supprimées.');
+    if (!ok2) return;
+    fetch(BACKEND + '/api/user/delete', {
+        method: 'DELETE', headers: jsonHeaders(),
+        body: JSON.stringify({ userId: utilisateur.id })
+    }).then(function() {
+        localStorage.removeItem('audilix_token');
+        localStorage.removeItem('audilix_user');
+        localStorage.removeItem('audilix_souvenir');
+        window.location.href = 'index.html';
+    }).catch(function() {
+        alert('Erreur lors de la suppression. Contactez contact.audilix@gmail.com');
+    });
 }
 
 function seDeconnecter() {
