@@ -266,6 +266,10 @@
         <div class="topbar-titre" id="titre-page">Vue d'ensemble</div>
         <div class="topbar-droite">
             <span class="topbar-date" id="date-topbar"></span>
+            <a href="index.html" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.12);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0F2456;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;margin-right:8px;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F2456" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Accueil
+            </a>
             <button class="btn-analyser" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Analyser un document</button>
         </div>
     </div>
@@ -717,6 +721,17 @@ function afficherPage(id, btn) {
     } else {
         var navBtn = document.getElementById('nav-' + id);
         if (navBtn) navBtn.classList.add('actif');
+    }
+    // Pré-sélectionner le premier doc quand on arrive sur Générer
+    if (id === 'generer') {
+        var cartes = document.querySelectorAll('#page-generer .doc-carte');
+        cartes.forEach(function(c) { c.style.borderColor = ''; c.style.background = ''; });
+        if (cartes.length > 0) {
+            cartes[0].style.borderColor = 'var(--gold)';
+            cartes[0].style.background = 'var(--gold-pale)';
+        }
+        typeDocChoisi = 'confidentialite';
+        document.getElementById('btn-generer').disabled = false;
     }
     window.scrollTo(0, 0);
 }
