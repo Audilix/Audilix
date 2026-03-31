@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page introuvable — Audilix</title>
+<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy:#0B2545; --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6;
+    --cream:#FAF8F4; --gray:#6B7280; --border:rgba(11,37,69,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--navy); -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; }
+h1,h2 { font-family:'Playfair Display',serif; }
+
+/* NAV */
+div.gold-line { height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
+nav { background:rgba(255,255,255,0.97); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width:1280px; margin:auto; padding:0 40px; height:76px; display:flex; align-items:center; justify-content:space-between; }
+.nav-logo img { height:48px; width:auto; display:block; }
+.nav-right { display:flex; align-items:center; gap:16px; }
+.nav-connexion { color:var(--navy); font-size:13px; font-weight:600; text-decoration:none; opacity:0.6; border:1.5px solid rgba(11,37,69,0.18); padding:10px 22px; border-radius:4px; transition:opacity 0.2s; }
+.nav-connexion:hover { opacity:1; }
+.nav-cta { background:var(--gold); color:var(--navy); padding:10px 22px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+.nav-cta:hover { background:var(--gold-light); }
+
+/* CONTENU */
+.hero { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+.carte { max-width:560px; width:100%; text-align:center; }
+
+/* 404 graphique */
+.nombre { font-family:'Playfair Display',serif; font-size:clamp(100px,18vw,180px); font-weight:700; line-height:1; color:var(--navy); letter-spacing:-0.04em; position:relative; display:inline-block; margin-bottom:8px; }
+.nombre::after { content:''; position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:60%; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:2px; }
+
+.sous-titre { font-family:'Playfair Display',serif; font-size:clamp(20px,3vw,28px); font-weight:600; color:var(--navy); margin-bottom:14px; }
+.desc { font-size:15px; color:var(--gray); line-height:1.75; margin-bottom:36px; font-weight:300; max-width:420px; margin-left:auto; margin-right:auto; }
+
+.actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
+.btn-primary { background:var(--gold); color:var(--navy); padding:14px 28px; border-radius:6px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+.btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(201,168,76,0.3); }
+.btn-secondary { background:white; color:var(--navy); padding:14px 28px; border-radius:6px; font-size:14px; font-weight:600; text-decoration:none; border:1.5px solid rgba(11,37,69,0.15); transition:all 0.2s; }
+.btn-secondary:hover { border-color:var(--navy); }
+
+/* Liens rapides */
+.liens-rapides { border-top:1px solid var(--border); padding-top:28px; }
+.liens-label { font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gray); margin-bottom:16px; }
+.liens { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.lien-chip { background:white; border:1px solid var(--border); color:var(--navy); padding:8px 16px; border-radius:40px; font-size:13px; font-weight:500; text-decoration:none; transition:all 0.2s; }
+.lien-chip:hover { border-color:var(--gold); background:var(--gold-pale); }
+
+footer { background:#0A1A3D; padding:28px 40px; text-align:center; }
+footer p { font-size:12px; color:rgba(255,255,255,0.2); }
+footer a { color:rgba(255,255,255,0.3); text-decoration:none; margin:0 8px; }
+footer a:hover { color:var(--gold); }
+
+@media(max-width:640px) {
+    .nav-inner { padding:0 20px; }
+    .actions { flex-direction:column; align-items:center; }
+    .btn-primary, .btn-secondary { width:100%; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="gold-line"></div>
+<nav>
+    <div class="nav-inner">
+        <div class="nav-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
+        <div class="nav-right">
+            <a href="login.html" class="nav-connexion">Connexion</a>
+            <a href="essai.html" class="nav-cta">S'inscrire</a>
+        </div>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="carte">
+
+        <div class="nombre">404</div>
+
+        <h1 class="sous-titre">Cette page n'existe pas.</h1>
+        <p class="desc">Le lien que vous avez suivi est incorrect ou cette page a été déplacée. Revenez à l'accueil ou choisissez une destination ci-dessous.</p>
+
+        <div class="actions">
+            <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+            <a href="essai.html" class="btn-secondary">Analyser un document</a>
+        </div>
+
+        <div class="liens-rapides">
+            <div class="liens-label">Où souhaitez-vous aller ?</div>
+            <div class="liens">
+                <a href="pricing.html" class="lien-chip">Nos formules</a>
+                <a href="login.html" class="lien-chip">Mon espace</a>
+                <a href="mentions.html" class="lien-chip">Mentions légales</a>
+                <a href="confidentialite.html" class="lien-chip">Confidentialité</a>
+                <a href="mailto:contact.audilix@gmail.com" class="lien-chip">Nous contacter</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Audilix · <a href="mentions.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="pricing.html">Tarifs</a></p>
+</footer>
+
+</body>
+</html>
