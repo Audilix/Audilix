@@ -13,7 +13,7 @@ const RESEND_KEY    = process.env.RESEND_API_KEY;
 const SUPABASE_URL  = process.env.SUPABASE_URL;
 const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
-const FROM_EMAIL    = "Audilix < contact@audilix.com>";
+const FROM_EMAIL    = "Audilix <onboarding@resend.dev>";
 
 // Limites par plan
 const LIMITES_PLAN = {
@@ -815,6 +815,85 @@ app.get("/api/envoyer-relances", async (req, res) => {
   } catch(e) {
     console.error("❌ Relances error:", e);
     res.status(500).json({ error: String(e) });
+  }
+});
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PARAMÈTRES UTILISATEUR
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// Mettre à jour l'email
+app.post("/api/user/update", async (req, res) => {
+  try {
+    const { userId, email } = req.body;
+    if (!userId || !email) return res.status(400).json({ error: "Données manquantes" });
+
+    // Vérifier que l'email n'est pas déjà pris
+    const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}&id=neq.${userId}`);
+    if (existing && existing.length > 0) return res.status(400).json({ error: "Cet email est déjà utilisé par un autre compte" });
+
+    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
+      method: "PATCH",
+      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+
+    console.log(`✅ Email mis à jour: ${userId}`);
+    res.json({ success: true });
+  } catch(e) {
+    console.error("❌ Update email error:", e);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+// Changer le mot de passe
+app.post("/api/user/change-password", async (req, res) => {
+  try {
+    const { userId, ancienMdp, nouveauMdp } = req.body;
+    if (!userId || !ancienMdp || !nouveauMdp) return res.status(400).json({ error: "Données manquantes" });
+    if (nouveauMdp.length < 8) return res.status(400).json({ error: "Le mot de passe doit faire au moins 8 caractères" });
+
+    // Vérifier l'ancien mot de passe
+    const users = await sbGet("users", `?id=eq.${userId}`);
+    if (!users || users.length === 0) return res.status(404).json({ error: "Compte introuvable" });
+
+    const user = users[0];
+    if (user.password_hash !== hashPassword(ancienMdp)) {
+      return res.status(400).json({ error: "Mot de passe actuel incorrect" });
+    }
+
+    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
+      method: "PATCH",
+      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ password_hash: hashPassword(nouveauMdp) })
+    });
+
+    console.log(`✅ Mot de passe changé: ${userId}`);
+    res.json({ success: true });
+  } catch(e) {
+    console.error("❌ Change password error:", e);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+// Supprimer le compte
+app.delete("/api/user/delete", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ error: "Utilisateur manquant" });
+
+    // Supprimer analyses, documents, relances puis le compte
+    await fetch(`${SUPABASE_URL}/rest/v1/analyses?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+    await fetch(`${SUPABASE_URL}/rest/v1/documents_generes?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+    await fetch(`${SUPABASE_URL}/rest/v1/relances_email?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+
+    console.log(`✅ Compte supprimé: ${userId}`);
+    res.json({ success: true });
+  } catch(e) {
+    console.error("❌ Delete account error:", e);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
