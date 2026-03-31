@@ -13,7 +13,7 @@ const RESEND_KEY    = process.env.RESEND_API_KEY;
 const SUPABASE_URL  = process.env.SUPABASE_URL;
 const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
-const FROM_EMAIL    = "Audilix <onboarding@resend.dev>";
+const FROM_EMAIL    = "Audilix < contact@audilix.com>";
 
 // Limites par plan
 const LIMITES_PLAN = {
