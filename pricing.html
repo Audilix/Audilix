@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formules — Audilix</title>
+    <title>Formules. Audilix</title>
     <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -149,7 +149,7 @@
 
 <div class="entete">
     <div class="entete-label">Nos formules</div>
-    <h1>Un abonnement qui <em>vaut vraiment</em><br>son prix.</h1>
+    <h1>Choisissez la formule<br><em>adaptée à votre activité.</em></h1>
     <p>Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe · Accès immédiat</p>
     
 </div>
@@ -190,7 +190,7 @@
         <div class="plan-badge">Le plus choisi</div>
         <div class="plan-cible">PME et startups en croissance</div>
         <div class="plan-nom">Business</div>
-        <div class="plan-accroche">Zéro limite, zéro stress. L'IA surveille, alerte et corrige pour vous — 24h/24, 7j/7.</div>
+        <div class="plan-accroche">Zéro limite, zéro stress. L'IA surveille, alerte et corrige pour vous. 24h/24, 7j/7.</div>
         <div class="plan-prix">
             <span class="p-devise">€</span><span class="p-montant">149</span><span class="p-periode">/ mois</span>
         </div>
@@ -209,7 +209,7 @@
             <li><span class="p-coche">✓</span>Historique complet des analyses</li>
             <li><span class="p-coche">✓</span>Support prioritaire (réponse sous 24h)</li>
         </ul>
-        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Business — le plus populaire →</button>
+        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Business. le plus populaire →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -280,83 +280,64 @@
 
 <div class="garanties">
     <div class="garanties-inner">
-        <div><div class="g-icone">🔒</div><div class="g-titre">Paiement sécurisé</div><p class="g-texte">Chiffrement SSL via Stripe. Vos données bancaires ne sont jamais stockées.</p></div>
-        <div><div class="g-icone">🔄</div><div class="g-titre">Sans engagement</div><p class="g-texte">Résiliez à tout moment depuis votre espace client, sans frais.</p></div>
-        <div><div class="g-icone">⚡</div><div class="g-titre">Accès immédiat</div><p class="g-texte">Votre compte est activé dès la confirmation du paiement.</p></div>
-        <div><div class="g-icone">🇪🇺</div><div class="g-titre">Données en Europe</div><p class="g-texte">Hébergement européen. Conformité RGPD garantie sur toute la chaîne.</p></div>
+        <div>
+            <div class="g-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="11" width="15" height="11" rx="2"/><path d="M1 11V6a2 2 0 0 1 2-2h7"/><path d="M16 7h-4a2 2 0 0 0-2 2v2"/><line x1="20" y1="8" x2="20" y2="14"/><circle cx="20" cy="17" r="2"/></svg></div>
+            <div class="g-titre">Paiement sécurisé</div>
+            <p class="g-texte">Chiffrement SSL via Stripe. Vos données bancaires ne sont jamais stockées.</p>
+        </div>
+        <div>
+            <div class="g-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="g-titre">Sans engagement</div>
+            <p class="g-texte">Résiliez à tout moment depuis votre espace client, sans frais.</p>
+        </div>
+        <div>
+            <div class="g-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="g-titre">Accès immédiat</div>
+            <p class="g-texte">Votre compte est activé dès la confirmation du paiement.</p>
+        </div>
+        <div>
+            <div class="g-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <div class="g-titre">Données en Europe</div>
+            <p class="g-texte">Hébergement européen. Conformité RGPD garantie sur toute la chaîne.</p>
+        </div>
     </div>
+</div>
+
 </div>
 
 <div class="faq">
     <h2>Questions fréquentes</h2>
-    <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">Quelle formule choisir ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Si vous êtes indépendant ou gérez un seul site, le Starter est suffisant. Pour une PME qui veut automatiser totalement sa conformité, le Pro est le choix idéal. Le Premium est fait pour les agences et entreprises gérant plusieurs sites.</div>
+
+        <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)">Quelle formule convient à mon entreprise ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Starter est idéal pour les indépendants et petites structures avec un volume limité de documents. Business est notre formule la plus choisie. elle couvre l'intégralité des besoins d'une PME. Expert est conçu pour les agences, cabinets et structures qui gèrent plusieurs entités.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">Comment fonctionne l'analyse de documents ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Depuis votre espace client, déposez un document (PDF, Word, TXT). Il est analysé en moins de 30 secondes — vous recevez un score, la liste des problèmes détectés et les recommandations pour corriger.</div>
+        <button class="faq-q" onclick="tFaq(this)">Comment fonctionne l'analyse de documents ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Depuis votre espace, déposez un document (PDF, Word, TXT). Il est analysé en moins de 30 secondes. vous recevez un score de conformité, la liste des risques identifiés et les recommandations précises pour corriger chaque point.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">Les documents juridiques sont-ils valables légalement ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Nos documents sont générés selon les textes réglementaires européens en vigueur. Ils constituent une base sérieuse et conforme. Pour les situations à fort enjeu, nous recommandons de les faire valider par un professionnel du droit.</div>
+        <button class="faq-q" onclick="tFaq(this)">Les documents générés sont-ils conformes ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Nos documents sont rédigés selon les textes réglementaires européens en vigueur. Ils constituent une base solide et conforme pour la grande majorité des situations. Pour les cas à fort enjeu, nous recommandons une validation par un professionnel du droit.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">C'est quoi l'assistant conformité ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Disponible dans votre espace client (formules Business et Expert), c'est un assistant qui répond à vos questions sur la conformité en langage simple, explique les résultats de vos analyses et vous guide dans les corrections à apporter.</div>
+        <button class="faq-q" onclick="tFaq(this)">Mon compte est-il activé immédiatement ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Oui. Dès validation du paiement, vos identifiants arrivent par email et votre espace est accessible immédiatement. Aucune attente, aucune démarche supplémentaire.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">Comment créer mon compte après le paiement ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Vous n'avez rien à faire. Après validation de votre paiement, votre compte est créé automatiquement et vos identifiants sont envoyés par e-mail. Vous pouvez vous connecter immédiatement et modifier votre mot de passe depuis les paramètres.</div>
+        <button class="faq-q" onclick="tFaq(this)">Puis-je résilier à tout moment ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Oui, sans engagement et sans frais. La résiliation se fait en un clic depuis votre espace client. Vous conservez l'accès jusqu'à la fin de la période déjà réglée.</div>
     </div>
     <div class="faq-item">
-        <button class="faq-q" onclick="tFaq(this)">Puis-je résilier à tout moment ? <span class="faq-ico">+</span></button>
-        <div class="faq-r">Oui, sans engagement et sans frais. Résiliez depuis votre espace client en un clic. La résiliation est effective immédiatement.</div>
+        <button class="faq-q" onclick="tFaq(this)">Mes données et documents sont-ils en sécurité ?<span class="faq-ico">+</span></button>
+        <div class="faq-r">Vos documents sont supprimés immédiatement après analyse. nous ne les stockons jamais. Hébergement en Europe, chiffrement de bout en bout. Audilix applique les mêmes standards de conformité qu'il préconise à ses clients.</div>
     </div>
+
 </div>
+</section>
 
-<footer>
-    <p>© 2026 <a href="index.html">Audilix</a> — <a href="confidentialite.html">Confidentialité</a> — <a href="mentions.html">Mentions légales</a> — <a href="/cdn-cgi/l/email-protection#3a5955544e5b594e145b4f5e535653427a5d575b535614595557">Contact</a> — <a href="/cdn-cgi/l/email-protection#35565a5b415456411b5440515c595c4d755258545c591b565a58">Contact</a></p>
-</footer>
-
-<div id="chargement">
-    <div style="background:white;border-radius:14px;padding:44px;text-align:center;max-width:290px;">
-        <div style="width:44px;height:44px;border:3px solid rgba(27,58,122,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 18px;"></div>
-        <div style="font-size:15px;font-weight:700;color:#0F2456;margin-bottom:5px;">Redirection en cours...</div>
-        <div style="font-size:13px;color:#6B7280;">Paiement sécurisé par Stripe 🔒</div>
-    </div>
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var BACKEND = 'https://audilix-backend.onrender.com';
-var PRIX = { starter:'price_1TBEp1L1yZKJczeCtlqQ4u3F', business:'price_1TBEt9L1yZKJczeC28lX4VMH', expert:'price_1TBEuYL1yZKJczeCXrgBEFcu' };
-
-async function payer(plan) {
-    var userStr = localStorage.getItem('audilix_user');
-    var user = userStr ? JSON.parse(userStr) : null;
-    document.getElementById('chargement').classList.add('actif');
-    try {
-        var res = await fetch(BACKEND + '/api/stripe/checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                plan: plan, priceId: PRIX[plan],
-                userId: user ? user.id : null,
-                email: user ? user.email : null,
-                successUrl: window.location.origin + '/confirmation.html?plan=' + plan,
-                cancelUrl: window.location.origin + '/pricing.html'
-            })
-        });
-        var data = await res.json();
-        if (data.url) { window.location.href = data.url; }
-        else throw new Error(data.error || 'Erreur');
-    } catch(e) {
-        document.getElementById('chargement').classList.remove('actif');
-        alert('Une erreur est survenue. Veuillez réessayer.');
-    }
-}
-
-function tFaq(btn)
+<script>
+function tFaq(btn) {
     btn.classList.toggle('ouvert');
     btn.nextElementSibling.classList.toggle('ouvert');
 }
