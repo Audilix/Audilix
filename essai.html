@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analyse gratuite — Audilix</title>
+<title>Analyse gratuite, Audilix</title>
 <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -141,9 +141,9 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
 <div style="height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);"></div>
 <nav style="background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(11,37,69,0.08);position:sticky;top:0;z-index:100;">
-    <div style="max-width:1280px;margin:auto;padding:0 40px;height:76px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;">
+    <div style="max-width:1280px;margin:auto;padding:0 40px;height:76px;display:grid;grid-template-columns:auto auto auto;align-items:center;gap:24px;">
         <!-- GAUCHE : retour aligné à droite de sa colonne (contre le logo) -->
-        <div style="display:flex;align-items:center;justify-content:flex-end;padding-right:24px;">
+        <div style="display:flex;align-items:center;display:flex;align-items:center;">
             <a href="javascript:history.back()" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0B2545;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>Retour</a>
         </div>
         <!-- CENTRE : logo parfaitement centré -->
@@ -161,8 +161,8 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
     <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
     <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
     <div class="hero-garanties">
-        <span class="hero-garantie">Résultat en 60 secondes</span>
-        <span class="hero-garantie">Aucune compétence juridique</span>
+        <span class="hero-garantie">Résultat en moins de 60 secondes</span>
+        <span class="hero-garantie">Aucune connaissance juridique requise</span>
         <span class="hero-garantie">Données supprimées après analyse</span>
     </div>
 </div>
@@ -182,7 +182,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
     </div>
     <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" onchange="fichierChoisi(this)">
     <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
-        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant — c'est gratuit →</button>
+        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant, c'est gratuit →</button>
     </div>
 </div>
 
@@ -204,7 +204,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
     <!-- Score -->
     <div class="score-card">
-        <div class="score-label">Compliance Trust Score™</div>
+        <div class="score-label">Score de conformité</div>
         <div class="score-cercle" id="score-cercle">
             <span class="score-num" id="score-num">--</span>
             <span class="score-sur">/100</span>
@@ -248,9 +248,9 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
     <!-- TUNNEL CTA — Formulaire création compte -->
     <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
-        <div class="tunnel-urgence" id="tunnel-label">⚠️ Problèmes critiques détectés</div>
-        <h2 id="tunnel-titre">Débloquez votre rapport complet<br>et <em>protégez votre entreprise</em></h2>
-        <p id="tunnel-desc">Créez votre compte gratuit pour accéder aux recommandations complètes, aux documents corrigés et à la surveillance continue.</p>
+        <div class="tunnel-urgence" id="tunnel-label">⚠️ Des risques ont été détectés dans votre document</div>
+        <h2 id="tunnel-titre">Des risques ont été détectés.<br><em>Voici comment les corriger.</em></h2>
+        <p id="tunnel-desc">Votre rapport détaillé, les corrections à apporter et les documents conformes générés automatiquement — tout est prêt. Créez votre accès en 30 secondes.</p>
 
         <!-- Formulaire email -->
         <div id="form-inscription" style="max-width:380px;margin:0 auto;">
@@ -259,9 +259,9 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
                 onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
             <button onclick="inscrireEssai()" id="btn-inscrire"
                 style="width:100%;background:var(--gold);color:var(--navy);padding:15px;border-radius:6px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">
-                Recevoir mon rapport complet →
+                Accéder à mon rapport complet →
             </button>
-            <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:10px;">Vos identifiants arrivent par email · Accès immédiat · Gratuit</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:10px;">Accès immédiat par email · Sans carte bancaire</p>
         </div>
 
         <!-- État chargement -->
@@ -305,6 +305,38 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
 <script>
 var BACKEND = 'https://audilix-backend.onrender.com';
+
+// Récupérer le fichier pré-chargé depuis la page d'accueil
+window.addEventListener('DOMContentLoaded', function() {
+    try {
+        var data = sessionStorage.getItem('hero_file_data');
+        var name = sessionStorage.getItem('hero_file_name');
+        var type = sessionStorage.getItem('hero_file_type');
+        if (data && name) {
+            sessionStorage.removeItem('hero_file_data');
+            sessionStorage.removeItem('hero_file_name');
+            sessionStorage.removeItem('hero_file_type');
+            // Convertir base64 en File
+            var arr = data.split(',');
+            var bstr = atob(arr[1]);
+            var n = bstr.length;
+            var u8arr = new Uint8Array(n);
+            while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+            var file = new File([u8arr], name, { type: type || 'application/octet-stream' });
+            // Déclencher l'analyse automatiquement
+            setTimeout(function() {
+                var dt = new DataTransfer();
+                dt.items.add(file);
+                var input = document.getElementById('file-input');
+                if (input) {
+                    input.files = dt.files;
+                    fichierChoisi(input);
+                    setTimeout(lancerAnalyse, 300);
+                }
+            }, 200);
+        }
+    } catch(e) { console.warn('sessionStorage non disponible'); }
+});
 var fichierActuel = null;
 
 function fichierChoisi(input) {
@@ -414,7 +446,7 @@ function afficherResultats(data) {
     document.getElementById('score-num').textContent = score;
 
     // Titre selon score
-    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques — action requise';
+    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques, action requise';
     document.getElementById('score-titre').textContent = titre;
     document.getElementById('score-resume').textContent = resume;
 
@@ -495,7 +527,7 @@ async function inscrireEssai() {
     var email = document.getElementById('essai-email').value.trim();
     if (!email || !email.includes('@')) {
         document.getElementById('essai-email').style.borderColor = 'var(--rouge)';
-        document.getElementById('essai-email').placeholder = 'Email invalide — réessayez';
+        document.getElementById('essai-email').placeholder = 'Email invalide, réessayez';
         return;
     }
 
