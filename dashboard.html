@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mon espace — Audilix</title>
+    <title>Mon espace, Audilix</title>
     <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -204,7 +204,48 @@
 
         @media(max-width:1100px) { .stats{grid-template-columns:repeat(2,1fr)} .grille-2{grid-template-columns:1fr} }
         @media(max-width:768px) { .barre-lat{display:none} .principal{margin-left:0} .contenu{padding:20px} }
-    </style>
+    
+/* ── PLAN ESSAI ── */
+.plan-essai-badge{display:flex;align-items:center;gap:8px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:7px;padding:10px 12px;margin-bottom:10px}
+.plan-essai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink2 2s infinite}
+@keyframes blink2{0%,100%{opacity:1}50%{opacity:.3}}
+.plan-essai-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
+.plan-essai-jauge-wrap{margin-bottom:10px}
+.plan-essai-jauge-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:40px;overflow:hidden;margin-bottom:4px}
+.plan-essai-jauge-fill{height:100%;background:var(--gold);border-radius:40px;transition:width .6s}
+.plan-essai-compteur{font-size:10px;color:rgba(255,255,255,0.25)}
+/* ── MODALE UPGRADE ── */
+.upgrade-overlay{position:fixed;inset:0;background:rgba(11,37,69,0.7);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.upgrade-overlay.visible{display:flex}
+.upgrade-modal{background:white;border-radius:16px;padding:36px;max-width:720px;width:92%;max-height:90vh;overflow-y:auto;position:relative;animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.upgrade-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1;transition:color .2s}
+.upgrade-modal-close:hover{color:var(--rouge)}
+.upgrade-modal h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy-dark);margin-bottom:6px}
+.upgrade-modal p{font-size:14px;color:var(--gris);margin-bottom:28px;line-height:1.6}
+.upgrade-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.up-plan{border:1.5px solid var(--border);border-radius:12px;padding:22px 18px;position:relative;transition:border-color .2s}
+.up-plan:hover{border-color:var(--gold)}
+.up-plan.vedette{border-color:var(--navy-dark);background:var(--navy-dark)}
+.up-plan.vedette::before{content:'Le plus choisi';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy-dark);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 12px;border-radius:40px;white-space:nowrap}
+.up-plan-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy-dark);margin-bottom:2px}
+.up-plan.vedette .up-plan-name{color:white}
+.up-plan-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--navy-dark);margin:10px 0}
+.up-plan.vedette .up-plan-price{color:var(--gold)}
+.up-plan-price span{font-size:14px;font-weight:400;color:var(--gris)}
+.up-plan.vedette .up-plan-price span{color:rgba(255,255,255,.4)}
+.up-plan-features{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.up-plan-features li{font-size:12px;color:var(--navy-dark);display:flex;align-items:flex-start;gap:6px;line-height:1.4}
+.up-plan.vedette .up-plan-features li{color:rgba(255,255,255,.7)}
+.up-plan-features li::before{content:'✓';color:var(--gold);font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.up-btn{display:block;width:100%;padding:11px;text-align:center;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.up-btn-outline{background:transparent;border:1.5px solid rgba(11,37,69,.2);color:var(--navy-dark)}
+.up-btn-outline:hover{background:var(--navy-dark);color:white}
+.up-btn-gold{background:var(--gold);color:var(--navy-dark)}
+.up-btn-gold:hover{background:var(--gold-light)}
+@media(max-width:640px){.upgrade-plans{grid-template-columns:1fr}}
+
+</style>
 </head>
 <body>
 
@@ -243,13 +284,28 @@
         </button>
     </nav>
     <div class="lat-bas">
-        <div class="plan-info">
-            <div class="plan-libelle">Ma formule</div>
-            <div class="plan-nom" id="affichage-plan">Starter</div>
-            <div class="plan-jauge"><div class="plan-jauge-rempli" id="jauge-analyses" style="width:0%"></div></div>
-            <div class="plan-compteur" id="compteur-analyses">— analyses ce mois</div>
+        <!-- BLOC PLAN ESSAI (affiché si plan = essai) -->
+        <div id="bloc-essai" style="display:none;">
+            <div class="plan-essai-badge">
+                <div class="plan-essai-dot"></div>
+                <span class="plan-essai-label">Essai gratuit</span>
+            </div>
+            <div class="plan-essai-jauge-wrap">
+                <div class="plan-essai-jauge-bg"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
+                <div class="plan-essai-compteur" id="compteur-essai">0 / 1 analyse utilisée</div>
+            </div>
+            <button onclick="ouvrirUpgrade('Essayez une fonctionnalité')" style="display:block;width:100%;padding:9px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Choisir un plan →</button>
         </div>
-        <a href="pricing.html" class="plan-upgrade">Changer de formule</a>
+        <!-- BLOC PLAN NORMAL (starter / business / pro) -->
+        <div id="bloc-plan-normal">
+            <div class="plan-info">
+                <div class="plan-libelle">Ma formule</div>
+                <div class="plan-nom" id="affichage-plan">Starter</div>
+                <div class="plan-jauge"><div class="plan-jauge-rempli" id="jauge-analyses" style="width:0%"></div></div>
+                <div class="plan-compteur" id="compteur-analyses">— analyses ce mois</div>
+            </div>
+            <a href="pricing.html" class="plan-upgrade">Changer de formule</a>
+        </div>
         <div class="utilisateur" style="margin-top:8px;">
             <div class="user-avatar" id="avatar-utilisateur">?</div>
             <div>
@@ -292,7 +348,7 @@
             <div id="onboarding-banner" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:16px 20px;margin-bottom:20px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                 <div>
                     <div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">🚀 Commencez par analyser votre premier document</div>
-                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV ou une politique de confidentialité — résultat en 30 secondes.</div>
+                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV ou une politique de confidentialité, résultat en 30 secondes.</div>
                 </div>
                 <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
                     <button id="ob-btn-go" style="background:var(--gold);color:var(--navy-dark);border:none;padding:10px 18px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Analyser un document →</button>
@@ -470,7 +526,7 @@
                             <input type="file" id="input-clause" accept=".pdf,.txt,.doc,.docx" onchange="selectionnerFichierClause(this.files[0])">
                             <div class="upload-icone">📂</div>
                             <div class="upload-titre">Déposez votre contrat ici</div>
-                            <div class="upload-sous">PDF, TXT, DOCX — max 10 Mo</div>
+                            <div class="upload-sous">PDF, TXT, DOCX, max 10 Mo</div>
                         </div>
                         <button class="btn-lancer" id="btn-clauses" onclick="analyserClauses()" style="margin-top:14px;" disabled>Analyser les clauses</button>
                     </div>
@@ -654,11 +710,33 @@ function initialiserDashboard() {
     document.getElementById('email-utilisateur').textContent = utilisateur.email || '';
     document.getElementById('avatar-utilisateur').textContent = prenom.charAt(0).toUpperCase();
 
-    var plan = utilisateur.plan || 'starter';
-    var nomsPlans = { starter:'Starter', business:'Business', expert:'Expert' };
+    var plan = utilisateur.plan || 'essai';
+    var nomsPlans = { essai:'Essai gratuit', starter:'Starter', business:'Business', pro:'Pro', expert:'Pro' };
     var nomPlan = nomsPlans[plan] || plan;
-    document.getElementById('affichage-plan').textContent = nomPlan;
-    document.getElementById('param-plan').textContent = nomPlan;
+
+    if (plan === 'essai') {
+        document.getElementById('bloc-essai').style.display = 'block';
+        document.getElementById('bloc-plan-normal').style.display = 'none';
+        // Bloquer les pages non autorisées en essai
+        var pagesBloquees = ['generer', 'assistant', 'clauses', 'registre', 'historique'];
+        pagesBloquees.forEach(function(p) {
+            var btn = document.getElementById('nav-' + p);
+            if (btn) {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    ouvrirUpgrade('Fonctionnalité réservée aux abonnés');
+                };
+                btn.style.opacity = '0.4';
+                btn.title = 'Disponible avec un plan payant';
+            }
+        });
+    } else {
+        document.getElementById('bloc-essai').style.display = 'none';
+        document.getElementById('bloc-plan-normal').style.display = 'block';
+        document.getElementById('affichage-plan').textContent = nomPlan;
+    }
+    var paramPlan = document.getElementById('param-plan');
+    if (paramPlan) paramPlan.textContent = nomPlan;
     if (utilisateur.email) { var el = document.getElementById('param-email-new'); if(el) el.placeholder = utilisateur.email; }
 
     var now = new Date();
@@ -696,6 +774,7 @@ async function chargerDonnees() {
         afficherHistorique();
         afficherMesDocuments();
         mettreAJourCompteurPlan();
+        mettreAJourCompteurEssai();
     } catch(e) { console.error('Erreur chargement données:', e); }
 }
 
@@ -719,6 +798,38 @@ function mettreAJourStats() {
     document.getElementById('stat-critiques').textContent = totalC;
 }
 
+function ouvrirUpgrade(titre) {
+    document.getElementById('upgrade-titre').textContent = titre || 'Passez à la vitesse supérieure';
+    document.getElementById('upgrade-overlay').classList.add('visible');
+}
+function fermerUpgrade() {
+    document.getElementById('upgrade-overlay').classList.remove('visible');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') fermerUpgrade(); });
+
+function mettreAJourCompteurEssai() {
+    if ((utilisateur.plan || 'essai') !== 'essai') return;
+    var now = new Date();
+    var debut = new Date(now.getFullYear(), now.getMonth(), 1);
+    var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
+    var pct = nb >= 1 ? 100 : 0;
+    var jaugeEl = document.getElementById('jauge-essai');
+    var compteurEl = document.getElementById('compteur-essai');
+    if (jaugeEl) jaugeEl.style.width = pct + '%';
+    if (compteurEl) compteurEl.textContent = nb + ' / 1 analyse utilisée';
+    // Si analyse déjà faite, bloquer le bouton analyser aussi
+    if (nb >= 1) {
+        var btnNav = document.getElementById('nav-analyser');
+        if (btnNav) {
+            btnNav.onclick = function(e) {
+                e.preventDefault();
+                ouvrirUpgrade('Votre analyse gratuite a été utilisée');
+            };
+            btnNav.style.opacity = '0.4';
+        }
+    }
+}
+
 function mettreAJourCompteurPlan() {
     var plan = utilisateur.plan || 'starter';
     var limite = plan === 'starter' ? 10 : -1;
@@ -726,7 +837,7 @@ function mettreAJourCompteurPlan() {
     var debut = new Date(now.getFullYear(), now.getMonth(), 1);
     var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
     if (limite === -1) {
-        document.getElementById('compteur-analyses').textContent = nb + ' analyse(s) ce mois — illimité';
+        document.getElementById('compteur-analyses').textContent = nb + ' analyse(s) ce mois, illimité';
         document.getElementById('jauge-analyses').style.width = '10%';
     } else {
         document.getElementById('compteur-analyses').textContent = nb + '/' + limite + ' analyses ce mois';
@@ -747,7 +858,7 @@ function afficherApercuAnalyses() {
     }
     zone.innerHTML = analysesCache.slice(0,4).map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'short',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' — ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
+        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
     }).join('');
     var d = analysesCache[0];
     if (d && d.recommandations && d.recommandations.length > 0) {
@@ -762,7 +873,7 @@ function afficherHistorique() {
     if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = analysesCache.map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' — ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
+        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
     }).join('');
 }
 
@@ -839,6 +950,16 @@ function deposerFichier(e) {
 
 async function lancerAnalyse() {
     if (!fichierCourant || !utilisateur) return;
+    // Bloquer si essai et déjà 1 analyse
+    if ((utilisateur.plan || 'essai') === 'essai') {
+        var now = new Date();
+        var debut = new Date(now.getFullYear(), now.getMonth(), 1);
+        var nbEssai = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
+        if (nbEssai >= 1) {
+            ouvrirUpgrade('Votre analyse gratuite a été utilisée');
+            return;
+        }
+    }
     document.getElementById('etat-vide-analyse').style.display = 'none';
     document.getElementById('chargement-analyse').classList.add('visible');
     document.getElementById('resultat-zone').classList.remove('visible');
@@ -856,7 +977,7 @@ async function lancerAnalyse() {
         if (!res.ok) {
             if (data.limitAtteinte) {
                 var corps = document.querySelector('#carte-resultat-analyse .carte-corps');
-                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business — illimité →</a></div>';
+                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business, illimité →</a></div>';
             } else {
                 alert(data.error || 'Erreur lors de l\'analyse');
                 document.getElementById('etat-vide-analyse').style.display = 'block';
@@ -1146,5 +1267,53 @@ function seDeconnecter() {
 }
 </script>
 <script src="cookies.js"></script>
+
+<!-- MODALE UPGRADE -->
+<div class="upgrade-overlay" id="upgrade-overlay" onclick="if(event.target===this)fermerUpgrade()">
+  <div class="upgrade-modal">
+    <button class="upgrade-modal-close" onclick="fermerUpgrade()">✕</button>
+    <h2 id="upgrade-titre">Passez à la vitesse supérieure</h2>
+    <p id="upgrade-desc">Cette fonctionnalité n'est pas disponible en essai gratuit. Choisissez un plan pour y accéder.</p>
+    <div class="upgrade-plans">
+      <div class="up-plan">
+        <div class="up-plan-name">Starter</div>
+        <div class="up-plan-price">69€<span> / mois</span></div>
+        <ul class="up-plan-features">
+          <li>10 analyses par mois</li>
+          <li>Score de conformité sur 100</li>
+          <li>3 documents générés</li>
+          <li>Alertes email</li>
+          <li>Espace de suivi</li>
+        </ul>
+        <a href="pricing.html" class="up-btn up-btn-outline">Choisir Starter</a>
+      </div>
+      <div class="up-plan vedette">
+        <div class="up-plan-name">Business</div>
+        <div class="up-plan-price">149€<span> / mois</span></div>
+        <ul class="up-plan-features">
+          <li>Analyses illimitées</li>
+          <li>Détection des clauses abusives</li>
+          <li>Documents corrigés automatiquement</li>
+          <li>Registre RGPD automatique</li>
+          <li>Assistant disponible à toute heure</li>
+          <li>Veille réglementaire automatique</li>
+        </ul>
+        <a href="pricing.html" class="up-btn up-btn-gold">Choisir Business</a>
+      </div>
+      <div class="up-plan">
+        <div class="up-plan-name">Pro</div>
+        <div class="up-plan-price">299€<span> / mois</span></div>
+        <ul class="up-plan-features">
+          <li>Tout Business inclus</li>
+          <li>Plusieurs entreprises gérées</li>
+          <li>Documents mis à jour si loi change</li>
+          <li>Rapports PDF professionnels</li>
+          <li>Certificat de conformité Audilix</li>
+        </ul>
+        <a href="pricing.html" class="up-btn up-btn-outline">Choisir Pro</a>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
