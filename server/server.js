@@ -667,13 +667,13 @@ app.post("/api/essai-inscription", async (req, res) => {
     const nums = Math.floor(1000 + Math.random() * 9000);
     const mdpClair = motsPasse[Math.floor(Math.random() * motsPasse.length)] + nums + "!";
 
-    // Créer le compte Starter
+    // Créer le compte Essai
     const user = await sbInsert("users", {
       email,
       password_hash: hashPassword(mdpClair),
       firstname: "",
       lastname: "",
-      plan: "starter"
+      plan: "essai"
     });
 
     if (!user || !user.id) {
