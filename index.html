@@ -171,6 +171,13 @@ footer{background:#060F1E;padding:56px 40px}
 .chat-send-btn{background:var(--navy);color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:15px;transition:background .2s}
 .chat-send-btn:hover{background:var(--gold);color:var(--navy)}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+/* HERO cascade */
+.hero-anim-1{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.hero-anim-2{opacity:0;transform:translateY(20px);transition:opacity .6s ease .12s,transform .6s ease .12s}
+.hero-anim-3{opacity:0;transform:translateY(16px);transition:opacity .6s ease .28s,transform .6s ease .28s}
+.hero-anim-4{opacity:0;transform:translateY(14px);transition:opacity .6s ease .44s,transform .6s ease .44s}
+.hero-anim-5{opacity:0;transform:translateY(28px);transition:opacity .75s ease .2s,transform .75s ease .2s}
+.hero-anim-in{opacity:1!important;transform:translateY(0)!important}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @media(max-width:1024px){
 .hero{grid-template-columns:1fr;padding:140px 24px 80px}
@@ -187,18 +194,20 @@ footer{background:#060F1E;padding:56px 40px}
 #chat-btn{right:16px;bottom:16px}
 }
 
-/* HERO UPLOAD CARD */
-.hero-upload-card{background:white;border:1px solid var(--border);border-radius:16px;padding:48px;position:relative;overflow:hidden;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-upload-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-.hero-upload-zone{border:2px dashed rgba(11,37,69,0.18);border-radius:12px;padding:48px 32px;text-align:center;cursor:pointer;transition:all 0.25s;background:var(--cream);position:relative;width:100%}
-.hero-upload-zone:hover,.hero-upload-zone.dragover{border-color:var(--gold);background:var(--gold-pale)}
-.hero-upload-icon{margin-bottom:16px}
-.hero-upload-titre{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:6px}
-.hero-upload-sous{font-size:12px;color:var(--gray);margin-bottom:20px}
-.hero-upload-btn{background:var(--navy);color:white;border:none;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.hero-upload-btn:hover{background:var(--gold);color:var(--navy)}
-.hero-upload-selected{display:none;align-items:center;gap:8px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:6px;padding:8px 12px;margin-top:14px;font-size:13px;color:#16a34a;font-weight:500}
-.hero-upload-selected.visible{display:flex}
+
+/* HERO LAYOUT */
+.hero-left{min-width:0}
+.hero-right{min-width:0}
+/* HERO CARD */
+.hero-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:48px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.stat-number{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--navy);line-height:1}
+.stat-number span{color:var(--gold)}
+.stat-label{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-top:6px}
+.stat-divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.compliance-tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{padding:6px 14px;background:#fff;border:1px solid var(--border);border-radius:40px;font-size:12px;font-weight:500;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -220,21 +229,21 @@ footer{background:#060F1E;padding:56px 40px}
 </nav>
 <section>
 <div class="hero">
-<div class="reveal">
-<div class="hero-badge">Conformité Réglementaire — Audilix</div>
-<h1>Évitez les amendes RGPD.<br>Protégez votre entreprise,<br><em>en 60 secondes.</em></h1>
-<p class="hero-sub">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
-<div class="hero-actions">
+<div class="hero-left">
+<div class="hero-badge hero-anim-1">Service 100% français · Données hébergées en Europe</div>
+<h1 class="hero-anim-2">Évitez les amendes RGPD.<br>Protégez votre entreprise,<br><em>en 60 secondes.</em></h1>
+<p class="hero-sub hero-anim-3">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
+<div class="hero-actions hero-anim-4">
 <a href="essai.html" class="btn-gold">Analyser ma conformité gratuitement</a>
 </div>
 </div>
-<div class="reveal" style="transition-delay:.15s">
+<div class="hero-right hero-anim-5">
 <div class="hero-card">
 <div class="stat-grid">
-<div><div class="stat-number">60<span>s</span></div><div class="stat-label">Résultat garanti</div></div>
-<div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Score de conformité</div></div>
+<div><div class="stat-number" id="stat-60">0<span>s</span></div><div class="stat-label">Résultat garanti</div></div>
+<div><div class="stat-number" id="stat-100"><span>/</span>0</div><div class="stat-label">Score de conformité</div></div>
 <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">Analyse précise</div></div>
-<div><div class="stat-number">24<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
+<div><div class="stat-number" id="stat-24">0<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
 </div>
 <hr class="stat-divider">
 <div class="compliance-tags">
@@ -309,101 +318,109 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="pricing-inner">
 <div class="pricing-header reveal">
 <div class="section-label">Nos formules</div>
-<h2 class="section-title">Un plan pour chaque ambition.</h2>
-<p class="section-sub">Sans engagement · Résiliable à tout moment · Accès immédiat</p>
+<h2 class="section-title">La conformité, sans y penser.</h2>
+<p class="section-sub">Sans engagement · Résiliable à tout moment · Accès immédiat dès le paiement</p>
 </div>
 <div class="pricing-grid">
+
 <div class="plan-card reveal" style="transition-delay:.1s">
 <div class="plan-name">Starter</div>
-<div class="plan-target-small">Indépendants et petites entreprises</div>
+<div class="plan-target-small">Indépendants et petites structures</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">69</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>10 analyses / mois</li>
-<li><span class="feat-check">✓</span>Score de conformité</li>
-<li><span class="feat-check">✓</span>Documents juridiques générés</li>
-<li><span class="feat-check">✓</span>Alertes email</li>
+<li><span class="feat-check">✓</span>10 analyses par mois</li>
+<li><span class="feat-check">✓</span>Score de conformité sur 100</li>
+<li><span class="feat-check">✓</span>3 documents générés automatiquement</li>
+<li><span class="feat-check">✓</span>Alertes par email si risque détecté</li>
 </ul>
 <div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
+<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
-<div class="plan-section-lbl">Analyse documents</div>
-<li><span class="feat-check">✓</span>10 analyses de documents / mois</li>
-<li><span class="feat-check">✓</span>Score de conformité /100</li>
-<li><span class="feat-check">✓</span>Analyse RGPD, contrats, mentions légales</li>
+<div class="plan-section-lbl">Analyse et score</div>
+<li><span class="feat-check">✓</span>10 analyses de documents par mois</li>
+<li><span class="feat-check">✓</span>Score de conformité sur 100 avec niveau de risque</li>
+<li><span class="feat-check">✓</span>Identification claire des problèmes, classés par gravité</li>
+<li><span class="feat-check">✓</span>Explication de chaque risque en langage simple</li>
+<li><span class="feat-check">✓</span>Résumé de conformité envoyé par email automatiquement</li>
 <div class="plan-section-lbl">Documents générés</div>
 <li><span class="feat-check">✓</span>Politique de confidentialité</li>
 <li><span class="feat-check">✓</span>Mentions légales</li>
-<li><span class="feat-check">✓</span>Politique de cookies</li>
+<li><span class="feat-check">✓</span>Politique de gestion des cookies</li>
 <div class="plan-section-lbl">Surveillance</div>
-<li><span class="feat-check">✓</span>Alertes email si non-conformité</li>
-<li><span class="feat-check">✓</span>Dashboard de conformité</li>
-<li><span class="feat-check">✓</span>Support 48h</li>
+<li><span class="feat-check">✓</span>Surveillance mensuelle automatique</li>
+<li><span class="feat-check">✓</span>Alertes email dès qu'une anomalie est détectée</li>
+<li><span class="feat-check">✓</span>Espace de suivi personnel</li>
 </ul>
 </div>
 </div>
 <a href="essai.html" class="plan-btn plan-btn-outline">Essayer gratuitement</a>
 </div>
+
 <div class="plan-card featured reveal" style="transition-delay:.2s">
 <div class="plan-badge">Le plus choisi</div>
 <div class="plan-name">Business</div>
-<div class="plan-target-small">PME et startups en croissance</div>
+<div class="plan-target-small">PME et structures en croissance</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">149</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
 <li><span class="feat-check">✓</span>Analyses illimitées</li>
-<li><span class="feat-check">✓</span>Assistant conformité 24/7</li>
-<li><span class="feat-check">✓</span>Veille réglementaire</li>
-<li><span class="feat-check">✓</span>Détection clauses abusives</li>
+<li><span class="feat-check">✓</span>Détection des clauses abusives dans vos contrats</li>
+<li><span class="feat-check">✓</span>Documents corrigés générés automatiquement</li>
+<li><span class="feat-check">✓</span>Veille réglementaire automatique</li>
 </ul>
 <div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
+<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
-<div class="plan-section-lbl">Tout Starter inclus</div>
-<li><span class="feat-check">✓</span>Analyses illimitées</li>
-<li><span class="feat-check">✓</span>Détection de clauses abusives</li>
-<li><span class="feat-check">✓</span>Registre des traitements RGPD</li>
-<li><span class="feat-check">✓</span>Alertes temps réel</li>
-<div class="plan-section-lbl">Automatisation</div>
-<li><span class="feat-check">✓</span>Assistant conformité 24/7</li>
-<li><span class="feat-check">✓</span>Plan d'action priorisé</li>
-<li><span class="feat-check">✓</span>Veille réglementaire</li>
-<div class="plan-section-lbl">Rapports et Export</div>
-<li><span class="feat-check">✓</span>Rapports PDF</li>
-<li><span class="feat-check">✓</span>Support 24h</li>
+<div class="plan-section-lbl">Tout Starter, et en plus</div>
+<li><span class="feat-check">✓</span>Analyses de documents illimitées</li>
+<li><span class="feat-check">✓</span>Détection automatique des clauses abusives</li>
+<li><span class="feat-check">✓</span>Documents corrigés générés automatiquement</li>
+<li><span class="feat-check">✓</span>Documents personnalisés selon votre activité</li>
+<li><span class="feat-check">✓</span>Registre des traitements RGPD généré automatiquement</li>
+<div class="plan-section-lbl">Automatisation complète</div>
+<li><span class="feat-check">✓</span>Assistant disponible à toute heure pour vos questions</li>
+<li><span class="feat-check">✓</span>Plan de corrections établi automatiquement par priorité</li>
+<li><span class="feat-check">✓</span>Alertes en temps réel dès qu'un risque est identifié</li>
+<li><span class="feat-check">✓</span>Veille automatique sur RGPD, AI Act, CSRD</li>
+<li><span class="feat-check">✓</span>Historique complet de vos analyses</li>
+<li><span class="feat-check">✓</span>Résultats en moins de 60 secondes</li>
 </ul>
 </div>
 </div>
 <a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business</a>
 </div>
+
 <div class="plan-card reveal" style="transition-delay:.3s">
-<div class="plan-name">Expert</div>
-<div class="plan-target-small">Agences et multi-sites</div>
+<div class="plan-name">Pro</div>
+<div class="plan-target-small">Agences et cabinets</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">299</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Tout Business inclus</li>
-<li><span class="feat-check">✓</span>Analyse juridique avancée</li>
-<li><span class="feat-check">✓</span>Export PDF premium</li>
-<li><span class="feat-check">✓</span>Accès API</li>
+<li><span class="feat-check">✓</span>Tout Business, et en plus</li>
+<li><span class="feat-check">✓</span>Plusieurs entreprises depuis un seul espace</li>
+<li><span class="feat-check">✓</span>Documents mis à jour si la loi évolue</li>
+<li><span class="feat-check">✓</span>Certificat de conformité Audilix</li>
 </ul>
 <div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir toutes les fonctionnalités <span class="arrow">▼</span></button>
+<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
 <div class="plan-accordion-content">
 <ul class="plan-features">
-<div class="plan-section-lbl">Tout Business inclus</div>
-<li><span class="feat-check">✓</span>Analyse juridique avancée</li>
-<li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
-<li><span class="feat-check">✓</span>Détection proactive des risques</li>
-<div class="plan-section-lbl">Intégration et Certification</div>
-<li><span class="feat-check">✓</span>Accès API conformité</li>
-<li><span class="feat-check">✓</span>Statistiques et comparatif sectoriel</li>
-<li><span class="feat-check">✓</span>Badge de conformité Audilix</li>
-<li><span class="feat-check">✓</span>Support VIP</li>
+<div class="plan-section-lbl">Tout Business, et en plus</div>
+<li><span class="feat-check">✓</span>Gestion de plusieurs entreprises ou clients</li>
+<li><span class="feat-check">✓</span>Vos documents mis à jour automatiquement si la réglementation change</li>
+<li><span class="feat-check">✓</span>Détection préventive des nouveaux risques</li>
+<li><span class="feat-check">✓</span>Recommandations adaptées automatiquement à votre secteur</li>
+<div class="plan-section-lbl">Rapports et certification</div>
+<li><span class="feat-check">✓</span>Rapports complets au format PDF prêts à transmettre</li>
+<li><span class="feat-check">✓</span>Certificat de conformité Audilix à afficher</li>
+<li><span class="feat-check">✓</span>Connexion à vos outils métier</li>
+<li><span class="feat-check">✓</span>Jusqu'à 10 entités gérées</li>
 </ul>
 </div>
 </div>
-<a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Expert</a>
+<a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Pro</a>
 </div>
+
 </div>
 <div style="text-align:center">
 <a href="pricing.html" class="btn-primary" style="display:inline-block;padding:16px 40px;font-size:15px">Voir la page tarifs complète</a>
@@ -440,7 +457,6 @@ footer{background:#060F1E;padding:56px 40px}
 <a href="essai.html" class="btn-gold" style="font-size:16px;padding:18px 48px">Vérifier mes risques maintenant</a>
 <a href="pricing.html" class="btn-primary" style="font-size:16px;padding:18px 48px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)">Voir les plans</a>
 </div>
-<p class="cta-note">Rejoignez les entreprises qui font confiance à Audilix pour leur conformité.</p>
 </div>
 </section>
 <section style="padding:100px 40px;background:white;">
@@ -451,24 +467,21 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 <div class="reveal" style="transition-delay:0.1s;">
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">A quoi ca sert concrètement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
-<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Audilix vérifie automatiquement que vos documents (contrats, CGV, politique de confidentialité…) respectent la loi. En quelques secondes, vous savez ce qui est problématique, ce qu'il faut corriger. Vous évitez ainsi les amendes qui peuvent atteindre <strong style="color:var(--navy);">4% de votre chiffre d'affaires annuel</strong>.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">À quoi ça sert concrètement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Audilix analyse vos documents juridiques (contrats, CGV, politique de confidentialité…) et vérifie qu'ils respectent la loi. En quelques secondes, vous obtenez la liste des problèmes, leur niveau de gravité et les corrections à apporter. Une amende RGPD peut atteindre <strong style="color:var(--navy);">4% du chiffre d'affaires annuel</strong>.</div>
 </div>
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
 <button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Je risque vraiment une amende si je ne suis pas conforme ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
-<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Oui. Le RGPD prévoit des amendes jusqu'à 20 millions d'euros ou 4% du chiffre d'affaires. La CNIL a sanctionné des PME pour des manquements simples : absence de mentions légales, cookies non conformes, politique de confidentialité inexistante. Les contrôles se multiplient.</div>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Oui. Le RGPD prévoit des amendes jusqu'à 20 millions d'euros ou 4% du chiffre d'affaires. La CNIL a sanctionné des PME pour des manquements simples : absence de mentions légales, cookies non conformes, politique de confidentialité inexistante. Les contrôles touchent désormais toutes les tailles d'entreprise.</div>
 </div>
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Comment ca fonctionne exactement ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
-<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Vous déposez un document dans votre espace client (PDF, Word, texte). Il est analysé en moins de 60 secondes. Vous recevez un score de conformité sur 100, la liste des risques et les explications en langage simple sur quoi corriger.</div>
+<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Comment ça fonctionne ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Vous déposez un document (PDF, Word, texte). En moins de 60 secondes vous recevez un score sur 100, la liste des problèmes identifiés et les corrections à apporter, expliquées clairement.</div>
 </div>
-<div style="border-bottom:1px solid rgba(11,37,69,0.08);">
-<button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Combien de temps dure une analyse ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
-<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Moins de 60 secondes pour la grande majorité des documents. Vous récupérez immédiatement votre score, vos risques identifiés et vos recommandations, sans attendre.</div>
-</div>
+
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
 <button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Audilix est-il fiable pour du juridique ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
-<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Notre technologie est entraînée sur les textes réglementaires européens en vigueur (RGPD, directives ePrivacy, droit de la consommation…). Elle identifie efficacement les risques courants qui concernent 95% des PME. Pour les situations complexes ou à fort enjeu, nous recommandons de consulter un professionnel du droit.</div>
+<div style="display:none;padding-bottom:18px;font-size:14px;color:var(--gray);line-height:1.85;">Audilix s'appuie sur les textes réglementaires européens en vigueur : RGPD, directives ePrivacy, droit de la consommation. Les risques courants qui concernent la majorité des PME sont couverts. Pour les situations complexes ou à fort enjeu, faites valider par un professionnel du droit.</div>
 </div>
 <div style="border-bottom:1px solid rgba(11,37,69,0.08);">
 <button onclick="ouvrirFaq(this)" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--navy);text-align:left;gap:14px;">Mes documents sont-ils en sécurité ?<span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 0.25s;font-weight:300;">+</span></button>
@@ -484,8 +497,7 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 </div>
 <div style="text-align:center;margin-top:48px;" class="reveal">
-<a href="essai.html" class="btn-vert" style="font-size:15px;padding:14px 36px;">Analyser mes documents maintenant</a>
-<p style="font-size:13px;color:var(--gray);margin-top:14px;">Résultats en moins de 60 secondes</p>
+<a href="essai.html" class="btn-gold" style="font-size:15px;padding:16px 40px;">Analyser ma conformité gratuitement</a>
 </div>
 </div>
 </section>
@@ -582,42 +594,6 @@ function toggleAccordion(btn) {
     btn.classList.toggle('open');
     btn.nextElementSibling.classList.toggle('open');
 }
-// ── HERO UPLOAD ──
-var heroFichier = null;
-
-function heroDragOver(e) {
-    e.preventDefault();
-    document.getElementById('hero-upload-zone').classList.add('dragover');
-}
-function heroDragLeave(e) {
-    document.getElementById('hero-upload-zone').classList.remove('dragover');
-}
-function heroDrop(e) {
-    e.preventDefault();
-    document.getElementById('hero-upload-zone').classList.remove('dragover');
-    var f = e.dataTransfer.files[0];
-    if (f) heroFichierChoisi({ files: [f] });
-}
-function heroFichierChoisi(input) {
-    var f = input.files ? input.files[0] : null;
-    if (!f) return;
-    heroFichier = f;
-    document.getElementById('hero-file-name').textContent = f.name;
-    document.getElementById('hero-upload-selected').classList.add('visible');
-    // Lire le fichier et stocker en base64 dans sessionStorage
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            sessionStorage.setItem('hero_file_data', e.target.result);
-            sessionStorage.setItem('hero_file_name', f.name);
-            sessionStorage.setItem('hero_file_type', f.type || 'text/plain');
-        } catch(err) { console.warn('sessionStorage plein'); }
-        // Rediriger vers essai.html après un court délai (feedback visuel)
-        setTimeout(function() { window.location.href = 'essai.html'; }, 600);
-    };
-    reader.readAsDataURL(f);
-}
-
 function ouvrirFaq(btn) {
     var ico = btn.querySelector('span:last-child');
     var ans = btn.nextElementSibling;
@@ -633,6 +609,35 @@ function ouvrirFaq(btn) {
         ico.style.color = 'white';
     }
 }
+// ── Compteurs animés ──
+function animerCompteur(id, cible, suffixe, prefixe, duree) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var debut = 0;
+    var increment = cible / (duree / 16);
+    var timer = setInterval(function() {
+        debut += increment;
+        if (debut >= cible) { debut = cible; clearInterval(timer); }
+        el.innerHTML = (prefixe || '') + Math.round(debut) + (suffixe || '');
+    }, 16);
+}
+var compteursDeclenchés = false;
+function declencherCompteurs() {
+    if (compteursDeclenchés) return;
+    compteursDeclenchés = true;
+    animerCompteur('stat-60', 60, '<span>s</span>', '', 1200);
+    animerCompteur('stat-100', 100, '', '<span>/</span>', 1400);
+    animerCompteur('stat-24', 24, '<span>/7</span>', '', 900);
+}
+
+// ── Animations cascade hero au chargement ──
+window.addEventListener('load', function() {
+    var elems = document.querySelectorAll('.hero-anim-1,.hero-anim-2,.hero-anim-3,.hero-anim-4,.hero-anim-5');
+    elems.forEach(function(el) { el.classList.add('hero-anim-in'); });
+    setTimeout(declencherCompteurs, 600);
+});
+
+// ── IntersectionObserver sections ──
 var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
