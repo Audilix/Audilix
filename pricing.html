@@ -312,7 +312,7 @@
 
         <div class="faq-item">
         <button class="faq-q" onclick="tFaq(this)">Quelle formule convient à mon entreprise ?<span class="faq-ico">+</span></button>
-        <div class="faq-r">Starter est idéal pour les indépendants et petites structures avec un volume limité de documents. Starter convient aux indépendants et petites structures avec un volume limité de documents. Business est la formule la plus complète pour une PME : tout est automatisé. Pro est conçu pour les agences, cabinets et structures qui gèrent plusieurs entités.</div>
+        <div class="faq-r">Starter convient aux indépendants et petites structures avec un volume limité de documents. Business est la formule la plus complète pour une PME : tout est automatisé. Pro est conçu pour les agences, cabinets et structures qui gèrent plusieurs entités.</div>
     </div>
     <div class="faq-item">
         <button class="faq-q" onclick="tFaq(this)">Comment fonctionne l'analyse de documents ?<span class="faq-ico">+</span></button>
@@ -334,7 +334,6 @@
         <button class="faq-q" onclick="tFaq(this)">Mes données et documents sont-ils en sécurité ?<span class="faq-ico">+</span></button>
         <div class="faq-r">Vos documents sont supprimés immédiatement après analyse. Nous ne les stockons jamais. Hébergement en Europe, chiffrement de bout en bout. Audilix applique les mêmes standards de conformité qu'il préconise à ses clients.</div>
     </div>
->
 
 </div>
 </section>
@@ -343,6 +342,29 @@
 function tFaq(btn) {
     btn.classList.toggle('ouvert');
     btn.nextElementSibling.classList.toggle('ouvert');
+}
+var STRIPE_PRICES = {
+    starter:  'price_1TBEp1L1yZKJczeCtlqQ4u3F',
+    business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
+    expert:   'price_1TBEuYL1yZKJczeCXrgBEFcu'
+};
+var BACKEND = 'https://audilix-backend.onrender.com';
+function payer(plan) {
+    var priceId = STRIPE_PRICES[plan];
+    if (!priceId) { alert('Plan introuvable.'); return; }
+    var token = localStorage.getItem('audilix_token');
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem('audilix_user')); } catch(e) {}
+    var body = { priceId: priceId, plan: plan };
+    if (token && user) { body.userId = user.id; }
+    fetch(BACKEND + '/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.url) { window.location.href = data.url; }
+        else { alert(data.error || 'Erreur paiement. Réessayez.'); }
+    }).catch(function() { alert('Erreur de connexion. Réessayez.'); });
 }
 </script>
 <script src="cookies.js"></script>
