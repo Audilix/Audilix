@@ -245,6 +245,8 @@
 .up-btn-gold:hover{background:var(--gold-light)}
 @media(max-width:640px){.upgrade-plans{grid-template-columns:1fr}}
 
+
+.lock-ico{pointer-events:none}
 </style>
 </head>
 <body>
@@ -253,8 +255,11 @@
     <div class="lat-logo"><a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:white;font-size:13px;font-weight:600;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Accueil</a></div>
     <nav class="lat-nav">
         <div class="nav-section">Principal</div>
-        <button class="nav-lien actif" id="nav-accueil" onclick="afficherPage('accueil',this)">
+        <button class="nav-lien actif" id="nav-accueil" onclick="afficherPage('accueil',this)" style="display:none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Vue d'ensemble
+        </button>
+        <button class="nav-lien actif" id="nav-essai" onclick="afficherPage('essai',this)" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Mon essai gratuit
         </button>
         <button class="nav-lien" id="nav-analyser" onclick="afficherPage('analyser',this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Analyser un document
@@ -286,15 +291,25 @@
     <div class="lat-bas">
         <!-- BLOC PLAN ESSAI (affiché si plan = essai) -->
         <div id="bloc-essai" style="display:none;">
-            <div class="plan-essai-badge">
-                <div class="plan-essai-dot"></div>
-                <span class="plan-essai-label">Essai gratuit</span>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:14px 12px;margin-bottom:10px;">
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">
+                    <div class="plan-essai-dot"></div>
+                    <span class="plan-essai-label">Essai gratuit</span>
+                </div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:8px;line-height:1.5;">1 analyse offerte pour découvrir Audilix.</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                    <span style="font-size:10px;color:rgba(255,255,255,0.35);">Analyse utilisée</span>
+                    <span style="font-size:10px;font-weight:700;color:var(--gold);" id="compteur-essai-label">0 / 1</span>
+                </div>
+                <div class="plan-essai-jauge-bg" style="margin-bottom:12px;"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
+                <div id="essai-cta-analyse" style="display:block;">
+                    <div style="font-size:10px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:6px;">Analyse non encore effectuée</div>
+                </div>
+                <div id="essai-cta-upgrade" style="display:none;">
+                    <div style="font-size:10px;color:#f59e0b;text-align:center;margin-bottom:6px;">Analyse épuisée</div>
+                </div>
             </div>
-            <div class="plan-essai-jauge-wrap">
-                <div class="plan-essai-jauge-bg"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
-                <div class="plan-essai-compteur" id="compteur-essai">0 / 1 analyse utilisée</div>
-            </div>
-            <button onclick="ouvrirUpgrade('Essayez une fonctionnalité')" style="display:block;width:100%;padding:9px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Choisir un plan →</button>
+            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:10px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Choisir un plan →</button>
         </div>
         <!-- BLOC PLAN NORMAL (starter / business / pro) -->
         <div id="bloc-plan-normal">
@@ -331,6 +346,108 @@
     </div>
 
     <div class="contenu">
+
+        <!-- PAGE ESSAI -->
+        <div class="page" id="page-essai">
+            <div style="max-width:680px;margin:0 auto;">
+                <!-- Header essai -->
+                <div style="background:var(--navy-dark);border-radius:12px;padding:32px;position:relative;overflow:hidden;margin-bottom:24px;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:blink2 2s infinite;"></div>
+                        <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);">Essai gratuit</span>
+                    </div>
+                    <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px;line-height:1.2;">Bienvenue sur Audilix.</h2>
+                    <p style="font-size:14px;color:rgba(255,255,255,0.45);line-height:1.65;">Vous disposez d'<strong style="color:rgba(255,255,255,0.8);">1 analyse gratuite</strong>. Déposez un document pour voir exactement où votre entreprise est exposée.</p>
+                </div>
+
+                <!-- Statut analyse -->
+                <div id="essai-statut-bloc" style="background:white;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:20px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                        <div style="font-size:14px;font-weight:700;color:var(--navy-dark);">Votre analyse gratuite</div>
+                        <div id="essai-statut-badge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(34,197,94,0.1);color:#16a34a;">Disponible</div>
+                    </div>
+                    <div style="background:var(--creme);border-radius:8px;height:8px;overflow:hidden;margin-bottom:8px;">
+                        <div id="jauge-essai-main" style="height:100%;background:var(--gold);border-radius:8px;width:0%;transition:width .8s ease;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                        <span style="font-size:12px;color:var(--gris);" id="essai-statut-texte">0 analyse utilisée</span>
+                        <span style="font-size:12px;color:var(--gris);">1 maximum</span>
+                    </div>
+                </div>
+
+                <!-- Action principale -->
+                <div id="essai-action-analyser" style="text-align:center;padding:32px 24px;background:white;border:2px dashed var(--border);border-radius:10px;margin-bottom:20px;cursor:pointer;transition:all .2s;" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))" onmouseover="this.style.borderColor='var(--gold)';this.style.background='var(--gold-pale)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">
+                    <div style="font-size:28px;margin-bottom:12px;">📄</div>
+                    <div style="font-size:16px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">Lancer mon analyse gratuite</div>
+                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV, une politique de confidentialité…</div>
+                    <div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:var(--navy-dark);color:white;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:700;">
+                        Analyser un document
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </div>
+                </div>
+
+                <div id="essai-action-epuise" style="display:none;text-align:center;padding:28px 24px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;margin-bottom:20px;">
+                    <div style="font-size:24px;margin-bottom:10px;">📊</div>
+                    <div style="font-size:15px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">Analyse gratuite utilisée</div>
+                    <div style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Votre rapport est disponible dans l'historique. Pour analyser d'autres documents et accéder à toutes les fonctionnalités, choisissez un plan.</div>
+                    <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="background:var(--gold);color:var(--navy-dark);border:none;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Voir les plans →</button>
+                </div>
+
+                <!-- Ce qui est inclus dans l'essai -->
+                <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:24px;">
+                    <div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:16px;">Ce que vous obtenez avec l'essai gratuit</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--navy-dark);">1 analyse complète de document</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--navy-dark);">Score de conformité sur 100</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--navy-dark);">Problèmes identifiés et classés par gravité</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--navy-dark);">Résultats en moins de 60 secondes</span>
+                        </div>
+                        <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--gris);">Documents générés automatiquement</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--gris);">Détection des clauses abusives</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </div>
+                            <span style="font-size:13px;color:var(--gris);">Surveillance et alertes automatiques</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px;text-align:center;">
+                        <button onclick="ouvrirUpgrade('Découvrez nos plans')" style="background:transparent;border:1.5px solid rgba(11,37,69,0.15);color:var(--navy-dark);padding:10px 24px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--navy-dark)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='var(--navy-dark)'">Voir ce qui est inclus dans chaque plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- VUE D'ENSEMBLE -->
         <div class="page active" id="page-accueil">
@@ -714,26 +831,65 @@ function initialiserDashboard() {
     var nomsPlans = { essai:'Essai gratuit', starter:'Starter', business:'Business', pro:'Pro', expert:'Pro' };
     var nomPlan = nomsPlans[plan] || plan;
 
+    // ── Accès par plan ──────────────────────────────────
+    // essai    : analyser (1x)
+    // starter  : analyser(10) + historique + generer(3 docs) + mes-documents
+    // business : tout starter + assistant + clauses + registre
+    // pro      : tout business + rapports PDF
+    var accesPlan = {
+        essai:    [],
+        starter:  ['historique', 'generer', 'mes-documents'],
+        business: ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'],
+        pro:      ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'],
+        expert:   ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre']
+    };
+    var toutesPages = ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'];
+    var pagesAutorisees = accesPlan[plan] || [];
+
     if (plan === 'essai') {
         document.getElementById('bloc-essai').style.display = 'block';
         document.getElementById('bloc-plan-normal').style.display = 'none';
-        // Bloquer les pages non autorisées en essai
-        var pagesBloquees = ['generer', 'assistant', 'clauses', 'registre', 'historique'];
-        pagesBloquees.forEach(function(p) {
-            var btn = document.getElementById('nav-' + p);
-            if (btn) {
-                btn.onclick = function(e) {
-                    e.preventDefault();
-                    ouvrirUpgrade('Fonctionnalité réservée aux abonnés');
-                };
-                btn.style.opacity = '0.4';
-                btn.title = 'Disponible avec un plan payant';
-            }
-        });
+        // Afficher nav essai, masquer vue d'ensemble
+        var navEssai = document.getElementById('nav-essai');
+        var navAccueil = document.getElementById('nav-accueil');
+        if (navEssai) navEssai.style.display = 'flex';
+        if (navAccueil) navAccueil.style.display = 'none';
     } else {
         document.getElementById('bloc-essai').style.display = 'none';
         document.getElementById('bloc-plan-normal').style.display = 'block';
         document.getElementById('affichage-plan').textContent = nomPlan;
+    }
+
+    // Bloquer les pages non autorisées selon le plan
+    toutesPages.forEach(function(p) {
+        var btn = document.getElementById('nav-' + p);
+        if (!btn) return;
+        if (pagesAutorisees.indexOf(p) === -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                var msgs = {
+                    essai:   'Fonctionnalité réservée aux abonnés',
+                    starter: 'Disponible à partir du plan Business'
+                };
+                ouvrirUpgrade(msgs[plan] || 'Fonctionnalité non disponible dans votre plan');
+            };
+            btn.style.opacity = '0.35';
+            btn.setAttribute('data-bloque', '1');
+            // Ajouter un petit badge "🔒" au label
+            if (!btn.querySelector('.lock-ico')) {
+                var lock = document.createElement('span');
+                lock.className = 'lock-ico';
+                lock.textContent = '🔒';
+                lock.style.cssText = 'font-size:9px;margin-left:auto;opacity:0.5;';
+                btn.appendChild(lock);
+            }
+        }
+    });
+
+    // Adapter le texte de la modale upgrade selon le plan
+    if (plan === 'starter') {
+        document.getElementById('upgrade-titre').textContent = 'Disponible à partir du plan Business';
+        document.getElementById('upgrade-desc').textContent = 'Cette fonctionnalité est incluse dans Business et Pro. Passez au niveau supérieur pour en profiter.';
     }
     var paramPlan = document.getElementById('param-plan');
     if (paramPlan) paramPlan.textContent = nomPlan;
@@ -743,6 +899,11 @@ function initialiserDashboard() {
     document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
     chargerDonnees();
+
+    // Essai : afficher page essai
+    if (plan === 'essai') {
+        setTimeout(function() { afficherPage('essai', document.getElementById('nav-essai')); }, 150);
+    }
 
     // Onboarding
     if (!localStorage.getItem('audilix_onboarded')) {
@@ -798,8 +959,9 @@ function mettreAJourStats() {
     document.getElementById('stat-critiques').textContent = totalC;
 }
 
-function ouvrirUpgrade(titre) {
+function ouvrirUpgrade(titre, desc) {
     document.getElementById('upgrade-titre').textContent = titre || 'Passez à la vitesse supérieure';
+    if (desc) document.getElementById('upgrade-desc').textContent = desc;
     document.getElementById('upgrade-overlay').classList.add('visible');
 }
 function fermerUpgrade() {
@@ -813,10 +975,37 @@ function mettreAJourCompteurEssai() {
     var debut = new Date(now.getFullYear(), now.getMonth(), 1);
     var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
     var pct = nb >= 1 ? 100 : 0;
+    var epuise = nb >= 1;
+    // Sidebar
     var jaugeEl = document.getElementById('jauge-essai');
-    var compteurEl = document.getElementById('compteur-essai');
     if (jaugeEl) jaugeEl.style.width = pct + '%';
-    if (compteurEl) compteurEl.textContent = nb + ' / 1 analyse utilisée';
+    var labelEl = document.getElementById('compteur-essai-label');
+    if (labelEl) labelEl.textContent = nb + ' / 1';
+    var ctaA = document.getElementById('essai-cta-analyse');
+    var ctaU = document.getElementById('essai-cta-upgrade');
+    if (ctaA) ctaA.style.display = epuise ? 'none' : 'block';
+    if (ctaU) ctaU.style.display = epuise ? 'block' : 'none';
+    // Page essai principale
+    var jaugeMain = document.getElementById('jauge-essai-main');
+    if (jaugeMain) jaugeMain.style.width = pct + '%';
+    var statutTexte = document.getElementById('essai-statut-texte');
+    if (statutTexte) statutTexte.textContent = nb + ' analyse utilisée';
+    var statutBadge = document.getElementById('essai-statut-badge');
+    if (statutBadge) {
+        if (epuise) {
+            statutBadge.textContent = 'Épuisée';
+            statutBadge.style.background = 'rgba(245,158,11,0.1)';
+            statutBadge.style.color = '#d97706';
+        } else {
+            statutBadge.textContent = 'Disponible';
+            statutBadge.style.background = 'rgba(34,197,94,0.1)';
+            statutBadge.style.color = '#16a34a';
+        }
+    }
+    var blocAnalyser = document.getElementById('essai-action-analyser');
+    var blocEpuise = document.getElementById('essai-action-epuise');
+    if (blocAnalyser) blocAnalyser.style.display = epuise ? 'none' : 'block';
+    if (blocEpuise) blocEpuise.style.display = epuise ? 'block' : 'none';
     // Si analyse déjà faite, bloquer le bouton analyser aussi
     if (nb >= 1) {
         var btnNav = document.getElementById('nav-analyser');
@@ -888,6 +1077,7 @@ function afficherMesDocuments() {
 
 // ── NAVIGATION ──
 var titresPages = {
+    essai:"Mon essai gratuit",
     accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses",
     generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité",
     clauses:"Détection de clauses", registre:"Registre des traitements RGPD", parametres:"Paramètres"
