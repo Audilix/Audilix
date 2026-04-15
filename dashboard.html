@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+async function activerDouble() {
+    afficherMsg('msg-double', 'Fonctionnalité bientôt disponible.', 'ok');
+}<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
@@ -542,6 +544,7 @@
                             <div class="upload-sous">ou cliquez pour sélectionner un fichier</div>
                             <div class="upload-formats"><span class="upload-format">PDF</span><span class="upload-format">TXT</span><span class="upload-format">HTML</span><span class="upload-format">DOCX</span></div>
                         </div>
+                        <div id="msg-analyse" style="font-size:12px;margin-bottom:8px;display:none;"></div>
                         <button class="btn-lancer" id="btn-lancer" onclick="lancerAnalyse()" style="margin-top:14px;" disabled>Lancer l'analyse</button>
                         <p style="font-size:11px;color:var(--gris);text-align:center;margin-top:8px;">Fichier max. 10 Mo · Résultat en moins de 30 secondes</p>
                     </div>
@@ -598,6 +601,7 @@
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
                             <input type="text" id="gen-activite" placeholder="Ex : e-commerce, conseil, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
                         </div>
+                        <div id="msg-generer" style="font-size:12px;margin-bottom:8px;display:none;"></div>
                         <button class="btn-lancer" id="btn-generer" onclick="genererDocument()" disabled>Générer le document</button>
                     </div>
                 </div>
@@ -674,6 +678,7 @@
                             <div class="upload-titre">Déposez votre contrat ici</div>
                             <div class="upload-sous">PDF, TXT, DOCX, max 10 Mo</div>
                         </div>
+                        <div id="msg-clauses" style="font-size:12px;margin-bottom:8px;display:none;"></div>
                         <button class="btn-lancer" id="btn-clauses" onclick="analyserClauses()" style="margin-top:14px;" disabled>Analyser les clauses</button>
                     </div>
                 </div>
@@ -694,16 +699,66 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Générer votre registre des traitements</div></div>
                     <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Renseignez votre activité pour obtenir votre registre personnalisé.</p>
+                        <p style="font-size:13px;color:var(--gris);margin-bottom:20px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Renseignez les informations ci-dessous pour générer votre registre personnalisé et conforme.</p>
+
                         <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise</label>
-                            <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise <span style="color:var(--rouge);">*</span></label>
+                            <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
                         </div>
-                        <div style="margin-bottom:16px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
-                            <input type="text" id="reg-activite" placeholder="Ex : e-commerce, conseil RH, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
+
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité <span style="color:var(--rouge);">*</span></label>
+                            <select id="reg-activite" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="">— Sélectionnez votre secteur —</option>
+                                <option>Commerce en ligne (e-commerce)</option>
+                                <option>Commerce physique (boutique, magasin)</option>
+                                <option>Conseil et services aux entreprises</option>
+                                <option>Santé et bien-être</option>
+                                <option>Immobilier</option>
+                                <option>Formation et éducation</option>
+                                <option>Restauration et hôtellerie</option>
+                                <option>Artisanat et production</option>
+                                <option>Technologie et informatique</option>
+                                <option>Communication et marketing</option>
+                                <option>Juridique et comptabilité</option>
+                                <option>Autre</option>
+                            </select>
                         </div>
-                        <button class="btn-lancer" onclick="genererRegistre()">Générer le registre</button>
+
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Responsable du traitement (nom ou fonction)</label>
+                            <input type="text" id="reg-responsable" placeholder="Ex : Jean Dupont, Gérant" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Types de données collectées</label>
+                            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-identite" value="Identité (nom, prénom)" style="accent-color:var(--gold);"> Identité</label>
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-contact" value="Coordonnées (email, téléphone, adresse)"> Coordonnées</label>
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-paiement" value="Données de paiement"> Paiement</label>
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-navigation" value="Données de navigation (cookies, IP)"> Navigation</label>
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-sante" value="Données de santé"> Santé</label>
+                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-pro" value="Données professionnelles (poste, entreprise)"> Données pro</label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Destinataires des données</label>
+                            <input type="text" id="reg-destinataires" placeholder="Ex : prestataire emailing, comptable, hébergeur..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+
+                        <div style="margin-bottom:20px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Pays de stockage des données</label>
+                            <select id="reg-pays" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="France / Union européenne">France / Union européenne</option>
+                                <option value="États-Unis (avec garanties)">États-Unis (avec garanties)</option>
+                                <option value="Autre pays hors UE">Autre pays hors UE</option>
+                                <option value="Inconnu">Je ne sais pas</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-lancer" onclick="genererRegistre()">Générer mon registre →</button>
+                        <div id="msg-registre" style="font-size:12px;margin-top:10px;display:none;"></div>
                     </div>
                 </div>
                 <div class="carte">
@@ -1207,7 +1262,7 @@ async function lancerAnalyse() {
                 var corps = document.querySelector('#carte-resultat-analyse .carte-corps');
                 corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business, illimité →</a></div>';
             } else {
-                alert(data.error || 'Erreur lors de l\'analyse');
+                afficherMsg('msg-analyse', data.error || 'Erreur lors de l\'analyse.', 'erreur');
                 document.getElementById('etat-vide-analyse').style.display = 'block';
             }
             return;
@@ -1218,7 +1273,7 @@ async function lancerAnalyse() {
     } catch(e) {
         document.getElementById('chargement-analyse').classList.remove('visible');
         document.getElementById('etat-vide-analyse').style.display = 'block';
-        alert('Erreur de connexion. Vérifiez votre connexion et réessayez.');
+        afficherMsg('msg-analyse', 'Erreur de connexion. Vérifiez votre connexion.', 'erreur');
     }
 }
 
@@ -1262,7 +1317,7 @@ async function genererDocument() {
         });
         var data = await res.json();
         document.getElementById('chargement-doc').classList.remove('visible');
-        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-doc').style.display='block'; return; }
+        if (!res.ok) { afficherMsg('msg-generer', data.error||'Erreur lors de la génération.', 'erreur'); document.getElementById('etat-vide-doc').style.display='block'; return; }
         docGenereContenu = data.contenu || '';
         document.getElementById('contenu-doc-apercu').textContent = docGenereContenu;
         document.getElementById('apercu-doc').style.display = 'block';
@@ -1270,11 +1325,11 @@ async function genererDocument() {
     } catch(e) {
         document.getElementById('chargement-doc').classList.remove('visible');
         document.getElementById('etat-vide-doc').style.display = 'block';
-        alert('Erreur de connexion.');
+        afficherMsg('msg-registre', 'Erreur de connexion. Vérifiez votre connexion.', 'erreur');
     }
 }
 
-function copierDocument() { navigator.clipboard.writeText(docGenereContenu).then(function() { alert('Texte copié !'); }); }
+function copierDocument() { navigator.clipboard.writeText(docGenereContenu).then(function() { /* copié */; }); }
 function telechargerDocument() { telechargerDoc(docGenereContenu, 'document-audilix'); }
 
 function telechargerDoc(contenu, nom) {
@@ -1293,7 +1348,7 @@ function voirDocument(docJson) {
     document.getElementById('modal-doc').classList.add('visible');
 }
 function fermerModal() { document.getElementById('modal-doc').classList.remove('visible'); }
-function copierModalDoc() { navigator.clipboard.writeText(docGenereModalContenu).then(function() { alert('Texte copié !'); }); }
+function copierModalDoc() { navigator.clipboard.writeText(docGenereModalContenu).then(function() { /* copié */; }); }
 function telechargerModalDoc() { telechargerDoc(docGenereModalContenu, 'document-audilix'); }
 
 // ── ASSISTANT ──
@@ -1353,7 +1408,7 @@ async function analyserClauses() {
         var res = await fetch(BACKEND + '/api/detecter-clauses', { method:'POST', headers: authHeaders(), body: fd });
         var data = await res.json();
         document.getElementById('chargement-clauses').classList.remove('visible');
-        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-clauses').style.display='block'; return; }
+        if (!res.ok) { afficherMsg('msg-clauses', data.error||'Erreur lors de l\'analyse.', 'erreur'); document.getElementById('etat-vide-clauses').style.display='block'; return; }
         var html = '<div style="margin-bottom:16px;"><div style="font-size:22px;font-weight:700;color:' + scoreCouleur(data.score_equite) + ';">' + data.score_equite + '/100</div><div style="font-size:12px;color:var(--gris);">Score d\'équité du contrat</div></div>';
         html += '<p style="font-size:13px;color:var(--gris);margin-bottom:16px;">' + (data.resume||'') + '</p>';
         if (data.clauses_abusives && data.clauses_abusives.length > 0) {
@@ -1369,25 +1424,35 @@ async function analyserClauses() {
     } catch(e) {
         document.getElementById('chargement-clauses').classList.remove('visible');
         document.getElementById('etat-vide-clauses').style.display = 'block';
-        alert('Erreur de connexion.');
+        afficherMsg('msg-clauses', 'Erreur de connexion.', 'erreur');
     }
 }
 
 // ── REGISTRE ──
 async function genererRegistre() {
     var entreprise = document.getElementById('reg-entreprise').value.trim();
-    if (!entreprise) { alert('Veuillez renseigner le nom de votre entreprise.'); return; }
+    var activite = document.getElementById('reg-activite').value.trim();
+    if (!entreprise) { afficherMsg('msg-registre', 'Veuillez renseigner le nom de votre entreprise.', 'erreur'); return; }
+    if (!activite) { afficherMsg('msg-registre', 'Veuillez sélectionner un secteur d'activité.', 'erreur'); return; }
+    var responsable = document.getElementById('reg-responsable').value.trim();
+    var destinataires = document.getElementById('reg-destinataires').value.trim();
+    var pays = document.getElementById('reg-pays').value;
+    var donneesCollectees = [];
+    ['identite','contact','paiement','navigation','sante','pro'].forEach(function(k) {
+        var el = document.getElementById('reg-data-'+k);
+        if (el && el.checked) donneesCollectees.push(el.value);
+    });
     document.getElementById('etat-vide-registre').style.display = 'none';
     document.getElementById('chargement-registre').classList.add('visible');
     document.getElementById('resultat-registre').style.display = 'none';
     try {
         var res = await fetch(BACKEND + '/api/registre-traitements', {
             method:'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ entreprise: entreprise, activite: document.getElementById('reg-activite').value.trim(), userId: utilisateur.id })
+            body: JSON.stringify({ entreprise, activite, responsable, destinataires, pays, donneesCollectees, userId: utilisateur.id })
         });
         var data = await res.json();
         document.getElementById('chargement-registre').classList.remove('visible');
-        if (!res.ok) { alert(data.error||'Erreur'); document.getElementById('etat-vide-registre').style.display='block'; return; }
+        if (!res.ok) { afficherMsg('msg-registre', data.error||'Erreur lors de la génération.', 'erreur'); document.getElementById('etat-vide-registre').style.display='block'; return; }
         var html = '<div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">' + (data.titre||'Registre des traitements') + '</div>';
         html += '<div style="font-size:11px;color:var(--gris);margin-bottom:16px;">Généré le ' + (data.date_creation||new Date().toLocaleDateString('fr-FR')) + '</div>';
         if (data.traitements && data.traitements.length > 0) {
@@ -1404,7 +1469,7 @@ async function genererRegistre() {
     } catch(e) {
         document.getElementById('chargement-registre').classList.remove('visible');
         document.getElementById('etat-vide-registre').style.display = 'block';
-        alert('Erreur de connexion.');
+        afficherMsg('msg-registre', 'Erreur de connexion.', 'erreur');
     }
 }
 
@@ -1462,12 +1527,6 @@ async function changerMotDePasse() {
     } catch(e) { afficherMsg('msg-mdp', 'Erreur de connexion.', false); }
 }
 
-function activerDouble() {
-    var tel = document.getElementById('param-telephone').value.trim();
-    if (!tel) { afficherMsg('msg-double', 'Entrez votre numéro de téléphone.', false); return; }
-    // Pour l'instant : confirmation visuelle — la logique SMS sera ajoutée avec un prestataire
-    afficherMsg("msg-double", "Demande enregistrée. Vous serez notifié par email.", true);
-}
 
 function confirmerSuppression() {
     var ok = confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
@@ -1483,7 +1542,7 @@ function confirmerSuppression() {
         localStorage.removeItem('audilix_souvenir');
         window.location.href = 'index.html';
     }).catch(function() {
-        alert('Erreur lors de la suppression. Contactez contact.audilix@gmail.com');
+        afficherMsg('msg-suppression', 'Erreur lors de la suppression. Contactez contact.audilix@gmail.com', 'erreur');
     });
 }
 
