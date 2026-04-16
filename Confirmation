@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paiement confirmé — Audilix</title>
+<title>Paiement confirmé, Audilix</title>
 <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -78,10 +78,10 @@ footer a:hover { color:var(--gold); }
             <span class="check-icon">✓</span>
         </div>
 
-        <div class="plan-badge" id="plan-badge">✦ Abonnement activé</div>
+        <div class="plan-badge" id="plan-badge"> Abonnement activé</div>
 
         <h1 class="titre">Bienvenue sur Audilix.</h1>
-        <p class="sous-titre">Votre paiement a été confirmé. Votre espace est prêt — vous pouvez commencer immédiatement.</p>
+        <p class="sous-titre">Votre paiement a été confirmé. Votre espace est prêt, vous pouvez commencer immédiatement.</p>
 
         <div class="etapes">
             <div class="etapes-titre">Prochaines étapes</div>
@@ -128,7 +128,7 @@ var params = new URLSearchParams(window.location.search);
 var plan = params.get('plan') || '';
 var nomsPlans = { starter:'Starter', business:'Business', expert:'Expert' };
 if (plan && nomsPlans[plan]) {
-    document.getElementById('plan-badge').textContent = '✦ Plan ' + nomsPlans[plan] + ' activé';
+    document.getElementById('plan-badge').textContent = ' Plan ' + nomsPlans[plan] + ' activé';
 }
 
 
