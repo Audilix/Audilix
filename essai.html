@@ -170,7 +170,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 <!-- UPLOAD -->
 <div class="upload-zone" id="zone-upload">
     <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
-        <div class="upload-icon">📄</div>
+        <div class="upload-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris,#6B7280)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
         <div class="upload-title">Déposez votre document ici</div>
         <div class="upload-sub">Politique de confidentialité, CGV, contrat, mentions légales…</div>
         <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('file-input').click();">Choisir un fichier</button>
@@ -184,6 +184,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
     <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
         <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant, c'est gratuit →</button>
     </div>
+<div id="msg-essai" style="display:none;font-size:13px;margin-top:12px;padding:10px 14px;border-radius:6px;text-align:center;"></div>
 </div>
 
 <!-- CHARGEMENT -->
@@ -248,7 +249,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
     <!-- TUNNEL CTA — Formulaire création compte -->
     <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
-        <div class="tunnel-urgence" id="tunnel-label">⚠️ Des risques ont été détectés dans votre document</div>
+        <div class="tunnel-urgence" id="tunnel-label">Des risques ont été détectés dans votre document</div>
         <h2 id="tunnel-titre">Des risques ont été détectés.<br><em>Voici comment les corriger.</em></h2>
         <p id="tunnel-desc">Votre rapport détaillé, les corrections à apporter et les documents conformes générés automatiquement — tout est prêt. Créez votre accès en 30 secondes.</p>
 
@@ -293,7 +294,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
     <!-- Points positifs -->
     <div class="positifs-section" id="positifs-section" style="display:none;">
-        <h3>✅ Ce qui est conforme</h3>
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ce qui est conforme</h3>
         <div id="positifs-liste"></div>
     </div>
 
@@ -425,7 +426,7 @@ async function lancerAnalyse() {
     } catch(e) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('zone-upload').style.display = 'block';
-        alert('Erreur : ' + e.message + '\n\nAssurez-vous que votre document contient du texte lisible.');
+        afficherMsgEssai('Erreur : ' + e.message + ' — Assurez-vous que votre document contient du texte lisible.', false);
     }
 }
 
@@ -548,7 +549,7 @@ async function inscrireEssai() {
 
         if (!res.ok) {
             document.getElementById('form-inscription').style.display = 'block';
-            alert('Une erreur est survenue. Réessayez.');
+            afficherMsgEssai('Une erreur est survenue. Réessayez.', false);
             return;
         }
 
@@ -570,7 +571,7 @@ async function inscrireEssai() {
     } catch(e) {
         document.getElementById('form-chargement').style.display = 'none';
         document.getElementById('form-inscription').style.display = 'block';
-        alert('Erreur de connexion. Réessayez.');
+        afficherMsgEssai('Erreur de connexion. Réessayez.', false);
     }
 }
 
