@@ -24,14 +24,14 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .nav-cta{background:var(--gold);color:var(--navy);padding:12px 28px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}
 .nav-cta:hover{background:var(--gold-light)}
 .gold-line{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.hero{padding:180px 40px 120px;max-width:1280px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero{padding:180px 40px 0;max-width:1280px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-pale);border:1px solid var(--gold);color:#8B6914;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;border-radius:2px;margin-bottom:32px}
 .hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hero h1{font-size:clamp(42px,5vw,68px);font-weight:700;line-height:1.08;color:var(--navy);margin-bottom:28px;letter-spacing:-.02em}
 .hero h1 em{font-style:italic;color:var(--gold)}
 .hero-sub{font-size:18px;line-height:1.75;color:var(--gray);margin-bottom:48px;font-weight:300}
-.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:28px}
+
 .btn-gold{background:var(--gold);color:var(--navy);padding:16px 36px;border-radius:4px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;display:inline-block}
 .btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,.4)}
 
@@ -130,13 +130,13 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .g-icon{margin-bottom:20px;display:flex;justify-content:center}
 .g-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:10px}
 .g-desc{font-size:14px;color:var(--gray);line-height:1.65;font-weight:300}
-.cta-section{background:var(--navy);padding:120px 40px;text-align:center;position:relative}
-.cta-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.cta-section h2{font-size:clamp(40px,5vw,68px);color:#fff;font-weight:700;line-height:1.1;margin-bottom:24px;letter-spacing:-.02em}
-.cta-section h2 em{color:var(--gold);font-style:italic}
-.cta-sub{font-size:18px;color:rgba(255,255,255,.45);margin-bottom:56px;font-weight:300}
 
-.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+
+
+
+
+
 footer{background:#060F1E;padding:56px 40px}
 .footer-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
 .footer-links{display:flex;gap:32px;list-style:none}
@@ -189,7 +189,7 @@ footer{background:#060F1E;padding:56px 40px}
 @media(max-width:640px){
 .guarantees-inner{grid-template-columns:1fr 1fr}
 .footer-inner{flex-direction:column;text-align:center}
-.cta-btns{flex-direction:column;align-items:center}
+
 #chat-panel{width:calc(100vw - 32px);right:16px}
 #chat-btn{right:16px;bottom:16px}
 }
@@ -237,10 +237,6 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="hero-left">
 <div class="hero-badge hero-anim-1">Service 100% français · Données hébergées en Europe</div>
 <h1 class="hero-anim-2">Évitez les amendes RGPD.<br>Protégez votre entreprise,<br><em>en 60 secondes.</em></h1>
-<p class="hero-sub hero-anim-3">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
-<div class="hero-actions hero-anim-4">
-<a href="essai.html" class="btn-gold">Analyser ma conformité gratuitement</a>
-</div>
 </div>
 <div class="hero-right hero-anim-5">
 <div class="hero-card">
@@ -252,6 +248,10 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 </div>
 </div>
+</div>
+<div style="max-width:1280px;margin:0 auto 0;padding:32px 40px 0;" class="reveal">
+<p class="hero-sub" style="margin-bottom:32px;max-width:560px;">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
+<a href="essai.html" class="btn-gold">Analyser ma conformité gratuitement</a>
 </div>
 </section>
 <div class="trust-bar">
@@ -284,17 +284,17 @@ footer{background:#060F1E;padding:56px 40px}
 </div>
 <div class="solutions-grid reveal" style="transition-delay:.1s">
 <div class="solution-card">
-<div class="sol-icon">🔐</div>
+<div class="sol-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
 <div class="sol-title">RGPD et Protection des données</div>
 <p class="sol-desc">Fini les mentions légales oubliées ou les CGV non conformes. Audilix vérifie tout, génère les documents manquants et vous évite les amendes CNIL, en automatique.</p>
 </div>
 <div class="solution-card">
-<div class="sol-icon">⚖️</div>
+<div class="sol-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
 <div class="sol-title">Détection de clauses abusives</div>
 <p class="sol-desc">Un contrat signé en aveugle peut vous coûter cher. Audilix détecte les clauses abusives ou illégales avant que vous signiez, avec les articles de loi en référence.</p>
 </div>
 <div class="solution-card">
-<div class="sol-icon">🌱</div>
+<div class="sol-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c1.25-1.25 2.5-2.5 3.5-4 1-1.5 1.5-3 1.5-5 0-3.5 3-6 6-6s6 2.5 6 6"/><path d="M6 22c0-4 2-7 6-8"/></svg></div>
 <div class="sol-title">RSE, AI Act et Veille réglementaire</div>
 <p class="sol-desc">La loi change. Votre conformité ne doit pas dater de 2020. Audilix surveille les évolutions RGPD, AI Act et CSRD et vous alerte avant que cela devienne un problème.</p>
 </div>
