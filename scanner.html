@@ -107,8 +107,9 @@
     </style>
 </head>
 <body>
-<a href="index.html" class="btn-home" title="Accueil" style="position:fixed;top:18px;left:18px;z-index:999;width:38px;height:38px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(15,36,86,0.12);text-decoration:none;transition:all 0.2s;border:1px solid rgba(27,58,122,0.08);">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+<a href="index.html" style="position:fixed;top:18px;left:18px;z-index:999;display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.10);border-radius:8px;padding:8px 14px;text-decoration:none;color:#1B3A7A;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 10px rgba(15,36,86,0.09);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 18px rgba(15,36,86,0.16)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(15,36,86,0.09)'">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  Accueil
 </a>
 
 <div class="gold-line"></div>
@@ -118,7 +119,7 @@
 </nav>
 
 <div class="hero">
-    <div class="h-label">Analyse gratuite &amp; instantanée</div>
+    <div class="h-label">Analyse gratuite et instantanée</div>
     <h1>Votre site est-il <em>vraiment<br>conforme</em> ?</h1>
     <p>Entrez l'adresse de votre site. Notre outil l'analyse automatiquement et vous remet un rapport de conformité en moins de 2 minutes.</p>
 </div>
@@ -128,7 +129,7 @@
 
         <div id="input-section">
             <div class="s-group">
-                <input type="url" id="url-inp" class="s-inp" placeholder="https://votre-site.com">
+                <input id="scan-url" type="url" id="url-inp" class="s-inp" placeholder="https://votre-site.com">
                 <button class="s-btn" id="scan-btn" onclick="lancer()">Analyser</button>
             </div>
             <p class="s-note">Gratuit · Sans inscription · Résultats en moins de 2 minutes</p>
@@ -138,7 +139,7 @@
             <div class="spin-ring"></div>
             <div class="scan-steps">
                 <div class="scan-step" id="e1">Visite de votre site en cours...</div>
-                <div class="scan-step" id="e2">Vérification RGPD &amp; cookies</div>
+                <div class="scan-step" id="e2">Vérification RGPD et cookies</div>
                 <div class="scan-step" id="e3">Analyse de la sécurité</div>
                 <div class="scan-step" id="e4">Génération du rapport</div>
             </div>
@@ -226,7 +227,7 @@ async function lancer() {
         document.getElementById('e4').className = 'scan-step done';
         setTimeout(function() { afficherResultats(url, data); }, 500);
     } catch(e) {
-        alert('Une erreur est survenue. Vérifiez l\'adresse et réessayez.');
+        console.warn('Une erreur est survenue. Vérifiez l\'adresse et réessayez.');
         reinitialiser();
     }
 }
@@ -286,9 +287,5 @@ document.addEventListener('DOMContentLoaded', function() {
     if (urlParam) { document.getElementById('scan-url').value = urlParam; lancer(); }
 </script>
 <script src="cookies.js"></script>
-<a href="index.html" style="position:fixed;top:16px;left:16px;z-index:200;display:flex;align-items:center;gap:7px;text-decoration:none;background:white;border:1px solid rgba(27,58,122,0.1);border-radius:6px;padding:7px 12px;font-size:12px;font-weight:600;color:#0F2456;box-shadow:0 2px 8px rgba(27,58,122,0.08);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 14px rgba(27,58,122,0.14)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(27,58,122,0.08)'">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Accueil
-</a>
 </body>
 </html>
