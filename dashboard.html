@@ -330,7 +330,7 @@
                 <div class="user-nom" id="nom-utilisateur" style="color:rgba(255,255,255,0.2);font-size:12px;">—</div>
                 <div class="user-email" id="email-utilisateur"></div>
             </div>
-            <button class="btn-deconnexion" onclick="seDeconnecter()" title="Déconnexion">⏻</button>
+            <button class="btn-deconnexion" onclick="seDeconnecter()" title="Déconnexion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
         </div>
     </div>
 </aside>
@@ -1078,6 +1078,26 @@ function ouvrirUpgrade(titre, desc) {
     if (desc) document.getElementById('upgrade-desc').textContent = desc;
     document.getElementById('upgrade-overlay').classList.add('visible');
 }
+function payer(plan) {
+    var STRIPE_PRICES = {
+        starter:  'price_1TBEp1L1yZKJczeCtlqQ4u3F',
+        business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
+        expert:   'price_1TBEuYL1yZKJczeCXrgBEFcu'
+    };
+    var priceId = STRIPE_PRICES[plan];
+    if (!priceId) { window.location.href = 'pricing.html'; return; }
+    var body = { priceId: priceId, plan: plan };
+    if (utilisateur && utilisateur.id) body.userId = utilisateur.id;
+    fetch(BACKEND + '/api/stripe/checkout', {
+        method: 'POST',
+        headers: jsonHeaders(),
+        body: JSON.stringify(body)
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.url) { window.location.href = data.url; }
+        else { window.location.href = 'pricing.html'; }
+    }).catch(function() { window.location.href = 'pricing.html'; });
+}
+
 function fermerUpgrade() {
     document.getElementById('upgrade-overlay').classList.remove('visible');
 }
@@ -1593,7 +1613,7 @@ function seDeconnecter() {
           <li>Alertes email</li>
           <li>Espace de suivi</li>
         </ul>
-        <a href="pricing.html" class="up-btn up-btn-outline">Choisir Starter</a>
+        <button onclick="fermerUpgrade();payer('starter')" class="up-btn up-btn-outline">Choisir Starter</button>
       </div>
       <div class="up-plan vedette">
         <div class="up-plan-name">Business</div>
@@ -1606,7 +1626,7 @@ function seDeconnecter() {
           <li>Assistant disponible à toute heure</li>
           <li>Veille réglementaire automatique</li>
         </ul>
-        <a href="pricing.html" class="up-btn up-btn-gold">Choisir Business</a>
+        <button onclick="fermerUpgrade();payer('business')" class="up-btn up-btn-gold">Choisir Business</button>
       </div>
       <div class="up-plan">
         <div class="up-plan-name">Pro</div>
@@ -1618,7 +1638,7 @@ function seDeconnecter() {
           <li>Rapports PDF professionnels</li>
           <li>Certificat de conformité Audilix</li>
         </ul>
-        <a href="pricing.html" class="up-btn up-btn-outline">Choisir Pro</a>
+        <button onclick="fermerUpgrade();payer('expert')" class="up-btn up-btn-outline">Choisir Pro</button>
       </div>
     </div>
   </div>
