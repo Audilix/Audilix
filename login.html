@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Connexion — Audilix</title>
+    <title>Connexion, Audilix</title>
     <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -134,7 +134,7 @@
 
         <!-- CONNEXION -->
         <div id="form-connexion">
-            <h2 class="form-titre">Bon retour 👋</h2>
+            <h2 class="form-titre">Bon retour</h2>
             <p class="form-sous">Connectez-vous à votre espace Audilix.</p>
             <div class="form-erreur" id="err-connexion"></div>
             <button class="btn-google" onclick="connexionGoogle()">
@@ -332,7 +332,7 @@ function traiterRetourGoogle() {
         var prenom = payload.given_name || '';
         var nom = payload.family_name || '';
         var googleId = payload.sub;
-        if (!email) { alert('Impossible de récupérer votre e-mail Google.'); return; }
+        if (!email) { afficherErreur('err-connexion', 'Impossible de récupérer votre adresse email.'); return; }
         document.body.innerHTML = '<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:DM Sans,sans-serif;">'
             + '<div style="width:44px;height:44px;border:3px solid rgba(27,58,122,0.1);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;"></div>'
             + '<style>@keyframes spin{to{transform:rotate(360deg)}}</style>'
@@ -362,16 +362,16 @@ function traiterRetourGoogle() {
                         localStorage.setItem('audilix_user', JSON.stringify(result2.data.user));
                         window.location.href = 'dashboard.html';
                     } else {
-                        alert('Erreur : ' + (result2.data.error || 'Connexion impossible'));
+                        afficherErreur('err-connexion', result2.data.error || 'Connexion impossible');
                         window.location.href = 'login.html';
                     }
                 });
             }
         })
-        .catch(function(e) { alert('Erreur réseau : ' + e.message); window.location.href = 'login.html'; });
+        .catch(function(e) { afficherErreur('err-connexion', 'Erreur de connexion. Vérifiez votre réseau.'); window.location.href = 'login.html'; });
     } catch(e) {
         console.error('Erreur Google token:', e);
-        alert('Erreur lors de la connexion Google. Réessayez.');
+        afficherErreur('err-connexion', 'Erreur lors de la connexion Google. Réessayez.');
     }
 }
 
