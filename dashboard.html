@@ -209,7 +209,6 @@
 
 .plan-essai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink2 2s infinite}
 @keyframes blink2{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes skeleton{0%,100%{opacity:.5}50%{opacity:1}}
 .plan-essai-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
 
 .plan-essai-jauge-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:40px;overflow:hidden;margin-bottom:4px}
@@ -328,7 +327,7 @@
         <div class="utilisateur" style="margin-top:8px;">
             <div class="user-avatar" id="avatar-utilisateur" style="background:rgba(255,255,255,0.1);color:transparent;">A</div>
             <div>
-                <div class="user-nom" id="nom-utilisateur" style="height:12px;width:80px;background:rgba(255,255,255,0.08);border-radius:4px;animation:skeleton 1.5s infinite;"></div>
+                <div class="user-nom" id="nom-utilisateur" style="color:rgba(255,255,255,0.2);font-size:12px;">—</div>
                 <div class="user-email" id="email-utilisateur"></div>
             </div>
             <button class="btn-deconnexion" onclick="seDeconnecter()" title="Déconnexion">⏻</button>
@@ -459,7 +458,7 @@
                     <p>Voici l'état de conformité de votre activité.</p>
                 </div>
                 <div style="text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 28px;">
-                    <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.25);min-height:52px;display:flex;align-items:center;justify-content:center;"><div style="width:60px;height:44px;background:rgba(255,255,255,0.06);border-radius:6px;animation:skeleton 1.5s infinite;"></div></div>
+                    <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.2);">—</div>
                     <div class="score-libelle">Score global / 100</div>
                 </div>
             </div>
@@ -481,7 +480,7 @@
                         <div class="stat-libelle">Score de conformité</div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity="0.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     </div>
-                    <div class="stat-valeur" id="stat-score"><div style="width:40px;height:28px;background:rgba(201,168,76,0.15);border-radius:4px;animation:skeleton 1.5s infinite;"></div></div>
+                    <div class="stat-valeur" id="stat-score" style="color:rgba(201,168,76,0.4);">—</div>
                     <div style="font-size:10px;color:var(--gris);margin-top:4px;">/100</div>
                 </div>
                 <div class="stat vert">
@@ -1044,14 +1043,23 @@ async function chargerDonnees() {
 }
 
 function mettreAJourStats() {
-    document.getElementById('stat-analyses').textContent = analysesCache.length;
-    if (analysesCache.length > 0) {
-        var s = analysesCache[0].score || 0;
-        var col = s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)';
-        document.getElementById('score-global').textContent = s;
-        document.getElementById('score-global').style.color = col;
-        document.getElementById('stat-score').textContent = s;
+    var nbAnalyses = analysesCache.length;
+    document.getElementById('stat-analyses').textContent = nbAnalyses;
+
+    var scoreEl = document.getElementById('score-global');
+    var statScoreEl = document.getElementById('stat-score');
+
+    if (nbAnalyses > 0) {
+        var s = analysesCache[0].score;
+        if (s === null || s === undefined) s = '—';
+        var col = (typeof s === 'number') ? (s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)') : 'rgba(255,255,255,0.3)';
+        if (scoreEl) { scoreEl.textContent = (typeof s === 'number') ? s : '—'; scoreEl.style.color = col; }
+        if (statScoreEl) { statScoreEl.textContent = (typeof s === 'number') ? s : '—'; statScoreEl.style.color = col; }
+    } else {
+        if (scoreEl) { scoreEl.textContent = '—'; scoreEl.style.color = 'rgba(255,255,255,0.2)'; }
+        if (statScoreEl) { statScoreEl.textContent = '—'; statScoreEl.style.color = 'rgba(201,168,76,0.3)'; }
     }
+
     var totalP = 0, totalC = 0;
     analysesCache.forEach(function(a) {
         if (a.problemes && Array.isArray(a.problemes)) {
@@ -1059,8 +1067,10 @@ function mettreAJourStats() {
             totalC += a.problemes.filter(function(p) { return p.gravite === 'critique'; }).length;
         }
     });
-    document.getElementById('stat-problemes').textContent = totalP;
-    document.getElementById('stat-critiques').textContent = totalC;
+    var statP = document.getElementById('stat-problemes');
+    var statC = document.getElementById('stat-critiques');
+    if (statP) statP.textContent = nbAnalyses > 0 ? totalP : '—';
+    if (statC) statC.textContent = nbAnalyses > 0 ? totalC : '—';
 }
 
 function ouvrirUpgrade(titre, desc) {
