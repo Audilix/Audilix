@@ -1,6 +1,4 @@
-async function activerDouble() {
-    afficherMsg('msg-double', 'Fonctionnalité bientôt disponible.', 'ok');
-}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
@@ -208,14 +206,14 @@ async function activerDouble() {
         @media(max-width:768px) { .barre-lat{display:none} .principal{margin-left:0} .contenu{padding:20px} }
     
 /* ── PLAN ESSAI ── */
-.plan-essai-badge{display:flex;align-items:center;gap:8px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:7px;padding:10px 12px;margin-bottom:10px}
+
 .plan-essai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink2 2s infinite}
 @keyframes blink2{0%,100%{opacity:1}50%{opacity:.3}}
 .plan-essai-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
-.plan-essai-jauge-wrap{margin-bottom:10px}
+
 .plan-essai-jauge-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:40px;overflow:hidden;margin-bottom:4px}
 .plan-essai-jauge-fill{height:100%;background:var(--gold);border-radius:40px;transition:width .6s}
-.plan-essai-compteur{font-size:10px;color:rgba(255,255,255,0.25)}
+
 /* ── MODALE UPGRADE ── */
 .upgrade-overlay{position:fixed;inset:0;background:rgba(11,37,69,0.7);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .upgrade-overlay.visible{display:flex}
@@ -254,7 +252,10 @@ async function activerDouble() {
 <body>
 
 <aside class="barre-lat">
-    <div class="lat-logo"><a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:white;font-size:13px;font-weight:600;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Accueil</a></div>
+    <div class="lat-logo"><a href="index.html" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0F2456;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;width:fit-content;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.15)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F2456" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Accueil
+        </a></div>
     <nav class="lat-nav">
         <div class="nav-section">Principal</div>
         <button class="nav-lien actif" id="nav-accueil" onclick="afficherPage('accueil',this)" style="display:none;">
