@@ -1124,7 +1124,7 @@ function mettreAJourCompteurEssai() {
 }
 
 function mettreAJourCompteurPlan() {
-    var plan = utilisateur.plan || 'starter';
+    var plan = utilisateur.plan || 'essai';
     var limite = plan === 'starter' ? 10 : -1;
     var now = new Date();
     var debut = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -1261,7 +1261,7 @@ async function lancerAnalyse() {
     var formData = new FormData();
     formData.append('document', fichierCourant);
     formData.append('userId', utilisateur.id);
-    formData.append('planUtilisateur', utilisateur.plan || 'starter');
+    formData.append('planUtilisateur', utilisateur.plan || 'essai');
 
     try {
         var res = await fetch(BACKEND + '/api/analyser-document', { method:'POST', headers: authHeaders(), body: formData });
