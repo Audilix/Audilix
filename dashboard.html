@@ -209,6 +209,7 @@
 
 .plan-essai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink2 2s infinite}
 @keyframes blink2{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes skeleton{0%,100%{opacity:.5}50%{opacity:1}}
 .plan-essai-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
 
 .plan-essai-jauge-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:40px;overflow:hidden;margin-bottom:4px}
@@ -325,9 +326,9 @@
             <a href="pricing.html" class="plan-upgrade">Mettre à niveau</a>
         </div>
         <div class="utilisateur" style="margin-top:8px;">
-            <div class="user-avatar" id="avatar-utilisateur">?</div>
+            <div class="user-avatar" id="avatar-utilisateur" style="background:rgba(255,255,255,0.1);color:transparent;">A</div>
             <div>
-                <div class="user-nom" id="nom-utilisateur">Chargement...</div>
+                <div class="user-nom" id="nom-utilisateur" style="height:12px;width:80px;background:rgba(255,255,255,0.08);border-radius:4px;animation:skeleton 1.5s infinite;"></div>
                 <div class="user-email" id="email-utilisateur"></div>
             </div>
             <button class="btn-deconnexion" onclick="seDeconnecter()" title="Déconnexion">⏻</button>
@@ -454,11 +455,11 @@
             <div class="banniere">
                 <div class="banniere-texte">
                     <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;" id="banner-plan-label">Formule Starter</div>
-                    <h2>Bonjour, <span id="prenom-accueil">—</span></h2>
+                    <h2>Bonjour, <span id="prenom-accueil"></span></h2>
                     <p>Voici l'état de conformité de votre activité.</p>
                 </div>
                 <div style="text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 28px;">
-                    <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.25);">—</div>
+                    <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.25);min-height:52px;display:flex;align-items:center;justify-content:center;"><div style="width:60px;height:44px;background:rgba(255,255,255,0.06);border-radius:6px;animation:skeleton 1.5s infinite;"></div></div>
                     <div class="score-libelle">Score global / 100</div>
                 </div>
             </div>
@@ -480,7 +481,7 @@
                         <div class="stat-libelle">Score de conformité</div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity="0.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     </div>
-                    <div class="stat-valeur" id="stat-score">—</div>
+                    <div class="stat-valeur" id="stat-score"><div style="width:40px;height:28px;background:rgba(201,168,76,0.15);border-radius:4px;animation:skeleton 1.5s infinite;"></div></div>
                     <div style="font-size:10px;color:var(--gris);margin-top:4px;">/100</div>
                 </div>
                 <div class="stat vert">
@@ -1014,6 +1015,8 @@ function initialiserDashboard() {
 
 async function chargerDonnees() {
     if (!utilisateur || !utilisateur.id) return;
+    // Afficher état chargement dans la sidebar
+    var nomEl = document.getElementById('nom-utilisateur');
     try {
         var r1 = await fetch(BACKEND + '/api/analyses/' + utilisateur.id, { headers: authHeaders() });
         if (r1.ok) { analysesCache = await r1.json(); if (!Array.isArray(analysesCache)) analysesCache = []; }
@@ -1027,7 +1030,17 @@ async function chargerDonnees() {
         afficherMesDocuments();
         mettreAJourCompteurPlan();
         mettreAJourCompteurEssai();
-    } catch(e) { console.error('Erreur chargement données:', e); }
+    } catch(e) {
+        console.error('Erreur chargement données:', e);
+        var nomEl = document.getElementById('nom-utilisateur');
+        if (nomEl) {
+            nomEl.textContent = utilisateur.firstname || utilisateur.email || '';
+            nomEl.style.animation = 'none';
+            nomEl.style.background = 'none';
+            nomEl.style.height = 'auto';
+            nomEl.style.width = 'auto';
+        }
+    }
 }
 
 function mettreAJourStats() {
