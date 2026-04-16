@@ -282,7 +282,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Assistant conformité
         </button>
         <button class="nav-lien" id="nav-clauses" onclick="afficherPage('clauses',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Détecter des clauses abusives
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Clauses abusives
         </button>
         <button class="nav-lien" id="nav-registre" onclick="afficherPage('registre',this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Registre RGPD
@@ -312,7 +312,7 @@
                     <div style="font-size:10px;color:#f59e0b;text-align:center;margin-bottom:6px;">Analyse épuisée</div>
                 </div>
             </div>
-            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:10px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Choisir un plan →</button>
+            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:10px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Mettre à niveau →</button>
         </div>
         <!-- BLOC PLAN NORMAL (starter / business / pro) -->
         <div id="bloc-plan-normal">
@@ -322,7 +322,7 @@
                 <div class="plan-jauge"><div class="plan-jauge-rempli" id="jauge-analyses" style="width:0%"></div></div>
                 <div class="plan-compteur" id="compteur-analyses">— analyses ce mois</div>
             </div>
-            <a href="pricing.html" class="plan-upgrade">Changer de formule</a>
+            <a href="pricing.html" class="plan-upgrade">Mettre à niveau</a>
         </div>
         <div class="utilisateur" style="margin-top:8px;">
             <div class="user-avatar" id="avatar-utilisateur">?</div>
@@ -340,10 +340,7 @@
         <div class="topbar-titre" id="titre-page">Vue d'ensemble</div>
         <div class="topbar-droite">
             <span class="topbar-date" id="date-topbar"></span>
-            <a href="index.html" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(27,58,122,0.12);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0F2456;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;margin-right:8px;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F2456" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Accueil
-            </a>
+
             <button class="btn-analyser" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Analyser un document</button>
         </div>
     </div>
@@ -381,7 +378,7 @@
 
                 <!-- Action principale -->
                 <div id="essai-action-analyser" style="text-align:center;padding:32px 24px;background:white;border:2px dashed var(--border);border-radius:10px;margin-bottom:20px;cursor:pointer;transition:all .2s;" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))" onmouseover="this.style.borderColor='var(--gold)';this.style.background='var(--gold-pale)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">
-                    <div style="font-size:28px;margin-bottom:12px;">📄</div>
+                    <div style="margin-bottom:12px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                     <div style="font-size:16px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">Lancer mon analyse gratuite</div>
                     <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV, une politique de confidentialité…</div>
                     <div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:var(--navy-dark);color:white;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:700;">
@@ -518,11 +515,11 @@
                         <div class="carte-titre">Analyses récentes</div>
                         <button class="carte-action" onclick="afficherPage('historique',document.getElementById('nav-historique'))">Voir tout</button>
                     </div>
-                    <div class="carte-corps"><div id="apercu-analyses"><div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div></div></div>
+                    <div class="carte-corps"><div id="apercu-analyses"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div></div></div>
                 </div>
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Recommandations prioritaires</div></div>
-                    <div class="carte-corps"><div id="apercu-recos"><div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div><div class="vide-desc">Analysez un document pour recevoir des recommandations.</div></div></div></div>
+                    <div class="carte-corps"><div id="apercu-recos"><div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div><div class="vide-desc">Analysez un document pour recevoir des recommandations.</div></div></div></div>
                 </div>
             </div>
         </div>
@@ -534,13 +531,13 @@
                     <div class="carte-entete"><div class="carte-titre">Déposer un document</div></div>
                     <div class="carte-corps">
                         <div class="fichier-selectionne" id="fichier-affiche">
-                            <div class="fichier-icone">📄</div>
+                            <div class="fichier-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                             <div><div class="fichier-nom" id="fichier-nom"></div><div class="fichier-taille" id="fichier-taille"></div></div>
                             <button class="fichier-suppr" onclick="supprimerFichier()">✕</button>
                         </div>
                         <div class="zone-upload" id="zone-upload" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')" ondrop="deposerFichier(event)">
                             <input type="file" id="input-fichier" accept=".pdf,.txt,.html,.doc,.docx" onchange="selectionnerFichier(this.files[0])">
-                            <div class="upload-icone">📂</div>
+                            <div class="upload-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                             <div class="upload-titre">Déposez votre document ici</div>
                             <div class="upload-sous">ou cliquez pour sélectionner un fichier</div>
                             <div class="upload-formats"><span class="upload-format">PDF</span><span class="upload-format">TXT</span><span class="upload-format">HTML</span><span class="upload-format">DOCX</span></div>
@@ -553,7 +550,7 @@
                 <div class="carte" id="carte-resultat-analyse">
                     <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-analyse" class="vide"><div class="vide-icone">🔍</div><div class="vide-titre">En attente d'un document</div><div class="vide-desc">Déposez un document à gauche pour lancer l'analyse.</div></div>
+                        <div id="etat-vide-analyse" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="vide-titre">En attente d'un document</div><div class="vide-desc">Déposez un document à gauche pour lancer l'analyse.</div></div>
                         <div class="analyse-en-cours" id="chargement-analyse"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Votre document est en cours d'analyse. Moins de 30 secondes.</p></div>
                         <div class="resultat-analyse" id="resultat-zone">
                             <div class="resultat-entete">
@@ -576,7 +573,7 @@
                     <div class="carte-titre">Toutes mes analyses</div>
                     <button class="carte-action" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Nouvelle analyse</button>
                 </div>
-                <div class="carte-corps"><div id="liste-historique"><div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div></div></div>
+                <div class="carte-corps"><div id="liste-historique"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div></div></div>
             </div>
         </div>
 
@@ -587,12 +584,12 @@
                     <div class="carte-entete"><div class="carte-titre">Choisir un document à générer</div></div>
                     <div class="carte-corps">
                         <div class="doc-grille" style="margin-bottom:20px;grid-template-columns:1fr 1fr 1fr;">
-                            <div class="doc-carte" onclick="choisirTypeDoc('confidentialite',this)"><div class="doc-icone">🔐</div><div class="doc-nom">Politique de confidentialité</div><div class="doc-desc">Conforme au RGPD</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('mentions',this)"><div class="doc-icone">⚖️</div><div class="doc-nom">Mentions légales</div><div class="doc-desc">Obligatoires en France</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cookies',this)"><div class="doc-icone">🍪</div><div class="doc-nom">Politique de cookies</div><div class="doc-desc">Directive ePrivacy</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cgu',this)"><div class="doc-icone">📝</div><div class="doc-nom">CGU / CGV</div><div class="doc-desc">Conditions générales</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('nda',this)"><div class="doc-icone">🤝</div><div class="doc-nom">NDA</div><div class="doc-desc">Accord de confidentialité</div></div>
-                            <div class="doc-carte" onclick="afficherPage('registre',document.getElementById('nav-registre'))" style="border-color:var(--gold);background:var(--gold-pale);"><div class="doc-icone">📋</div><div class="doc-nom">Registre RGPD</div><div class="doc-desc">Article 30 RGPD</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('confidentialite',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="doc-nom">Politique de confidentialité</div><div class="doc-desc">Conforme au RGPD</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('mentions',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="doc-nom">Mentions légales</div><div class="doc-desc">Obligatoires en France</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('cookies',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="doc-nom">Politique de cookies</div><div class="doc-desc">Directive ePrivacy</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('cgu',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="doc-nom">CGU / CGV</div><div class="doc-desc">Conditions générales</div></div>
+                            <div class="doc-carte" onclick="choisirTypeDoc('nda',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="doc-nom">NDA</div><div class="doc-desc">Accord de confidentialité</div></div>
+                            <div class="doc-carte" onclick="afficherPage('registre',document.getElementById('nav-registre'))" style="border-color:var(--gold);background:var(--gold-pale);"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="doc-nom">Registre RGPD</div><div class="doc-desc">Article 30 RGPD</div></div>
                         </div>
                         <div style="margin-bottom:14px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Votre entreprise</label>
@@ -609,7 +606,7 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Aperçu du document</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-doc" class="vide"><div class="vide-icone">📄</div><div class="vide-titre">Sélectionnez un type de document</div><div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div></div>
+                        <div id="etat-vide-doc" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="vide-titre">Sélectionnez un type de document</div><div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div></div>
                         <div class="analyse-en-cours" id="chargement-doc"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre document est en cours de rédaction.</p></div>
                         <div id="apercu-doc" style="display:none;">
                             <div class="modal-avert">⚠️ Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.</div>
@@ -631,7 +628,7 @@
                     <div class="carte-titre">Documents générés</div>
                     <button class="carte-action" onclick="afficherPage('generer',document.getElementById('nav-generer'))">+ Nouveau document</button>
                 </div>
-                <div class="carte-corps"><div id="liste-mes-documents"><div class="vide"><div class="vide-icone">📁</div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici après leur génération.</div></div></div></div>
+                <div class="carte-corps"><div id="liste-mes-documents"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici après leur génération.</div></div></div></div>
             </div>
         </div>
 
@@ -669,13 +666,13 @@
                     <div class="carte-corps">
                         <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Déposez un contrat pour identifier les clauses abusives, illégales ou déséquilibrées selon le droit français et européen.</p>
                         <div class="fichier-selectionne" id="fichier-clause-affiche">
-                            <div class="fichier-icone">📄</div>
+                            <div class="fichier-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                             <div><div class="fichier-nom" id="fichier-clause-nom"></div><div class="fichier-taille" id="fichier-clause-taille"></div></div>
                             <button class="fichier-suppr" onclick="supprimerFichierClause()">✕</button>
                         </div>
                         <div class="zone-upload" id="zone-upload-clause" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')">
                             <input type="file" id="input-clause" accept=".pdf,.txt,.doc,.docx" onchange="selectionnerFichierClause(this.files[0])">
-                            <div class="upload-icone">📂</div>
+                            <div class="upload-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                             <div class="upload-titre">Déposez votre contrat ici</div>
                             <div class="upload-sous">PDF, TXT, DOCX, max 10 Mo</div>
                         </div>
@@ -686,7 +683,7 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-clauses" class="vide"><div class="vide-icone">🔍</div><div class="vide-titre">En attente d'un contrat</div><div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div></div>
+                        <div id="etat-vide-clauses" class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="vide-titre">En attente d'un contrat</div><div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div></div>
                         <div class="analyse-en-cours" id="chargement-clauses"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Chaque clause est examinée en détail.</p></div>
                         <div id="resultat-clauses" style="display:none;"></div>
                     </div>
@@ -765,7 +762,7 @@
                 <div class="carte">
                     <div class="carte-entete"><div class="carte-titre">Votre registre des traitements</div></div>
                     <div class="carte-corps">
-                        <div id="etat-vide-registre" class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Registre non généré</div><div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div></div>
+                        <div id="etat-vide-registre" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Registre non généré</div><div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div></div>
                         <div class="analyse-en-cours" id="chargement-registre"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre registre est en cours de génération.</p></div>
                         <div id="resultat-registre" style="display:none;"></div>
                     </div>
@@ -1135,8 +1132,8 @@ function afficherApercuAnalyses() {
     var zone = document.getElementById('apercu-analyses');
     var recos = document.getElementById('apercu-recos');
     if (analysesCache.length === 0) {
-        zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div>';
-        recos.innerHTML = '<div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div></div>';
+        zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div>';
+        recos.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div></div>';
         return;
     }
     zone.innerHTML = analysesCache.slice(0,4).map(function(a) {
@@ -1147,13 +1144,13 @@ function afficherApercuAnalyses() {
     if (d && d.recommandations && d.recommandations.length > 0) {
         recos.innerHTML = d.recommandations.slice(0,4).map(function(r) { return '<div class="reco-item">' + r + '</div>'; }).join('');
     } else {
-        recos.innerHTML = '<div class="vide"><div class="vide-icone">✅</div><div class="vide-titre">Aucune recommandation</div></div>';
+        recos.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div></div>';
     }
 }
 
 function afficherHistorique() {
     var zone = document.getElementById('liste-historique');
-    if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone">📋</div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
+    if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = analysesCache.map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
         return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
