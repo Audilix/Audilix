@@ -68,7 +68,9 @@
         .plan.vedette .p-coche { background:rgba(201,168,76,0.15); }
 
         .plan-btn { display:block; width:100%; padding:14px; text-align:center; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.25s; border:none; }
-        .btn-contour { background:transparent; border:1.5px solid rgba(27,58,122,0.18); color:var(--navy-dark); }
+        .btn-navy { background:var(--navy-dark); color:white; border:none; }
+.btn-navy:hover { background:var(--gold); color:var(--navy-dark); }
+.btn-contour { background:transparent; border:1.5px solid rgba(27,58,122,0.18); color:var(--navy-dark); }
         .btn-contour:hover { background:var(--navy-dark); color:white; border-color:var(--navy-dark); }
         .btn-or { background:var(--gold); color:var(--navy-dark); }
         .btn-or:hover { background:var(--gold-light); box-shadow:0 6px 20px rgba(201,168,76,0.28); transform:translateY(-1px); }
@@ -182,7 +184,7 @@
             <li><span class="p-coche">✓</span>Alertes email dès qu'une anomalie est détectée</li>
             <li><span class="p-coche">✓</span>Espace de suivi personnel</li>
         </ul>
-        <button class="plan-btn btn-contour" onclick="payer('starter')">Commencer →</button>
+        <button class="plan-btn btn-navy" onclick="payer('starter')" id="btn-starter">Commencer →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -210,7 +212,7 @@
             <li><span class="p-coche">✓</span>Historique complet de vos analyses</li>
             <li><span class="p-coche">✓</span>Résultats en moins de 60 secondes</li>
         </ul>
-        <button class="plan-btn btn-or" onclick="payer('business')">Choisir Business →</button>
+        <button class="plan-btn btn-or" onclick="payer('business')" id="btn-business">Choisir Business →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -234,7 +236,7 @@
             <li><span class="p-coche">✓</span>Connexion à vos outils métier</li>
             <li><span class="p-coche">✓</span>Jusqu'à 10 entités gérées</li>
         </ul>
-        <button class="plan-btn btn-contour" onclick="payer('expert')">Choisir Pro</button>
+        <button class="plan-btn btn-navy" onclick="payer('expert')" id="btn-pro">Choisir Pro →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -367,6 +369,12 @@ function afficherMsgPayer(txt, ok) {
 function payer(plan) {
     var priceId = STRIPE_PRICES[plan];
     if (!priceId) { afficherMsgPayer('Plan introuvable.', false); return; }
+    // Afficher loading sur le bouton
+    var btnId = plan === 'starter' ? 'btn-starter' : plan === 'business' ? 'btn-business' : 'btn-pro';
+    var btn = document.getElementById(btnId);
+    var originalText = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Chargement...'; btn.style.opacity = '0.7'; }
+    afficherMsgPayer('Redirection vers le paiement sécurisé...', true);
     var token = localStorage.getItem('audilix_token');
     var user = null;
     try { user = JSON.parse(localStorage.getItem('audilix_user')); } catch(e) {}
@@ -376,10 +384,20 @@ function payer(plan) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
-    }).then(function(r) { return r.json(); }).then(function(data) {
-        if (data.url) { window.location.href = data.url; }
-        else { afficherMsgPayer(data.error || 'Erreur lors du paiement. Réessayez.', false); }
-    }).catch(function() { afficherMsgPayer('Erreur de connexion. Réessayez.', false); });
+    }).then(function(r) {
+        if (!r.ok) throw new Error('Serveur indisponible');
+        return r.json();
+    }).then(function(data) {
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            if (btn) { btn.disabled = false; btn.textContent = originalText; btn.style.opacity = '1'; }
+            afficherMsgPayer(data.error || 'Erreur lors du paiement. Réessayez dans quelques secondes.', false);
+        }
+    }).catch(function(e) {
+        if (btn) { btn.disabled = false; btn.textContent = originalText; btn.style.opacity = '1'; }
+        afficherMsgPayer('Le serveur démarre, réessayez dans 10 secondes.', false);
+    });
 }
 </script>
 <script src="cookies.js"></script>
