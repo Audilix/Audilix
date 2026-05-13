@@ -19,20 +19,20 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .nav-links a{text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);opacity:.55;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
 .nav-right{display:flex;align-items:center;gap:20px}
-.nav-client{color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;opacity:.6;transition:opacity .2s}
+.nav-client{color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;opacity:.75;transition:opacity .2s}
 .nav-client:hover{opacity:1}
 .nav-cta{background:var(--gold);color:var(--navy);padding:12px 28px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}
 .nav-cta:hover{background:var(--gold-light)}
 .gold-line{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
-.hero{padding:180px 40px 0;max-width:1280px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-pale);border:1px solid var(--gold);color:#8B6914;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;border-radius:2px;margin-bottom:32px}
+.hero{padding:160px 40px 0;max-width:1280px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-pale);border:1px solid var(--gold);color:#8B6914;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;border-radius:3px;margin-bottom:24px}
 .hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-size:clamp(42px,5vw,68px);font-weight:700;line-height:1.08;color:var(--navy);margin-bottom:28px;letter-spacing:-.02em}
+.hero h1{font-size:clamp(38px,4.5vw,62px);font-weight:700;line-height:1.08;color:var(--navy);margin-bottom:0;letter-spacing:-.02em}
 .hero h1 em{font-style:italic;color:var(--gold)}
-.hero-sub{font-size:18px;line-height:1.75;color:var(--gray);margin-bottom:48px;font-weight:300}
 
-.btn-gold{background:var(--gold);color:var(--navy);padding:16px 36px;border-radius:4px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;display:inline-block}
+
+.btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s;display:inline-block}
 .btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,.4)}
 
 
@@ -59,7 +59,7 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 
 .trust-regs{max-width:1280px;margin:auto;padding:14px 40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .trust-regs-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-right:6px}
-.trust-reg-badge{border:1px solid var(--border);color:var(--navy);padding:4px 12px;border-radius:40px;font-size:11px;font-weight:500}
+.trust-reg-badge{border:1px solid var(--border);color:var(--navy);padding:5px 14px;font-size:12px;font-weight:500;border-radius:40px;font-size:11px;font-weight:500}
 .section-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .section-title{font-size:clamp(36px,4vw,54px);font-weight:700;line-height:1.1;color:var(--navy);letter-spacing:-.02em}
 .section-sub{font-size:18px;color:var(--gray);line-height:1.7;font-weight:300;margin-top:16px}
@@ -88,8 +88,8 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start;margin-bottom:48px}
 .plan-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 32px;position:relative;transition:transform .3s,box-shadow .3s}
 .plan-card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(11,37,69,.08)}
-.plan-card.featured{background:var(--navy);border-color:transparent;transform:scale(1.03)}
-.plan-card.featured:hover{transform:scale(1.03) translateY(-4px)}
+.plan-card.featured{background:var(--navy);border-color:transparent}
+.plan-card.featured:hover{transform:translateY(-4px);box-shadow:0 28px 64px rgba(11,37,69,.18)}
 .plan-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:12px 12px 0 0}
 .plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 18px;border-radius:40px;white-space:nowrap}
 .plan-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--navy);margin-bottom:4px}
@@ -124,6 +124,8 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95
 .plan-btn-outline{border:1.5px solid rgba(11,37,69,.2);color:var(--navy);background:transparent}
 .plan-btn-outline:hover{background:var(--navy);color:#fff}
 .plan-btn-gold{background:var(--gold);color:var(--navy)}
+.plan-btn-navy{background:var(--navy);color:#fff;border:none}
+.plan-btn-navy:hover{background:var(--gold);color:var(--navy)}
 .plan-btn-gold:hover{background:var(--gold-light);box-shadow:0 8px 24px rgba(201,168,76,.35)}
 .guarantees{padding:80px 40px;border-top:1px solid var(--border)}
 .guarantees-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:48px;text-align:center}
@@ -170,6 +172,10 @@ footer{background:#060F1E;padding:56px 40px}
 .chat-text-input:focus{border-color:var(--gold)}
 .chat-send-btn{background:var(--navy);color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:15px;transition:background .2s}
 .chat-send-btn:hover{background:var(--gold);color:var(--navy)}
+.hero-sub-row{max-width:1280px;margin:0 auto;padding:36px 40px 100px;display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+.hero-sub-row .hero-sub{flex:1;min-width:260px;margin-bottom:0;font-size:17px;line-height:1.75;color:var(--gray);font-weight:300}
+.hero-sub-row .btn-gold{flex-shrink:0;white-space:nowrap}
+@media(max-width:640px){.hero-sub-row{flex-direction:column;align-items:flex-start;gap:20px;padding:28px 24px 60px}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
 /* HERO cascade */
 .hero-anim-1{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
@@ -199,17 +205,17 @@ footer{background:#060F1E;padding:56px 40px}
 .hero-left{min-width:0}
 .hero-right{min-width:0}
 /* HERO CARD */
-.hero-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:48px;position:relative;overflow:hidden}
+.hero-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:40px;position:relative;overflow:hidden}
 .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.stat-number{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--navy);line-height:1}
+.stat-number{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--navy);line-height:1}
 .stat-number span{color:var(--gold)}
 .stat-label{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-top:6px}
 
 
 .tag{padding:6px 14px;background:#fff;border:1px solid var(--border);border-radius:40px;font-size:12px;font-weight:500;color:var(--navy)}
 
-.reg-btn{cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.reg-btn{cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .2s}
 .reg-btn:hover,.reg-btn.actif{background:var(--navy);color:white;border-color:var(--navy)}
 #reg-panel{animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
@@ -246,11 +252,12 @@ footer{background:#060F1E;padding:56px 40px}
 <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">Analyse précise</div></div>
 <div><div class="stat-number" id="stat-24">0<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
 </div>
-<div style="height:1px;background:var(--border);margin:28px 0 24px;"></div>
-<p style="font-size:15px;line-height:1.7;color:var(--gray);font-weight:300;margin-bottom:24px;">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
-<a href="essai.html" class="btn-gold" style="display:inline-block;">Analyser ma conformité gratuitement</a>
 </div>
 </div>
+</div>
+<div class="hero-sub-row hero-anim-3">
+<p class="hero-sub">Déposez un document. En quelques secondes, vous obtenez un score de conformité, la liste des risques détectés et les corrections à apporter.</p>
+<a href="essai.html" class="btn-gold hero-anim-4">Analyser ma conformité gratuitement</a>
 </div>
 </section>
 <div class="trust-bar">
@@ -391,7 +398,7 @@ footer{background:#060F1E;padding:56px 40px}
 
 </div>
 <div style="text-align:center;margin-top:56px;" class="reveal">
-<a href="essai.html" class="btn-gold" style="font-size:16px;padding:18px 48px;">Essayer gratuitement — c'est gratuit</a>
+<a href="essai.html" class="btn-gold" style="font-size:16px;padding:18px 48px;">Commencer gratuitement</a>
 <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:14px;">1 analyse offerte · Résultat en moins de 60 secondes · Sans inscription préalable</p>
 </div>
 </div>
@@ -413,30 +420,9 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>10 analyses par mois</li>
 <li><span class="feat-check">✓</span>Score de conformité sur 100</li>
 <li><span class="feat-check">✓</span>3 documents générés automatiquement</li>
-<li><span class="feat-check">✓</span>Alertes par email si risque détecté</li>
+<li><span class="feat-check">✓</span>Alertes email si risque détecté</li>
 </ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
-<div class="plan-section-lbl">Analyse et score</div>
-<li><span class="feat-check">✓</span>10 analyses de documents par mois</li>
-<li><span class="feat-check">✓</span>Score de conformité sur 100 avec niveau de risque</li>
-<li><span class="feat-check">✓</span>Identification claire des problèmes, classés par gravité</li>
-<li><span class="feat-check">✓</span>Explication de chaque risque en langage simple</li>
-<li><span class="feat-check">✓</span>Résumé de conformité envoyé par email automatiquement</li>
-<div class="plan-section-lbl">Documents générés</div>
-<li><span class="feat-check">✓</span>Politique de confidentialité</li>
-<li><span class="feat-check">✓</span>Mentions légales</li>
-<li><span class="feat-check">✓</span>Politique de gestion des cookies</li>
-<div class="plan-section-lbl">Surveillance</div>
-<li><span class="feat-check">✓</span>Surveillance mensuelle automatique</li>
-<li><span class="feat-check">✓</span>Alertes email dès qu'une anomalie est détectée</li>
-<li><span class="feat-check">✓</span>Espace de suivi personnel</li>
-</ul>
-</div>
-</div>
-<a href="essai.html" class="plan-btn plan-btn-outline">Essayer gratuitement</a>
+<a href="pricing.html" class="plan-btn plan-btn-navy">Commencer →</a>
 </div>
 
 <div class="plan-card featured reveal" style="transition-delay:.2s">
@@ -446,31 +432,11 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">149</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
 <li><span class="feat-check">✓</span>Analyses illimitées</li>
-<li><span class="feat-check">✓</span>Détection des clauses abusives dans vos contrats</li>
-<li><span class="feat-check">✓</span>Documents corrigés générés automatiquement</li>
+<li><span class="feat-check">✓</span>Détection des clauses abusives</li>
+<li><span class="feat-check">✓</span>Documents corrigés automatiquement</li>
 <li><span class="feat-check">✓</span>Veille réglementaire automatique</li>
 </ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
-<div class="plan-section-lbl">Tout Starter, et en plus</div>
-<li><span class="feat-check">✓</span>Analyses de documents illimitées</li>
-<li><span class="feat-check">✓</span>Détection automatique des clauses abusives</li>
-<li><span class="feat-check">✓</span>Documents corrigés générés automatiquement</li>
-<li><span class="feat-check">✓</span>Documents personnalisés selon votre activité</li>
-<li><span class="feat-check">✓</span>Registre des traitements RGPD généré automatiquement</li>
-<div class="plan-section-lbl">Automatisation complète</div>
-<li><span class="feat-check">✓</span>Assistant disponible à toute heure pour vos questions</li>
-<li><span class="feat-check">✓</span>Plan de corrections établi automatiquement par priorité</li>
-<li><span class="feat-check">✓</span>Alertes en temps réel dès qu'un risque est identifié</li>
-<li><span class="feat-check">✓</span>Veille automatique sur RGPD, AI Act, CSRD</li>
-<li><span class="feat-check">✓</span>Historique complet de vos analyses</li>
-<li><span class="feat-check">✓</span>Résultats en moins de 60 secondes</li>
-</ul>
-</div>
-</div>
-<a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business</a>
+<a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Business →</a>
 </div>
 
 <div class="plan-card reveal" style="transition-delay:.3s">
@@ -478,29 +444,12 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="plan-target-small">Agences et cabinets</div>
 <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">299</span><span class="price-period">/ mois</span></div>
 <ul class="plan-highlights-preview">
-<li><span class="feat-check">✓</span>Tout Business, et en plus</li>
-<li><span class="feat-check">✓</span>Plusieurs entreprises depuis un seul espace</li>
-<li><span class="feat-check">✓</span>Documents mis à jour si la loi évolue</li>
+<li><span class="feat-check">✓</span>Tout Business inclus</li>
+<li><span class="feat-check">✓</span>Plusieurs entreprises gérées</li>
+<li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
 <li><span class="feat-check">✓</span>Certificat de conformité Audilix</li>
 </ul>
-<div class="plan-accordion">
-<button class="plan-accordion-btn" onclick="toggleAccordion(this)">Voir tout ce qui est inclus <span class="arrow">▼</span></button>
-<div class="plan-accordion-content">
-<ul class="plan-features">
-<div class="plan-section-lbl">Tout Business, et en plus</div>
-<li><span class="feat-check">✓</span>Gestion de plusieurs entreprises ou clients</li>
-<li><span class="feat-check">✓</span>Vos documents mis à jour automatiquement si la réglementation change</li>
-<li><span class="feat-check">✓</span>Détection préventive des nouveaux risques</li>
-<li><span class="feat-check">✓</span>Recommandations adaptées automatiquement à votre secteur</li>
-<div class="plan-section-lbl">Rapports et certification</div>
-<li><span class="feat-check">✓</span>Rapports complets au format PDF prêts à transmettre</li>
-<li><span class="feat-check">✓</span>Certificat de conformité Audilix à afficher</li>
-<li><span class="feat-check">✓</span>Connexion à vos outils métier</li>
-<li><span class="feat-check">✓</span>Jusqu'à 10 entités gérées</li>
-</ul>
-</div>
-</div>
-<a href="pricing.html" class="plan-btn plan-btn-outline">Choisir Pro</a>
+<a href="pricing.html" class="plan-btn plan-btn-navy">Choisir Pro →</a>
 </div>
 
 </div>
