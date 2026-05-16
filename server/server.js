@@ -900,6 +900,10 @@ app.delete("/api/user/delete", async (req, res) => {
 });
 
 
+app.get("/api/ping", (req, res) => {
+  res.json({ status: "ok", ts: Date.now() });
+});
+
 app.get("/", (req, res) => {
   res.json({ status: "Audilix backend en ligne ✅", version: "5.0" });
 });
