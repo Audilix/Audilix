@@ -184,7 +184,7 @@
             <li><span class="p-coche">✓</span>Alertes email dès qu'une anomalie est détectée</li>
             <li><span class="p-coche">✓</span>Espace de suivi personnel</li>
         </ul>
-        <button class="plan-btn btn-navy" onclick="payer('starter')" id="btn-starter">Commencer →</button>
+        <button class="plan-btn btn-or" onclick="payer('starter')" id="btn-starter">Commencer →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -236,7 +236,7 @@
             <li><span class="p-coche">✓</span>Connexion à vos outils métier</li>
             <li><span class="p-coche">✓</span>Jusqu'à 10 entités gérées</li>
         </ul>
-        <button class="plan-btn btn-navy" onclick="payer('expert')" id="btn-pro">Choisir Pro →</button>
+        <button class="plan-btn btn-or" onclick="payer('expert')" id="btn-pro">Choisir Pro →</button>
         <p class="plan-note">Sans engagement · Résiliable à tout moment · Paiement sécurisé Stripe</p>
     </div>
 
@@ -343,6 +343,11 @@
 </section>
 
 <script>
+// Wake up Render au chargement
+(function() {
+    fetch('https://audilix-backend.onrender.com/api/ping').catch(function(){});
+})();
+
 function tFaq(btn) {
     btn.classList.toggle('ouvert');
     btn.nextElementSibling.classList.toggle('ouvert');
@@ -380,23 +385,34 @@ function payer(plan) {
     try { user = JSON.parse(localStorage.getItem('audilix_user')); } catch(e) {}
     var body = { priceId: priceId, plan: plan };
     if (token && user) { body.userId = user.id; }
+    // Timeout 45s pour Render cold start
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, 45000);
+    afficherMsgPayer('Connexion en cours...', true);
     fetch(BACKEND + '/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        signal: controller.signal
     }).then(function(r) {
-        if (!r.ok) throw new Error('Serveur indisponible');
+        clearTimeout(timer);
+        if (!r.ok) throw new Error('Erreur serveur ' + r.status);
         return r.json();
     }).then(function(data) {
         if (data.url) {
+            afficherMsgPayer('Redirection...', true);
             window.location.href = data.url;
         } else {
             if (btn) { btn.disabled = false; btn.textContent = originalText; btn.style.opacity = '1'; }
-            afficherMsgPayer(data.error || 'Erreur lors du paiement. Réessayez dans quelques secondes.', false);
+            afficherMsgPayer(data.error || 'Erreur. Réessayez.', false);
         }
     }).catch(function(e) {
+        clearTimeout(timer);
         if (btn) { btn.disabled = false; btn.textContent = originalText; btn.style.opacity = '1'; }
-        afficherMsgPayer('Le serveur démarre, réessayez dans 10 secondes.', false);
+        var msg = e.name === 'AbortError'
+            ? 'Le serveur met du temps à démarrer. Réessayez dans 20 secondes.'
+            : 'Erreur de connexion. Vérifiez votre connexion et réessayez.';
+        afficherMsgPayer(msg, false);
     });
 }
 </script>
