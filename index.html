@@ -247,10 +247,10 @@ footer{background:#060F1E;padding:56px 40px}
 <div class="hero-right hero-anim-5">
 <div class="hero-card">
 <div class="stat-grid">
-<div><div class="stat-number" id="stat-60">0<span>s</span></div><div class="stat-label">Résultat garanti</div></div>
-<div><div class="stat-number" id="stat-100"><span>/</span>0</div><div class="stat-label">Score de conformité</div></div>
+<div><div class="stat-number">60<span>s</span></div><div class="stat-label">Résultat garanti</div></div>
+<div><div class="stat-number"><span>/</span>100</div><div class="stat-label">Score de conformité</div></div>
 <div><div class="stat-number">IA<span>+</span></div><div class="stat-label">Analyse précise</div></div>
-<div><div class="stat-number" id="stat-24">0<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
+<div><div class="stat-number">24<span>/7</span></div><div class="stat-label">Veille réglementaire</div></div>
 </div>
 </div>
 </div>
@@ -422,7 +422,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>3 documents générés automatiquement</li>
 <li><span class="feat-check">✓</span>Alertes email si risque détecté</li>
 </ul>
-<a href="pricing.html" class="plan-btn plan-btn-navy">Commencer →</a>
+<a href="pricing.html" class="plan-btn plan-btn-gold">Commencer →</a>
 </div>
 
 <div class="plan-card featured reveal" style="transition-delay:.2s">
@@ -449,7 +449,7 @@ footer{background:#060F1E;padding:56px 40px}
 <li><span class="feat-check">✓</span>Documents mis à jour si loi change</li>
 <li><span class="feat-check">✓</span>Certificat de conformité Audilix</li>
 </ul>
-<a href="pricing.html" class="plan-btn plan-btn-navy">Choisir Pro →</a>
+<a href="pricing.html" class="plan-btn plan-btn-gold">Choisir Pro →</a>
 </div>
 
 </div>
@@ -628,32 +628,12 @@ function ouvrirFaq(btn) {
         ico.style.color = 'white';
     }
 }
-// ── Compteurs animés ──
-function animerCompteur(id, cible, suffixe, prefixe, duree) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    var debut = 0;
-    var increment = cible / (duree / 16);
-    var timer = setInterval(function() {
-        debut += increment;
-        if (debut >= cible) { debut = cible; clearInterval(timer); }
-        el.innerHTML = (prefixe || '') + Math.round(debut) + (suffixe || '');
-    }, 16);
-}
-var compteursDeclenchés = false;
-function declencherCompteurs() {
-    if (compteursDeclenchés) return;
-    compteursDeclenchés = true;
-    animerCompteur('stat-60', 60, '<span>s</span>', '', 1200);
-    animerCompteur('stat-100', 100, '', '<span>/</span>', 1400);
-    animerCompteur('stat-24', 24, '<span>/7</span>', '', 900);
-}
+
 
 // ── Animations cascade hero au chargement ──
 window.addEventListener('load', function() {
     var elems = document.querySelectorAll('.hero-anim-1,.hero-anim-2,.hero-anim-3,.hero-anim-4,.hero-anim-5');
     elems.forEach(function(el) { el.classList.add('hero-anim-in'); });
-    setTimeout(declencherCompteurs, 600);
 });
 
 // ── IntersectionObserver sections ──
