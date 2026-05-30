@@ -202,6 +202,8 @@
 
 <script>
 var BACKEND = 'https://audilix-backend.onrender.com';
+// Wake-up Render
+fetch(BACKEND + '/api/ping').catch(function(){});
 var GOOGLE_CLIENT_ID = '628750423437-4314e7pj2dkbmb3sj5t6d0svvclql1nq.apps.googleusercontent.com';
 
 // Paiement confirmé
@@ -252,11 +254,15 @@ async function seConnecter() {
     var btn = document.getElementById('btn-connexion');
     btn.disabled = true; btn.textContent = 'Connexion...';
     try {
+        var controller = new AbortController();
+        var timer = setTimeout(function() { controller.abort(); }, 40000);
         var res = await fetch(BACKEND + '/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: mdp })
+            body: JSON.stringify({ email: email, password: mdp }),
+            signal: controller.signal
         });
+        clearTimeout(timer);
         var data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Identifiants incorrects');
         localStorage.setItem('audilix_token', data.token);
@@ -269,8 +275,12 @@ async function seConnecter() {
         }
         window.location.href = 'dashboard.html';
     } catch(e) {
-        afficherErreur('err-connexion', e.message);
         btn.disabled = false; btn.textContent = 'Se connecter';
+        if (e.name === 'AbortError') {
+            afficherErreur('err-connexion', 'Le serveur démarre, réessayez dans 15 secondes.');
+        } else {
+            afficherErreur('err-connexion', e.message || 'Erreur de connexion.');
+        }
     }
 }
 
@@ -281,7 +291,7 @@ async function sInscrire() {
     var email = document.getElementById('email-inscription').value.trim();
     var entreprise = document.getElementById('entreprise').value.trim();
     var mdp = document.getElementById('mdp-inscription').value;
-    var plan = 'starter';
+    var plan = 'essai';
     if (!prenom || !email || !mdp) { afficherErreur('err-inscription', 'Veuillez remplir les champs obligatoires.'); return; }
     if (mdp.length < 8) { afficherErreur('err-inscription', 'Le mot de passe doit contenir au moins 8 caractères.'); return; }
     var btn = document.getElementById('btn-inscription');
