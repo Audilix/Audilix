@@ -306,6 +306,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
 
 <script>
 var BACKEND = 'https://audilix-backend.onrender.com';
+fetch(BACKEND + '/api/ping').catch(function(){});
 
 // Récupérer le fichier pré-chargé depuis la page d'accueil
 window.addEventListener('DOMContentLoaded', function() {
