@@ -69,13 +69,17 @@ function cleanBuffer(buffer) {
 }
 
 async function sbGet(table, query = "") {
+  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Configuration Supabase manquante");
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
     headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
   });
-  return r.json();
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.message || data.error || `Supabase error ${r.status}`);
+  return Array.isArray(data) ? data : [];
 }
 
 async function sbInsert(table, data) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Configuration Supabase manquante");
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: "POST",
     headers: {
@@ -87,6 +91,7 @@ async function sbInsert(table, data) {
     body: JSON.stringify(data)
   });
   const rows = await r.json();
+  if (!r.ok) throw new Error((Array.isArray(rows) ? rows[0]?.message : rows?.message) || `Supabase insert error ${r.status}`);
   return Array.isArray(rows) ? rows[0] : rows;
 }
 
@@ -901,7 +906,17 @@ app.delete("/api/user/delete", async (req, res) => {
 
 
 app.get("/api/ping", (req, res) => {
-  res.json({ status: "ok", ts: Date.now() });
+  const config = {
+    status: "ok",
+    ts: Date.now(),
+    env: {
+      supabase: !!SUPABASE_URL && !!SUPABASE_KEY,
+      openai: !!OPENAI_KEY,
+      stripe: !!STRIPE_SECRET,
+      resend: !!RESEND_KEY
+    }
+  };
+  res.json(config);
 });
 
 app.get("/", (req, res) => {
@@ -909,4 +924,17 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("🚀 Audilix backend v5.0 en ligne sur le port", PORT));
+
+// Vérification des variables d'environnement critiques
+const VARS_REQUISES = ['SUPABASE_URL','SUPABASE_SERVICE_KEY','OPENAI_API_KEY','RESEND_API_KEY','STRIPE_SECRET_KEY'];
+const VARS_MANQUANTES = VARS_REQUISES.filter(v => !process.env[v]);
+if (VARS_MANQUANTES.length > 0) {
+  console.error('❌ Variables d\'environnement manquantes:', VARS_MANQUANTES.join(', '));
+}
+
+app.listen(PORT, () => {
+  console.log("🚀 Audilix backend v5.0 en ligne sur le port", PORT);
+  if (VARS_MANQUANTES.length === 0) {
+    console.log("✅ Toutes les variables d'environnement sont configurées");
+  }
+});
