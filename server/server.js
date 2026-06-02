@@ -5,7 +5,19 @@ import crypto from "crypto";
 import multer from "multer";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://audilix.com',
+    'https://www.audilix.com',
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true
+}));
+app.options('*', cors());
 app.use(express.json({ limit: "50mb" }));
 
 const OPENAI_KEY    = process.env.OPENAI_API_KEY;
