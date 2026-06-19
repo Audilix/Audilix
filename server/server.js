@@ -442,7 +442,7 @@ app.post("/api/stripe/checkout", async (req, res) => {
     const { priceId, plan, userId, email } = req.body;
     if (!priceId) return res.status(400).json({ error: "priceId manquant" });
 
-    const params = new URLSearchParams({
+    const paramsObj = {
       "payment_method_types[0]": "card",
       "line_items[0][price]": priceId,
       "line_items[0][quantity]": "1",
@@ -450,9 +450,10 @@ app.post("/api/stripe/checkout", async (req, res) => {
       "success_url": "https://audilix.com/dashboard.html?payment=success",
       "cancel_url": "https://audilix.com/pricing.html?payment=cancelled",
       "metadata[userId]": userId || "",
-      "metadata[plan]": plan || "",
-      "customer_email": email || ""
-    });
+      "metadata[plan]": plan || ""
+    };
+    if (email) paramsObj["customer_email"] = email;
+    const params = new URLSearchParams(paramsObj);
 
     const r = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
@@ -468,7 +469,7 @@ app.post("/api/stripe/checkout", async (req, res) => {
     res.json({ url: session.url });
   } catch(e) {
     console.error("❌ Stripe checkout error:", e);
-    res.status(500).json({ error: "Erreur paiement", details: String(e) });
+    res.status(500).json({ error: e.message || "Erreur paiement" });
   }
 });
 
