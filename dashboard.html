@@ -610,7 +610,7 @@
                         <div id="etat-vide-doc" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="vide-titre">Sélectionnez un type de document</div><div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div></div>
                         <div class="analyse-en-cours" id="chargement-doc"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre document est en cours de rédaction.</p></div>
                         <div id="apercu-doc" style="display:none;">
-                            <div class="modal-avert">⚠️ Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.</div>
+                            <div class="modal-avert" style="display:flex;align-items:flex-start;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.</div>
                             <div class="modal-contenu" id="contenu-doc-apercu" style="max-height:340px;overflow-y:auto;font-size:12px;"></div>
                             <div class="modal-actions">
                                 <button class="modal-btn modal-btn-copier" onclick="copierDocument()">Copier le texte</button>
@@ -1183,7 +1183,7 @@ function afficherApercuAnalyses() {
     }
     zone.innerHTML = analysesCache.slice(0,4).map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'short',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
+        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
     }).join('');
     var d = analysesCache[0];
     if (d && d.recommandations && d.recommandations.length > 0) {
@@ -1198,16 +1198,16 @@ function afficherHistorique() {
     if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = analysesCache.map(function(a) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone">📄</div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
+        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
     }).join('');
 }
 
 function afficherMesDocuments() {
     var zone = document.getElementById('liste-mes-documents');
-    if (docsCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone">📁</div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici.</div></div>'; return; }
+    if (docsCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici.</div></div>'; return; }
     zone.innerHTML = docsCache.map(function(d) {
         var date = new Date(d.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="doc-genere"><div class="doc-genere-icone">📄</div><div style="flex:1"><div class="doc-genere-titre">' + (d.titre||d.type_document||'Document') + '</div><div class="doc-genere-date">' + date + '</div></div><div class="doc-genere-actions"><button class="doc-btn-action doc-btn-voir" onclick=\'voirDocument(' + JSON.stringify(JSON.stringify(d)) + ')\'>Voir</button><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(d.contenu||'').replace(/'/g,'&#39;') + ', \'' + (d.titre||'document').replace(/'/g,'&#39;') + '\')">Télécharger</button></div></div>';
+        return '<div class="doc-genere"><div class="doc-genere-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="doc-genere-titre">' + (d.titre||d.type_document||'Document') + '</div><div class="doc-genere-date">' + date + '</div></div><div class="doc-genere-actions"><button class="doc-btn-action doc-btn-voir" onclick=\'voirDocument(' + JSON.stringify(JSON.stringify(d)) + ')\'>Voir</button><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(d.contenu||'').replace(/'/g,'&#39;') + ', \'' + (d.titre||'document').replace(/'/g,'&#39;') + '\')">Télécharger</button></div></div>';
     }).join('');
 }
 
@@ -1303,7 +1303,7 @@ async function lancerAnalyse() {
         if (!res.ok) {
             if (data.limitAtteinte) {
                 var corps = document.querySelector('#carte-resultat-analyse .carte-corps');
-                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;">⚠️ Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business, illimité →</a></div>';
+                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:6px;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business, illimité →</a></div>';
             } else {
                 afficherMsg('msg-analyse', data.error || 'Erreur lors de l\'analyse.', 'erreur');
                 document.getElementById('etat-vide-analyse').style.display = 'block';
@@ -1476,7 +1476,7 @@ async function genererRegistre() {
     var entreprise = document.getElementById('reg-entreprise').value.trim();
     var activite = document.getElementById('reg-activite').value.trim();
     if (!entreprise) { afficherMsg('msg-registre', 'Veuillez renseigner le nom de votre entreprise.', 'erreur'); return; }
-    if (!activite) { afficherMsg('msg-registre', 'Veuillez sélectionner un secteur d'activité.', 'erreur'); return; }
+    if (!activite) { afficherMsg('msg-registre', "Veuillez sélectionner un secteur d'activité.", 'erreur'); return; }
     var responsable = document.getElementById('reg-responsable').value.trim();
     var destinataires = document.getElementById('reg-destinataires').value.trim();
     var pays = document.getElementById('reg-pays').value;
@@ -1503,7 +1503,7 @@ async function genererRegistre() {
                 html += '<div style="background:var(--creme);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">' + (i+1) + '. ' + (t.nom||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Finalité :</strong> ' + (t.finalite||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Base légale :</strong> ' + (t.base_legale||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Conservation :</strong> ' + (t.duree_conservation||'') + '</div></div>';
             });
         }
-        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;">⚠️ ' + (data.avertissement||'Ce document est fourni à titre informatif. Faites-le valider par un professionnel du droit.') + '</div>';
+        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;display:flex;align-items:flex-start;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ' + (data.avertissement||'Ce document est fourni à titre informatif. Faites-le valider par un professionnel du droit.') + '</div>';
         html += '<div style="margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistreGlobal()">Télécharger le registre</button></div>';
         window._registreData = data;
         document.getElementById('resultat-registre').innerHTML = html;
