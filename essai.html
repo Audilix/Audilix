@@ -136,6 +136,7 @@ nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px
     .score-stat-num { font-size: 22px; }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -523,6 +524,129 @@ function afficherResultats(data) {
         points_positifs: data.points_positifs || [],
         recommandations: data.recommandations || []
     };
+}
+
+function telechargerRapportPDFEssai() {
+    var d = window._analyseData;
+    if (!d) { return; }
+    if (typeof window.jspdf === 'undefined') { return; }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var W = 210; var M = 18; var cW = W - M*2;
+    var y = 0;
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+    // Header navy
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 42, 'F');
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 42, W, 1.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(255, 255, 255);
+    doc.text('AUDILIX', M, 18);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(201, 168, 76);
+    doc.text('Rapport de conformité — Analyse gratuite', M, 26);
+    doc.setFontSize(9);
+    doc.setTextColor(180, 180, 180);
+    doc.text('Généré le ' + dateStr, W - M, 26, { align:'right' });
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Document : ' + (d.nom_fichier || 'Document'), M, 36);
+
+    y = 58;
+    var score = d.score || 0;
+    var sR = score >= 70 ? 34 : score >= 40 ? 217 : 239;
+    var sG = score >= 70 ? 197 : score >= 40 ? 119 : 68;
+    var sB = score >= 70 ? 94 : score >= 40 ? 11 : 68;
+
+    doc.setFillColor(sR, sG, sB);
+    doc.circle(M + 16, y, 16, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text(String(score), M + 16, y + 3, { align:'center' });
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('/100', M + 16, y + 9, { align:'center' });
+
+    doc.setTextColor(11, 37, 69);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text(d.type_document || 'Document', M + 38, y - 4);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    var resumeLines = doc.splitTextToSize(d.resume || '', cW - 38);
+    doc.text(resumeLines, M + 38, y + 3);
+    y += 36;
+
+    doc.setDrawColor(220, 220, 220);
+    doc.line(M, y, W - M, y);
+    y += 8;
+
+    if (d.problemes && d.problemes.length > 0) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(239, 68, 68);
+        doc.text('Problèmes détectés (' + d.problemes.length + ')', M, y);
+        y += 7;
+        d.problemes.forEach(function(p) {
+            if (y > 265) { doc.addPage(); y = 20; }
+            var gR = p.gravite === 'critique' ? 239 : p.gravite === 'important' ? 245 : 107;
+            var gG = p.gravite === 'critique' ? 68 : p.gravite === 'important' ? 158 : 114;
+            var gB = p.gravite === 'critique' ? 68 : p.gravite === 'important' ? 11 : 128;
+            doc.setFillColor(gR, gG, gB);
+            doc.rect(M, y, 3, 20, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(11, 37, 69);
+            doc.text(p.titre || '', M + 7, y + 7);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(80, 80, 80);
+            var dLines = doc.splitTextToSize(p.description || '', cW - 10);
+            doc.text(dLines.slice(0,2), M + 7, y + 13);
+            y += 24;
+        });
+        y += 4;
+    }
+
+    if (d.recommandations && d.recommandations.length > 0) {
+        if (y > 240) { doc.addPage(); y = 20; }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(201, 168, 76);
+        doc.text('Recommandations', M, y);
+        y += 7;
+        d.recommandations.forEach(function(r, i) {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(11, 37, 69);
+            var rLines = doc.splitTextToSize((i+1) + '. ' + r, cW - 8);
+            doc.text(rLines[0], M + 3, y);
+            y += 7;
+        });
+    }
+
+    // Footer
+    var nbPages = doc.getNumberOfPages();
+    for (var i = 1; i <= nbPages; i++) {
+        doc.setPage(i);
+        doc.setFillColor(11, 37, 69);
+        doc.rect(0, 287, W, 10, 'F');
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Audilix — contact@audilix.com — audilix.com', M, 293.5);
+        doc.text('Page ' + i + ' / ' + nbPages, W - M, 293.5, { align:'right' });
+    }
+
+    doc.save('rapport-audilix-essai.pdf');
 }
 
 async function inscrireEssai() {
