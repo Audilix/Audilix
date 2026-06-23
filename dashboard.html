@@ -248,6 +248,7 @@
 
 .lock-ico{pointer-events:none}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -561,6 +562,13 @@
                             <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--rouge);">Problèmes détectés</div><div id="liste-problemes"></div></div>
                             <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--vert);">Points positifs</div><div id="liste-positifs"></div></div>
                             <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--gold);">Recommandations</div><div id="liste-recos"></div></div>
+                            <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+                                <button onclick="telechargerRapportPDF()" style="display:flex;align-items:center;gap:8px;background:var(--navy-dark);color:white;border:none;padding:12px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    Télécharger le rapport PDF
+                                </button>
+                                <button onclick="supprimerFichier()" style="background:transparent;border:1.5px solid var(--border);color:var(--gris);padding:12px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Nouvelle analyse</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -614,7 +622,7 @@
                             <div class="modal-contenu" id="contenu-doc-apercu" style="max-height:340px;overflow-y:auto;font-size:12px;"></div>
                             <div class="modal-actions">
                                 <button class="modal-btn modal-btn-copier" onclick="copierDocument()">Copier le texte</button>
-                                <button class="modal-btn modal-btn-telecharger" onclick="telechargerDocument()">Télécharger (.txt)</button>
+                                <button class="modal-btn modal-btn-telecharger" onclick="telechargerDocumentPDF()">Télécharger PDF</button>
                             </div>
                         </div>
                     </div>
@@ -873,6 +881,7 @@
 
 <script>
 var BACKEND = 'https://audilix-backend.onrender.com';
+var dernierRapport = null; // Stocke les données du dernier rapport généré
 fetch(BACKEND + '/api/ping').catch(function(){});
 var utilisateur = null;
 var token = localStorage.getItem('audilix_token');
@@ -1321,6 +1330,7 @@ async function lancerAnalyse() {
 }
 
 function afficherResultatAnalyse(data) {
+    dernierRapport = data; // Sauvegarder pour le PDF
     var score = data.score || 0;
     var couleur = scoreCouleur(score);
     document.getElementById('resultat-cercle').style.borderColor = couleur;
@@ -1587,6 +1597,241 @@ function confirmerSuppression() {
     }).catch(function() {
         afficherMsg('msg-suppression', 'Erreur lors de la suppression. Contactez contact.audilix@gmail.com', 'erreur');
     });
+}
+
+// ════════════════════════════════════════
+// GÉNÉRATION PDF — RAPPORT D'ANALYSE
+// ════════════════════════════════════════
+function telechargerRapportPDF() {
+    if (!dernierRapport) return;
+    var d = dernierRapport;
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+    if (typeof window.jspdf === 'undefined') {
+        afficherMsg('msg-analyse', 'PDF en cours de chargement, réessayez dans 3 secondes.', false);
+        return;
+    }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var W = 210; var M = 18; var cW = W - M*2;
+    var y = 0;
+
+    // ── Bande navy en haut ──
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 42, 'F');
+
+    // ── Ligne dorée ──
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 42, W, 1.5, 'F');
+
+    // ── Titre AUDILIX ──
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(255, 255, 255);
+    doc.text('AUDILIX', M, 18);
+
+    // ── Sous-titre ──
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(201, 168, 76);
+    doc.text('Rapport de conformité réglementaire', M, 26);
+
+    // ── Date ──
+    doc.setFontSize(9);
+    doc.setTextColor(180, 180, 180);
+    doc.text('Généré le ' + dateStr, W - M, 26, { align:'right' });
+
+    // ── Nom du document ──
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Document : ' + (d.nomFichier || d.nom_fichier || 'Document'), M, 36);
+
+    y = 58;
+
+    // ── Score ──
+    var score = d.score || 0;
+    var scoreR = score >= 70 ? 34 : score >= 40 ? 217 : 239;
+    var scoreG = score >= 70 ? 197 : score >= 40 ? 119 : 68;
+    var scoreB = score >= 70 ? 94 : score >= 40 ? 11 : 68;
+    doc.setFillColor(scoreR, scoreG, scoreB);
+    doc.circle(M + 16, y, 16, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text(String(score), M + 16, y + 3, { align:'center' });
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('/100', M + 16, y + 9, { align:'center' });
+
+    // ── Type + résumé ──
+    doc.setTextColor(11, 37, 69);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text(d.type_document || 'Document', M + 38, y - 4);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    var resumeLines = doc.splitTextToSize(d.resume || '', cW - 38);
+    doc.text(resumeLines, M + 38, y + 3);
+    y += 36;
+
+    // ── Séparateur ──
+    doc.setDrawColor(220, 220, 220);
+    doc.line(M, y, W - M, y);
+    y += 8;
+
+    // ── PROBLÈMES DÉTECTÉS ──
+    if (d.problemes && d.problemes.length > 0) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(239, 68, 68);
+        doc.text('Problèmes détectés (' + d.problemes.length + ')', M, y);
+        y += 7;
+
+        d.problemes.forEach(function(p) {
+            if (y > 265) { doc.addPage(); y = 20; }
+            var gravR = p.gravite === 'critique' ? 239 : p.gravite === 'important' ? 245 : 107;
+            var gravG = p.gravite === 'critique' ? 68 : p.gravite === 'important' ? 158 : 114;
+            var gravB = p.gravite === 'critique' ? 68 : p.gravite === 'important' ? 11 : 128;
+            doc.setFillColor(gravR, gravG, gravB);
+            doc.roundedRect(M, y, cW, 0, 0, 0, 'F');
+            // Fond léger
+            doc.setFillColor(gravR, gravG, gravB);
+            doc.setGState(doc.GState({ opacity: 0.07 }));
+            doc.roundedRect(M, y, cW, 22, 2, 2, 'F');
+            doc.setGState(doc.GState({ opacity: 1 }));
+            // Barre gauche colorée
+            doc.setFillColor(gravR, gravG, gravB);
+            doc.rect(M, y, 3, 22, 'F');
+            // Texte
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(11, 37, 69);
+            doc.text(p.titre || '', M + 7, y + 7);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(80, 80, 80);
+            var descLines = doc.splitTextToSize(p.description || '', cW - 10);
+            doc.text(descLines.slice(0,2), M + 7, y + 13);
+            if (p.article_reference) {
+                doc.setTextColor(150, 120, 50);
+                doc.setFontSize(7);
+                doc.text('Réf : ' + p.article_reference, M + 7, y + 20);
+            }
+            y += 26;
+        });
+        y += 4;
+    }
+
+    // ── RECOMMANDATIONS ──
+    if (d.recommandations && d.recommandations.length > 0) {
+        if (y > 240) { doc.addPage(); y = 20; }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(201, 168, 76);
+        doc.text('Recommandations', M, y);
+        y += 7;
+        d.recommandations.forEach(function(r, i) {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.setFillColor(245, 237, 214);
+            doc.roundedRect(M, y, cW, 12, 2, 2, 'F');
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(11, 37, 69);
+            var rLines = doc.splitTextToSize((i+1) + '. ' + r, cW - 8);
+            doc.text(rLines[0], M + 5, y + 8);
+            y += 15;
+        });
+        y += 4;
+    }
+
+    // ── POINTS POSITIFS ──
+    if (d.points_positifs && d.points_positifs.length > 0) {
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(34, 197, 94);
+        doc.text('Points positifs', M, y);
+        y += 7;
+        d.points_positifs.forEach(function(p) {
+            if (y > 275) { doc.addPage(); y = 20; }
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(40, 40, 40);
+            doc.text('✓  ' + p, M + 3, y);
+            y += 7;
+        });
+        y += 4;
+    }
+
+    // ── Pied de page sur toutes les pages ──
+    var nbPages = doc.getNumberOfPages();
+    for (var i = 1; i <= nbPages; i++) {
+        doc.setPage(i);
+        doc.setFillColor(11, 37, 69);
+        doc.rect(0, 287, W, 10, 'F');
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Audilix — Service 100% français — contact@audilix.com', M, 293.5);
+        doc.text('Page ' + i + ' / ' + nbPages, W - M, 293.5, { align:'right' });
+    }
+
+    // ── Télécharger ──
+    var nomFichier = ('rapport-audilix-' + (d.nomFichier || 'document').replace(/[^a-zA-Z0-9]/g, '-') + '.pdf').toLowerCase();
+    doc.save(nomFichier);
+}
+
+// ── PDF pour les documents générés ──
+function telechargerDocumentPDF() {
+    if (!docGenereContenu) return;
+    if (typeof window.jspdf === 'undefined') { telechargerDocument(); return; }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var W = 210; var M = 18; var cW = W - M*2;
+
+    // Header
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 28, 'F');
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 28, W, 1.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(255, 255, 255);
+    doc.text('AUDILIX', M, 14);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(201, 168, 76);
+    doc.text('Document généré automatiquement', M, 21);
+    doc.setTextColor(150, 150, 150);
+    doc.text(new Date().toLocaleDateString('fr-FR'), W - M, 21, { align:'right' });
+
+    var y = 40;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(40, 40, 40);
+    var lines = doc.splitTextToSize(docGenereContenu, cW);
+    lines.forEach(function(line) {
+        if (y > 275) { doc.addPage(); y = 20; }
+        doc.text(line, M, y);
+        y += 5.5;
+    });
+
+    // Footer
+    var nbPages = doc.getNumberOfPages();
+    for (var i = 1; i <= nbPages; i++) {
+        doc.setPage(i);
+        doc.setFillColor(11, 37, 69);
+        doc.rect(0, 287, W, 10, 'F');
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Audilix — contact@audilix.com — Ce document est fourni à titre informatif.', M, 293.5);
+        doc.text('Page ' + i + ' / ' + nbPages, W - M, 293.5, { align:'right' });
+    }
+    doc.save('document-audilix.pdf');
 }
 
 function seDeconnecter() {
