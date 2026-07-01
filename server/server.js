@@ -1,953 +1,805 @@
-import express from "express";
-import fetch from "node-fetch";
-import cors from "cors";
-import crypto from "crypto";
-import multer from "multer";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analyse gratuite, Audilix</title>
+<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0B2545; --navy-dark: #0B2545; --gold: #C9A84C;
+    --gold-light: #E8C97A; --gold-pale: #F5EDD6; --cream: #FAF8F4;
+    --gray: #6B7280; --border: rgba(11,37,69,0.08); --rouge: #ef4444;
+    --vert: #22c55e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
 
-const app = express();
-app.use(cors({
-  origin: [
-    'https://audilix.com',
-    'https://www.audilix.com',
-    'http://localhost:3000',
-    'http://localhost:5500',
-    'http://127.0.0.1:5500'
-  ],
-  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
-  credentials: true
-}));
-app.options('*', cors());
-app.use(express.json({ limit: "50mb" }));
+/* NAV */
+nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo img { height: 36px; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-link { color: var(--gray); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+.nav-link:hover { color: var(--navy); }
+.nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.nav-cta:hover { background: var(--gold-light); }
 
-const OPENAI_KEY    = process.env.OPENAI_API_KEY;
-const RESEND_KEY    = process.env.RESEND_API_KEY;
-const SUPABASE_URL  = process.env.SUPABASE_URL;
-const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
-const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
-const FROM_EMAIL    = "Audilix <contact@audilix.com>";
+/* HERO */
+.hero-essai { text-align: center; padding: 64px 40px 48px; max-width: 680px; margin: 0 auto; }
+.hero-badge-essai { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #16a34a; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+.hero-essai h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero-essai h1 em { color: var(--gold); font-style: italic; }
+.hero-essai p { font-size: 17px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; font-weight: 300; }
+.hero-garanties { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; }
+.hero-garantie { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 5px; }
+.hero-garantie::before { content: '✓'; color: var(--vert); font-weight: 700; }
 
-// Limites par plan
-const LIMITES_PLAN = {
-  essai:    1,
-  starter:  10,
-  business: -1,
-  pro:      -1,
-  expert:   -1
-};
+/* UPLOAD ZONE */
+.upload-zone { max-width: 600px; margin: 0 auto 48px; padding: 0 24px; }
+.upload-box {
+    background: white; border: 2px dashed rgba(11,37,69,0.15); border-radius: 16px;
+    padding: 48px 32px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+}
+.upload-box:hover, .upload-box.dragover { border-color: var(--gold); background: var(--gold-pale); }
+.upload-icon { font-size: 40px; margin-bottom: 16px; }
+.upload-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.upload-sub { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+.upload-formats { font-size: 12px; color: rgba(107,114,128,0.6); }
+.btn-upload { background: var(--navy); color: white; padding: 13px 32px; border-radius: 6px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: inline-block; }
+.btn-upload:hover { background: var(--gold); color: var(--navy); }
+#file-input { display: none; }
+.file-selected { display: none; align-items: center; gap: 10px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #16a34a; font-weight: 500; }
+.file-selected.visible { display: flex; }
 
-// ─── Multer ────────────────────────────────────────────────────
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const allowed = [
-      "application/pdf",
-      "text/plain",
-      "text/html",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ];
-    if (allowed.includes(file.mimetype)) cb(null, true);
-    else cb(new Error("Format non supporté. Utilisez PDF, TXT ou DOCX."));
-  }
-});
+/* CHARGEMENT */
+#loading { display: none; text-align: center; padding: 48px 24px; }
+.spinner { width: 48px; height: 48px; border: 3px solid rgba(11,37,69,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.loading-sub { font-size: 13px; color: var(--gray); }
+.loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 280px; margin: 24px auto 0; }
+.loading-step { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.5s; }
+.loading-step.active { opacity: 1; color: var(--navy); font-weight: 500; }
+.loading-step::before { content: '○'; color: var(--gold); }
+.loading-step.active::before { content: '●'; }
 
-// ─── Helpers ───────────────────────────────────────────────────
-function hashPassword(p) {
-  return crypto.createHash("sha256").update(p + "audilix_salt_2026").digest("hex");
+/* RÉSULTATS */
+#resultats { display: none; max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* Score */
+.score-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.score-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+.score-cercle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid; }
+.score-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; line-height: 1; }
+.score-sur { font-size: 13px; color: var(--gray); }
+.score-titre { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.score-desc { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 440px; margin: 0 auto; }
+.score-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.score-stat { background: var(--cream); border-radius: 8px; padding: 14px 12px; }
+.score-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+.score-stat-label { font-size: 11px; color: var(--gray); font-weight: 500; margin-top: 2px; }
+
+/* Problèmes révélés */
+.problemes-section { margin-bottom: 24px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-head h3 { font-size: 18px; font-weight: 700; color: var(--navy); }
+.badge-count { background: rgba(239,68,68,0.1); color: var(--rouge); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+.probleme-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 12px; }
+.probleme-gravite { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-top: 2px; }
+.gravite-critique { background: rgba(239,68,68,0.1); color: var(--rouge); }
+.gravite-important { background: rgba(245,158,11,0.1); color: #d97706; }
+.gravite-mineur { background: rgba(107,114,128,0.1); color: var(--gray); }
+.probleme-titre { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.probleme-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+/* Problèmes bloqués */
+.problemes-bloques { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; position: relative; }
+.probleme-flou { padding: 16px 18px; filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.5; }
+.bloquer-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.95) 40%, white 100%);
+    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px;
 }
 
-function generateToken(userId) {
-  return crypto.createHash("sha256").update(userId + Date.now() + "audilix_secret").digest("hex");
+/* CTA Tunnel */
+.tunnel-cta { background: var(--navy); border-radius: 16px; padding: 36px 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.tunnel-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.tunnel-urgence { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
+.tunnel-cta h2 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
+.tunnel-cta h2 em { color: var(--gold); font-style: italic; }
+.tunnel-cta p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.7; }
+.btn-tunnel { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 6px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.btn-tunnel:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+.tunnel-garanties { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+.tunnel-garantie { font-size: 12px; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 5px; }
+.tunnel-garantie::before { content: '✓'; color: var(--gold); }
+
+/* Points positifs */
+.positifs-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.positifs-section h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.positif-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 8px; }
+.positif-item::before { content: '✓'; color: var(--vert); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* Recommencer */
+.btn-recommencer { background: white; border: 1.5px solid var(--border); color: var(--gray); padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.btn-recommencer:hover { border-color: var(--navy); color: var(--navy); }
+
+@media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .hero-essai { padding: 40px 20px 32px; }
+    .score-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .score-stat-num { font-size: 22px; }
 }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
 
-function cleanJSON(raw) {
-  return raw.replace(/```json|```/g, "").trim();
-}
+<div style="height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);"></div>
+<nav style="background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(11,37,69,0.08);position:sticky;top:0;z-index:100;">
+    <div style="max-width:1280px;margin:auto;padding:0 40px;height:76px;display:grid;grid-template-columns:auto auto auto;align-items:center;gap:24px;">
+        <!-- GAUCHE : retour aligné à droite de sa colonne (contre le logo) -->
+        <div style="display:flex;align-items:center;display:flex;align-items:center;">
+            <a href="javascript:history.back()" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0B2545;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>Retour</a>
+        </div>
+        <!-- CENTRE : logo parfaitement centré -->
+        <a href="index.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none;"><img src="logo.png" alt="Audilix" style="height:48px;width:auto;display:block;"></a>
+        <!-- DROITE : espace client aligné à gauche de sa colonne (contre le logo) -->
+        <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:24px;">
+            <a href="login.html?analyse=pending" style="background:#C9A84C;color:#0B2545;padding:10px 22px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#E8C97A'" onmouseout="this.style.background='#C9A84C'">Espace client</a>
+        </div>
+    </div>
+</nav>
 
-// Nettoie un buffer binaire (PDF/DOCX) sans regex complexe
-function cleanBuffer(buffer) {
-  return buffer.toString("latin1")
-    .split("")
-    .filter(ch => {
-      const code = ch.charCodeAt(0);
-      return (code >= 32 && code <= 255) || ch === "\n";
-    })
-    .join("")
-    .replace(/\s+/g, " ")
-    .trim()
-    .substring(0, 8000);
-}
+<!-- HERO -->
+<div class="hero-essai">
+    <div class="hero-badge-essai">✓ 1 analyse gratuite</div>
+    <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
+    <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
+    <div class="hero-garanties">
+        <span class="hero-garantie">Résultat en moins de 60 secondes</span>
+        <span class="hero-garantie">Aucune connaissance juridique requise</span>
+        <span class="hero-garantie">Données supprimées après analyse</span>
+    </div>
+</div>
 
-async function sbGet(table, query = "") {
-  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Configuration Supabase manquante");
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
-    headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
-  });
-  const data = await r.json();
-  if (!r.ok) throw new Error(data.message || data.error || `Supabase error ${r.status}`);
-  return Array.isArray(data) ? data : [];
-}
+<!-- UPLOAD -->
+<div class="upload-zone" id="zone-upload">
+    <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+        <div class="upload-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris,#6B7280)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="upload-title">Déposez votre document ici</div>
+        <div class="upload-sub">Politique de confidentialité, CGV, contrat, mentions légales…</div>
+        <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('file-input').click();">Choisir un fichier</button>
+        <div class="upload-formats">PDF · Word (.docx) · Texte (.txt) · Max 10 Mo</div>
+        <div class="file-selected" id="file-selected">
+            <span>📎</span>
+            <span id="file-name"></span>
+        </div>
+    </div>
+    <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" onchange="fichierChoisi(this)">
+    <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
+        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant, c'est gratuit →</button>
+    </div>
+<div id="msg-essai" style="display:none;font-size:13px;margin-top:12px;padding:10px 14px;border-radius:6px;text-align:center;"></div>
+</div>
 
-async function sbInsert(table, data) {
-  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Configuration Supabase manquante");
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: "POST",
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json",
-      "Prefer": "return=representation"
-    },
-    body: JSON.stringify(data)
-  });
-  const rows = await r.json();
-  if (!r.ok) throw new Error((Array.isArray(rows) ? rows[0]?.message : rows?.message) || `Supabase insert error ${r.status}`);
-  return Array.isArray(rows) ? rows[0] : rows;
-}
+<!-- CHARGEMENT -->
+<div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyse en cours…</div>
+    <div class="loading-sub">Votre document est en cours d'analyse</div>
+    <div class="loading-steps">
+        <div class="loading-step active" id="step-1">Lecture du document</div>
+        <div class="loading-step" id="step-2">Détection des risques</div>
+        <div class="loading-step" id="step-3">Calcul du score de conformité</div>
+        <div class="loading-step" id="step-4">Génération du rapport</div>
+    </div>
+</div>
 
-async function callOpenAI(messages, maxTokens = 1000) {
-  const r = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${OPENAI_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ model: "gpt-4o-mini", messages, max_tokens: maxTokens, temperature: 0.3 })
-  });
-  const data = await r.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.choices[0].message.content;
-}
+<!-- RÉSULTATS -->
+<div id="resultats">
 
-async function sendEmail(to, subject, html) {
-  try {
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${RESEND_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: FROM_EMAIL, to, subject, html })
-    });
-  } catch(e) { console.warn("⚠️ Email non envoyé:", e.message); }
-}
+    <!-- Score -->
+    <div class="score-card">
+        <div class="score-label">Score de conformité</div>
+        <div class="score-cercle" id="score-cercle">
+            <span class="score-num" id="score-num">--</span>
+            <span class="score-sur">/100</span>
+        </div>
+        <div class="score-titre" id="score-titre">Analyse terminée</div>
+        <p class="score-desc" id="score-resume">Voici ce que nous avons détecté dans votre document.</p>
+        <div class="score-stats">
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-critiques" style="color:var(--rouge);">0</div>
+                <div class="score-stat-label">Problème(s) critique(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-importants" style="color:#d97706;">0</div>
+                <div class="score-stat-label">Problème(s) important(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-mineurs" style="color:var(--gray);">0</div>
+                <div class="score-stat-label">Point(s) mineur(s)</div>
+            </div>
+        </div>
+    </div>
 
-async function compterAnalysesMois(userId) {
-  try {
-    const debut = new Date();
-    debut.setDate(1); debut.setHours(0, 0, 0, 0);
-    const r = await sbGet("analyses", `?user_id=eq.${userId}&created_at=gte.${debut.toISOString()}&select=id`);
-    return r ? r.length : 0;
-  } catch(e) { return 0; }
-}
+    <!-- Problèmes visibles (2 premiers) -->
+    <div class="problemes-section">
+        <div class="section-head">
+            <h3>Problèmes détectés</h3>
+            <span class="badge-count" id="badge-total">0 problème(s)</span>
+        </div>
+        <div id="problemes-visibles"></div>
+    </div>
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// AUTH — REGISTER
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/auth/register", async (req, res) => {
-  try {
-    const { firstname, lastname, email, company, password, plan } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
-    if (password.length < 8) return res.status(400).json({ error: "Mot de passe trop court (8 caractères min)" });
+    <!-- Problèmes bloqués + CTA -->
+    <div id="bloc-bloque" style="display:none;">
+        <div class="problemes-bloques">
+            <div class="probleme-flou" id="problemes-flous"></div>
+            <div class="bloquer-overlay">
+                <div></div>
+            </div>
+        </div>
+    </div>
 
-    const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}`);
-    if (existing && existing.length > 0) return res.status(400).json({ error: "Un compte existe déjà avec cet email" });
+    <!-- TUNNEL CTA — Formulaire création compte -->
+    <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
+        <div class="tunnel-urgence" id="tunnel-label">Des risques ont été détectés dans votre document</div>
+        <h2 id="tunnel-titre">Des risques ont été détectés.<br><em>Voici comment les corriger.</em></h2>
+        <p id="tunnel-desc">Votre rapport détaillé, les corrections à apporter et les documents conformes générés automatiquement — tout est prêt. Créez votre accès en 30 secondes.</p>
 
-    const user = await sbInsert("users", {
-      email,
-      password_hash: hashPassword(password),
-      firstname: firstname || "",
-      lastname: lastname || "",
-      company: company || "",
-      plan: plan || "starter"
-    });
+        <!-- Formulaire email -->
+        <div id="form-inscription" style="max-width:380px;margin:0 auto;">
+            <input type="email" id="essai-email" placeholder="Votre adresse email professionnelle"
+                style="width:100%;padding:14px 18px;border-radius:6px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+            <button onclick="inscrireEssai()" id="btn-inscrire"
+                style="width:100%;background:var(--gold);color:var(--navy);padding:15px;border-radius:6px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">
+                Accéder à mon rapport complet →
+            </button>
+            
+        </div>
 
-    const token = generateToken(user.id);
-    const { password_hash, ...safeUser } = user;
-    console.log(`✅ Nouveau compte: ${email}`);
-    res.json({ token, user: safeUser });
-  } catch(e) {
-    console.error("❌ Register error:", e);
-    res.status(500).json({ error: "Erreur serveur", details: String(e) });
-  }
-});
+        <!-- État chargement -->
+        <div id="form-chargement" style="display:none;text-align:center;padding:10px 0;">
+            <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+            <p style="color:rgba(255,255,255,0.6);font-size:13px;">Création de votre compte en cours…</p>
+        </div>
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// AUTH — LOGIN
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/auth/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
+        <!-- Succès -->
+        <div id="form-succes" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:40px;margin-bottom:12px;">✉️</div>
+            <div style="font-size:18px;font-weight:700;color:white;margin-bottom:8px;">Vérifiez vos emails !</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">Vos identifiants ont été envoyés à <strong style="color:white;" id="email-confirme"></strong></p>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
 
-    const users = await sbGet("users", `?email=eq.${encodeURIComponent(email)}`);
-    if (!users || users.length === 0) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
+        <!-- Déjà client -->
+        <div id="form-deja-client" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:14px;color:white;font-weight:600;margin-bottom:6px;">Un compte existe déjà avec cet email.</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:18px;line-height:1.6;">Connectez-vous pour retrouver votre historique.<br>Pensez à télécharger le rapport PDF de cette analyse ci-dessus avant de continuer.</div>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
 
-    const user = users[0];
-    if (user.password_hash !== hashPassword(password)) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
+        <div class="tunnel-garanties" style="margin-top:20px;">
+            <span class="tunnel-garantie">Rapport complet</span>
+            <span class="tunnel-garantie">Sans engagement</span>
+            <span class="tunnel-garantie">Accès immédiat</span>
+        </div>
+    </div>
 
-    const token = generateToken(user.id);
-    const { password_hash, ...safeUser } = user;
-    console.log(`✅ Connexion: ${email}`);
-    res.json({ token, user: safeUser });
-  } catch(e) {
-    console.error("❌ Login error:", e);
-    res.status(500).json({ error: "Erreur serveur", details: String(e) });
-  }
-});
+    <!-- Points positifs -->
+    <div class="positifs-section" id="positifs-section" style="display:none;">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ce qui est conforme</h3>
+        <div id="positifs-liste"></div>
+    </div>
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// SCAN PUBLIC
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/scan", async (req, res) => {
-  try {
-    const { url, userId } = req.body;
-    if (!url) return res.status(400).json({ error: "URL manquante" });
+    <!-- Recommencer -->
+    <div style="text-align:center;margin-top:16px;">
+        <button class="btn-recommencer" onclick="recommencer()">← Analyser un autre document</button>
+    </div>
+</div>
 
-    let htmlContent = "";
+<script>
+var BACKEND = 'https://audilix-backend.onrender.com';
+fetch(BACKEND + '/api/ping').catch(function(){});
+
+// Récupérer le fichier pré-chargé depuis la page d'accueil
+window.addEventListener('DOMContentLoaded', function() {
     try {
-      const pageRes = await fetch(url, {
-        headers: { "User-Agent": "Mozilla/5.0 Audilix-Bot/1.0" },
-        signal: AbortSignal.timeout(10000)
-      });
-      htmlContent = await pageRes.text();
-      htmlContent = htmlContent
-        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-        .replace(/<[^>]+>/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-        .substring(0, 6000);
-    } catch(e) {
-      htmlContent = `URL: ${url}`;
+        var data = sessionStorage.getItem('hero_file_data');
+        var name = sessionStorage.getItem('hero_file_name');
+        var type = sessionStorage.getItem('hero_file_type');
+        if (data && name) {
+            sessionStorage.removeItem('hero_file_data');
+            sessionStorage.removeItem('hero_file_name');
+            sessionStorage.removeItem('hero_file_type');
+            // Convertir base64 en File
+            var arr = data.split(',');
+            var bstr = atob(arr[1]);
+            var n = bstr.length;
+            var u8arr = new Uint8Array(n);
+            while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+            var file = new File([u8arr], name, { type: type || 'application/octet-stream' });
+            // Déclencher l'analyse automatiquement
+            setTimeout(function() {
+                var dt = new DataTransfer();
+                dt.items.add(file);
+                var input = document.getElementById('file-input');
+                if (input) {
+                    input.files = dt.files;
+                    fichierChoisi(input);
+                    setTimeout(lancerAnalyse, 300);
+                }
+            }, 200);
+        }
+    } catch(e) { console.warn('sessionStorage non disponible'); }
+});
+var fichierActuel = null;
+
+function fichierChoisi(input) {
+    if (!input.files || !input.files[0]) return;
+    fichierActuel = input.files[0];
+    document.getElementById('file-name').textContent = fichierActuel.name;
+    document.getElementById('file-selected').classList.add('visible');
+    var btn = document.getElementById('btn-analyser');
+    btn.style.display = 'inline-block';
+}
+
+function dragOver(e) { e.preventDefault(); document.getElementById('upload-box').classList.add('dragover'); }
+function dragLeave(e) { document.getElementById('upload-box').classList.remove('dragover'); }
+function drop(e) {
+    e.preventDefault();
+    document.getElementById('upload-box').classList.remove('dragover');
+    var files = e.dataTransfer.files;
+    if (files && files[0]) {
+        fichierActuel = files[0];
+        document.getElementById('file-name').textContent = fichierActuel.name;
+        document.getElementById('file-selected').classList.add('visible');
+        document.getElementById('btn-analyser').style.display = 'inline-block';
     }
+}
 
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un expert RGPD. Analyse ce site web.
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "score": (0-100),
-          "risques": ["risque 1", "risque 2", "risque 3"],
-          "recommandations": ["reco 1", "reco 2", "reco 3"],
-          "resume": "Résumé en 2-3 phrases"
-        }`
-      },
-      { role: "user", content: `Analyse ce site (${url}) :\n\n${htmlContent}` }
-    ];
+function animerSteps() {
+    var steps = ['step-1','step-2','step-3','step-4'];
+    var i = 0;
+    var interval = setInterval(function() {
+        if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
+        if (i < steps.length) {
+            document.getElementById(steps[i]).classList.add('active');
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 800);
+}
 
-    const raw = await callOpenAI(messages, 800);
-    const report = JSON.parse(cleanJSON(raw));
+async function lancerAnalyse() {
+    if (!fichierActuel) return;
 
-    if (userId) {
-      try {
-        await sbInsert("scans", { user_id: userId, url, score: report.score, risques: report.risques, resume: report.resume });
-      } catch(e) { console.warn("⚠️ Sauvegarde scan échouée"); }
-    }
-
-    res.json({ ...report, url });
-  } catch(e) {
-    console.error("❌ Scan error:", e);
-    res.status(500).json({ error: "Erreur lors du scan", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HISTORIQUE SCANS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.get("/api/scans/:userId", async (req, res) => {
-  try {
-    const scans = await sbGet("scans", `?user_id=eq.${req.params.userId}&order=created_at.desc&limit=50`);
-    res.json(scans || []);
-  } catch(e) { res.status(500).json({ error: String(e) }); }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ANALYSE DE DOCUMENT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/analyser-document", upload.single("document"), async (req, res) => {
-  try {
-    const { userId, planUtilisateur } = req.body;
-    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
-    if (!userId)   return res.status(400).json({ error: "Utilisateur non identifié" });
-
-    const plan = planUtilisateur || "starter";
-    const limite = LIMITES_PLAN[plan] !== undefined ? LIMITES_PLAN[plan] : 10;
-    if (limite !== -1) {
-      const nb = await compterAnalysesMois(userId);
-      if (nb >= limite) return res.status(403).json({
-        error: `Limite mensuelle atteinte (${limite} analyses). Passez au plan Professionnel.`,
-        limitAtteinte: true
-      });
-    }
-
-    const nomFichier = req.file.originalname;
-    let contenu = "";
-
-    if (req.file.mimetype === "text/plain" || req.file.mimetype === "text/html") {
-      contenu = req.file.buffer.toString("utf-8").substring(0, 8000);
-    } else {
-      contenu = cleanBuffer(req.file.buffer);
-    }
-
-    if (!contenu || contenu.trim().length < 50) {
-      return res.status(400).json({ error: "Document vide ou illisible. Essayez un fichier .txt" });
-    }
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un expert en conformité réglementaire européenne (RGPD, droit du travail, droit commercial).
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "score": (0-100),
-          "type_document": "Type identifié",
-          "problemes": [{ "titre": "", "description": "", "gravite": "critique|important|mineur", "article_reference": "" }],
-          "points_positifs": ["Point 1"],
-          "recommandations": ["Action 1"],
-          "resume": "2-3 phrases"
-        }`
-      },
-      { role: "user", content: `Analyse ce document "${nomFichier}" :\n\n${contenu}` }
-    ];
-
-    const raw = await callOpenAI(messages, 1000);
-    const analyse = JSON.parse(cleanJSON(raw));
-
-    let analyseId = null;
-    try {
-      const saved = await sbInsert("analyses", {
-        user_id: userId, nom_fichier: nomFichier,
-        type_document: analyse.type_document || "Document",
-        score: analyse.score, problemes: analyse.problemes,
-        recommandations: analyse.recommandations, resume: analyse.resume,
-        points_positifs: analyse.points_positifs
-      });
-      analyseId = saved?.id;
-    } catch(e) { console.warn("⚠️ Sauvegarde analyse échouée:", e.message); }
-
-    console.log(`✅ Analyse: ${nomFichier} — Score: ${analyse.score}`);
-    res.json({ ...analyse, id: analyseId, nomFichier });
-  } catch(e) {
-    console.error("❌ Erreur analyse:", e);
-    res.status(500).json({ error: "Erreur lors de l'analyse", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HISTORIQUE ANALYSES
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.get("/api/analyses/:userId", async (req, res) => {
-  try {
-    const r = await sbGet("analyses", `?user_id=eq.${req.params.userId}&order=created_at.desc&limit=50`);
-    res.json(r || []);
-  } catch(e) { res.status(500).json({ error: String(e) }); }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// GÉNÉRER UN DOCUMENT JURIDIQUE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/generer-document", async (req, res) => {
-  try {
-    const { type, entreprise, activite, userId } = req.body;
-    if (!type) return res.status(400).json({ error: "Type de document manquant" });
-
-    const typesDisponibles = {
-      confidentialite: "Politique de confidentialité conforme au RGPD",
-      mentions: "Mentions légales complètes",
-      cookies: "Politique de gestion des cookies",
-      cgu: "Conditions générales d'utilisation",
-      cgv: "Conditions générales de vente",
-      nda: "Accord de non-divulgation (NDA)",
-      registre: "Registre des activités de traitement RGPD (Article 30)"
-    };
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un juriste spécialisé en droit européen.
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "titre": "Titre du document",
-          "contenu": "Contenu complet (utilise \\n pour les sauts de ligne)",
-          "avertissement": "Note sur les limites"
-        }`
-      },
-      {
-        role: "user",
-        content: `Génère une ${typesDisponibles[type] || type} pour :
-        - Entreprise : ${entreprise || "PME française"}
-        - Secteur : ${activite || "Services numériques"}
-        Document complet, conforme au droit français et européen.`
-      }
-    ];
-
-    const raw = await callOpenAI(messages, 1500);
-    const doc = JSON.parse(cleanJSON(raw));
-
-    if (userId) {
-      try {
-        await sbInsert("documents_generes", { user_id: userId, type_document: type, titre: doc.titre, contenu: doc.contenu });
-      } catch(e) { console.warn("⚠️ Sauvegarde document échouée"); }
-    }
-
-    res.json(doc);
-  } catch(e) {
-    console.error("❌ Erreur génération:", e);
-    res.status(500).json({ error: "Erreur lors de la génération", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HISTORIQUE DOCUMENTS GÉNÉRÉS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.get("/api/documents/:userId", async (req, res) => {
-  try {
-    const r = await sbGet("documents_generes", `?user_id=eq.${req.params.userId}&order=created_at.desc`);
-    res.json(r || []);
-  } catch(e) { res.status(500).json({ error: String(e) }); }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ASSISTANT IA (CHAT)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/chat", async (req, res) => {
-  try {
-    const { message, history = [] } = req.body;
-    if (!message) return res.status(400).json({ error: "Message manquant" });
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es l'assistant conformité Audilix. Tu aides les PME françaises sur le RGPD, la cybersécurité, le RSE et l'AI Act.
-        Réponds en français, de manière claire et professionnelle. Pour les questions juridiques complexes, recommande un avocat.`
-      },
-      ...history.slice(-10).map(m => ({ role: m.role, content: m.content })),
-      { role: "user", content: message }
-    ];
-
-    const reponse = await callOpenAI(messages, 250);
-    res.json({ reponse });
-  } catch(e) {
-    console.error("❌ Chat error:", e);
-    res.status(500).json({ error: "Erreur assistant", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// STRIPE — CRÉER SESSION CHECKOUT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/stripe/checkout", async (req, res) => {
-  try {
-    const { priceId, plan, userId, email } = req.body;
-    if (!priceId) return res.status(400).json({ error: "priceId manquant" });
-
-    const paramsObj = {
-      "payment_method_types[0]": "card",
-      "line_items[0][price]": priceId,
-      "line_items[0][quantity]": "1",
-      "mode": "subscription",
-      "success_url": "https://audilix.com/dashboard.html?payment=success",
-      "cancel_url": "https://audilix.com/pricing.html?payment=cancelled",
-      "metadata[userId]": userId || "",
-      "metadata[plan]": plan || ""
-    };
-    if (email) paramsObj["customer_email"] = email;
-    const params = new URLSearchParams(paramsObj);
-
-    const r = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${STRIPE_SECRET}`,
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: params.toString()
-    });
-
-    const session = await r.json();
-    if (session.error) return res.status(400).json({ error: session.error.message });
-    res.json({ url: session.url });
-  } catch(e) {
-    console.error("❌ Stripe checkout error:", e);
-    res.status(500).json({ error: e.message || "Erreur paiement" });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// STRIPE — WEBHOOK
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (req, res) => {
-  try {
-    const event = JSON.parse(req.body);
-
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const userId  = session.metadata?.userId;
-      const plan    = session.metadata?.plan;
-      const email   = session.customer_email || session.customer_details?.email;
-
-      if (userId && SUPABASE_URL) {
-        try {
-          await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
-            method: "PATCH",
-            headers: {
-              "apikey": SUPABASE_KEY,
-              "Authorization": `Bearer ${SUPABASE_KEY}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ plan, stripe_customer_id: session.customer })
-          });
-          console.log(`✅ Plan mis à jour: ${userId} → ${plan}`);
-        } catch(e) { console.warn("⚠️ Erreur mise à jour plan:", e.message); }
-      }
-
-      if (email) {
-        const planNames = { starter: "Essentiel", business: "Professionnel", expert: "Entreprise" };
-        await sendEmail(
-          email,
-          `Bienvenue sur Audilix — Plan ${planNames[plan] || plan}`,
-          `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;background:#0B2545;color:white;padding:40px;border-radius:12px;">
-            <h1 style="color:#C9A84C;">Bienvenue sur Audilix !</h1>
-            <p style="color:rgba(255,255,255,0.8);">Votre abonnement <strong style="color:#C9A84C;">${planNames[plan] || plan}</strong> est activé.</p>
-            <a href="https://audilix.com/dashboard.html" style="display:inline-block;background:#C9A84C;color:#0B2545;padding:14px 30px;border-radius:6px;text-decoration:none;font-weight:700;margin-top:16px;">Accéder au dashboard →</a>
-          </div>`
+    // Vérifier limite gratuite
+    var dejaUtilise = localStorage.getItem('audilix_essai_utilise');
+    if (dejaUtilise) {
+        document.getElementById('zone-upload').style.display = 'none';
+        document.getElementById('resultats').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        document.body.insertAdjacentHTML('beforeend',
+            '<div style="max-width:500px;margin:60px auto;padding:40px 32px;background:white;border-radius:16px;text-align:center;border:1px solid rgba(11,37,69,0.08);">'
+            + '<div style="font-size:40px;margin-bottom:16px;">🔒</div>'
+            + '<h2 style="font-family:Playfair Display,serif;font-size:24px;color:#0B2545;margin-bottom:12px;">Essai gratuit utilisé</h2>'
+            + '<p style="font-size:14px;color:#6B7280;margin-bottom:24px;line-height:1.7;">Vous avez déjà utilisé votre analyse gratuite. Passez à un plan payant pour des analyses illimitées.</p>'
+            + '<a href="pricing.html" style="background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;">Voir les plans →</a>'
+            + '<p style="font-size:12px;color:#9CA3AF;margin-top:16px;">Déjà client ? <a href="login.html" style="color:#0B2545;font-weight:600;">Se connecter</a></p>'
+            + '</div>'
         );
-      }
+        return;
     }
 
-    res.json({ received: true });
-  } catch(e) {
-    console.error("❌ Stripe webhook error:", e);
-    res.status(400).json({ error: String(e) });
-  }
-});
+    // Lancer l'analyse
+    document.getElementById('zone-upload').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    animerSteps();
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// RÉSUMÉ DE CONTRAT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/resumer-contrat", upload.single("document"), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
+    var formData = new FormData();
+    formData.append('document', fichierActuel);
+    formData.append('userId', 'essai_gratuit');
+    formData.append('planUtilisateur', 'gratuit');
 
-    let contenu = "";
-    if (req.file.mimetype === "text/plain") {
-      contenu = req.file.buffer.toString("utf-8").substring(0, 8000);
-    } else {
-      contenu = cleanBuffer(req.file.buffer);
-    }
-
-    if (!contenu || contenu.trim().length < 50) {
-      return res.status(400).json({ error: "Document illisible. Essayez un fichier .txt" });
-    }
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un juriste expert. Résume ce document en points clés.
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "titre": "Titre court",
-          "type": "Type de document identifié",
-          "points_cles": ["Point 1", "Point 2", "Point 3", "Point 4", "Point 5"],
-          "points_vigilance": ["Point à surveiller 1", "Point à surveiller 2"],
-          "duree": "Durée ou échéances si applicable",
-          "resume_global": "Résumé en 2-3 phrases"
-        }`
-      },
-      { role: "user", content: `Résume ce document :\n\n${contenu}` }
-    ];
-
-    const raw = await callOpenAI(messages, 800);
-    res.json(JSON.parse(cleanJSON(raw)));
-  } catch(e) {
-    console.error("❌ Résumé contrat error:", e);
-    res.status(500).json({ error: "Erreur lors du résumé", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// DÉTECTION DE CLAUSES ABUSIVES
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/detecter-clauses", upload.single("document"), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
-
-    const contenu = cleanBuffer(req.file.buffer);
-    if (!contenu || contenu.trim().length < 50) {
-      return res.status(400).json({ error: "Document illisible." });
-    }
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un avocat spécialisé en droit des contrats français.
-        Détecte les clauses problématiques, abusives ou illégales.
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "score_equite": 75,
-          "clauses_abusives": [
-            {
-              "clause": "Extrait ou description",
-              "probleme": "Pourquoi c'est problématique",
-              "gravite": "critique|important|mineur",
-              "reference_legale": "Article applicable"
-            }
-          ],
-          "clauses_manquantes": ["Clause manquante 1"],
-          "recommandations": ["Recommandation 1"],
-          "resume": "Bilan en 2-3 phrases"
-        }`
-      },
-      { role: "user", content: `Analyse ce contrat :\n\n${contenu}` }
-    ];
-
-    const raw = await callOpenAI(messages, 1000);
-    res.json(JSON.parse(cleanJSON(raw)));
-  } catch(e) {
-    console.error("❌ Détection clauses error:", e);
-    res.status(500).json({ error: "Erreur lors de l'analyse", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// REGISTRE DES TRAITEMENTS RGPD (Article 30)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/registre-traitements", async (req, res) => {
-  try {
-    const { entreprise, activite } = req.body;
-    if (!entreprise) return res.status(400).json({ error: "Informations manquantes" });
-
-    const today = new Date().toLocaleDateString("fr-FR");
-
-    const messages = [
-      {
-        role: "system",
-        content: `Tu es un DPO expert RGPD. Génère un registre des activités de traitement conforme à l'article 30 du RGPD.
-        Réponds UNIQUEMENT en JSON valide sans markdown :
-        {
-          "titre": "Registre des activités de traitement",
-          "date_creation": "${today}",
-          "traitements": [
-            {
-              "nom": "Nom du traitement",
-              "finalite": "Finalité",
-              "base_legale": "Base légale",
-              "categories_donnees": ["Donnée 1", "Donnée 2"],
-              "destinataires": ["Destinataire 1"],
-              "duree_conservation": "Durée",
-              "mesures_securite": "Mesures techniques"
-            }
-          ],
-          "responsable": "Responsable : ${entreprise}",
-          "avertissement": "Ce registre est généré automatiquement. Il doit être validé par votre DPO ou un juriste."
-        }`
-      },
-      {
-        role: "user",
-        content: `Génère un registre RGPD pour :
-        - Entreprise : ${entreprise}
-        - Activité : ${activite || "Non précisée"}
-        Génère entre 4 et 8 traitements réalistes selon le secteur.`
-      }
-    ];
-
-    const raw = await callOpenAI(messages, 1500);
-    res.json(JSON.parse(cleanJSON(raw)));
-  } catch(e) {
-    console.error("❌ Registre traitements error:", e);
-    res.status(500).json({ error: "Erreur lors de la génération", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HEALTH CHECK
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ESSAI GRATUIT — Inscription après analyse
-// Crée le compte, sauvegarde l'analyse, envoie les identifiants
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.post("/api/essai-inscription", async (req, res) => {
-  try {
-    const { email, analyseData } = req.body;
-    if (!email) return res.status(400).json({ error: "Email requis" });
-
-    // Vérifier si compte existe déjà
-    const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}`);
-    if (existing && existing.length > 0) {
-      // Compte déjà existant → rediriger vers login
-      return res.json({ 
-        success: true, 
-        dejaClient: true,
-        message: "Compte déjà existant, connectez-vous"
-      });
-    }
-
-    // Générer un mot de passe temporaire lisible
-    const motsPasse = ["Confor", "Secure", "Audit", "Legal", "Rgpd"];
-    const nums = Math.floor(1000 + Math.random() * 9000);
-    const mdpClair = motsPasse[Math.floor(Math.random() * motsPasse.length)] + nums + "!";
-
-    // Créer le compte Essai
-    const user = await sbInsert("users", {
-      email,
-      password_hash: hashPassword(mdpClair),
-      firstname: "",
-      lastname: "",
-      plan: "essai"
-    });
-
-    if (!user || !user.id) {
-      return res.status(500).json({ error: "Erreur création du compte" });
-    }
-
-    // Sauvegarder l'analyse en base si fournie
-    if (analyseData && user.id) {
-      try {
-        await sbInsert("analyses", {
-          user_id: user.id,
-          nom_fichier: analyseData.nom_fichier || "Document essai",
-          type_document: analyseData.type_document || "Document",
-          score: analyseData.score || 0,
-          resume: analyseData.resume || "",
-          problemes: analyseData.problemes || [],
-          points_positifs: analyseData.points_positifs || [],
-          recommandations: analyseData.recommandations || []
-        });
-      } catch(e) {
-        console.warn("⚠️ Analyse non sauvegardée:", e.message);
-      }
-    }
-
-    const token = generateToken(user.id);
-
-    // Email de bienvenue avec identifiants
-    const score = analyseData ? analyseData.score : null;
-    const nbProblemes = analyseData && analyseData.problemes ? analyseData.problemes.length : 0;
-    const scoreColor = score >= 70 ? "#22c55e" : score >= 40 ? "#f59e0b" : "#ef4444";
-    const scoreTexte = score !== null ? `<div style="text-align:center;margin:20px 0;padding:20px;background:#0F2456;border-radius:8px;"><div style="font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Votre Compliance Trust Score™</div><div style="font-size:52px;font-weight:700;color:${scoreColor};line-height:1;">${score}</div><div style="color:rgba(255,255,255,0.4);font-size:13px;">/100 — ${nbProblemes} problème(s) détecté(s)</div></div>` : "";
-
-    await sendEmail(
-      email,
-      "Votre rapport de conformité Audilix — Identifiants de connexion",
-      `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;background:#FAF8F4;border-radius:12px;overflow:hidden;">
-        <div style="background:#0B2545;padding:32px 40px;text-align:center;">
-          <div style="font-size:28px;font-weight:700;color:#C9A84C;letter-spacing:-0.02em;">Audilix</div>
-          <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:4px;">Conformité réglementaire</div>
-        </div>
-        <div style="padding:32px 40px;">
-          <h2 style="color:#0B2545;font-size:22px;margin-bottom:8px;">Votre rapport est prêt.</h2>
-          <p style="color:#6B7280;font-size:14px;line-height:1.7;margin-bottom:20px;">Votre compte Audilix a été créé. Connectez-vous pour accéder à votre rapport complet.</p>
-          ${scoreTexte}
-          <div style="background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:20px;margin:20px 0;">
-            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;margin-bottom:12px;">Vos identifiants</div>
-            <div style="margin-bottom:8px;"><span style="color:#6B7280;font-size:13px;">Email : </span><strong style="color:#0B2545;">${email}</strong></div>
-            <div><span style="color:#6B7280;font-size:13px;">Mot de passe : </span><strong style="color:#0B2545;font-size:16px;letter-spacing:0.05em;">${mdpClair}</strong></div>
-          </div>
-          <div style="text-align:center;margin:24px 0;">
-            <a href="https://audilix.com/login.html" style="display:inline-block;background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Accéder à mon rapport →</a>
-          </div>
-          <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px;">Vous pouvez modifier votre mot de passe depuis les paramètres de votre compte.</p>
-        </div>
-        <div style="background:#0B2545;padding:20px 40px;text-align:center;">
-          <p style="color:rgba(255,255,255,0.3);font-size:11px;margin:0;">© 2026 Audilix · <a href="https://audilix.com" style="color:rgba(255,255,255,0.4);">audilix.com</a></p>
-        </div>
-      </div>`
-    );
-
-    // Programmer email de relance J+1 (via flag en base)
     try {
-      await sbInsert("relances_email", {
-        user_id: user.id,
-        email: email,
-        type: "relance_j1",
-        score: score,
-        nb_problemes: nbProblemes,
-        envoyer_le: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-        envoye: false
-      });
+        var res = await fetch(BACKEND + '/api/analyser-document', {
+            method: 'POST',
+            body: formData
+        });
+        var data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'analyse');
+
+        // Marquer l'essai comme utilisé
+        localStorage.setItem('audilix_essai_utilise', '1');
+
+        // Afficher les résultats
+        afficherResultats(data);
+
     } catch(e) {
-      console.warn("⚠️ Relance non programmée (table manquante?):", e.message);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('zone-upload').style.display = 'block';
+        afficherMsgEssai('Erreur : ' + e.message + ' — Assurez-vous que votre document contient du texte lisible.', false);
     }
-
-    const { password_hash, ...safeUser } = user;
-    console.log(`✅ Essai inscrit: ${email} — score: ${score}`);
-    res.json({ success: true, token, user: safeUser, mdp: mdpClair });
-
-  } catch(e) {
-    console.error("❌ Essai inscription error:", e);
-    res.status(500).json({ error: "Erreur serveur", details: String(e) });
-  }
-});
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// EMAIL RELANCE J+1 — À appeler par un cron ou manuellement
-// GET /api/envoyer-relances
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-app.get("/api/envoyer-relances", async (req, res) => {
-  try {
-    const now = new Date().toISOString();
-    const relances = await sbGet("relances_email", `?envoye=eq.false&envoyer_le=lte.${now}`);
-    
-    if (!Array.isArray(relances) || relances.length === 0) {
-      return res.json({ envoyes: 0, message: "Aucune relance à envoyer" });
-    }
-
-    let envoyes = 0;
-    for (const r of relances) {
-      const scoreColor = r.score >= 70 ? "#22c55e" : r.score >= 40 ? "#f59e0b" : "#ef4444";
-      await sendEmail(
-        r.email,
-        `⚠️ Vos ${r.nb_problemes} risques Audilix sont toujours non corrigés`,
-        `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;background:#FAF8F4;border-radius:12px;overflow:hidden;">
-          <div style="background:#0B2545;padding:32px 40px;text-align:center;">
-            <div style="font-size:28px;font-weight:700;color:#C9A84C;">Audilix</div>
-          </div>
-          <div style="padding:32px 40px;">
-            <h2 style="color:#0B2545;font-size:20px;margin-bottom:12px;">Vos risques n'ont pas disparu.</h2>
-            <p style="color:#6B7280;font-size:14px;line-height:1.7;margin-bottom:20px;">Hier, votre analyse a révélé <strong style="color:#0B2545;">${r.nb_problemes} problème(s)</strong> avec un score de <strong style="color:${scoreColor};">${r.score}/100</strong>. Chaque jour sans correction, c'est un risque d'amende qui reste ouvert.</p>
-            <div style="background:#fff3cd;border:1px solid #f59e0b;border-radius:8px;padding:16px;margin-bottom:20px;">
-              <div style="font-size:13px;color:#92400e;font-weight:600;">💡 Le saviez-vous ?</div>
-              <div style="font-size:13px;color:#78350f;margin-top:4px;">La CNIL peut sanctionner une PME jusqu'à 20 000€ pour une politique de confidentialité non conforme.</div>
-            </div>
-            <div style="text-align:center;margin:24px 0;">
-              <a href="https://audilix.com/login.html" style="display:inline-block;background:#C9A84C;color:#0B2545;padding:14px 32px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Corriger mes risques maintenant →</a>
-            </div>
-            <p style="color:#9CA3AF;font-size:12px;text-align:center;">À partir de 69€/mois · Sans engagement · Accès immédiat</p>
-          </div>
-        </div>`
-      );
-
-      // Marquer comme envoyé
-      await fetch(`${SUPABASE_URL}/rest/v1/relances_email?id=eq.${r.id}`, {
-        method: "PATCH",
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ envoye: true, envoye_le: new Date().toISOString() })
-      });
-      envoyes++;
-    }
-
-    console.log(`✅ ${envoyes} relance(s) envoyée(s)`);
-    res.json({ envoyes, message: `${envoyes} email(s) envoyé(s)` });
-  } catch(e) {
-    console.error("❌ Relances error:", e);
-    res.status(500).json({ error: String(e) });
-  }
-});
-
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PARAMÈTRES UTILISATEUR
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-// Mettre à jour l'email
-app.post("/api/user/update", async (req, res) => {
-  try {
-    const { userId, email } = req.body;
-    if (!userId || !email) return res.status(400).json({ error: "Données manquantes" });
-
-    // Vérifier que l'email n'est pas déjà pris
-    const existing = await sbGet("users", `?email=eq.${encodeURIComponent(email)}&id=neq.${userId}`);
-    if (existing && existing.length > 0) return res.status(400).json({ error: "Cet email est déjà utilisé par un autre compte" });
-
-    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
-      method: "PATCH",
-      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
-
-    console.log(`✅ Email mis à jour: ${userId}`);
-    res.json({ success: true });
-  } catch(e) {
-    console.error("❌ Update email error:", e);
-    res.status(500).json({ error: "Erreur serveur" });
-  }
-});
-
-// Changer le mot de passe
-app.post("/api/user/change-password", async (req, res) => {
-  try {
-    const { userId, ancienMdp, nouveauMdp } = req.body;
-    if (!userId || !ancienMdp || !nouveauMdp) return res.status(400).json({ error: "Données manquantes" });
-    if (nouveauMdp.length < 8) return res.status(400).json({ error: "Le mot de passe doit faire au moins 8 caractères" });
-
-    // Vérifier l'ancien mot de passe
-    const users = await sbGet("users", `?id=eq.${userId}`);
-    if (!users || users.length === 0) return res.status(404).json({ error: "Compte introuvable" });
-
-    const user = users[0];
-    if (user.password_hash !== hashPassword(ancienMdp)) {
-      return res.status(400).json({ error: "Mot de passe actuel incorrect" });
-    }
-
-    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
-      method: "PATCH",
-      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ password_hash: hashPassword(nouveauMdp) })
-    });
-
-    console.log(`✅ Mot de passe changé: ${userId}`);
-    res.json({ success: true });
-  } catch(e) {
-    console.error("❌ Change password error:", e);
-    res.status(500).json({ error: "Erreur serveur" });
-  }
-});
-
-// Supprimer le compte
-app.delete("/api/user/delete", async (req, res) => {
-  try {
-    const { userId } = req.body;
-    if (!userId) return res.status(400).json({ error: "Utilisateur manquant" });
-
-    // Supprimer analyses, documents, relances puis le compte
-    await fetch(`${SUPABASE_URL}/rest/v1/analyses?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
-    await fetch(`${SUPABASE_URL}/rest/v1/documents_generes?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
-    await fetch(`${SUPABASE_URL}/rest/v1/relances_email?user_id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
-    await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
-
-    console.log(`✅ Compte supprimé: ${userId}`);
-    res.json({ success: true });
-  } catch(e) {
-    console.error("❌ Delete account error:", e);
-    res.status(500).json({ error: "Erreur serveur" });
-  }
-});
-
-
-app.get("/api/ping", (req, res) => {
-  const config = {
-    status: "ok",
-    ts: Date.now(),
-    env: {
-      supabase: !!SUPABASE_URL && !!SUPABASE_KEY,
-      openai: !!OPENAI_KEY,
-      stripe: !!STRIPE_SECRET,
-      resend: !!RESEND_KEY
-    }
-  };
-  res.json(config);
-});
-
-app.get("/", (req, res) => {
-  res.json({ status: "Audilix backend en ligne ✅", version: "5.0" });
-});
-
-const PORT = process.env.PORT || 3000;
-
-// Vérification des variables d'environnement critiques
-const VARS_REQUISES = ['SUPABASE_URL','SUPABASE_SERVICE_KEY','OPENAI_API_KEY','RESEND_API_KEY','STRIPE_SECRET_KEY'];
-const VARS_MANQUANTES = VARS_REQUISES.filter(v => !process.env[v]);
-if (VARS_MANQUANTES.length > 0) {
-  console.error('❌ Variables d\'environnement manquantes:', VARS_MANQUANTES.join(', '));
 }
 
-app.listen(PORT, () => {
-  console.log("🚀 Audilix backend v5.0 en ligne sur le port", PORT);
-  if (VARS_MANQUANTES.length === 0) {
-    console.log("✅ Toutes les variables d'environnement sont configurées");
-  }
+function afficherResultats(data) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('resultats').style.display = 'block';
+
+    var score = data.score || 50;
+    var problemes = data.problemes || [];
+    var positifs = data.points_positifs || [];
+    var resume = data.resume || '';
+
+    // Score couleur
+    var cercle = document.getElementById('score-cercle');
+    var couleur = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
+    cercle.style.borderColor = couleur;
+    document.getElementById('score-num').style.color = couleur;
+    document.getElementById('score-num').textContent = score;
+
+    // Titre selon score
+    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques, action requise';
+    document.getElementById('score-titre').textContent = titre;
+    document.getElementById('score-resume').textContent = resume;
+
+    // Compteurs
+    var critiques = problemes.filter(function(p) { return p.gravite === 'critique'; });
+    var importants = problemes.filter(function(p) { return p.gravite === 'important'; });
+    var mineurs = problemes.filter(function(p) { return p.gravite === 'mineur'; });
+    document.getElementById('nb-critiques').textContent = critiques.length;
+    document.getElementById('nb-importants').textContent = importants.length;
+    document.getElementById('nb-mineurs').textContent = mineurs.length;
+    document.getElementById('badge-total').textContent = problemes.length + ' problème(s)';
+
+    // Afficher 2 premiers problèmes
+    var visibles = document.getElementById('problemes-visibles');
+    var shown = problemes.slice(0, 2);
+    shown.forEach(function(p) {
+        var el = document.createElement('div');
+        el.className = 'probleme-item';
+        el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+            + '<div><div class="probleme-titre">' + (p.titre || '') + '</div>'
+            + '<div class="probleme-desc">' + (p.description || '') + '</div></div>';
+        visibles.appendChild(el);
+    });
+
+    // Problèmes bloqués (le reste)
+    if (problemes.length > 2) {
+        var bloqueEl = document.getElementById('problemes-flous');
+        var bloques = problemes.slice(2);
+        bloques.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'probleme-item';
+            el.style.marginBottom = '10px';
+            el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+                + '<div><div class="probleme-titre">' + (p.titre || '') + '</div></div>';
+            bloqueEl.appendChild(el);
+        });
+        document.getElementById('bloc-bloque').style.display = 'block';
+    }
+
+    // CTA urgence selon score
+    var tunnel = document.getElementById('tunnel-cta');
+    if (score >= 70) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '📋 ' + problemes.length + ' point(s) à optimiser';
+        tunnel.querySelector('h2').innerHTML = 'Obtenez les corrections complètes<br>et <em>maintenez votre conformité</em>';
+    } else if (score < 40) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '🚨 Risques critiques — action urgente';
+        tunnel.querySelector('h2').innerHTML = 'Votre entreprise est exposée.<br><em>Protégez-vous maintenant.</em>';
+    }
+
+    // Points positifs
+    if (positifs && positifs.length > 0) {
+        var listEl = document.getElementById('positifs-liste');
+        positifs.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'positif-item';
+            el.textContent = p;
+            listEl.appendChild(el);
+        });
+        document.getElementById('positifs-section').style.display = 'block';
+    }
+
+    // Scroll vers résultats
+    document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Stocker les données d'analyse pour l'inscription
+    window._analyseData = {
+        nom_fichier: fichierActuel ? fichierActuel.name : 'Document',
+        type_document: data.type_document || 'Document',
+        score: data.score || 0,
+        resume: data.resume || '',
+        problemes: data.problemes || [],
+        points_positifs: data.points_positifs || [],
+        recommandations: data.recommandations || []
+    };
+}
+
+function ajouterHeaderPage(doc, W, M, nomFichier, dateStr) {
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 14, 'F');
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 14, W, 0.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255);
+    doc.text('AUDILIX', M, 9.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(150, 150, 150);
+    doc.text('Rapport de conformité · ' + nomFichier, W - M, 9.5, { align:'right' });
+    return 26;
+}
+function dessinerLogoAudilix(doc, x, y, taille, couleurTrait) {
+    doc.setDrawColor(couleurTrait[0], couleurTrait[1], couleurTrait[2]);
+    doc.setLineWidth(taille * 0.045);
+    var w = taille * 1.5;
+    doc.lines(
+        [[w*0.32, -taille*0.42], [w*0.32, taille*0.42], [w*0.36, 0]],
+        x - w*0.5, y, [1,1], 'S', true
+    );
+    doc.setLineWidth(taille * 0.045);
+    doc.circle(x, y, taille * 0.26, 'S');
+    doc.setFillColor(couleurTrait[0], couleurTrait[1], couleurTrait[2]);
+    doc.circle(x, y, taille * 0.09, 'F');
+}
+
+function telechargerRapportPDFEssai() {
+    var d = window._analyseData;
+    if (!d) return;
+    if (typeof window.jspdf === 'undefined') return;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var W = 210, M = 18, cW = W - M*2;
+    var y;
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+    function nouvellePage() { doc.addPage(); y = 24; }
+
+    // En-tête
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 40, 'F');
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 40, W, 1.2, 'F');
+    dessinerLogoAudilix(doc, M + 7, 16, 11, [201, 168, 76]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(19);
+    doc.setTextColor(255, 255, 255);
+    doc.text('AUDILIX', M + 18, 19);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(201, 168, 76);
+    doc.text('Rapport de conformité — Analyse gratuite', M, 30);
+    doc.setFontSize(8.5);
+    doc.setTextColor(190, 190, 190);
+    doc.text('Généré le ' + dateStr, W - M, 16, { align:'right' });
+    doc.setTextColor(150, 150, 150);
+    var nomDoc = d.nom_fichier || 'Document';
+    doc.text(nomDoc.length > 38 ? nomDoc.substring(0,35) + '...' : nomDoc, W - M, 30, { align:'right' });
+
+    y = 56;
+    var score = (typeof d.score === 'number') ? d.score : 0;
+    var sCoul = score >= 70 ? [34,197,94] : score >= 40 ? [217,119,6] : [220,38,38];
+
+    doc.setFillColor(250, 248, 244);
+    doc.setDrawColor(230, 225, 210);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(M, y, cW, 34, 3, 3, 'FD');
+    doc.setFillColor(sCoul[0], sCoul[1], sCoul[2]);
+    doc.circle(M + 21, y + 17, 14, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(17);
+    doc.text(String(score), M + 21, y + 18.5, { align:'center' });
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica','normal');
+    doc.text('/ 100', M + 21, y + 23.5, { align:'center' });
+
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(11,37,69);
+    doc.text(d.type_document || 'Document analysé', M + 42, y + 12);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9);
+    doc.setTextColor(90,90,90);
+    var resumeLignes = doc.splitTextToSize(d.resume || '', cW - 46);
+    doc.text(resumeLignes.slice(0,3), M + 42, y + 19);
+    y += 44;
+
+    if (d.problemes && d.problemes.length > 0) {
+        if (y > 250) nouvellePage();
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(12);
+        doc.setTextColor(220,38,38);
+        doc.text('Problèmes détectés', M, y);
+        doc.setFontSize(9);
+        doc.setTextColor(150,150,150);
+        doc.text('(' + d.problemes.length + ')', M + doc.getTextWidth('Problèmes détectés ') + 2, y);
+        y += 8;
+
+        d.problemes.forEach(function(p) {
+            var gCoul = p.gravite === 'critique' ? [220,38,38] : p.gravite === 'important' ? [217,119,6] : [107,114,128];
+            var gLabel = p.gravite === 'critique' ? 'CRITIQUE' : p.gravite === 'important' ? 'IMPORTANT' : 'MINEUR';
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(8.5);
+            var descLignes = doc.splitTextToSize(p.description || '', cW - 12);
+            var hauteurBloc = 9 + (descLignes.length * 4.6) + (p.article_reference ? 6 : 0) + 6;
+            if (y + hauteurBloc > 278) nouvellePage();
+            var yDebut = y;
+            doc.setFillColor(gCoul[0], gCoul[1], gCoul[2]);
+            doc.setGState(new doc.GState({ opacity: 0.06 }));
+            doc.roundedRect(M, y, cW, hauteurBloc, 2, 2, 'F');
+            doc.setGState(new doc.GState({ opacity: 1 }));
+            doc.setFillColor(gCoul[0], gCoul[1], gCoul[2]);
+            doc.rect(M, y, 2.5, hauteurBloc, 'F');
+            y += 7;
+            doc.setFont('helvetica','bold');
+            doc.setFontSize(9.5);
+            doc.setTextColor(11,37,69);
+            doc.text(p.titre || '', M + 7, y);
+            doc.setFont('helvetica','bold');
+            doc.setFontSize(6.5);
+            doc.setTextColor(gCoul[0], gCoul[1], gCoul[2]);
+            doc.text(gLabel, W - M - 4, y, { align:'right' });
+            y += 5;
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(70,70,70);
+            descLignes.forEach(function(ligne) { doc.text(ligne, M + 7, y); y += 4.6; });
+            if (p.article_reference) {
+                doc.setFont('helvetica','italic');
+                doc.setFontSize(7.5);
+                doc.setTextColor(160,140,80);
+                doc.text('Référence : ' + p.article_reference, M + 7, y);
+                y += 5;
+            }
+            y = yDebut + hauteurBloc + 5;
+        });
+        y += 3;
+    }
+
+    if (d.recommandations && d.recommandations.length > 0) {
+        if (y > 260) nouvellePage();
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(12);
+        doc.setTextColor(201,168,76);
+        doc.text('Recommandations', M, y);
+        y += 8;
+        d.recommandations.forEach(function(r, i) {
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(8.5);
+            var texteNum = (i+1) + '.  ' + r;
+            var rLignes = doc.splitTextToSize(texteNum, cW - 10);
+            var hBloc = rLignes.length * 4.6 + 6;
+            if (y + hBloc > 278) nouvellePage();
+            doc.setFillColor(250, 245, 230);
+            doc.roundedRect(M, y, cW, hBloc, 2, 2, 'F');
+            doc.setTextColor(11,37,69);
+            var yy = y + 6;
+            rLignes.forEach(function(ligne) { doc.text(ligne, M + 5, yy); yy += 4.6; });
+            y += hBloc + 4;
+        });
+    }
+
+    // Avertissement
+    if (y > 255) nouvellePage();
+    y += 5;
+    doc.setDrawColor(230,225,210);
+    doc.line(M, y, W - M, y);
+    y += 6;
+    doc.setFont('helvetica','italic');
+    doc.setFontSize(7.5);
+    doc.setTextColor(140,140,140);
+    var avert = doc.splitTextToSize("Ce rapport est généré automatiquement à titre informatif. Créez votre compte gratuit pour accéder à l'historique complet et aux corrections automatiques.", cW);
+    doc.text(avert, M, y);
+
+    var nb = doc.getNumberOfPages();
+    for (var i = 1; i <= nb; i++) {
+        doc.setPage(i);
+        doc.setDrawColor(230,230,230);
+        doc.line(M, 283, W - M, 283);
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(7.5);
+        doc.setTextColor(140,140,140);
+        doc.text('Audilix — audilix.com', M, 289);
+        doc.text('Page ' + i + ' / ' + nb, W - M, 289, { align:'right' });
+    }
+
+    doc.save('rapport-audilix-essai.pdf');
+}
+
+async function inscrireEssai() {
+    var email = document.getElementById('essai-email').value.trim();
+    if (!email || !email.includes('@')) {
+        document.getElementById('essai-email').style.borderColor = 'var(--rouge)';
+        document.getElementById('essai-email').placeholder = 'Email invalide, réessayez';
+        return;
+    }
+
+    document.getElementById('form-inscription').style.display = 'none';
+    document.getElementById('form-chargement').style.display = 'block';
+
+    try {
+        var res = await fetch(BACKEND + '/api/essai-inscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                analyseData: window._analyseData || null
+            })
+        });
+        var data = await res.json();
+        document.getElementById('form-chargement').style.display = 'none';
+
+        if (!res.ok) {
+            document.getElementById('form-inscription').style.display = 'block';
+            afficherMsgEssai('Une erreur est survenue. Réessayez.', false);
+            return;
+        }
+
+        if (data.dejaClient) {
+            document.getElementById('form-deja-client').style.display = 'block';
+            return;
+        }
+
+        // Succès — sauvegarder token et user
+        if (data.token && data.user) {
+            localStorage.setItem('audilix_token', data.token);
+            localStorage.setItem('audilix_user', JSON.stringify(data.user));
+            localStorage.setItem('audilix_souvenir', 'oui');
+        }
+
+        document.getElementById('email-confirme').textContent = email;
+        document.getElementById('form-succes').style.display = 'block';
+
+    } catch(e) {
+        document.getElementById('form-chargement').style.display = 'none';
+        document.getElementById('form-inscription').style.display = 'block';
+        afficherMsgEssai('Erreur de connexion. Réessayez.', false);
+    }
+}
+
+// Permettre validation avec Entrée
+document.addEventListener('DOMContentLoaded', function() {
+    var emailInput = document.getElementById('essai-email');
+    if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') inscrireEssai();
+        });
+    }
 });
+
+function recommencer() {
+    document.getElementById('resultats').style.display = 'none';
+    document.getElementById('zone-upload').style.display = 'block';
+    document.getElementById('problemes-visibles').innerHTML = '';
+    document.getElementById('problemes-flous').innerHTML = '';
+    document.getElementById('positifs-liste').innerHTML = '';
+    document.getElementById('bloc-bloque').style.display = 'none';
+    document.getElementById('positifs-section').style.display = 'none';
+    document.getElementById('btn-analyser').style.display = 'none';
+    document.getElementById('file-selected').classList.remove('visible');
+    document.getElementById('file-input').value = '';
+    fichierActuel = null;
+    // Reset loading steps
+    ['step-1','step-2','step-3','step-4'].forEach(function(s, i) {
+        var el = document.getElementById(s);
+        el.classList.toggle('active', i === 0);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
