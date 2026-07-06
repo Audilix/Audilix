@@ -1305,6 +1305,7 @@ async function lancerAnalyse() {
     var formData = new FormData();
     formData.append('document', fichierCourant);
     formData.append('userId', utilisateur.id);
+    formData.append('plan', utilisateur.plan || 'essai');
     formData.append('planUtilisateur', utilisateur.plan || 'essai');
 
     try {
@@ -1369,7 +1370,7 @@ async function genererDocument() {
     try {
         var res = await fetch(BACKEND + '/api/generer-document', {
             method:'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ type:typeDocChoisi, entreprise:document.getElementById('gen-entreprise').value.trim(), activite:document.getElementById('gen-activite').value.trim(), userId:utilisateur.id })
+            body: JSON.stringify({ type:typeDocChoisi, entreprise:document.getElementById('gen-entreprise').value.trim(), activite:document.getElementById('gen-activite').value.trim(), userId:utilisateur.id, plan:utilisateur.plan||'essai' })
         });
         var data = await res.json();
         document.getElementById('chargement-doc').classList.remove('visible');
@@ -1418,7 +1419,7 @@ async function envoyerAssistant() {
     divU.className = 'ass-client'; divU.textContent = msg; zone.appendChild(divU); zone.scrollTop = zone.scrollHeight;
     assistantHistorique.push({role:'user', content:msg});
     try {
-        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers: jsonHeaders(), body: JSON.stringify({ message:msg, history:assistantHistorique }) });
+        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers: jsonHeaders(), body: JSON.stringify({ message:msg, history:assistantHistorique, userId:utilisateur.id, plan:utilisateur.plan||'essai' }) });
         var data = await res.json();
         var rep = data.reponse || data.reply || 'Une erreur est survenue.';
         var divB = document.createElement('div');
@@ -1504,7 +1505,7 @@ async function genererRegistre() {
     try {
         var res = await fetch(BACKEND + '/api/registre-traitements', {
             method:'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ entreprise, activite, responsable, destinataires, pays, donneesCollectees, userId: utilisateur.id })
+            body: JSON.stringify({ entreprise, activite, responsable, destinataires, pays, donneesCollectees, userId: utilisateur.id, plan: utilisateur.plan || 'essai' })
         });
         var data = await res.json();
         document.getElementById('chargement-registre').classList.remove('visible');
