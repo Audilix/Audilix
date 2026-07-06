@@ -349,8 +349,10 @@ app.get("/api/analyses/:userId", async (req, res) => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 app.post("/api/generer-document", async (req, res) => {
   try {
-    const { type, entreprise, activite, userId } = req.body;
+    const { type, entreprise, activite, userId, plan } = req.body;
     if (!type) return res.status(400).json({ error: "Type de document manquant" });
+    const planOk = ['starter','business','pro','expert'].includes(plan);
+    if (!planOk) return res.status(403).json({ error: "Cette fonctionnalité nécessite un abonnement.", planRequis: 'starter' });
 
     const typesDisponibles = {
       confidentialite: "Politique de confidentialité conforme au RGPD",
@@ -413,8 +415,10 @@ app.get("/api/documents/:userId", async (req, res) => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message, history = [] } = req.body;
+    const { message, history = [], userId, plan } = req.body;
     if (!message) return res.status(400).json({ error: "Message manquant" });
+    const plansChat = ['business','pro','expert'];
+    if (userId && !plansChat.includes(plan)) return res.status(403).json({ error: "L'assistant est disponible à partir du plan Business.", planRequis: 'business' });
 
     const messages = [
       {
@@ -570,7 +574,11 @@ app.post("/api/resumer-contrat", upload.single("document"), async (req, res) => 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 app.post("/api/detecter-clauses", upload.single("document"), async (req, res) => {
   try {
+    const plan = req.body.plan || 'essai';
+    const userId = req.body.userId;
     if (!req.file) return res.status(400).json({ error: "Aucun document fourni" });
+    const plansClauses = ['business','pro','expert'];
+    if (!plansClauses.includes(plan)) return res.status(403).json({ error: "La détection de clauses abusives est disponible à partir du plan Business.", planRequis: 'business' });
 
     const contenu = cleanBuffer(req.file.buffer);
     if (!contenu || contenu.trim().length < 50) {
@@ -614,8 +622,10 @@ app.post("/api/detecter-clauses", upload.single("document"), async (req, res) =>
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 app.post("/api/registre-traitements", async (req, res) => {
   try {
-    const { entreprise, activite } = req.body;
+    const { entreprise, activite, responsable, destinataires, pays, donneesCollectees, userId, plan } = req.body;
     if (!entreprise) return res.status(400).json({ error: "Informations manquantes" });
+    const plansRegistre = ['business','pro','expert'];
+    if (!plansRegistre.includes(plan)) return res.status(403).json({ error: "Le registre RGPD est disponible à partir du plan Business.", planRequis: 'business' });
 
     const today = new Date().toLocaleDateString("fr-FR");
 
