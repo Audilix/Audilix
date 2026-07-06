@@ -1614,335 +1614,463 @@ function ajouterHeaderPage(doc, W, M, nomFichier, dateStr) {
     doc.text('Rapport de conformité · ' + nomFichier, W - M, 9.5, { align:'right' });
     return 26;
 }
-function dessinerLogoAudilix(doc, x, y, taille, couleurTrait) {
-    // Logo œil Audilix vectorisé — cohérent avec le chatbot du site
-    doc.setDrawColor(couleurTrait[0], couleurTrait[1], couleurTrait[2]);
-    doc.setLineWidth(taille * 0.045);
-    var w = taille * 1.5;
-    // Forme de l'œil (deux courbes via lignes triangulaires simplifiées)
-    doc.lines(
-        [[w*0.32, -taille*0.42], [w*0.32, taille*0.42], [w*0.36, 0]],
-        x - w*0.5, y, [1,1], 'S', true
-    );
-    // Cercle extérieur (iris)
-    doc.setLineWidth(taille * 0.045);
-    doc.circle(x, y, taille * 0.26, 'S');
-    // Pupille pleine
-    doc.setFillColor(couleurTrait[0], couleurTrait[1], couleurTrait[2]);
-    doc.circle(x, y, taille * 0.09, 'F');
+// ═══════════════════════════════════════════════════
+// AUDILIX — GÉNÉRATION PDF PREMIUM
+// Design : sobre, moderne, identité LegalTech FR
+// ═══════════════════════════════════════════════════
+
+function drawArc(doc, cx, cy, r, startDeg, endDeg, lw, col) {
+    var steps = Math.max(30, Math.round(Math.abs(endDeg - startDeg) / 2));
+    doc.setDrawColor(col[0], col[1], col[2]);
+    doc.setLineWidth(lw);
+    var prev = null;
+    for (var i = 0; i <= steps; i++) {
+        var ang = (startDeg + (endDeg - startDeg) * i / steps) * Math.PI / 180;
+        var x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
+        if (prev) doc.line(prev[0], prev[1], x, y);
+        prev = [x, y];
+    }
+}
+
+function scoreConfig(score) {
+    if (score >= 80) return { label:'Conforme', couleur:[22,163,74], badge:'CONFORME', bg:[240,253,244] };
+    if (score >= 60) return { label:'Conforme avec réserves', couleur:[245,158,11], badge:'RÉSERVES', bg:[255,251,235] };
+    if (score >= 40) return { label:'Non conforme — améliorations requises', couleur:[234,88,12], badge:'NON CONFORME', bg:[255,247,237] };
+    return { label:'Risque élevé — action urgente', couleur:[220,38,38], badge:'RISQUE ÉLEVÉ', bg:[254,242,242] };
+}
+
+function gravConfig(gravite) {
+    if (gravite === 'critique') return { label:'CRITIQUE', col:[220,38,38], bg:[254,242,242], temps:'1 à 2 heures', priorite:'Urgente' };
+    if (gravite === 'important') return { label:'IMPORTANT', col:[234,88,12], bg:[255,247,237], temps:'30 minutes', priorite:'Haute' };
+    return { label:'MODÉRÉ', col:[161,98,7], bg:[254,252,232], temps:'15 minutes', priorite:'Normale' };
+}
+
+function genererPDFAudilix(d, nomFichierSortie) {
+    if (!d || typeof window.jspdf === 'undefined') return;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var W = 210, H = 297, M = 15, cW = W - M*2;
+    var y = 0;
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+    var heureStr = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    var score = (typeof d.score === 'number') ? d.score : 0;
+    var problemes = d.problemes || [];
+    var positifs = d.points_positifs || [];
+    var recos = d.recommandations || [];
+    var nomDoc = d.nomFichier || d.nom_fichier || 'Document analysé';
+    var cfg = scoreConfig(score);
+    var nbCritique = problemes.filter(function(p){ return p.gravite === 'critique'; }).length;
+    var nbImportant = problemes.filter(function(p){ return p.gravite === 'important'; }).length;
+    var nbMineur = problemes.filter(function(p){ return p.gravite === 'mineur'; }).length;
+
+    function nP() { doc.addPage(); y = 22; }
+    function checkY(h) { if (y + h > 275) nP(); }
+
+    function footer() {
+        var nb = doc.getNumberOfPages();
+        for (var i = 1; i <= nb; i++) {
+            doc.setPage(i);
+            doc.setFillColor(248,250,252);
+            doc.rect(0, H-12, W, 12, 'F');
+            doc.setDrawColor(226,232,240);
+            doc.setLineWidth(0.15);
+            doc.line(0, H-12, W, H-12);
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(6.5);
+            doc.setTextColor(148,163,184);
+            doc.text('Audilix — Conformité réglementaire automatisée • v2.0 • ' + dateStr, M, H-5);
+            doc.text('Ce rapport est généré automatiquement à titre informatif et ne remplace pas un avis juridique.', W/2, H-8.5, { align:'center' });
+            doc.text('Page ' + i + ' / ' + nb, W-M, H-5, { align:'right' });
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // EN-TÊTE
+    // ═══════════════════════════════════════
+    // Fond header navy
+    doc.setFillColor(11, 37, 69);
+    doc.rect(0, 0, W, 48, 'F');
+
+    // Ligne or en bas du header
+    doc.setFillColor(201, 168, 76);
+    doc.rect(0, 48, W, 0.8, 'F');
+
+    // Logo — œil simplifié en or
+    var lx = M + 8, ly = 16, lr = 8;
+    doc.setDrawColor(201,168,76); doc.setLineWidth(0.9);
+    // Contour œil
+    doc.lines([[12,0],[6,-7],[-12,0],[-6,7]], lx-6, ly, [1,1], 'S', true);
+    // Iris
+    doc.circle(lx, ly, 3.5, 'S');
+    // Pupille
+    doc.setFillColor(201,168,76); doc.circle(lx, ly, 1.3, 'F');
+
+    // Nom Audilix
+    doc.setFont('helvetica','bold'); doc.setFontSize(20);
+    doc.setTextColor(255,255,255);
+    doc.text('AUDILIX', M + 19, ly + 2);
+
+    // Sous-titre header
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    doc.setTextColor(201,168,76);
+    doc.text('Rapport de conformité réglementaire', M, 30);
+    doc.setFontSize(7.5);
+    doc.setTextColor(148,163,184);
+    doc.text('Analyse juridique automatisée par intelligence artificielle', M, 36);
+
+    // Infos droite header
+    doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    doc.text('Généré le ' + dateStr + ' à ' + heureStr, W-M, 28, { align:'right' });
+    doc.text('Document : ' + (nomDoc.length > 32 ? nomDoc.substring(0,29)+'...' : nomDoc), W-M, 35, { align:'right' });
+    doc.text('Version de l\'analyse : 2.0', W-M, 41, { align:'right' });
+
+    y = 58;
+
+    // ═══════════════════════════════════════
+    // SCORE — Progress Ring
+    // ═══════════════════════════════════════
+    var scoreZoneH = 52;
+    doc.setFillColor(248,250,252);
+    doc.setDrawColor(226,232,240); doc.setLineWidth(0.2);
+    doc.roundedRect(M, y, cW, scoreZoneH, 3, 3, 'FD');
+
+    var cx = M + 28, cy = y + 26, ringR = 16, ringW = 5;
+
+    // Anneau gris (fond)
+    drawArc(doc, cx, cy, ringR, -90, 270, ringW, [226,232,240]);
+
+    // Anneau coloré (score)
+    var endDeg = -90 + (score/100)*360;
+    drawArc(doc, cx, cy, ringR, -90, endDeg, ringW, cfg.couleur);
+
+    // Score au centre
+    doc.setFont('helvetica','bold'); doc.setFontSize(18);
+    doc.setTextColor(15,23,42);
+    doc.text(String(score), cx, cy+3, { align:'center' });
+    doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.setTextColor(100,116,139);
+    doc.text('/ 100', cx, cy+9, { align:'center' });
+
+    // Badge statut
+    var bx = M + 58, by = y + 14;
+    doc.setFillColor(cfg.bg[0], cfg.bg[1], cfg.bg[2]);
+    doc.roundedRect(bx, by-5, 50, 9, 2, 2, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    doc.setTextColor(cfg.couleur[0], cfg.couleur[1], cfg.couleur[2]);
+    doc.text(cfg.badge, bx + 25, by+0.5, { align:'center' });
+
+    // Texte de synthèse
+    doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    doc.setTextColor(15,23,42);
+    doc.text(cfg.label, bx + 25, by + 14, { align:'center' });
+
+    doc.setFont('helvetica','normal'); doc.setFontSize(8);
+    doc.setTextColor(71,85,105);
+    var synthText = d.resume || 'Analyse de conformité réglementaire disponible ci-dessous.';
+    var synthLines = doc.splitTextToSize(synthText, cW - 50);
+    synthLines.slice(0,3).forEach(function(l, i) {
+        doc.text(l, bx + 25, by + 21 + i*5, { align:'center' });
+    });
+
+    y += scoreZoneH + 8;
+
+    // ═══════════════════════════════════════
+    // STATISTIQUES CARDS
+    // ═══════════════════════════════════════
+    var cardW = (cW - 9) / 4;
+    var stats = [
+        { label:'Problèmes critiques', val:String(nbCritique), col:[220,38,38], bg:[254,242,242] },
+        { label:'Points importants', val:String(nbImportant), col:[234,88,12], bg:[255,247,237] },
+        { label:'Points conformes', val:String(positifs.length), col:[22,163,74], bg:[240,253,244] },
+        { label:'Recommandations', val:String(recos.length), col:[99,102,241], bg:[238,242,255] }
+    ];
+    stats.forEach(function(s, i) {
+        var sx = M + i*(cardW+3);
+        doc.setFillColor(s.bg[0], s.bg[1], s.bg[2]);
+        doc.setDrawColor(s.col[0], s.col[1], s.col[2]); doc.setLineWidth(0.1);
+        doc.roundedRect(sx, y, cardW, 20, 2, 2, 'FD');
+        doc.setFont('helvetica','bold'); doc.setFontSize(16);
+        doc.setTextColor(s.col[0], s.col[1], s.col[2]);
+        doc.text(s.val, sx + cardW/2, y+11, { align:'center' });
+        doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
+        doc.setTextColor(71,85,105);
+        doc.text(s.label, sx + cardW/2, y+17, { align:'center' });
+    });
+    y += 28;
+
+    // ═══════════════════════════════════════
+    // BARRE DE CONFORMITÉ
+    // ═══════════════════════════════════════
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(15,23,42);
+    doc.text('Conformité générale', M, y);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+    doc.setTextColor(cfg.couleur[0], cfg.couleur[1], cfg.couleur[2]);
+    doc.text(score + ' %', W-M, y, { align:'right' });
+    y += 5;
+    var barW = cW;
+    doc.setFillColor(226,232,240); doc.roundedRect(M, y, barW, 4, 2, 2, 'F');
+    var fillW = Math.round(barW * score / 100);
+    doc.setFillColor(cfg.couleur[0], cfg.couleur[1], cfg.couleur[2]);
+    doc.roundedRect(M, y, fillW, 4, 2, 2, 'F');
+    y += 14;
+
+    // ═══════════════════════════════════════
+    // RÉPARTITION DES RISQUES
+    // ═══════════════════════════════════════
+    if (problemes.length > 0) {
+        doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(15,23,42);
+        doc.text('Répartition des risques', M, y);
+        y += 5;
+        var riskRows = [
+            { label:'Critique', n:nbCritique, col:[220,38,38] },
+            { label:'Important', n:nbImportant, col:[234,88,12] },
+            { label:'Modéré', n:nbMineur, col:[161,98,7] },
+            { label:'Conforme', n:positifs.length, col:[22,163,74] }
+        ];
+        var maxN = Math.max(nbCritique, nbImportant, nbMineur, positifs.length, 1);
+        riskRows.forEach(function(r) {
+            doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(71,85,105);
+            doc.text(r.label, M, y+3);
+            var rBarMax = cW - 42;
+            var rFill = Math.round(rBarMax * r.n / maxN);
+            doc.setFillColor(226,232,240); doc.roundedRect(M+28, y, rBarMax, 5, 1, 1, 'F');
+            if (r.n > 0) { doc.setFillColor(r.col[0], r.col[1], r.col[2]); doc.roundedRect(M+28, y, rFill, 5, 1, 1, 'F'); }
+            doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(r.col[0], r.col[1], r.col[2]);
+            doc.text(String(r.n), W-M, y+4, { align:'right' });
+            y += 9;
+        });
+        y += 4;
+    }
+
+    // ═══════════════════════════════════════
+    // RÉSUMÉ EXÉCUTIF
+    // ═══════════════════════════════════════
+    checkY(30);
+    doc.setFillColor(11,37,69);
+    doc.roundedRect(M, y, cW, 4, 1, 1, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(255,255,255);
+    doc.text('  Résumé exécutif', M, y+2.8);
+    y += 8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(30,41,59);
+    var resumeLines = doc.splitTextToSize(d.resume || '', cW);
+    resumeLines.forEach(function(l) { checkY(6); doc.text(l, M, y); y += 5.2; });
+    y += 6;
+
+    // ═══════════════════════════════════════
+    // PROBLÈMES DÉTECTÉS
+    // ═══════════════════════════════════════
+    if (problemes.length > 0) {
+        checkY(20);
+        doc.setFillColor(220,38,38);
+        doc.roundedRect(M, y, cW, 4, 1, 1, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(255,255,255);
+        doc.text('  Problèmes détectés  (' + problemes.length + ')', M, y+2.8);
+        y += 10;
+
+        problemes.forEach(function(p, idx) {
+            var gc = gravConfig(p.gravite);
+            var descLines = doc.splitTextToSize(p.description || '', cW - 14);
+            var hasRef = p.article_reference && p.article_reference.trim().length > 0;
+            var hCard = 8 + 6 + descLines.length * 4.5 + (hasRef ? 7 : 0) + 10 + 6;
+            hCard = Math.max(hCard, 36);
+            checkY(hCard + 4);
+
+            var yCard = y;
+            // Fond carte
+            doc.setFillColor(gc.bg[0], gc.bg[1], gc.bg[2]);
+            doc.setDrawColor(gc.col[0], gc.col[1], gc.col[2]); doc.setLineWidth(0.1);
+            doc.roundedRect(M, yCard, cW, hCard, 3, 3, 'FD');
+            // Bande colorée gauche
+            doc.setFillColor(gc.col[0], gc.col[1], gc.col[2]);
+            doc.roundedRect(M, yCard, 3, hCard, 1, 1, 'F');
+
+            // Numéro
+            var yy = yCard + 7;
+            doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(gc.col[0], gc.col[1], gc.col[2]);
+            doc.text('#' + (idx+1), M+6, yy);
+
+            // Badge gravité
+            var badgeW = doc.getTextWidth(gc.label) + 6;
+            doc.setFillColor(gc.col[0], gc.col[1], gc.col[2]);
+            doc.roundedRect(W-M-badgeW-2, yCard+3, badgeW+4, 7, 1.5, 1.5, 'F');
+            doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(255,255,255);
+            doc.text(gc.label, W-M-badgeW/2-4, yCard+8, { align:'center' });
+
+            // Titre
+            doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(15,23,42);
+            doc.text(p.titre || '', M+12, yy+0.5);
+            yy += 6;
+
+            // Description
+            doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(51,65,85);
+            descLines.forEach(function(l) { doc.text(l, M+12, yy); yy += 4.5; });
+            yy += 1;
+
+            // Référence juridique
+            if (hasRef) {
+                doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(99,102,241);
+                doc.text('⚖ Référence : ' + p.article_reference, M+12, yy);
+                yy += 7;
+            }
+
+            // Ligne séparatrice bas
+            doc.setDrawColor(226,232,240); doc.setLineWidth(0.15);
+            doc.line(M+12, yy, W-M-4, yy);
+            yy += 4;
+
+            // Temps + priorité
+            doc.setFont('helvetica','normal'); doc.setFontSize(7);
+            doc.setFillColor(255,255,255);
+            var tW = doc.getTextWidth('⏱ Correction : ' + gc.temps) + 6;
+            doc.roundedRect(M+12, yy-3, tW, 6.5, 1.5, 1.5, 'F');
+            doc.setTextColor(71,85,105);
+            doc.text('⏱ Correction : ' + gc.temps, M+15, yy+1);
+
+            var pStr = '🎯 Priorité : ' + gc.priorite;
+            var pW = doc.getTextWidth(pStr) + 6;
+            doc.roundedRect(M+16+tW, yy-3, pW, 6.5, 1.5, 1.5, 'F');
+            doc.text(pStr, M+19+tW, yy+1);
+
+            y = yCard + hCard + 6;
+        });
+        y += 4;
+    }
+
+    // ═══════════════════════════════════════
+    // PLAN D'ACTION — RECOMMANDATIONS
+    // ═══════════════════════════════════════
+    if (recos.length > 0) {
+        checkY(16);
+        doc.setFillColor(99,102,241);
+        doc.roundedRect(M, y, cW, 4, 1, 1, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(255,255,255);
+        doc.text('  Plan d\'action — Recommandations', M, y+2.8);
+        y += 10;
+
+        recos.forEach(function(r, i) {
+            var rLines = doc.splitTextToSize(r, cW - 18);
+            var hReco = rLines.length * 4.5 + 10;
+            checkY(hReco + 4);
+            doc.setFillColor(238,242,255);
+            doc.setDrawColor(199,210,254); doc.setLineWidth(0.15);
+            doc.roundedRect(M, y, cW, hReco, 2, 2, 'FD');
+            // Checkbox
+            doc.setDrawColor(99,102,241); doc.setLineWidth(0.5);
+            doc.roundedRect(M+4, y+hReco/2-3, 6, 6, 1, 1, 'S');
+            // Numéro priorité
+            doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(99,102,241);
+            doc.text(String(i+1), M+7, y+hReco/2+1, { align:'center' });
+            // Texte
+            doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(30,27,75);
+            var yy = y + (hReco - rLines.length*4.5)/2 + 4;
+            rLines.forEach(function(l) { doc.text(l, M+14, yy); yy += 4.5; });
+            // Badge priorité
+            var pLabel = i === 0 ? 'URGENT' : i < 3 ? 'HAUTE' : 'NORMALE';
+            var pCol = i === 0 ? [220,38,38] : i < 3 ? [234,88,12] : [22,163,74];
+            var pBgCol = i === 0 ? [254,242,242] : i < 3 ? [255,247,237] : [240,253,244];
+            var pW2 = doc.getTextWidth(pLabel) + 6;
+            doc.setFillColor(pBgCol[0], pBgCol[1], pBgCol[2]);
+            doc.roundedRect(W-M-pW2-2, y+hReco/2-3.5, pW2+4, 7, 1.5, 1.5, 'F');
+            doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(pCol[0], pCol[1], pCol[2]);
+            doc.text(pLabel, W-M-pW2/2-4, y+hReco/2+0.5, { align:'center' });
+            y += hReco + 4;
+        });
+        y += 4;
+    }
+
+    // ═══════════════════════════════════════
+    // POINTS CONFORMES
+    // ═══════════════════════════════════════
+    if (positifs.length > 0) {
+        checkY(16);
+        doc.setFillColor(22,163,74);
+        doc.roundedRect(M, y, cW, 4, 1, 1, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(255,255,255);
+        doc.text('  Points conformes (' + positifs.length + ')', M, y+2.8);
+        y += 10;
+
+        positifs.forEach(function(p) {
+            var pLines = doc.splitTextToSize(p, cW - 18);
+            var hP = pLines.length * 4.5 + 10;
+            checkY(hP + 4);
+            doc.setFillColor(240,253,244);
+            doc.setDrawColor(187,247,208); doc.setLineWidth(0.15);
+            doc.roundedRect(M, y, cW, hP, 2, 2, 'FD');
+            // Icône check
+            doc.setFillColor(22,163,74);
+            doc.circle(M+8, y+hP/2, 3.5, 'F');
+            doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
+            doc.text('✓', M+8, y+hP/2+1.5, { align:'center' });
+            // Texte
+            doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(20,83,45);
+            var yy = y + (hP - pLines.length*4.5)/2 + 4;
+            pLines.forEach(function(l) { doc.text(l, M+14, yy); yy += 4.5; });
+            y += hP + 4;
+        });
+    }
+
+    // Pied de page
+    footer();
+
+    var nomSortie = (nomFichierSortie + '-' + (nomDoc.replace(/[^a-zA-Z0-9]/g,'-').substring(0,30))).toLowerCase() + '.pdf';
+    doc.save(nomSortie);
 }
 
 function telechargerRapportPDF() {
     if (!dernierRapport) return;
-    var d = dernierRapport;
-    var now = new Date();
-    var dateStr = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
-
     if (typeof window.jspdf === 'undefined') {
         afficherMsg('msg-analyse', 'PDF en cours de chargement, réessayez dans 3 secondes.', false);
         return;
     }
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    var W = 210, H = 297, M = 18, cW = W - M*2;
-    var y;
-
-    function piedDePage() {
-        var nb = doc.getNumberOfPages();
-        for (var i = 1; i <= nb; i++) {
-            doc.setPage(i);
-            doc.setDrawColor(230,230,230);
-            doc.setLineWidth(0.2);
-            doc.line(M, 283, W - M, 283);
-            doc.setFont('helvetica','normal');
-            doc.setFontSize(7.5);
-            doc.setTextColor(140,140,140);
-            doc.text('Audilix — Conformité réglementaire automatisée', M, 289);
-            doc.text('audilix.com', M, 293.5);
-            doc.text('Page ' + i + ' / ' + nb, W - M, 293.5, { align:'right' });
-        }
-        doc.setPage(nb);
-    }
-
-    function nouvellePage() {
-        doc.addPage();
-        y = 24;
-    }
-
-    function ecrireParagraphe(texte, x, largeur, taillePolice, couleur, interligne) {
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(taillePolice);
-        doc.setTextColor(couleur[0],couleur[1],couleur[2]);
-        var lignes = doc.splitTextToSize(texte || '', largeur);
-        lignes.forEach(function(ligne) {
-            if (y > 270) nouvellePage();
-            doc.text(ligne, x, y);
-            y += interligne;
-        });
-    }
-
-    // ════════ EN-TÊTE ════════
-    doc.setFillColor(11, 37, 69);
-    doc.rect(0, 0, W, 40, 'F');
-    doc.setFillColor(201, 168, 76);
-    doc.rect(0, 40, W, 1.2, 'F');
-
-    // Logo œil
-    dessinerLogoAudilix(doc, M + 7, 16, 11, [201, 168, 76]);
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(19);
-    doc.setTextColor(255, 255, 255);
-    doc.text('AUDILIX', M + 18, 19);
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.5);
-    doc.setTextColor(201, 168, 76);
-    doc.text('Rapport de conformité réglementaire', M, 30);
-
-    doc.setFontSize(8.5);
-    doc.setTextColor(190, 190, 190);
-    doc.text('Généré le ' + dateStr, W - M, 16, { align:'right' });
-    doc.setTextColor(150, 150, 150);
-    var nomDoc = d.nomFichier || d.nom_fichier || 'Document';
-    doc.text(nomDoc.length > 38 ? nomDoc.substring(0,35) + '...' : nomDoc, W - M, 30, { align:'right' });
-
-    y = 56;
-
-    // ════════ SCORE ════════
-    var score = (typeof d.score === 'number') ? d.score : 0;
-    var sCoul = score >= 70 ? [34,197,94] : score >= 40 ? [217,119,6] : [220,38,38];
-
-    doc.setFillColor(250, 248, 244);
-    doc.setDrawColor(230, 225, 210);
-    doc.setLineWidth(0.3);
-    doc.roundedRect(M, y, cW, 34, 3, 3, 'FD');
-
-    doc.setFillColor(sCoul[0], sCoul[1], sCoul[2]);
-    doc.circle(M + 21, y + 17, 14, 'F');
-    doc.setTextColor(255,255,255);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(17);
-    doc.text(String(score), M + 21, y + 18.5, { align:'center' });
-    doc.setFontSize(7.5);
-    doc.setFont('helvetica','normal');
-    doc.text('/ 100', M + 21, y + 23.5, { align:'center' });
-
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
-    doc.setTextColor(11,37,69);
-    doc.text(d.type_document || 'Document analysé', M + 42, y + 12);
-
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(9);
-    doc.setTextColor(90,90,90);
-    var resumeLignes = doc.splitTextToSize(d.resume || '', cW - 46);
-    doc.text(resumeLignes.slice(0,3), M + 42, y + 19);
-
-    y += 44;
-
-    // ════════ PROBLÈMES ════════
-    if (d.problemes && d.problemes.length > 0) {
-        if (y > 250) nouvellePage();
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(12);
-        doc.setTextColor(220,38,38);
-        doc.text('Problèmes détectés', M, y);
-        doc.setFontSize(9);
-        doc.setTextColor(150,150,150);
-        doc.text('(' + d.problemes.length + ')', M + doc.getTextWidth('Problèmes détectés ') + 2, y);
-        y += 8;
-
-        d.problemes.forEach(function(p) {
-            var gCoul = p.gravite === 'critique' ? [220,38,38] : p.gravite === 'important' ? [217,119,6] : [107,114,128];
-            var gLabel = p.gravite === 'critique' ? 'CRITIQUE' : p.gravite === 'important' ? 'IMPORTANT' : 'MINEUR';
-
-            // Calcul hauteur nécessaire avant de dessiner (évite la coupure du cadre)
-            doc.setFont('helvetica','normal');
-            doc.setFontSize(8.5);
-            var descLignes = doc.splitTextToSize(p.description || '', cW - 12);
-            var hauteurBloc = 9 + (descLignes.length * 4.6) + (p.article_reference ? 6 : 0) + 6;
-
-            if (y + hauteurBloc > 278) nouvellePage();
-
-            var yDebut = y;
-            doc.setFillColor(gCoul[0], gCoul[1], gCoul[2]);
-            doc.setGState(new doc.GState({ opacity: 0.06 }));
-            doc.roundedRect(M, y, cW, hauteurBloc, 2, 2, 'F');
-            doc.setGState(new doc.GState({ opacity: 1 }));
-            doc.setFillColor(gCoul[0], gCoul[1], gCoul[2]);
-            doc.rect(M, y, 2.5, hauteurBloc, 'F');
-
-            y += 7;
-            doc.setFont('helvetica','bold');
-            doc.setFontSize(9.5);
-            doc.setTextColor(11,37,69);
-            doc.text(p.titre || '', M + 7, y);
-
-            doc.setFont('helvetica','bold');
-            doc.setFontSize(6.5);
-            doc.setTextColor(gCoul[0], gCoul[1], gCoul[2]);
-            doc.text(gLabel, W - M - 4, y, { align:'right' });
-
-            y += 5;
-            doc.setFont('helvetica','normal');
-            doc.setFontSize(8.5);
-            doc.setTextColor(70,70,70);
-            descLignes.forEach(function(ligne) {
-                doc.text(ligne, M + 7, y);
-                y += 4.6;
-            });
-
-            if (p.article_reference) {
-                doc.setFont('helvetica','italic');
-                doc.setFontSize(7.5);
-                doc.setTextColor(160,140,80);
-                doc.text('Référence : ' + p.article_reference, M + 7, y);
-                y += 5;
-            }
-            y = yDebut + hauteurBloc + 5;
-        });
-        y += 3;
-    }
-
-    // ════════ RECOMMANDATIONS ════════
-    if (d.recommandations && d.recommandations.length > 0) {
-        if (y > 260) nouvellePage();
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(12);
-        doc.setTextColor(201,168,76);
-        doc.text('Recommandations', M, y);
-        y += 8;
-
-        d.recommandations.forEach(function(r, i) {
-            doc.setFont('helvetica','normal');
-            doc.setFontSize(8.5);
-            var texteNum = (i+1) + '.  ' + r;
-            var rLignes = doc.splitTextToSize(texteNum, cW - 10);
-            var hBloc = rLignes.length * 4.6 + 6;
-            if (y + hBloc > 278) nouvellePage();
-
-            doc.setFillColor(250, 245, 230);
-            doc.roundedRect(M, y, cW, hBloc, 2, 2, 'F');
-            doc.setTextColor(11,37,69);
-            var yy = y + 6;
-            rLignes.forEach(function(ligne) {
-                doc.text(ligne, M + 5, yy);
-                yy += 4.6;
-            });
-            y += hBloc + 4;
-        });
-        y += 2;
-    }
-
-    // ════════ POINTS POSITIFS ════════
-    if (d.points_positifs && d.points_positifs.length > 0) {
-        if (y > 260) nouvellePage();
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(12);
-        doc.setTextColor(34,197,94);
-        doc.text('Points conformes', M, y);
-        y += 8;
-
-        d.points_positifs.forEach(function(p) {
-            doc.setFont('helvetica','normal');
-            doc.setFontSize(8.5);
-            var pLignes = doc.splitTextToSize(p, cW - 8);
-            if (y + pLignes.length * 4.6 > 278) nouvellePage();
-            doc.setTextColor(34,197,94);
-            doc.text('✓', M, y);
-            doc.setTextColor(50,50,50);
-            pLignes.forEach(function(ligne, idx) {
-                doc.text(ligne, M + 6, y + idx*4.6);
-            });
-            y += pLignes.length * 4.6 + 2.5;
-        });
-    }
-
-    // ════════ Avertissement légal en bas du dernier bloc ════════
-    if (y > 255) nouvellePage();
-    y += 4;
-    doc.setDrawColor(230,225,210);
-    doc.setLineWidth(0.3);
-    doc.line(M, y, W - M, y);
-    y += 6;
-    doc.setFont('helvetica','italic');
-    doc.setFontSize(7.5);
-    doc.setTextColor(140,140,140);
-    var avertLignes = doc.splitTextToSize("Ce rapport est généré automatiquement à titre informatif. Pour les situations à fort enjeu juridique, faites valider vos documents par un professionnel du droit.", cW);
-    doc.text(avertLignes, M, y);
-
-    piedDePage();
-
-    var nomFichierPdf = ('rapport-audilix-' + nomDoc.replace(/[^a-zA-Z0-9]/g, '-').substring(0,40) + '.pdf').toLowerCase();
-    doc.save(nomFichierPdf);
+    genererPDFAudilix(dernierRapport, 'rapport-audilix');
 }
 
-// ── PDF pour les documents générés ──
 function telechargerDocumentPDF() {
     if (!docGenereContenu) return;
     if (typeof window.jspdf === 'undefined') { telechargerDocument(); return; }
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    var W = 210, M = 18, cW = W - M*2;
-    var y;
+    var W = 210, M = 15, cW = W - M*2;
+    var y = 0;
+    var dateStr = new Date().toLocaleDateString('fr-FR');
 
-    function nouvellePage() { doc.addPage(); y = 24; }
-
-    // En-tête
-    doc.setFillColor(11, 37, 69);
-    doc.rect(0, 0, W, 30, 'F');
-    doc.setFillColor(201, 168, 76);
-    doc.rect(0, 30, W, 1.2, 'F');
-    dessinerLogoAudilix(doc, M + 6, 13, 9, [201, 168, 76]);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.text('AUDILIX', M + 15, 15.5);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(201, 168, 76);
-    doc.text('Document généré automatiquement', M, 24);
-    doc.setFontSize(8);
-    doc.setTextColor(180, 180, 180);
-    doc.text(new Date().toLocaleDateString('fr-FR'), W - M, 15.5, { align:'right' });
+    doc.setFillColor(11, 37, 69); doc.rect(0, 0, W, 30, 'F');
+    doc.setFillColor(201, 168, 76); doc.rect(0, 30, W, 0.8, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(255,255,255);
+    doc.text('AUDILIX', M, 15);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(201,168,76);
+    doc.text('Document généré automatiquement', M, 23);
+    doc.setTextColor(148,163,184); doc.text(dateStr, W-M, 23, { align:'right' });
 
     y = 42;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.5);
-    doc.setTextColor(40, 40, 40);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(30,41,59);
     var lignes = doc.splitTextToSize(docGenereContenu, cW);
-    lignes.forEach(function(ligne) {
-        if (y > 275) nouvellePage();
-        doc.text(ligne, M, y);
-        y += 5.2;
+    lignes.forEach(function(l) {
+        if (y > 276) { doc.addPage(); y = 20; }
+        doc.text(l, M, y); y += 5.2;
     });
 
     y += 6;
-    if (y > 270) nouvellePage();
-    doc.setDrawColor(230,225,210);
-    doc.line(M, y, W - M, y);
-    y += 6;
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(7.5);
-    doc.setTextColor(140,140,140);
-    var avert = doc.splitTextToSize("Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.", cW);
-    doc.text(avert, M, y);
+    if (y > 268) { doc.addPage(); y = 20; }
+    doc.setDrawColor(226,232,240); doc.setLineWidth(0.15);
+    doc.line(M, y, W-M, y); y += 6;
+    doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    var aw = doc.splitTextToSize("Ce document est généré automatiquement à titre informatif. Faites-le valider par un professionnel du droit pour les situations à fort enjeu.", cW);
+    doc.text(aw, M, y);
 
     var nb = doc.getNumberOfPages();
     for (var i = 1; i <= nb; i++) {
         doc.setPage(i);
-        doc.setDrawColor(230,230,230);
-        doc.line(M, 283, W - M, 283);
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(7.5);
-        doc.setTextColor(140,140,140);
-        doc.text('Audilix — audilix.com', M, 289);
-        doc.text('Page ' + i + ' / ' + nb, W - M, 289, { align:'right' });
+        doc.setFillColor(248,250,252); doc.rect(0, 285, W, 12, 'F');
+        doc.setDrawColor(226,232,240); doc.line(0, 285, W, 285);
+        doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(148,163,184);
+        doc.text('Audilix — audilix.com', M, 292);
+        doc.text('Page ' + i + ' / ' + nb, W-M, 292, { align:'right' });
     }
-
     doc.save('document-audilix.pdf');
 }
+
 
 function seDeconnecter() {
     localStorage.removeItem('audilix_token');
