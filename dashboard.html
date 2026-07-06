@@ -792,9 +792,15 @@
                     <div class="carte-corps">
                         <!-- Nom -->
                         <div style="margin-bottom:20px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom complet</label>
-                            <div style="padding:11px 14px;background:var(--creme);border:1.5px solid var(--border);border-radius:6px;font-size:13px;color:var(--navy-dark);" id="param-nom-affiche">—</div>
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Prénom</label>
+                            <input type="text" id="param-prenom" placeholder="Votre prénom" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
                         </div>
+                        <div style="margin-bottom:20px;">
+                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom</label>
+                            <input type="text" id="param-nom" placeholder="Votre nom de famille" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div id="msg-nom" style="font-size:12px;margin-bottom:10px;display:none;"></div>
+                        <button onclick="sauvegarderNom()" style="background:var(--navy-dark);color:white;border:none;padding:11px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Enregistrer</button>
                         <!-- Email -->
                         <div style="margin-bottom:20px;">
                             <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Adresse email</label>
@@ -922,7 +928,7 @@ function initialiserDashboard() {
     // business : tout starter + assistant + clauses + registre
     // pro      : tout business + rapports PDF
     var accesPlan = {
-        essai:    [],
+        essai:    ['historique'],
         starter:  ['historique', 'generer', 'mes-documents'],
         business: ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'],
         pro:      ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre', 'parametres'],
@@ -990,11 +996,10 @@ function initialiserDashboard() {
     var paramPlan = document.getElementById('param-plan');
     if (paramPlan) paramPlan.textContent = nomPlan;
     if (utilisateur.email) { var el = document.getElementById('param-email-new'); if(el) el.placeholder = utilisateur.email; }
-    var nomAff = document.getElementById('param-nom-affiche');
-    if (nomAff) {
-        var nomCompletParam = ((utilisateur.firstname || utilisateur.prenom || '') + ' ' + (utilisateur.lastname || utilisateur.nom || '')).trim();
-        nomAff.textContent = nomCompletParam || 'Non renseigné';
-    }
+    var champPrenom = document.getElementById('param-prenom');
+    var champNom = document.getElementById('param-nom');
+    if (champPrenom) champPrenom.value = utilisateur.firstname || utilisateur.prenom || '';
+    if (champNom) champNom.value = utilisateur.lastname || utilisateur.nom || '';
     var now = new Date();
     document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
@@ -1535,6 +1540,32 @@ function afficherMsg(id, texte, ok) {
     el.style.color = ok ? 'var(--vert)' : 'var(--rouge)';
     el.style.display = 'block';
     setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+async function sauvegarderNom() {
+    var prenom = (document.getElementById('param-prenom') || {}).value || '';
+    var nom = (document.getElementById('param-nom') || {}).value || '';
+    try {
+        var r = await fetch(BACKEND + '/api/user/update-name', {
+            method: 'POST',
+            headers: jsonHeaders(),
+            body: JSON.stringify({ userId: utilisateur.id, firstname: prenom, lastname: nom })
+        });
+        var data = await r.json();
+        if (r.ok) {
+            utilisateur.firstname = prenom; utilisateur.lastname = nom;
+            localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
+            // Mettre à jour l'affichage du nom en sidebar
+            var nomEl = document.getElementById('nom-utilisateur');
+            var nomComplet = (prenom + ' ' + nom).trim();
+            if (nomEl) { nomEl.textContent = nomComplet || utilisateur.email; nomEl.style.background = 'none'; nomEl.style.height = 'auto'; nomEl.style.width = 'auto'; }
+            afficherMsg('msg-nom', 'Nom enregistré.', 'ok');
+        } else {
+            afficherMsg('msg-nom', data.error || 'Erreur.', 'erreur');
+        }
+    } catch(e) {
+        afficherMsg('msg-nom', 'Erreur de connexion.', 'erreur');
+    }
 }
 
 async function changerEmail() {
