@@ -294,25 +294,16 @@
     <div class="lat-bas">
         <!-- BLOC PLAN ESSAI (affiché si plan = essai) -->
         <div id="bloc-essai" style="display:none;">
-            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:14px 12px;margin-bottom:10px;">
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">
-                    <div class="plan-essai-dot"></div>
-                    <span class="plan-essai-label">Essai gratuit</span>
-                </div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:8px;line-height:1.5;">1 analyse offerte pour découvrir Audilix.</div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-                    <span style="font-size:10px;color:rgba(255,255,255,0.35);">Analyse utilisée</span>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:6px;padding:8px 10px;margin-bottom:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;">
+                    <span class="plan-essai-label" style="font-size:10px;">Essai gratuit</span>
                     <span style="font-size:10px;font-weight:700;color:var(--gold);" id="compteur-essai-label">0 / 1</span>
                 </div>
-                <div class="plan-essai-jauge-bg" style="margin-bottom:12px;"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
-                <div id="essai-cta-analyse" style="display:block;">
-                    <div style="font-size:10px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:6px;">Analyse non encore effectuée</div>
-                </div>
-                <div id="essai-cta-upgrade" style="display:none;">
-                    <div style="font-size:10px;color:#f59e0b;text-align:center;margin-bottom:6px;">Analyse épuisée</div>
-                </div>
+                <div class="plan-essai-jauge-bg" style="margin-bottom:0;"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
+                <div id="essai-cta-analyse" style="display:none;"></div>
+                <div id="essai-cta-upgrade" style="display:none;"></div>
             </div>
-            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:10px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Mettre à niveau →</button>
+            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:7px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Mettre à niveau →</button>
         </div>
         <!-- BLOC PLAN NORMAL (starter / business / pro) -->
         <div id="bloc-plan-normal">
@@ -1205,12 +1196,23 @@ function afficherApercuAnalyses() {
     }
 }
 
+function telechargerPDFHistorique(idx) {
+    var analyseData = analysesCache[idx];
+    if (!analyseData) return;
+    if (typeof window.jspdf === 'undefined') {
+        afficherMsg('msg-analyse', 'PDF en cours de chargement, réessayez.', false);
+        return;
+    }
+    genererPDFAudilix(analyseData, 'rapport-audilix');
+}
+
 function afficherHistorique() {
     var zone = document.getElementById('liste-historique');
     if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
-    zone.innerHTML = analysesCache.map(function(a) {
+    zone.innerHTML = analysesCache.map(function(a, idx) {
         var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '/100</div></div>';
+        var aIdx = JSON.stringify(a).replace(/'/g, '&apos;');
+        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' &middot; ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '" style="margin-right:8px;">' + (a.score||'&mdash;') + '/100</div><button onclick="telechargerPDFHistorique(' + idx + ')" title="T&eacute;l&eacute;charger PDF" style="background:transparent;border:1px solid rgba(11,37,69,0.15);border-radius:5px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#0B2545;transition:all .2s;white-space:nowrap;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></div>';
     }).join('');
 }
 
