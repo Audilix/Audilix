@@ -1,1639 +1,528 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mon espace, Audilix</title>
-    <link rel="icon" type="image/png" href="logo.png" sizes="64x64">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy:#1B3A7A; --navy-dark:#0F2456; --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5EDD6;
-            --creme:#FAF8F4; --gris:#6B7280; --border:rgba(27,58,122,0.09);
-            --rouge:#ef4444; --orange:#f59e0b; --vert:#22c55e; --sidebar:#0A1A3D;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'DM Sans',sans-serif; background:var(--creme); color:var(--navy-dark); -webkit-font-smoothing:antialiased; display:flex; min-height:100vh; }
-        h1,h2,h3 { font-family:'Playfair Display',serif; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analyse gratuite, Audilix</title>
+<link rel="icon" type="image/png" href="logo.png" sizes="64x64">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0B2545; --navy-dark: #0B2545; --gold: #C9A84C;
+    --gold-light: #E8C97A; --gold-pale: #F5EDD6; --cream: #FAF8F4;
+    --gray: #6B7280; --border: rgba(11,37,69,0.08); --rouge: #ef4444;
+    --vert: #22c55e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
 
-        /* SIDEBAR */
-        .barre-lat { width:252px; flex-shrink:0; background:var(--sidebar); min-height:100vh; display:flex; flex-direction:column; position:fixed; left:0; top:0; bottom:0; z-index:50; }
-        .lat-logo { padding:24px 20px; border-bottom:1px solid rgba(255,255,255,0.05); }
-        .lat-logo a { display:flex; align-items:center; text-decoration:none; }
-        .lat-logo img { height:28px; }
-        .lat-nav { flex:1; padding:16px 10px; overflow-y:auto; }
-        .nav-section { font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.18); padding:0 10px; margin:18px 0 6px; }
-        .nav-lien { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:6px; color:rgba(255,255,255,0.45); font-size:12.5px; font-weight:500; cursor:pointer; transition:all 0.2s; text-decoration:none; margin-bottom:2px; border:none; background:none; width:100%; font-family:'DM Sans',sans-serif; }
-        .nav-lien:hover { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.75); }
-        .nav-lien.actif { background:rgba(201,168,76,0.1); color:var(--gold); }
-        .nav-lien svg { width:16px; height:16px; flex-shrink:0; }
-        .lat-bas { padding:16px 10px; border-top:1px solid rgba(255,255,255,0.05); }
-        .plan-info { background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.14); border-radius:7px; padding:12px; margin-bottom:10px; }
-        .plan-libelle { font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
-        .plan-nom { font-size:13px; font-weight:600; color:white; margin-bottom:8px; }
-        .plan-jauge { height:3px; background:rgba(255,255,255,0.08); border-radius:40px; overflow:hidden; margin-bottom:5px; }
-        .plan-jauge-rempli { height:100%; background:var(--gold); border-radius:40px; transition:width 0.6s; }
-        .plan-compteur { font-size:10px; color:rgba(255,255,255,0.25); }
-        .plan-upgrade { display:block; text-align:center; background:var(--gold); color:var(--navy-dark); padding:8px; border-radius:4px; font-size:12px; font-weight:700; text-decoration:none; transition:background 0.2s; }
-        .plan-upgrade:hover { background:var(--gold-light); }
-        .utilisateur { display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:5px; cursor:pointer; transition:background 0.2s; }
-        .utilisateur:hover { background:rgba(255,255,255,0.04); }
-        .user-avatar { width:34px; height:34px; border-radius:50%; background:rgba(201,168,76,0.12); border:1.5px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; ; }
-        .user-nom { font-size:12px; font-weight:600; color:white; }
-        .user-email { font-size:10px; color:rgba(255,255,255,0.28); }
-        .btn-deconnexion { margin-left:auto; font-size:12px; color:rgba(255,255,255,0.2); cursor:pointer; padding:4px; transition:color 0.2s; background:none; border:none; }
-        .btn-deconnexion:hover { color:var(--rouge); }
+/* NAV */
+nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo img { height: 36px; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-link { color: var(--gray); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+.nav-link:hover { color: var(--navy); }
+.nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.nav-cta:hover { background: var(--gold-light); }
 
-        /* MAIN */
-        .principal { margin-left:252px; flex:1; min-height:100vh; }
-        .topbar { background:white; border-bottom:1px solid var(--border); padding:0 36px; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
-        .topbar-titre { font-size:16px; font-weight:600; color:var(--navy-dark); }
-        .topbar-droite { display:flex; align-items:center; gap:12px; }
-        .topbar-date { font-size:12px; color:var(--gris); }
-        .btn-analyser { background:transparent; color:var(--navy-dark); border:1.5px solid var(--border); padding:8px 16px; border-radius:6px; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
-        .btn-analyser:hover { background:var(--gold-light); }
-        .contenu { padding:28px 32px; }
+/* HERO */
+.hero-essai { text-align: center; padding: 64px 40px 48px; max-width: 680px; margin: 0 auto; }
+.hero-badge-essai { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #16a34a; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+.hero-essai h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero-essai h1 em { color: var(--gold); font-style: italic; }
+.hero-essai p { font-size: 17px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; font-weight: 300; }
+.hero-garanties { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; }
+.hero-garantie { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 5px; }
+.hero-garantie::before { content: '✓'; color: var(--vert); font-weight: 700; }
 
-        /* BANNIÈRE */
-        .banniere { background:var(--navy-dark); border-radius:10px; padding:28px 32px; margin-bottom:24px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between; }
-        .banniere::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
-        .banniere-texte h2 { font-size:22px; font-weight:700; color:white; margin-bottom:4px; }
-        .banniere-texte p { font-size:14px; color:rgba(255,255,255,0.38); }
-        .score-chiffre { font-family:'Playfair Display',serif; font-size:52px; font-weight:700; line-height:1; }
-        .score-libelle { font-size:11px; color:rgba(255,255,255,0.32); text-transform:uppercase; letter-spacing:0.08em; margin-top:3px; }
+/* UPLOAD ZONE */
+.upload-zone { max-width: 600px; margin: 0 auto 48px; padding: 0 24px; }
+.upload-box {
+    background: white; border: 2px dashed rgba(11,37,69,0.15); border-radius: 16px;
+    padding: 48px 32px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+}
+.upload-box:hover, .upload-box.dragover { border-color: var(--gold); background: var(--gold-pale); }
+.upload-icon { font-size: 40px; margin-bottom: 16px; }
+.upload-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.upload-sub { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+.upload-formats { font-size: 12px; color: rgba(107,114,128,0.6); }
+.btn-upload { background: var(--navy); color: white; padding: 13px 32px; border-radius: 6px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: inline-block; }
+.btn-upload:hover { background: var(--gold); color: var(--navy); }
+#file-input { display: none; }
+.file-selected { display: none; align-items: center; gap: 10px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #16a34a; font-weight: 500; }
+.file-selected.visible { display: flex; }
 
-        /* STATS */
-        .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
-        .stat { background:white; border:1px solid var(--border); border-radius:10px; padding:22px 20px 18px; position:relative; overflow:hidden; }
-        .stat::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
-        .stat.or::before { background:var(--gold); } .stat.vert::before { background:var(--vert); }
-        .stat.orange::before { background:var(--orange); } .stat.rouge::before { background:var(--rouge); }
-        .stat-valeur { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--navy-dark); line-height:1; margin-bottom:6px; }
-        .stat-libelle { font-size:10px; font-weight:600; color:var(--gris); text-transform:uppercase; letter-spacing:0.08em; opacity:0.7; }
+/* CHARGEMENT */
+#loading { display: none; text-align: center; padding: 48px 24px; }
+.spinner { width: 48px; height: 48px; border: 3px solid rgba(11,37,69,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.loading-sub { font-size: 13px; color: var(--gray); }
+.loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 280px; margin: 24px auto 0; }
+.loading-step { font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.5s; }
+.loading-step.active { opacity: 1; color: var(--navy); font-weight: 500; }
+.loading-step::before { content: '○'; color: var(--gold); }
+.loading-step.active::before { content: '●'; }
 
-        .grille-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+/* RÉSULTATS */
+#resultats { display: none; max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
 
-        /* CARTES */
-        .carte { background:white; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-        .carte-entete { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-        .carte-titre { font-size:13px; font-weight:700; color:var(--navy-dark); letter-spacing:-0.01em; }
-        .carte-action { font-size:12px; color:var(--gold); font-weight:600; cursor:pointer; background:none; border:none; font-family:'DM Sans',sans-serif; transition:color 0.2s; }
-        .carte-action:hover { color:var(--gold-light); }
-        .carte-corps { padding:20px; }
+/* Score */
+.score-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.score-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+.score-cercle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid; }
+.score-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; line-height: 1; }
+.score-sur { font-size: 13px; color: var(--gray); }
+.score-titre { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.score-desc { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 440px; margin: 0 auto; }
+.score-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.score-stat { background: var(--cream); border-radius: 8px; padding: 14px 12px; }
+.score-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+.score-stat-label { font-size: 11px; color: var(--gray); font-weight: 500; margin-top: 2px; }
 
-        /* UPLOAD */
-        .zone-upload { border:2px dashed var(--border); border-radius:8px; padding:40px 24px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
-        .zone-upload:hover, .zone-upload.survol { border-color:var(--gold); background:var(--gold-pale); }
-        .zone-upload input[type="file"] { position:absolute; top:0; left:0; right:0; bottom:0; opacity:0; cursor:pointer; }
-        .upload-icone { font-size:36px; margin-bottom:12px; }
-        .upload-titre { font-size:14px; font-weight:600; color:var(--navy-dark); margin-bottom:6px; }
-        .upload-sous { font-size:12px; color:var(--gris); margin-bottom:14px; }
-        .upload-formats { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-        .upload-format { background:var(--creme); border:1px solid var(--border); padding:3px 10px; border-radius:40px; font-size:11px; font-weight:500; color:var(--navy-dark); }
+/* Problèmes révélés */
+.problemes-section { margin-bottom: 24px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-head h3 { font-size: 18px; font-weight: 700; color: var(--navy); }
+.badge-count { background: rgba(239,68,68,0.1); color: var(--rouge); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
 
-        .fichier-selectionne { display:none; background:var(--gold-pale); border:1px solid var(--gold); border-radius:7px; padding:14px 16px; margin-bottom:14px; }
-        .fichier-selectionne.visible { display:flex; align-items:center; gap:12px; }
-        .fichier-icone { font-size:24px; flex-shrink:0; }
-        .fichier-nom { font-size:13px; font-weight:600; color:var(--navy-dark); }
-        .fichier-taille { font-size:11px; color:var(--gris); }
-        .fichier-suppr { margin-left:auto; background:none; border:none; font-size:18px; cursor:pointer; color:var(--gris); transition:color 0.2s; }
-        .fichier-suppr:hover { color:var(--rouge); }
+.probleme-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 12px; }
+.probleme-gravite { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-top: 2px; }
+.gravite-critique { background: rgba(239,68,68,0.1); color: var(--rouge); }
+.gravite-important { background: rgba(245,158,11,0.1); color: #d97706; }
+.gravite-mineur { background: rgba(107,114,128,0.1); color: var(--gray); }
+.probleme-titre { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.probleme-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
 
-        .btn-lancer { width:100%; padding:13px; background:var(--navy-dark); color:white; border:none; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.25s; }
-        .btn-lancer:hover { background:var(--gold); color:var(--navy-dark); }
-        .btn-lancer:disabled { opacity:0.5; cursor:not-allowed; }
+/* Problèmes bloqués */
+.problemes-bloques { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; position: relative; }
+.probleme-flou { padding: 16px 18px; filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.5; }
+.bloquer-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.95) 40%, white 100%);
+    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px;
+}
 
-        /* RÉSULTAT */
-        .resultat-analyse { display:none; }
-        .resultat-analyse.visible { display:block; }
-        .resultat-entete { display:flex; align-items:center; gap:16px; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--border); }
-        .resultat-score-cercle { width:72px; height:72px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; border:3px solid; }
-        .resultat-score-num { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; line-height:1; }
-        .resultat-score-sur { font-size:9px; opacity:0.6; }
-        .resultat-info h3 { font-size:15px; font-weight:700; color:var(--navy-dark); margin-bottom:3px; }
-        .resultat-info p { font-size:13px; color:var(--gris); line-height:1.6; }
-        .resultat-section { margin-bottom:18px; }
-        .resultat-section-titre { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px; }
-        .probleme-item { display:flex; gap:10px; padding:10px 12px; border-radius:6px; margin-bottom:7px; }
-        .probleme-item.critique { background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.14); }
-        .probleme-item.important { background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.14); }
-        .probleme-item.mineur { background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.14); }
-        .probleme-point { width:7px; height:7px; border-radius:50%; margin-top:4px; flex-shrink:0; }
-        .probleme-item.critique .probleme-point { background:var(--rouge); }
-        .probleme-item.important .probleme-point { background:var(--orange); }
-        .probleme-item.mineur .probleme-point { background:var(--vert); }
-        .probleme-titre { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:2px; }
-        .probleme-desc { font-size:12px; color:var(--gris); line-height:1.5; }
-        .probleme-ref { font-size:10px; color:var(--gold); margin-top:3px; }
-        .reco-item { display:flex; gap:8px; font-size:13px; color:var(--navy-dark); margin-bottom:7px; line-height:1.5; }
-        .reco-item::before { content:'→'; color:var(--gold); font-size:12px; flex-shrink:0; margin-top:1px; }
-        .positif-item { display:flex; gap:8px; font-size:13px; color:var(--navy-dark); margin-bottom:6px; }
-        .positif-item::before { content:'✓'; color:var(--vert); font-size:11px; flex-shrink:0; margin-top:1px; }
+/* CTA Tunnel */
+.tunnel-cta { background: var(--navy); border-radius: 16px; padding: 36px 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+.tunnel-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.tunnel-urgence { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
+.tunnel-cta h2 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
+.tunnel-cta h2 em { color: var(--gold); font-style: italic; }
+.tunnel-cta p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.7; }
+.btn-tunnel { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 6px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.btn-tunnel:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+.tunnel-garanties { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+.tunnel-garantie { font-size: 12px; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 5px; }
+.tunnel-garantie::before { content: '✓'; color: var(--gold); }
 
-        /* LISTES */
-        .analyse-ligne { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--border); }
-        .analyse-ligne:last-child { border-bottom:none; }
-        .analyse-type-icone { width:34px; height:34px; border-radius:7px; background:var(--gold-pale); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-        .analyse-nom { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:2px; }
-        .analyse-date { font-size:11px; color:var(--gris); }
-        .analyse-score { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; flex-shrink:0; }
-        .score-vert { color:var(--vert); } .score-orange { color:var(--orange); } .score-rouge { color:var(--rouge); }
+/* Points positifs */
+.positifs-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.positifs-section h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.positif-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 8px; }
+.positif-item::before { content: '✓'; color: var(--vert); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
-        /* DOCS */
-        .doc-grille { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .doc-carte { background:var(--creme); border:1px solid var(--border); border-radius:7px; padding:14px; cursor:pointer; transition:all 0.2s; }
-        .doc-carte:hover { border-color:var(--gold); background:var(--gold-pale); }
-        .doc-icone { font-size:22px; margin-bottom:8px; }
-        .doc-nom { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:3px; }
-        .doc-desc { font-size:11px; color:var(--gris); }
-        .doc-genere { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
-        .doc-genere:last-child { border-bottom:none; }
-        .doc-genere-icone { font-size:20px; flex-shrink:0; }
-        .doc-genere-titre { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:1px; }
-        .doc-genere-date { font-size:11px; color:var(--gris); }
-        .doc-genere-actions { margin-left:auto; display:flex; gap:6px; }
-        .doc-btn-action { padding:5px 10px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; transition:all 0.2s; }
-        .doc-btn-voir { background:var(--creme); color:var(--navy-dark); border:1px solid var(--border); }
-        .doc-btn-voir:hover { border-color:var(--navy-dark); }
-        .doc-btn-telecharger { background:var(--gold); color:var(--navy-dark); }
-        .doc-btn-telecharger:hover { background:var(--gold-light); }
+/* Recommencer */
+.btn-recommencer { background: white; border: 1.5px solid var(--border); color: var(--gray); padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.btn-recommencer:hover { border-color: var(--navy); color: var(--navy); }
 
-        /* MODAL */
-        .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,36,86,0.65); z-index:1000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
-        .modal-overlay.visible { display:flex; }
-        .modal { background:white; border-radius:12px; padding:32px; max-width:680px; width:90%; max-height:85vh; overflow-y:auto; position:relative; }
-        .modal-fermer { position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; color:var(--gris); }
-        .modal-fermer:hover { color:var(--rouge); }
-        .modal-titre { font-size:22px; font-weight:700; color:var(--navy-dark); margin-bottom:8px; }
-        .modal-avert { background:var(--gold-pale); border:1px solid var(--gold); border-radius:6px; padding:10px 14px; font-size:12px; color:#8B6914; margin-bottom:16px; }
-        .modal-contenu { font-size:13px; color:var(--navy-dark); line-height:1.85; white-space:pre-wrap; background:var(--creme); border-radius:6px; padding:16px; }
-        .modal-actions { display:flex; gap:10px; margin-top:16px; }
-        .modal-btn { padding:11px 22px; border-radius:5px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; transition:all 0.2s; }
-        .modal-btn-copier { background:var(--creme); color:var(--navy-dark); border:1px solid var(--border); }
-        .modal-btn-copier:hover { border-color:var(--navy-dark); }
-        .modal-btn-telecharger { background:var(--gold); color:var(--navy-dark); }
-        .modal-btn-telecharger:hover { background:var(--gold-light); }
-
-        /* SPINNER */
-        .analyse-en-cours { display:none; text-align:center; padding:40px 20px; }
-        .analyse-en-cours.visible { display:block; }
-        .spinner { width:48px; height:48px; border:3px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:tourner 0.8s linear infinite; margin:0 auto 16px; }
-        @keyframes tourner { to{transform:rotate(360deg)} }
-        .analyse-en-cours h3 { font-size:16px; font-weight:600; color:var(--navy-dark); margin-bottom:6px; }
-        .analyse-en-cours p { font-size:13px; color:var(--gris); }
-
-        /* PAGES */
-        .page { display:none; }
-        .page.active { display:block; }
-
-        /* VIDE */
-        .vide { text-align:center; padding:40px 20px; }
-        .vide-icone { font-size:36px; margin-bottom:12px; }
-        .vide-titre { font-size:15px; font-weight:600; color:var(--navy-dark); margin-bottom:6px; }
-        .vide-desc { font-size:13px; color:var(--gris); }
-
-        /* ASSISTANT */
-        .assistant-messages { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
-        .ass-bot { background:var(--creme); border:1px solid var(--border); border-radius:9px 9px 9px 2px; padding:11px 13px; font-size:13px; line-height:1.6; color:var(--navy-dark); max-width:90%; }
-        .ass-client { background:var(--navy-dark); color:white; border-radius:9px 9px 2px 9px; padding:11px 13px; font-size:13px; line-height:1.6; max-width:90%; align-self:flex-end; }
-        .ass-saisie { display:flex; gap:8px; }
-        .ass-champ { flex:1; padding:10px 13px; border:1.5px solid var(--border); border-radius:6px; font-size:13px; font-family:'DM Sans',sans-serif; color:var(--navy-dark); outline:none; transition:border-color 0.2s; }
-        .ass-champ:focus { border-color:var(--gold); }
-        .ass-envoyer { background:var(--navy-dark); color:white; border:none; padding:10px 14px; border-radius:6px; cursor:pointer; font-size:14px; transition:background 0.2s; }
-        .ass-envoyer:hover { background:var(--gold); color:var(--navy-dark); }
-
-        @media(max-width:1100px) { .stats{grid-template-columns:repeat(2,1fr)} .grille-2{grid-template-columns:1fr} }
-        @media(max-width:768px) { .barre-lat{display:none} .principal{margin-left:0} .contenu{padding:20px} }
-    
-/* ── PLAN ESSAI ── */
-
-.plan-essai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.plan-essai-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
-
-.plan-essai-jauge-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:40px;overflow:hidden;margin-bottom:4px}
-.plan-essai-jauge-fill{height:100%;background:var(--gold);border-radius:40px;transition:width .6s}
-
-/* ── MODALE UPGRADE ── */
-.upgrade-overlay{position:fixed;inset:0;background:rgba(11,37,69,0.7);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.upgrade-overlay.visible{display:flex}
-.upgrade-modal{background:white;border-radius:16px;padding:36px;max-width:720px;width:92%;max-height:90vh;overflow-y:auto;position:relative;animation:slideUp .3s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.upgrade-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1;transition:color .2s}
-.upgrade-modal-close:hover{color:var(--rouge)}
-.upgrade-modal h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy-dark);margin-bottom:6px}
-.upgrade-modal p{font-size:14px;color:var(--gris);margin-bottom:28px;line-height:1.6}
-.upgrade-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.up-plan{border:1.5px solid var(--border);border-radius:12px;padding:22px 18px;position:relative;transition:border-color .2s}
-.up-plan:hover{border-color:var(--gold)}
-.up-plan.vedette{border-color:var(--navy-dark);background:var(--navy-dark)}
-.up-plan.vedette::before{content:'Le plus choisi';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy-dark);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 12px;border-radius:40px;white-space:nowrap}
-.up-plan-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy-dark);margin-bottom:2px}
-.up-plan.vedette .up-plan-name{color:white}
-.up-plan-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--navy-dark);margin:10px 0}
-.up-plan.vedette .up-plan-price{color:var(--gold)}
-.up-plan-price span{font-size:14px;font-weight:400;color:var(--gris)}
-.up-plan.vedette .up-plan-price span{color:rgba(255,255,255,.4)}
-.up-plan-features{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-.up-plan-features li{font-size:12px;color:var(--navy-dark);display:flex;align-items:flex-start;gap:6px;line-height:1.4}
-.up-plan.vedette .up-plan-features li{color:rgba(255,255,255,.7)}
-.up-plan-features li::before{content:'✓';color:var(--gold);font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.up-btn{display:block;width:100%;padding:11px;text-align:center;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
-.up-btn-outline{background:transparent;border:1.5px solid rgba(11,37,69,.2);color:var(--navy-dark)}
-.up-btn-outline:hover{background:var(--navy-dark);color:white}
-.up-btn-gold{background:var(--gold);color:var(--navy-dark)}
-.up-btn-gold:hover{background:var(--gold-light)}
-@media(max-width:640px){.upgrade-plans{grid-template-columns:1fr}}
-
-
-.lock-ico{pointer-events:none}
+@media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .hero-essai { padding: 40px 20px 32px; }
+    .score-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .score-stat-num { font-size: 22px; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-<aside class="barre-lat">
-    <div class="lat-logo"><a href="index.html" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0F2456;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;width:fit-content;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.15)'">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F2456" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Accueil
-        </a></div>
-    <nav class="lat-nav">
-        <div class="nav-section">Principal</div>
-        <button class="nav-lien actif" id="nav-accueil" onclick="afficherPage('accueil',this)" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Vue d'ensemble
-        </button>
-        <button class="nav-lien actif" id="nav-essai" onclick="afficherPage('essai',this)" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Mon essai gratuit
-        </button>
-        <button class="nav-lien" id="nav-analyser" onclick="afficherPage('analyser',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Analyser un document
-        </button>
-        <button class="nav-lien" id="nav-historique" onclick="afficherPage('historique',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Historique des analyses
-        </button>
-        <div class="nav-section">Documents</div>
-        <button class="nav-lien" id="nav-generer" onclick="afficherPage('generer',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Générer des documents
-        </button>
-        <button class="nav-lien" id="nav-mes-documents" onclick="afficherPage('mes-documents',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Mes documents générés
-        </button>
-        <div class="nav-section">Assistance</div>
-        <button class="nav-lien" id="nav-assistant" onclick="afficherPage('assistant',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Assistant conformité
-        </button>
-        <button class="nav-lien" id="nav-clauses" onclick="afficherPage('clauses',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Clauses abusives
-        </button>
-        <button class="nav-lien" id="nav-registre" onclick="afficherPage('registre',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Registre RGPD
-        </button>
-        <button class="nav-lien" id="nav-parametres" onclick="afficherPage('parametres',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres
-        </button>
-    </nav>
-    <div class="lat-bas">
-        <!-- BLOC PLAN ESSAI (affiché si plan = essai) -->
-        <div id="bloc-essai" style="display:none;">
-            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:6px;padding:8px 10px;margin-bottom:6px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;">
-                    <span class="plan-essai-label" style="font-size:10px;">Essai gratuit</span>
-                    <span style="font-size:10px;font-weight:700;color:var(--gold);" id="compteur-essai-label">0 / 1</span>
-                </div>
-                <div class="plan-essai-jauge-bg" style="margin-bottom:0;"><div class="plan-essai-jauge-fill" id="jauge-essai" style="width:0%"></div></div>
-                <div id="essai-cta-analyse" style="display:none;"></div>
-                <div id="essai-cta-upgrade" style="display:none;"></div>
-            </div>
-            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:7px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Mettre à niveau →</button>
+<div style="height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);"></div>
+<nav style="background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(11,37,69,0.08);position:sticky;top:0;z-index:100;">
+    <div style="max-width:1280px;margin:auto;padding:0 40px;height:76px;display:grid;grid-template-columns:auto auto auto;align-items:center;gap:24px;">
+        <!-- GAUCHE : retour aligné à droite de sa colonne (contre le logo) -->
+        <div style="display:flex;align-items:center;display:flex;align-items:center;">
+            <a href="javascript:history.back()" style="display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(11,37,69,0.1);border-radius:8px;padding:8px 14px;text-decoration:none;color:#0B2545;font-size:12px;font-weight:600;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(11,37,69,0.07);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(11,37,69,0.13)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(11,37,69,0.07)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>Retour</a>
         </div>
-        <!-- BLOC PLAN NORMAL (starter / business / pro) -->
-        <div id="bloc-plan-normal">
-            <div class="plan-info">
-                <div class="plan-libelle">Ma formule</div>
-                <div class="plan-nom" id="affichage-plan">Starter</div>
-                <div class="plan-jauge"><div class="plan-jauge-rempli" id="jauge-analyses" style="width:0%"></div></div>
-                <div class="plan-compteur" id="compteur-analyses">— analyses ce mois</div>
-            </div>
-            <a href="pricing.html" class="plan-upgrade">Mettre à niveau</a>
+        <!-- CENTRE : logo parfaitement centré -->
+        <a href="index.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none;"><img src="logo.png" alt="Audilix" style="height:48px;width:auto;display:block;"></a>
+        <!-- DROITE : espace client aligné à gauche de sa colonne (contre le logo) -->
+        <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:24px;">
+            <a href="login.html?analyse=pending" style="background:#C9A84C;color:#0B2545;padding:10px 22px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#E8C97A'" onmouseout="this.style.background='#C9A84C'">Espace client</a>
         </div>
-        <div class="utilisateur" style="margin-top:8px;">
-            <div id="avatar-utilisateur" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.08));border:1.5px solid rgba(201,168,76,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 3px rgba(11,37,69,0.06);">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-essai">
+    <div class="hero-badge-essai">✓ 1 analyse gratuite</div>
+    <h1>Vos documents sont-ils<br>vraiment <em>conformes ?</em></h1>
+    <p>Déposez un document. En 60 secondes, vous savez exactement où votre entreprise est exposée.</p>
+    <div class="hero-garanties">
+        <span class="hero-garantie">Résultat en moins de 60 secondes</span>
+        <span class="hero-garantie">Aucune connaissance juridique requise</span>
+        <span class="hero-garantie">Données supprimées après analyse</span>
+    </div>
 </div>
-            <div>
-                <div class="user-nom" id="nom-utilisateur" style="color:rgba(255,255,255,0.2);font-size:12px;">—</div>
-                <div class="user-email" id="email-utilisateur"></div>
-            </div>
-            <button class="btn-deconnexion" onclick="seDeconnecter()" title="Déconnexion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+
+<!-- UPLOAD -->
+<div class="upload-zone" id="zone-upload">
+    <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+        <div class="upload-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris,#6B7280)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="upload-title">Déposez votre document ici</div>
+        <div class="upload-sub">Politique de confidentialité, CGV, contrat, mentions légales…</div>
+        <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('file-input').click();">Choisir un fichier</button>
+        <div class="upload-formats">PDF · Word (.docx) · Texte (.txt) · Max 10 Mo</div>
+        <div class="file-selected" id="file-selected">
+            <span>📎</span>
+            <span id="file-name"></span>
         </div>
     </div>
-</aside>
+    <input type="file" id="file-input" accept=".pdf,.docx,.txt,.doc" onchange="fichierChoisi(this)">
+    <div style="text-align:center;margin-top:20px;" id="btn-analyser-wrap" style="display:none;">
+        <button class="btn-tunnel" id="btn-analyser" onclick="lancerAnalyse()" style="display:none;">Analyser maintenant, c'est gratuit →</button>
+    </div>
+<div id="msg-essai" style="display:none;font-size:13px;margin-top:12px;padding:10px 14px;border-radius:6px;text-align:center;"></div>
+</div>
 
-<main class="principal">
-    <div class="topbar">
-        <div class="topbar-titre" id="titre-page">Vue d'ensemble</div>
-        <div class="topbar-droite">
-            <span class="topbar-date" id="date-topbar" style="font-size:12px;color:var(--gris);margin-right:16px;"></span>
-            <button class="btn-analyser" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-1px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Analyser un document
+<!-- CHARGEMENT -->
+<div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyse en cours…</div>
+    <div class="loading-sub">Votre document est en cours d'analyse</div>
+    <div class="loading-steps">
+        <div class="loading-step active" id="step-1">Lecture du document</div>
+        <div class="loading-step" id="step-2">Détection des risques</div>
+        <div class="loading-step" id="step-3">Calcul du score de conformité</div>
+        <div class="loading-step" id="step-4">Génération du rapport</div>
+    </div>
+</div>
+
+<!-- RÉSULTATS -->
+<div id="resultats">
+
+    <!-- Score -->
+    <div class="score-card">
+        <div class="score-label">Score de conformité</div>
+        <div class="score-cercle" id="score-cercle">
+            <span class="score-num" id="score-num">--</span>
+            <span class="score-sur">/100</span>
+        </div>
+        <div class="score-titre" id="score-titre">Analyse terminée</div>
+        <p class="score-desc" id="score-resume">Voici ce que nous avons détecté dans votre document.</p>
+        <div class="score-stats">
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-critiques" style="color:var(--rouge);">0</div>
+                <div class="score-stat-label">Problème(s) critique(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-importants" style="color:#d97706;">0</div>
+                <div class="score-stat-label">Problème(s) important(s)</div>
+            </div>
+            <div class="score-stat">
+                <div class="score-stat-num" id="nb-mineurs" style="color:var(--gray);">0</div>
+                <div class="score-stat-label">Point(s) mineur(s)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problèmes visibles (2 premiers) -->
+    <div class="problemes-section">
+        <div class="section-head">
+            <h3>Problèmes détectés</h3>
+            <span class="badge-count" id="badge-total">0 problème(s)</span>
+        </div>
+        <div id="problemes-visibles"></div>
+    </div>
+
+    <!-- Problèmes bloqués + CTA -->
+    <div id="bloc-bloque" style="display:none;">
+        <div class="problemes-bloques">
+            <div class="probleme-flou" id="problemes-flous"></div>
+            <div class="bloquer-overlay">
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TUNNEL CTA — Formulaire création compte -->
+    <div class="tunnel-cta" id="tunnel-cta" style="margin-top:24px;">
+        <div class="tunnel-urgence" id="tunnel-label">Des risques ont été détectés dans votre document</div>
+        <h2 id="tunnel-titre">Des risques ont été détectés.<br><em>Voici comment les corriger.</em></h2>
+        <p id="tunnel-desc">Votre rapport détaillé, les corrections à apporter et les documents conformes générés automatiquement — tout est prêt. Créez votre accès en 30 secondes.</p>
+
+        <!-- Formulaire email -->
+        <div id="form-inscription" style="max-width:380px;margin:0 auto;">
+            <input type="email" id="essai-email" placeholder="Votre adresse email professionnelle"
+                style="width:100%;padding:14px 18px;border-radius:6px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+            <button onclick="inscrireEssai()" id="btn-inscrire"
+                style="width:100%;background:var(--gold);color:var(--navy);padding:15px;border-radius:6px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">
+                Accéder à mon rapport complet →
             </button>
+            
+        </div>
+
+        <!-- État chargement -->
+        <div id="form-chargement" style="display:none;text-align:center;padding:10px 0;">
+            <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+            <p style="color:rgba(255,255,255,0.6);font-size:13px;">Création de votre compte en cours…</p>
+        </div>
+
+        <!-- Succès -->
+        <div id="form-succes" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:40px;margin-bottom:12px;">✉️</div>
+            <div style="font-size:18px;font-weight:700;color:white;margin-bottom:8px;">Vérifiez vos emails !</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">Vos identifiants ont été envoyés à <strong style="color:white;" id="email-confirme"></strong></p>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
+
+        <!-- Déjà client -->
+        <div id="form-deja-client" style="display:none;text-align:center;padding:10px 0;">
+            <div style="font-size:14px;color:white;font-weight:600;margin-bottom:6px;">Un compte existe déjà avec cet email.</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:18px;line-height:1.6;">Connectez-vous pour retrouver votre historique.<br>Téléchargez votre rapport PDF ci-dessus avant de continuer, ou reconnectez-vous pour retrouver l'analyse dans votre historique.</div>
+            <a href="login.html" style="display:inline-block;background:var(--gold);color:var(--navy);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Se connecter →</a>
+        </div>
+
+        <div class="tunnel-garanties" style="margin-top:20px;">
+            <span class="tunnel-garantie">Rapport complet</span>
+            <span class="tunnel-garantie">Sans engagement</span>
+            <span class="tunnel-garantie">Accès immédiat</span>
         </div>
     </div>
 
-    <div class="contenu">
-
-        <!-- PAGE ESSAI -->
-        <div class="page" id="page-essai">
-            <div style="max-width:680px;margin:0 auto;">
-                <!-- Header essai -->
-                <div style="background:var(--navy-dark);border-radius:12px;padding:32px;position:relative;overflow:hidden;margin-bottom:24px;">
-                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div>
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-                        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);"></div>
-                        <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);">Essai gratuit</span>
-                    </div>
-                    <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px;line-height:1.2;">Bienvenue sur Audilix.</h2>
-                    <p style="font-size:14px;color:rgba(255,255,255,0.45);line-height:1.65;">Vous disposez d'<strong style="color:rgba(255,255,255,0.8);">1 analyse gratuite</strong>. Déposez un document pour voir exactement où votre entreprise est exposée.</p>
-                </div>
-
-                <!-- Statut analyse -->
-                <div id="essai-statut-bloc" style="background:white;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:20px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-                        <div style="font-size:14px;font-weight:700;color:var(--navy-dark);">Votre analyse gratuite</div>
-                        <div id="essai-statut-badge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(34,197,94,0.1);color:#16a34a;">Disponible</div>
-                    </div>
-                    <div style="background:var(--creme);border-radius:8px;height:8px;overflow:hidden;margin-bottom:8px;">
-                        <div id="jauge-essai-main" style="height:100%;background:var(--gold);border-radius:8px;width:0%;transition:width .8s ease;"></div>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;">
-                        <span style="font-size:12px;color:var(--gris);" id="essai-statut-texte">0 analyse utilisée</span>
-                        <span style="font-size:12px;color:var(--gris);">1 maximum</span>
-                    </div>
-                </div>
-
-                <!-- Action principale -->
-                <div id="essai-action-analyser" style="text-align:center;padding:32px 24px;background:white;border:2px dashed var(--border);border-radius:10px;margin-bottom:20px;cursor:pointer;transition:all .2s;" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))" onmouseover="this.style.borderColor='var(--gold)';this.style.background='var(--gold-pale)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">
-                    <div style="margin-bottom:12px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                    <div style="font-size:16px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">Lancer mon analyse gratuite</div>
-                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV, une politique de confidentialité…</div>
-                    <div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:var(--navy-dark);color:white;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:700;">
-                        Analyser un document
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </div>
-                </div>
-
-                <div id="essai-action-epuise" style="display:none;text-align:center;padding:28px 24px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;margin-bottom:20px;">
-                    <div style="font-size:24px;margin-bottom:10px;">📊</div>
-                    <div style="font-size:15px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">Analyse gratuite utilisée</div>
-                    <div style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Votre rapport est disponible dans l'historique. Pour analyser d'autres documents et accéder à toutes les fonctionnalités, choisissez un plan.</div>
-                    <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="background:var(--gold);color:var(--navy-dark);border:none;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Voir les plans →</button>
-                </div>
-
-                <!-- Ce qui est inclus dans l'essai -->
-                <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:24px;">
-                    <div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:16px;">Ce que vous obtenez avec l'essai gratuit</div>
-                    <div style="display:flex;flex-direction:column;gap:10px;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--navy-dark);">1 analyse complète de document</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--navy-dark);">Score de conformité sur 100</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--navy-dark);">Problèmes identifiés et classés par gravité</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--navy-dark);">Résultats en moins de 60 secondes</span>
-                        </div>
-                        <div style="height:1px;background:var(--border);margin:4px 0;"></div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--gris);">Documents générés automatiquement</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--gris);">Détection des clauses abusives</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:20px;height:20px;background:rgba(107,114,128,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </div>
-                            <span style="font-size:13px;color:var(--gris);">Surveillance et alertes automatiques</span>
-                        </div>
-                    </div>
-                    <div style="margin-top:20px;text-align:center;">
-                        <button onclick="ouvrirUpgrade('Découvrez nos plans')" style="background:transparent;border:1.5px solid rgba(11,37,69,0.15);color:var(--navy-dark);padding:10px 24px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--navy-dark)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='var(--navy-dark)'">Voir ce qui est inclus dans chaque plan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VUE D'ENSEMBLE -->
-        <div class="page active" id="page-accueil">
-            <div class="banniere">
-                <div class="banniere-texte">
-                    <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px;" id="banner-plan-label">Formule Starter</div>
-                    <h2>Bonjour, <span id="prenom-accueil"></span></h2>
-                    <p>Voici l'état de conformité de votre activité.</p>
-                </div>
-                <div style="text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 28px;">
-                    <div class="score-chiffre" id="score-global" style="color:rgba(255,255,255,0.2);">—</div>
-                    <div class="score-libelle">Score global / 100</div>
-                </div>
-            </div>
-
-            <div id="onboarding-banner" style="display:none;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:16px 20px;margin-bottom:20px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-                <div>
-                    <div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Commencez par analyser votre premier document</div>
-                    <div style="font-size:13px;color:var(--gris);">Déposez un contrat, vos CGV ou une politique de confidentialité, Résultat en moins de 60 secondes.</div>
-                </div>
-                <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-                    <button id="ob-btn-go" style="background:var(--gold);color:var(--navy-dark);border:none;padding:10px 18px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Analyser un document →</button>
-                    <button id="ob-btn-close" style="background:none;border:none;color:var(--gris);font-size:20px;cursor:pointer;padding:4px;">✕</button>
-                </div>
-            </div>
-
-            <div class="stats">
-                <div class="stat or">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-                        <div class="stat-libelle">Score de conformité</div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity="0.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </div>
-                    <div class="stat-valeur" id="stat-score" style="color:rgba(201,168,76,0.4);">—</div>
-                    <div style="font-size:10px;color:var(--gris);margin-top:4px;">/100</div>
-                </div>
-                <div class="stat vert">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-                        <div class="stat-libelle">Analyses réalisées</div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="1.5" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <div class="stat-valeur" id="stat-analyses">0</div>
-                    <div style="font-size:10px;color:var(--gris);margin-top:4px;">ce mois</div>
-                </div>
-                <div class="stat orange">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-                        <div class="stat-libelle">Problèmes détectés</div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5" opacity="0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    </div>
-                    <div class="stat-valeur" id="stat-problemes">0</div>
-                    <div style="font-size:10px;color:var(--gris);margin-top:4px;">au total</div>
-                </div>
-                <div class="stat rouge">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-                        <div class="stat-libelle">Points critiques</div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--rouge)" stroke-width="1.5" opacity="0.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </div>
-                    <div class="stat-valeur" id="stat-critiques">0</div>
-                    <div style="font-size:10px;color:var(--gris);margin-top:4px;">à corriger</div>
-                </div>
-            </div>
-
-            <div class="grille-2">
-                <div class="carte">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Analyses récentes</div>
-                        <button class="carte-action" onclick="afficherPage('historique',document.getElementById('nav-historique'))">Voir tout</button>
-                    </div>
-                    <div class="carte-corps"><div id="apercu-analyses"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div></div></div>
-                </div>
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Recommandations prioritaires</div></div>
-                    <div class="carte-corps"><div id="apercu-recos"><div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div><div class="vide-desc">Analysez un document pour recevoir des recommandations.</div></div></div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ANALYSER -->
-        <div class="page" id="page-analyser">
-            <div class="grille-2">
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Déposer un document</div></div>
-                    <div class="carte-corps">
-                        <div class="fichier-selectionne" id="fichier-affiche">
-                            <div class="fichier-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                            <div><div class="fichier-nom" id="fichier-nom"></div><div class="fichier-taille" id="fichier-taille"></div></div>
-                            <button class="fichier-suppr" onclick="supprimerFichier()">✕</button>
-                        </div>
-                        <div class="zone-upload" id="zone-upload" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')" ondrop="deposerFichier(event)">
-                            <input type="file" id="input-fichier" accept=".pdf,.txt,.html,.doc,.docx" onchange="selectionnerFichier(this.files[0])">
-                            <div class="upload-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-                            <div class="upload-titre">Déposez votre document ici</div>
-                            <div class="upload-sous">ou cliquez pour sélectionner un fichier</div>
-                            <div class="upload-formats"><span class="upload-format">PDF</span><span class="upload-format">TXT</span><span class="upload-format">HTML</span><span class="upload-format">DOCX</span></div>
-                        </div>
-                        <div id="msg-analyse" style="font-size:12px;margin-bottom:8px;display:none;"></div>
-                        <button class="btn-lancer" id="btn-lancer" onclick="lancerAnalyse()" style="margin-top:14px;" disabled>Lancer l'analyse</button>
-                        <p style="font-size:11px;color:var(--gris);text-align:center;margin-top:8px;">Fichier max. 10 Mo · Résultat en moins de 30 secondes</p>
-                    </div>
-                </div>
-                <div class="carte" id="carte-resultat-analyse">
-                    <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
-                    <div class="carte-corps">
-                        <div id="etat-vide-analyse" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="vide-titre">En attente d'un document</div><div class="vide-desc">Déposez un document à gauche pour lancer l'analyse.</div></div>
-                        <div class="analyse-en-cours" id="chargement-analyse"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Votre document est en cours d'analyse. Moins de 30 secondes.</p></div>
-                        <div class="resultat-analyse" id="resultat-zone">
-                            <div class="resultat-entete">
-                                <div class="resultat-score-cercle" id="resultat-cercle"><div class="resultat-score-num" id="resultat-score-num">—</div><div class="resultat-score-sur">/100</div></div>
-                                <div class="resultat-info"><h3 id="resultat-type">—</h3><p id="resultat-resume">—</p></div>
-                            </div>
-                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--rouge);">Problèmes détectés</div><div id="liste-problemes"></div></div>
-                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--vert);">Points positifs</div><div id="liste-positifs"></div></div>
-                            <div class="resultat-section"><div class="resultat-section-titre" style="color:var(--gold);">Recommandations</div><div id="liste-recos"></div></div>
-                            <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
-                                <button onclick="telechargerRapportPDF()" style="display:flex;align-items:center;gap:8px;background:var(--navy-dark);color:white;border:none;padding:12px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                    Télécharger le rapport PDF
-                                </button>
-                                <button onclick="supprimerFichier()" style="background:transparent;border:1.5px solid var(--border);color:var(--gris);padding:12px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Nouvelle analyse</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- HISTORIQUE -->
-        <div class="page" id="page-historique">
-            <div class="carte">
-                <div class="carte-entete">
-                    <div class="carte-titre">Toutes mes analyses</div>
-                    <button class="carte-action" onclick="afficherPage('analyser',document.getElementById('nav-analyser'))">+ Nouvelle analyse</button>
-                </div>
-                <div class="carte-corps"><div id="liste-historique"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div></div></div>
-            </div>
-        </div>
-
-        <!-- GÉNÉRER UN DOCUMENT -->
-        <div class="page" id="page-generer">
-            <div class="grille-2">
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Choisir un document à générer</div></div>
-                    <div class="carte-corps">
-                        <div class="doc-grille" style="margin-bottom:20px;grid-template-columns:1fr 1fr 1fr;">
-                            <div class="doc-carte" onclick="choisirTypeDoc('confidentialite',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="doc-nom">Politique de confidentialité</div><div class="doc-desc">Conforme au RGPD</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('mentions',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="doc-nom">Mentions légales</div><div class="doc-desc">Obligatoires en France</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cookies',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="doc-nom">Politique de cookies</div><div class="doc-desc">Directive ePrivacy</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('cgu',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="doc-nom">CGU / CGV</div><div class="doc-desc">Conditions générales</div></div>
-                            <div class="doc-carte" onclick="choisirTypeDoc('nda',this)"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="doc-nom">NDA</div><div class="doc-desc">Accord de confidentialité</div></div>
-                            <div class="doc-carte" onclick="afficherPage('registre',document.getElementById('nav-registre'))" style="border-color:var(--gold);background:var(--gold-pale);"><div class="doc-icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="doc-nom">Registre RGPD</div><div class="doc-desc">Article 30 RGPD</div></div>
-                        </div>
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Votre entreprise</label>
-                            <input type="text" id="gen-entreprise" placeholder="Nom ou description de votre entreprise" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
-                        </div>
-                        <div style="margin-bottom:16px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité</label>
-                            <input type="text" id="gen-activite" placeholder="Ex : e-commerce, conseil, santé..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;">
-                        </div>
-                        <div id="msg-generer" style="font-size:12px;margin-bottom:8px;display:none;"></div>
-                        <button class="btn-lancer" id="btn-generer" onclick="genererDocument()" disabled>Générer le document</button>
-                    </div>
-                </div>
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Aperçu du document</div></div>
-                    <div class="carte-corps">
-                        <div id="etat-vide-doc" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="vide-titre">Sélectionnez un type de document</div><div class="vide-desc">Choisissez le document à générer et renseignez les informations de votre entreprise.</div></div>
-                        <div class="analyse-en-cours" id="chargement-doc"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre document est en cours de rédaction.</p></div>
-                        <div id="apercu-doc" style="display:none;">
-                            <div class="modal-avert" style="display:flex;align-items:flex-start;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Ce document est généré automatiquement à titre informatif. Pour les situations à fort enjeu, faites-le valider par un professionnel du droit.</div>
-                            <div class="modal-contenu" id="contenu-doc-apercu" style="max-height:340px;overflow-y:auto;font-size:12px;"></div>
-                            <div class="modal-actions">
-                                <button class="modal-btn modal-btn-copier" onclick="copierDocument()">Copier le texte</button>
-                                <button class="modal-btn modal-btn-telecharger" onclick="telechargerDocumentPDF()">Télécharger PDF</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- MES DOCUMENTS -->
-        <div class="page" id="page-mes-documents">
-            <div class="carte">
-                <div class="carte-entete">
-                    <div class="carte-titre">Documents générés</div>
-                    <button class="carte-action" onclick="afficherPage('generer',document.getElementById('nav-generer'))">+ Nouveau document</button>
-                </div>
-                <div class="carte-corps"><div id="liste-mes-documents"><div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici après leur génération.</div></div></div></div>
-            </div>
-        </div>
-
-        <!-- ASSISTANT -->
-        <div class="page" id="page-assistant">
-            <div class="carte" style="max-width:720px;">
-                <div class="carte-entete">
-                    <div class="carte-titre">Assistant conformité</div>
-                    <span style="font-size:11px;color:var(--vert);display:flex;align-items:center;gap:5px;"><span style="width:6px;height:6px;background:var(--vert);border-radius:50%;display:inline-block;"></span>Disponible</span>
-                </div>
-                <div class="carte-corps">
-                    <p style="font-size:13px;color:var(--gris);margin-bottom:16px;">Posez vos questions sur la conformité réglementaire, le RGPD, vos documents ou le résultat de vos analyses.</p>
-                    <div class="assistant-messages" id="messages-assistant">
-                        <div class="ass-bot">Bonjour. Je suis votre assistant conformité Audilix. Posez-moi vos questions sur le RGPD, vos obligations légales, ou demandez-moi d'expliquer un résultat d'analyse.</div>
-                    </div>
-                    <div class="ass-saisie">
-                        <input type="text" id="champ-assistant" class="ass-champ" placeholder="Votre question...">
-                        <button class="ass-envoyer" onclick="envoyerAssistant()">→</button>
-                    </div>
-                    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;">
-                        <button onclick="questionAssistant('Qu\'est-ce que le RGPD ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Le RGPD</button>
-                        <button onclick="questionAssistant('Comment gérer les cookies sur mon site ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Cookies</button>
-                        <button onclick="questionAssistant('Quelles sont mes obligations en tant que PME ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Obligations PME</button>
-                        <button onclick="questionAssistant('Comment améliorer mon score de conformité ?')" style="background:var(--creme);border:1px solid var(--border);color:var(--navy-dark);padding:5px 10px;border-radius:40px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Améliorer mon score</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CLAUSES -->
-        <div class="page" id="page-clauses">
-            <div class="grille-2">
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Déposer un contrat à analyser</div></div>
-                    <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6;">Déposez un contrat pour identifier les clauses abusives, illégales ou déséquilibrées selon le droit français et européen.</p>
-                        <div class="fichier-selectionne" id="fichier-clause-affiche">
-                            <div class="fichier-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                            <div><div class="fichier-nom" id="fichier-clause-nom"></div><div class="fichier-taille" id="fichier-clause-taille"></div></div>
-                            <button class="fichier-suppr" onclick="supprimerFichierClause()">✕</button>
-                        </div>
-                        <div class="zone-upload" id="zone-upload-clause" ondragover="event.preventDefault();this.classList.add('survol')" ondragleave="this.classList.remove('survol')">
-                            <input type="file" id="input-clause" accept=".pdf,.txt,.doc,.docx" onchange="selectionnerFichierClause(this.files[0])">
-                            <div class="upload-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-                            <div class="upload-titre">Déposez votre contrat ici</div>
-                            <div class="upload-sous">PDF, TXT, DOCX, max 10 Mo</div>
-                        </div>
-                        <div id="msg-clauses" style="font-size:12px;margin-bottom:8px;display:none;"></div>
-                        <button class="btn-lancer" id="btn-clauses" onclick="analyserClauses()" style="margin-top:14px;" disabled>Analyser les clauses</button>
-                    </div>
-                </div>
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Résultat de l'analyse</div></div>
-                    <div class="carte-corps">
-                        <div id="etat-vide-clauses" class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="vide-titre">En attente d'un contrat</div><div class="vide-desc">Déposez un contrat pour détecter les clauses problématiques.</div></div>
-                        <div class="analyse-en-cours" id="chargement-clauses"><div class="spinner"></div><h3>Analyse en cours...</h3><p>Chaque clause est examinée en détail.</p></div>
-                        <div id="resultat-clauses" style="display:none;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- REGISTRE -->
-        <div class="page" id="page-registre">
-            <div class="grille-2">
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Générer votre registre des traitements</div></div>
-                    <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);margin-bottom:20px;line-height:1.6;">L'article 30 du RGPD oblige toute entreprise à tenir un registre des activités de traitement. Renseignez les informations ci-dessous pour générer votre registre personnalisé et conforme.</p>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom de votre entreprise <span style="color:var(--rouge);">*</span></label>
-                            <input type="text" id="reg-entreprise" placeholder="Ex : Ma Société SAS" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Secteur d'activité <span style="color:var(--rouge);">*</span></label>
-                            <select id="reg-activite" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                                <option value="">— Sélectionnez votre secteur —</option>
-                                <option>Commerce en ligne (e-commerce)</option>
-                                <option>Commerce physique (boutique, magasin)</option>
-                                <option>Conseil et services aux entreprises</option>
-                                <option>Santé et bien-être</option>
-                                <option>Immobilier</option>
-                                <option>Formation et éducation</option>
-                                <option>Restauration et hôtellerie</option>
-                                <option>Artisanat et production</option>
-                                <option>Technologie et informatique</option>
-                                <option>Communication et marketing</option>
-                                <option>Juridique et comptabilité</option>
-                                <option>Autre</option>
-                            </select>
-                        </div>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Responsable du traitement (nom ou fonction)</label>
-                            <input type="text" id="reg-responsable" placeholder="Ex : Jean Dupont, Gérant" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Types de données collectées</label>
-                            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-identite" value="Identité (nom, prénom)" style="accent-color:var(--gold);"> Identité</label>
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-contact" value="Coordonnées (email, téléphone, adresse)"> Coordonnées</label>
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-paiement" value="Données de paiement"> Paiement</label>
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-navigation" value="Données de navigation (cookies, IP)"> Navigation</label>
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-sante" value="Données de santé"> Santé</label>
-                                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--navy-dark);cursor:pointer;"><input type="checkbox" id="reg-data-pro" value="Données professionnelles (poste, entreprise)"> Données pro</label>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Destinataires des données</label>
-                            <input type="text" id="reg-destinataires" placeholder="Ex : prestataire emailing, comptable, hébergeur..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-
-                        <div style="margin-bottom:20px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Pays de stockage des données</label>
-                            <select id="reg-pays" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:white;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                                <option value="France / Union européenne">France / Union européenne</option>
-                                <option value="États-Unis (avec garanties)">États-Unis (avec garanties)</option>
-                                <option value="Autre pays hors UE">Autre pays hors UE</option>
-                                <option value="Inconnu">Je ne sais pas</option>
-                            </select>
-                        </div>
-
-                        <button class="btn-lancer" onclick="genererRegistre()">Générer mon registre →</button>
-                        <div id="msg-registre" style="font-size:12px;margin-top:10px;display:none;"></div>
-                    </div>
-                </div>
-                <div class="carte">
-                    <div class="carte-entete"><div class="carte-titre">Votre registre des traitements</div></div>
-                    <div class="carte-corps">
-                        <div id="etat-vide-registre" class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Registre non généré</div><div class="vide-desc">Renseignez votre entreprise pour générer votre registre conforme à l'article 30 du RGPD.</div></div>
-                        <div class="analyse-en-cours" id="chargement-registre"><div class="spinner"></div><h3>Génération en cours...</h3><p>Votre registre est en cours de génération.</p></div>
-                        <div id="resultat-registre" style="display:none;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PARAMÈTRES -->
-        <div class="page" id="page-parametres">
-            <div style="max-width:640px;">
-
-                <!-- Informations du compte -->
-                <div class="carte" style="margin-bottom:16px;">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Informations du compte</div>
-                    </div>
-                    <div class="carte-corps">
-                        <!-- Nom -->
-                        <div style="margin-bottom:20px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Prénom</label>
-                            <input type="text" id="param-prenom" placeholder="Votre prénom" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-                        <div style="margin-bottom:20px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nom</label>
-                            <input type="text" id="param-nom" placeholder="Votre nom de famille" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-                        <div id="msg-nom" style="font-size:12px;margin-bottom:10px;display:none;"></div>
-                        <button onclick="sauvegarderNom()" style="background:var(--navy-dark);color:white;border:none;padding:11px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Enregistrer</button>
-                        <!-- Email -->
-                        <div style="margin-bottom:20px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Adresse email</label>
-                            <div style="display:flex;gap:10px;">
-                                <input type="email" id="param-email-new" style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                                <button onclick="changerEmail()" style="background:var(--navy-dark);color:white;border:none;padding:11px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Mettre à jour</button>
-                            </div>
-                            <div id="msg-email" style="font-size:12px;margin-top:6px;display:none;"></div>
-                        </div>
-                        <!-- Formule -->
-                        <div>
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Formule actuelle</label>
-                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--creme);border:1px solid var(--border);border-radius:6px;">
-                                <span style="font-size:13px;font-weight:600;color:var(--navy-dark);" id="param-plan">—</span>
-                                <a href="pricing.html" style="font-size:12px;color:var(--gold);font-weight:600;text-decoration:none;">Changer de formule →</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mot de passe -->
-                <div class="carte" style="margin-bottom:16px;">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Modifier le mot de passe</div>
-                    </div>
-                    <div class="carte-corps">
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Mot de passe actuel</label>
-                            <input type="password" id="param-mdp-actuel" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Nouveau mot de passe</label>
-                            <input type="password" id="param-mdp-new" placeholder="8 caractères minimum" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-                        <div style="margin-bottom:16px;">
-                            <label style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy-dark);display:block;margin-bottom:6px;">Confirmer le nouveau mot de passe</label>
-                            <input type="password" id="param-mdp-confirm" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
-                        </div>
-                        <button onclick="changerMotDePasse()" style="background:var(--navy-dark);color:white;border:none;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--navy-dark)'" onmouseout="this.style.background='var(--navy-dark)';this.style.color='white'">Modifier le mot de passe</button>
-                        <div id="msg-mdp" style="font-size:12px;margin-top:10px;display:none;"></div>
-                    </div>
-                </div>
-
-                <!-- Double authentification -->
-                <div class="carte" style="margin-bottom:16px;opacity:0.7;">
-                    <div class="carte-entete">
-                        <div class="carte-titre">Double authentification</div>
-                        <span style="font-size:11px;background:rgba(107,114,128,0.1);color:var(--gris);padding:3px 10px;border-radius:20px;font-weight:600;">Bientôt disponible</span>
-                    </div>
-                    <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);line-height:1.7;">Un code de vérification par SMS à chaque connexion. Cette fonctionnalité sera disponible prochainement.</p>
-                    </div>
-                </div>
-
-                <!-- Zone danger -->
-                <div class="carte" style="border-color:rgba(239,68,68,0.2);">
-                    <div class="carte-entete" style="border-color:rgba(239,68,68,0.1);">
-                        <div class="carte-titre" style="color:var(--rouge);">Zone de danger</div>
-                    </div>
-                    <div class="carte-corps">
-                        <p style="font-size:13px;color:var(--gris);line-height:1.7;margin-bottom:18px;">La suppression de votre compte est définitive. Toutes vos analyses, documents et données seront effacés et ne pourront pas être récupérés.</p>
-                        <button onclick="confirmerSuppression()" style="background:white;color:var(--rouge);border:1.5px solid rgba(239,68,68,0.3);padding:11px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='#fef2f2';this.style.borderColor='var(--rouge)'" onmouseout="this.style.background='white';this.style.borderColor='rgba(239,68,68,0.3)'">Supprimer mon compte</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+    <!-- Points positifs -->
+    <div class="positifs-section" id="positifs-section" style="display:none;">
+        <h3 style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ce qui est conforme</h3>
+        <div id="positifs-liste"></div>
     </div>
-</main>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-doc">
-    <div class="modal">
-        <button class="modal-fermer" onclick="fermerModal()">✕</button>
-        <div class="modal-titre" id="modal-doc-titre">Document</div>
-        <div class="modal-avert">Ce document a été généré automatiquement. Faites-le valider par un professionnel du droit pour les décisions importantes.</div>
-        <div class="modal-contenu" id="modal-doc-contenu"></div>
-        <div class="modal-actions">
-            <button class="modal-btn modal-btn-copier" onclick="copierModalDoc()">Copier le texte</button>
-            <button class="modal-btn modal-btn-telecharger" onclick="telechargerModalDoc()">Télécharger (.txt)</button>
-        </div>
+    <!-- Recommencer -->
+    <div style="text-align:center;margin-top:16px;">
+        <button class="btn-recommencer" onclick="recommencer()">← Analyser un autre document</button>
     </div>
 </div>
 
 <script>
 var BACKEND = 'https://audilix-backend.onrender.com';
-var dernierRapport = null; // Stocke les données du dernier rapport généré
 fetch(BACKEND + '/api/ping').catch(function(){});
-var utilisateur = null;
-var token = localStorage.getItem('audilix_token');
-var fichierCourant = null;
-var typeDocChoisi = null;
-var docGenereContenu = '';
-var docGenereModalContenu = '';
-var assistantHistorique = [];
-var analysesCache = [];
-var docsCache = [];
 
-// ── AUTH ──
-if (!token) {
-    window.location.href = 'login.html';
-} else {
-    try { utilisateur = JSON.parse(localStorage.getItem('audilix_user')); } catch(e) { utilisateur = null; }
-    if (!utilisateur) { window.location.href = 'login.html'; }
-    else { initialiserDashboard(); }
-}
-
-function authHeaders() { return { 'Authorization': 'Bearer ' + token }; }
-function jsonHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
-
-function initialiserDashboard() {
-    var prenom = utilisateur.firstname || utilisateur.prenom || utilisateur.nom || 'Client';
-    document.getElementById('prenom-accueil').textContent = prenom;
-    var nomComplet = ((utilisateur.firstname || utilisateur.prenom || '') + ' ' + (utilisateur.lastname || utilisateur.nom || '')).trim();
-    document.getElementById('nom-utilisateur').textContent = nomComplet || prenom;
-    document.getElementById('email-utilisateur').textContent = utilisateur.email || '';
-    var plan = utilisateur.plan || 'essai';
-    var nomsPlans = { essai:'Essai gratuit', starter:'Starter', business:'Business', pro:'Pro', expert:'Pro' };
-    var nomPlan = nomsPlans[plan] || plan;
-
-    // ── Accès par plan ──────────────────────────────────
-    // essai    : analyser (1x)
-    // starter  : analyser(10) + historique + generer(3 docs) + mes-documents
-    // business : tout starter + assistant + clauses + registre
-    // pro      : tout business + rapports PDF
-    var accesPlan = {
-        essai:    ['historique'],
-        starter:  ['historique', 'generer', 'mes-documents'],
-        business: ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'],
-        pro:      ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre', 'parametres'],
-        expert:   ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre']
-    };
-    var toutesPages = ['historique', 'generer', 'mes-documents', 'assistant', 'clauses', 'registre'];
-    var pagesAutorisees = accesPlan[plan] || [];
-
-    if (plan === 'essai') {
-        document.getElementById('bloc-essai').style.display = 'block';
-        document.getElementById('bloc-plan-normal').style.display = 'none';
-        // Afficher nav essai, masquer vue d'ensemble
-        var navEssai = document.getElementById('nav-essai');
-        var navAccueil = document.getElementById('nav-accueil');
-        if (navEssai) navEssai.style.display = 'flex';
-        if (navAccueil) navAccueil.style.display = 'none';
-    } else {
-        document.getElementById('bloc-essai').style.display = 'none';
-        document.getElementById('bloc-plan-normal').style.display = 'block';
-        document.getElementById('affichage-plan').textContent = nomPlan;
-        // Afficher vue d'ensemble, masquer nav-essai
-        var navAccueil = document.getElementById('nav-accueil');
-        var navEssai = document.getElementById('nav-essai');
-        if (navAccueil) navAccueil.style.display = 'flex';
-        if (navEssai) navEssai.style.display = 'none';
+// Récupérer le fichier pré-chargé depuis la page d'accueil
+window.addEventListener('DOMContentLoaded', function() {
+    // Si essai déjà utilisé, montrer le message dès le chargement
+    if (localStorage.getItem('audilix_essai_utilise')) {
+        document.getElementById('zone-upload').style.display = 'none';
+        document.getElementById('essai-epuise').style.display = 'block';
     }
-
-    // Bloquer les pages non autorisées selon le plan
-    toutesPages.forEach(function(p) {
-        var btn = document.getElementById('nav-' + p);
-        if (!btn) return;
-        if (pagesAutorisees.indexOf(p) === -1) {
-            btn.onclick = function(e) {
-                e.preventDefault();
-                var msgs = {
-                    essai:   'Fonctionnalité réservée aux abonnés',
-                    starter: 'Disponible à partir du plan Business'
-                };
-                ouvrirUpgrade(msgs[plan] || 'Fonctionnalité non disponible dans votre plan');
-            };
-            btn.style.opacity = '0.35';
-            btn.setAttribute('data-bloque', '1');
-            // Ajouter un petit badge "🔒" au label
-            if (!btn.querySelector('.lock-ico')) {
-                var lock = document.createElement('span');
-                lock.className = 'lock-ico';
-                lock.textContent = '🔒';
-                lock.style.cssText = 'font-size:9px;margin-left:auto;opacity:0.5;';
-                btn.appendChild(lock);
-            }
-        }
-    });
-
-    // Adapter le texte de la modale upgrade selon le plan
-    var upgradeDesc = document.getElementById('upgrade-desc');
-    if (plan === 'essai' && upgradeDesc) {
-        upgradeDesc.textContent = "Cette fonctionnalité n'est pas disponible en essai gratuit. Choisissez un plan pour y accéder immédiatement.";
-    } else if (plan === 'starter' && upgradeDesc) {
-        upgradeDesc.textContent = "Cette fonctionnalité est disponible à partir du plan Business. Passez à la vitesse supérieure pour en profiter.";
-    }
-    if (plan === 'starter') {
-        document.getElementById('upgrade-titre').textContent = 'Disponible à partir du plan Business';
-        document.getElementById('upgrade-desc').textContent = 'Cette fonctionnalité est incluse dans Business et Pro. Passez au niveau supérieur pour en profiter.';
-    }
-    var paramPlan = document.getElementById('param-plan');
-    if (paramPlan) paramPlan.textContent = nomPlan;
-    if (utilisateur.email) { var el = document.getElementById('param-email-new'); if(el) el.placeholder = utilisateur.email; }
-    var champPrenom = document.getElementById('param-prenom');
-    var champNom = document.getElementById('param-nom');
-    if (champPrenom) champPrenom.value = utilisateur.firstname || utilisateur.prenom || '';
-    if (champNom) champNom.value = utilisateur.lastname || utilisateur.nom || '';
-    var now = new Date();
-    document.getElementById('date-topbar').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-
-    chargerDonnees();
-
-    // Essai : afficher page essai
-    if (plan === 'essai') {
-        setTimeout(function() { afficherPage('essai', document.getElementById('nav-essai')); }, 150);
-    }
-
-    // Onboarding
-    if (!localStorage.getItem('audilix_onboarded')) {
-        var ob = document.getElementById('onboarding-banner');
-        if (ob) ob.style.display = 'flex';
-        document.getElementById('ob-btn-go').addEventListener('click', function() {
-            ob.style.display = 'none';
-            localStorage.setItem('audilix_onboarded', '1');
-            afficherPage('analyser', document.getElementById('nav-analyser'));
-        });
-        document.getElementById('ob-btn-close').addEventListener('click', function() {
-            ob.style.display = 'none';
-            localStorage.setItem('audilix_onboarded', '1');
-        });
-    }
-}
-
-async function chargerDonnees() {
-    if (!utilisateur || !utilisateur.id) return;
-    // Afficher état chargement dans la sidebar
-    var nomEl = document.getElementById('nom-utilisateur');
     try {
-        var r1 = await fetch(BACKEND + '/api/analyses/' + utilisateur.id, { headers: authHeaders() });
-        if (r1.ok) { analysesCache = await r1.json(); if (!Array.isArray(analysesCache)) analysesCache = []; }
-
-        var r2 = await fetch(BACKEND + '/api/documents/' + utilisateur.id, { headers: authHeaders() });
-        if (r2.ok) { docsCache = await r2.json(); if (!Array.isArray(docsCache)) docsCache = []; }
-
-        mettreAJourStats();
-        afficherApercuAnalyses();
-        afficherHistorique();
-        afficherMesDocuments();
-        mettreAJourCompteurPlan();
-        mettreAJourCompteurEssai();
-    } catch(e) {
-        console.error('Erreur chargement données:', e);
-        var nomEl = document.getElementById('nom-utilisateur');
-        if (nomEl) {
-            nomEl.textContent = utilisateur.firstname || utilisateur.email || '';
-            nomEl.style.animation = 'none';
-            nomEl.style.background = 'none';
-            nomEl.style.height = 'auto';
-            nomEl.style.width = 'auto';
+        var data = sessionStorage.getItem('hero_file_data');
+        var name = sessionStorage.getItem('hero_file_name');
+        var type = sessionStorage.getItem('hero_file_type');
+        if (data && name) {
+            sessionStorage.removeItem('hero_file_data');
+            sessionStorage.removeItem('hero_file_name');
+            sessionStorage.removeItem('hero_file_type');
+            // Convertir base64 en File
+            var arr = data.split(',');
+            var bstr = atob(arr[1]);
+            var n = bstr.length;
+            var u8arr = new Uint8Array(n);
+            while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+            var file = new File([u8arr], name, { type: type || 'application/octet-stream' });
+            // Déclencher l'analyse automatiquement
+            setTimeout(function() {
+                var dt = new DataTransfer();
+                dt.items.add(file);
+                var input = document.getElementById('file-input');
+                if (input) {
+                    input.files = dt.files;
+                    fichierChoisi(input);
+                    setTimeout(lancerAnalyse, 300);
+                }
+            }, 200);
         }
-    }
+    } catch(e) { console.warn('sessionStorage non disponible'); }
+});
+var fichierActuel = null;
+
+function fichierChoisi(input) {
+    if (!input.files || !input.files[0]) return;
+    fichierActuel = input.files[0];
+    document.getElementById('file-name').textContent = fichierActuel.name;
+    document.getElementById('file-selected').classList.add('visible');
+    var btn = document.getElementById('btn-analyser');
+    btn.style.display = 'inline-block';
 }
 
-function mettreAJourStats() {
-    var nbAnalyses = analysesCache.length;
-    document.getElementById('stat-analyses').textContent = nbAnalyses;
-
-    var scoreEl = document.getElementById('score-global');
-    var statScoreEl = document.getElementById('stat-score');
-
-    if (nbAnalyses > 0) {
-        var s = analysesCache[0].score;
-        if (s === null || s === undefined) s = '—';
-        var col = (typeof s === 'number') ? (s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)') : 'rgba(255,255,255,0.3)';
-        if (scoreEl) { scoreEl.textContent = (typeof s === 'number') ? s : '—'; scoreEl.style.color = col; }
-        if (statScoreEl) { statScoreEl.textContent = (typeof s === 'number') ? s : '—'; statScoreEl.style.color = col; }
-    } else {
-        if (scoreEl) { scoreEl.textContent = '—'; scoreEl.style.color = 'rgba(255,255,255,0.2)'; }
-        if (statScoreEl) { statScoreEl.textContent = '—'; statScoreEl.style.color = 'rgba(201,168,76,0.3)'; }
-    }
-
-    var totalP = 0, totalC = 0;
-    analysesCache.forEach(function(a) {
-        if (a.problemes && Array.isArray(a.problemes)) {
-            totalP += a.problemes.length;
-            totalC += a.problemes.filter(function(p) { return p.gravite === 'critique'; }).length;
-        }
-    });
-    var statP = document.getElementById('stat-problemes');
-    var statC = document.getElementById('stat-critiques');
-    if (statP) statP.textContent = nbAnalyses > 0 ? totalP : '—';
-    if (statC) statC.textContent = nbAnalyses > 0 ? totalC : '—';
-}
-
-function ouvrirUpgrade(titre, desc) {
-    document.getElementById('upgrade-titre').textContent = titre || 'Passez à la vitesse supérieure';
-    if (desc) document.getElementById('upgrade-desc').textContent = desc;
-    document.getElementById('upgrade-overlay').classList.add('visible');
-}
-function payer(plan) {
-    var STRIPE_PRICES = {
-        starter:  'price_1TBEp1L1yZKJczeCtlqQ4u3F',
-        business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
-        expert:   'price_1TBEuYL1yZKJczeCXrgBEFcu'
-    };
-    var priceId = STRIPE_PRICES[plan];
-    if (!priceId) { window.location.href = 'pricing.html'; return; }
-    var body = { priceId: priceId, plan: plan };
-    if (utilisateur && utilisateur.id) body.userId = utilisateur.id;
-    fetch(BACKEND + '/api/stripe/checkout', {
-        method: 'POST',
-        headers: jsonHeaders(),
-        body: JSON.stringify(body)
-    }).then(function(r) { return r.json(); }).then(function(data) {
-        if (data.url) { window.location.href = data.url; }
-        else { window.location.href = 'pricing.html'; }
-    }).catch(function() { window.location.href = 'pricing.html'; });
-}
-
-function fermerUpgrade() {
-    document.getElementById('upgrade-overlay').classList.remove('visible');
-}
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') fermerUpgrade(); });
-
-function mettreAJourCompteurEssai() {
-    if ((utilisateur.plan || 'essai') !== 'essai') return;
-    var now = new Date();
-    var debut = new Date(now.getFullYear(), now.getMonth(), 1);
-    var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
-    var pct = nb >= 1 ? 100 : 0;
-    var epuise = nb >= 1;
-    // Sidebar
-    var jaugeEl = document.getElementById('jauge-essai');
-    if (jaugeEl) jaugeEl.style.width = pct + '%';
-    var labelEl = document.getElementById('compteur-essai-label');
-    if (labelEl) labelEl.textContent = nb + ' / 1';
-    var ctaA = document.getElementById('essai-cta-analyse');
-    var ctaU = document.getElementById('essai-cta-upgrade');
-    if (ctaA) ctaA.style.display = epuise ? 'none' : 'block';
-    if (ctaU) ctaU.style.display = epuise ? 'block' : 'none';
-    // Page essai principale
-    var jaugeMain = document.getElementById('jauge-essai-main');
-    if (jaugeMain) jaugeMain.style.width = pct + '%';
-    var statutTexte = document.getElementById('essai-statut-texte');
-    if (statutTexte) statutTexte.textContent = nb + ' analyse utilisée';
-    var statutBadge = document.getElementById('essai-statut-badge');
-    if (statutBadge) {
-        if (epuise) {
-            statutBadge.textContent = 'Épuisée';
-            statutBadge.style.background = 'rgba(245,158,11,0.1)';
-            statutBadge.style.color = '#d97706';
-        } else {
-            statutBadge.textContent = 'Disponible';
-            statutBadge.style.background = 'rgba(34,197,94,0.1)';
-            statutBadge.style.color = '#16a34a';
-        }
-    }
-    var blocAnalyser = document.getElementById('essai-action-analyser');
-    var blocEpuise = document.getElementById('essai-action-epuise');
-    if (blocAnalyser) blocAnalyser.style.display = epuise ? 'none' : 'block';
-    if (blocEpuise) blocEpuise.style.display = epuise ? 'block' : 'none';
-    // Si analyse déjà faite, bloquer le bouton analyser aussi
-    if (nb >= 1) {
-        var btnNav = document.getElementById('nav-analyser');
-        if (btnNav) {
-            btnNav.onclick = function(e) {
-                e.preventDefault();
-                ouvrirUpgrade('Votre analyse gratuite a été utilisée');
-            };
-            btnNav.style.opacity = '0.4';
-        }
-    }
-}
-
-function mettreAJourCompteurPlan() {
-    var plan = utilisateur.plan || 'essai';
-    var limite = plan === 'starter' ? 10 : -1;
-    var now = new Date();
-    var debut = new Date(now.getFullYear(), now.getMonth(), 1);
-    var nb = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
-    if (limite === -1) {
-        document.getElementById('compteur-analyses').textContent = nb + ' analyse(s) ce mois, illimité';
-        document.getElementById('jauge-analyses').style.width = '10%';
-    } else {
-        document.getElementById('compteur-analyses').textContent = nb + '/' + limite + ' analyses ce mois';
-        document.getElementById('jauge-analyses').style.width = Math.min(100, Math.round(nb / limite * 100)) + '%';
-    }
-}
-
-function scoreClasse(s) { return s >= 70 ? 'score-vert' : s >= 40 ? 'score-orange' : 'score-rouge'; }
-function scoreCouleur(s) { return s >= 70 ? 'var(--vert)' : s >= 40 ? 'var(--orange)' : 'var(--rouge)'; }
-
-function afficherApercuAnalyses() {
-    var zone = document.getElementById('apercu-analyses');
-    var recos = document.getElementById('apercu-recos');
-    if (analysesCache.length === 0) {
-        zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse</div><div class="vide-desc">Analysez votre premier document pour voir les résultats ici.</div></div>';
-        recos.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div></div>';
-        return;
-    }
-    zone.innerHTML = analysesCache.slice(0,4).map(function(a) {
-        var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'short',year:'numeric'});
-        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ', ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '">' + (a.score||'—') + '</div></div>';
-    }).join('');
-    var d = analysesCache[0];
-    if (d && d.recommandations && d.recommandations.length > 0) {
-        recos.innerHTML = d.recommandations.slice(0,4).map(function(r) { return '<div class="reco-item">' + r + '</div>'; }).join('');
-    } else {
-        recos.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="vide-titre">Aucune recommandation</div></div>';
-    }
-}
-
-function telechargerPDFHistorique(idx) {
-    var analyseData = analysesCache[idx];
-    if (!analyseData) return;
-    if (typeof window.jspdf === 'undefined') {
-        afficherMsg('msg-analyse', 'PDF en cours de chargement, réessayez.', false);
-        return;
-    }
-    genererPDFAudilix(analyseData, 'rapport-audilix');
-}
-
-function afficherHistorique() {
-    var zone = document.getElementById('liste-historique');
-    if (analysesCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div><div class="vide-titre">Aucune analyse pour l\'instant</div><div class="vide-desc">Vos analyses apparaîtront ici.</div></div>'; return; }
-    zone.innerHTML = analysesCache.map(function(a, idx) {
-        var date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        var aIdx = JSON.stringify(a).replace(/'/g, '&apos;');
-        return '<div class="analyse-ligne"><div class="analyse-type-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="analyse-nom">' + (a.nom_fichier||'Document') + '</div><div class="analyse-date">' + date + ' &middot; ' + (a.type_document||'Document') + '</div></div><div class="analyse-score ' + scoreClasse(a.score) + '" style="margin-right:8px;">' + (a.score||'&mdash;') + '/100</div><button onclick="telechargerPDFHistorique(' + idx + ')" title="T&eacute;l&eacute;charger PDF" style="background:transparent;border:1px solid rgba(11,37,69,0.15);border-radius:5px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#0B2545;transition:all .2s;white-space:nowrap;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></div>';
-    }).join('');
-}
-
-function afficherMesDocuments() {
-    var zone = document.getElementById('liste-mes-documents');
-    if (docsCache.length === 0) { zone.innerHTML = '<div class="vide"><div class="vide-icone"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gris)" stroke-width="1.5" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="vide-titre">Aucun document généré</div><div class="vide-desc">Vos documents apparaîtront ici.</div></div>'; return; }
-    zone.innerHTML = docsCache.map(function(d) {
-        var date = new Date(d.created_at).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
-        return '<div class="doc-genere"><div class="doc-genere-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div style="flex:1"><div class="doc-genere-titre">' + (d.titre||d.type_document||'Document') + '</div><div class="doc-genere-date">' + date + '</div></div><div class="doc-genere-actions"><button class="doc-btn-action doc-btn-voir" onclick=\'voirDocument(' + JSON.stringify(JSON.stringify(d)) + ')\'>Voir</button><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerDoc(' + JSON.stringify(d.contenu||'').replace(/'/g,'&#39;') + ', \'' + (d.titre||'document').replace(/'/g,'&#39;') + '\')">Télécharger</button></div></div>';
-    }).join('');
-}
-
-// ── NAVIGATION ──
-var titresPages = {
-    essai:"Mon essai gratuit",
-    accueil:"Vue d'ensemble", analyser:"Analyser un document", historique:"Historique des analyses",
-    generer:"Générer un document", "mes-documents":"Mes documents", assistant:"Assistant conformité",
-    clauses:"Détection de clauses", registre:"Registre des traitements RGPD", parametres:"Paramètres"
-};
-
-function afficherPage(id, btn) {
-    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    var page = document.getElementById('page-' + id);
-    if (page) page.classList.add('active');
-    document.getElementById('titre-page').textContent = titresPages[id] || id;
-    document.querySelectorAll('.nav-lien').forEach(function(l) { l.classList.remove('actif'); });
-    if (btn) {
-        btn.classList.add('actif');
-    } else {
-        var navBtn = document.getElementById('nav-' + id);
-        if (navBtn) navBtn.classList.add('actif');
-    }
-    // Pré-sélectionner le premier doc quand on arrive sur Générer
-    if (id === 'generer') {
-        var cartes = document.querySelectorAll('#page-generer .doc-carte');
-        cartes.forEach(function(c) { c.style.borderColor = ''; c.style.background = ''; });
-        if (cartes.length > 0) {
-            cartes[0].style.borderColor = 'var(--gold)';
-            cartes[0].style.background = 'var(--gold-pale)';
-        }
-        typeDocChoisi = 'confidentialite';
-        document.getElementById('btn-generer').disabled = false;
-    }
-    window.scrollTo(0, 0);
-}
-
-// ── UPLOAD ANALYSE ──
-function selectionnerFichier(fichier) {
-    if (!fichier) return;
-    fichierCourant = fichier;
-    document.getElementById('zone-upload').style.display = 'none';
-    document.getElementById('fichier-affiche').classList.add('visible');
-    document.getElementById('fichier-nom').textContent = fichier.name;
-    document.getElementById('fichier-taille').textContent = (fichier.size/1024).toFixed(0) + ' Ko';
-    document.getElementById('btn-lancer').disabled = false;
-}
-
-function supprimerFichier() {
-    fichierCourant = null;
-    document.getElementById('zone-upload').style.display = 'block';
-    document.getElementById('fichier-affiche').classList.remove('visible');
-    document.getElementById('input-fichier').value = '';
-    document.getElementById('btn-lancer').disabled = true;
-    document.getElementById('etat-vide-analyse').style.display = 'block';
-    document.getElementById('chargement-analyse').classList.remove('visible');
-    document.getElementById('resultat-zone').classList.remove('visible');
-}
-
-function deposerFichier(e) {
+function dragOver(e) { e.preventDefault(); document.getElementById('upload-box').classList.add('dragover'); }
+function dragLeave(e) { document.getElementById('upload-box').classList.remove('dragover'); }
+function drop(e) {
     e.preventDefault();
-    document.getElementById('zone-upload').classList.remove('survol');
-    var f = e.dataTransfer.files[0];
-    if (f) selectionnerFichier(f);
+    document.getElementById('upload-box').classList.remove('dragover');
+    var files = e.dataTransfer.files;
+    if (files && files[0]) {
+        fichierActuel = files[0];
+        document.getElementById('file-name').textContent = fichierActuel.name;
+        document.getElementById('file-selected').classList.add('visible');
+        document.getElementById('btn-analyser').style.display = 'inline-block';
+    }
+}
+
+function animerSteps() {
+    var steps = ['step-1','step-2','step-3','step-4'];
+    var i = 0;
+    var interval = setInterval(function() {
+        if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
+        if (i < steps.length) {
+            document.getElementById(steps[i]).classList.add('active');
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 800);
 }
 
 async function lancerAnalyse() {
-    if (!fichierCourant || !utilisateur) return;
-    // Bloquer si essai et déjà 1 analyse
-    if ((utilisateur.plan || 'essai') === 'essai') {
-        var now = new Date();
-        var debut = new Date(now.getFullYear(), now.getMonth(), 1);
-        var nbEssai = analysesCache.filter(function(a) { return new Date(a.created_at) >= debut; }).length;
-        if (nbEssai >= 1) {
-            ouvrirUpgrade('Votre analyse gratuite a été utilisée');
-            return;
-        }
+    if (!fichierActuel) return;
+
+    // Vérifier si essai déjà utilisé
+    if (localStorage.getItem('audilix_essai_utilise')) {
+        document.getElementById('zone-upload').style.display = 'none';
+        document.getElementById('essai-epuise').style.display = 'block';
+        return;
     }
-    document.getElementById('etat-vide-analyse').style.display = 'none';
-    document.getElementById('chargement-analyse').classList.add('visible');
-    document.getElementById('resultat-zone').classList.remove('visible');
+
+    // Lancer l'analyse
+    document.getElementById('zone-upload').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    animerSteps();
 
     var formData = new FormData();
-    formData.append('document', fichierCourant);
-    formData.append('userId', utilisateur.id);
-    formData.append('plan', utilisateur.plan || 'essai');
-    formData.append('planUtilisateur', utilisateur.plan || 'essai');
+    formData.append('document', fichierActuel);
+    formData.append('userId', 'essai_gratuit');
+    formData.append('planUtilisateur', 'gratuit');
 
     try {
-        var res = await fetch(BACKEND + '/api/analyser-document', { method:'POST', headers: authHeaders(), body: formData });
-        var data = await res.json();
-        document.getElementById('chargement-analyse').classList.remove('visible');
-
-        if (!res.ok) {
-            if (data.limitAtteinte) {
-                var corps = document.querySelector('#carte-resultat-analyse .carte-corps');
-                corps.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:36px;margin-bottom:16px;">📊</div><h3 style="font-size:20px;color:var(--navy-dark);margin-bottom:10px;">Limite mensuelle atteinte</h3><p style="font-size:14px;color:var(--gris);margin-bottom:8px;line-height:1.7;">Vous avez utilisé vos <strong>10 analyses</strong> du mois.</p><p style="font-size:13px;color:var(--rouge);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:6px;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Chaque document non analysé est un risque non couvert.</p><a href="pricing.html" style="display:inline-block;background:var(--gold);color:var(--navy-dark);padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;">Passer à Business, illimité →</a></div>';
-            } else {
-                afficherMsg('msg-analyse', data.error || 'Erreur lors de l\'analyse.', 'erreur');
-                document.getElementById('etat-vide-analyse').style.display = 'block';
-            }
-            return;
-        }
-
-        afficherResultatAnalyse(data);
-        await chargerDonnees();
-    } catch(e) {
-        document.getElementById('chargement-analyse').classList.remove('visible');
-        document.getElementById('etat-vide-analyse').style.display = 'block';
-        afficherMsg('msg-analyse', 'Erreur de connexion. Vérifiez votre connexion.', 'erreur');
-    }
-}
-
-function afficherResultatAnalyse(data) {
-    dernierRapport = data; // Sauvegarder pour le PDF
-    var score = data.score || 0;
-    var couleur = scoreCouleur(score);
-    document.getElementById('resultat-cercle').style.borderColor = couleur;
-    document.getElementById('resultat-score-num').textContent = score;
-    document.getElementById('resultat-score-num').style.color = couleur;
-    document.getElementById('resultat-type').textContent = data.type_document || data.nomFichier || 'Document';
-    document.getElementById('resultat-resume').textContent = data.resume || '';
-
-    var problemes = data.problemes || [];
-    document.getElementById('liste-problemes').innerHTML = problemes.length > 0
-        ? problemes.map(function(p) { return '<div class="probleme-item ' + (p.gravite||'mineur') + '"><div class="probleme-point"></div><div><div class="probleme-titre">' + (p.titre||'') + '</div><div class="probleme-desc">' + (p.description||'') + '</div>' + (p.article_reference ? '<div class="probleme-ref">Réf : ' + p.article_reference + '</div>' : '') + '</div></div>'; }).join('')
-        : '<div style="font-size:13px;color:var(--vert);">Aucun problème majeur détecté ✓</div>';
-
-    document.getElementById('liste-positifs').innerHTML = (data.points_positifs||[]).map(function(p) { return '<div class="positif-item">' + p + '</div>'; }).join('') || '<div style="font-size:13px;color:var(--gris);">—</div>';
-    document.getElementById('liste-recos').innerHTML = (data.recommandations||[]).map(function(r) { return '<div class="reco-item">' + r + '</div>'; }).join('') || '<div style="font-size:13px;color:var(--gris);">Aucune recommandation</div>';
-    document.getElementById('resultat-zone').classList.add('visible');
-}
-
-// ── GÉNÉRATION ──
-function choisirTypeDoc(type, el) {
-    typeDocChoisi = type;
-    document.querySelectorAll('.doc-carte').forEach(function(c) { c.style.borderColor=''; c.style.background=''; });
-    el.style.borderColor = 'var(--gold)';
-    el.style.background = 'var(--gold-pale)';
-    document.getElementById('btn-generer').disabled = false;
-}
-
-async function genererDocument() {
-    if (!typeDocChoisi) return;
-    document.getElementById('etat-vide-doc').style.display = 'none';
-    document.getElementById('chargement-doc').classList.add('visible');
-    document.getElementById('apercu-doc').style.display = 'none';
-    try {
-        var res = await fetch(BACKEND + '/api/generer-document', {
-            method:'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ type:typeDocChoisi, entreprise:document.getElementById('gen-entreprise').value.trim(), activite:document.getElementById('gen-activite').value.trim(), userId:utilisateur.id, plan:utilisateur.plan||'essai' })
-        });
-        var data = await res.json();
-        document.getElementById('chargement-doc').classList.remove('visible');
-        if (!res.ok) { afficherMsg('msg-generer', data.error||'Erreur lors de la génération.', 'erreur'); document.getElementById('etat-vide-doc').style.display='block'; return; }
-        docGenereContenu = data.contenu || '';
-        document.getElementById('contenu-doc-apercu').textContent = docGenereContenu;
-        document.getElementById('apercu-doc').style.display = 'block';
-        await chargerDonnees();
-    } catch(e) {
-        document.getElementById('chargement-doc').classList.remove('visible');
-        document.getElementById('etat-vide-doc').style.display = 'block';
-        afficherMsg('msg-registre', 'Erreur de connexion. Vérifiez votre connexion.', 'erreur');
-    }
-}
-
-function copierDocument() { navigator.clipboard.writeText(docGenereContenu).then(function() { /* copié */; }); }
-function telechargerDocument() { telechargerDoc(docGenereContenu, 'document-audilix'); }
-
-function telechargerDoc(contenu, nom) {
-    var blob = new Blob([contenu], {type:'text/plain;charset=utf-8'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.download = (nom||'document') + '.txt'; a.click();
-    URL.revokeObjectURL(url);
-}
-
-function voirDocument(docJson) {
-    var doc = typeof docJson === 'string' ? JSON.parse(docJson) : docJson;
-    document.getElementById('modal-doc-titre').textContent = doc.titre || 'Document';
-    docGenereModalContenu = doc.contenu || '';
-    document.getElementById('modal-doc-contenu').textContent = docGenereModalContenu;
-    document.getElementById('modal-doc').classList.add('visible');
-}
-function fermerModal() { document.getElementById('modal-doc').classList.remove('visible'); }
-function copierModalDoc() { navigator.clipboard.writeText(docGenereModalContenu).then(function() { /* copié */; }); }
-function telechargerModalDoc() { telechargerDoc(docGenereModalContenu, 'document-audilix'); }
-
-// ── ASSISTANT ──
-async function envoyerAssistant() {
-    var champ = document.getElementById('champ-assistant');
-    var msg = champ.value.trim();
-    if (!msg) return;
-    champ.value = '';
-    var zone = document.getElementById('messages-assistant');
-    var divU = document.createElement('div');
-    divU.className = 'ass-client'; divU.textContent = msg; zone.appendChild(divU); zone.scrollTop = zone.scrollHeight;
-    assistantHistorique.push({role:'user', content:msg});
-    try {
-        var res = await fetch(BACKEND + '/api/chat', { method:'POST', headers: jsonHeaders(), body: JSON.stringify({ message:msg, history:assistantHistorique, userId:utilisateur.id, plan:utilisateur.plan||'essai' }) });
-        var data = await res.json();
-        var rep = data.reponse || data.reply || 'Une erreur est survenue.';
-        var divB = document.createElement('div');
-        divB.className = 'ass-bot'; divB.textContent = rep; zone.appendChild(divB); zone.scrollTop = zone.scrollHeight;
-        assistantHistorique.push({role:'assistant', content:rep});
-    } catch(e) {
-        var divE = document.createElement('div');
-        divE.className = 'ass-bot'; divE.textContent = 'Erreur de connexion. Réessayez.'; zone.appendChild(divE);
-    }
-}
-function questionAssistant(msg) { document.getElementById('champ-assistant').value = msg; envoyerAssistant(); }
-document.getElementById('champ-assistant').addEventListener('keypress', function(e) { if (e.key==='Enter') envoyerAssistant(); });
-
-// ── CLAUSES ──
-var fichierClause = null;
-function selectionnerFichierClause(f) {
-    if (!f) return;
-    fichierClause = f;
-    document.getElementById('zone-upload-clause').style.display = 'none';
-    document.getElementById('fichier-clause-affiche').classList.add('visible');
-    document.getElementById('fichier-clause-nom').textContent = f.name;
-    document.getElementById('fichier-clause-taille').textContent = (f.size/1024).toFixed(0) + ' Ko';
-    document.getElementById('btn-clauses').disabled = false;
-}
-function supprimerFichierClause() {
-    fichierClause = null;
-    document.getElementById('zone-upload-clause').style.display = 'block';
-    document.getElementById('fichier-clause-affiche').classList.remove('visible');
-    document.getElementById('input-clause').value = '';
-    document.getElementById('btn-clauses').disabled = true;
-    document.getElementById('resultat-clauses').style.display = 'none';
-    document.getElementById('etat-vide-clauses').style.display = 'block';
-}
-async function analyserClauses() {
-    if (!fichierClause) return;
-    document.getElementById('etat-vide-clauses').style.display = 'none';
-    document.getElementById('chargement-clauses').classList.add('visible');
-    document.getElementById('resultat-clauses').style.display = 'none';
-    var fd = new FormData();
-    fd.append('document', fichierClause);
-    fd.append('userId', utilisateur.id);
-    try {
-        var res = await fetch(BACKEND + '/api/detecter-clauses', { method:'POST', headers: authHeaders(), body: fd });
-        var data = await res.json();
-        document.getElementById('chargement-clauses').classList.remove('visible');
-        if (!res.ok) { afficherMsg('msg-clauses', data.error||'Erreur lors de l\'analyse.', 'erreur'); document.getElementById('etat-vide-clauses').style.display='block'; return; }
-        var html = '<div style="margin-bottom:16px;"><div style="font-size:22px;font-weight:700;color:' + scoreCouleur(data.score_equite) + ';">' + data.score_equite + '/100</div><div style="font-size:12px;color:var(--gris);">Score d\'équité du contrat</div></div>';
-        html += '<p style="font-size:13px;color:var(--gris);margin-bottom:16px;">' + (data.resume||'') + '</p>';
-        if (data.clauses_abusives && data.clauses_abusives.length > 0) {
-            html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);margin-bottom:8px;">Clauses problématiques</div>';
-            data.clauses_abusives.forEach(function(c) { html += '<div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:7px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--navy-dark);margin-bottom:4px;">' + (c.clause||'') + '</div><div style="font-size:12px;color:var(--gris);">' + (c.probleme||'') + '</div>' + (c.reference_legale ? '<div style="font-size:10px;color:var(--gold);margin-top:4px;">Réf : ' + c.reference_legale + '</div>' : '') + '</div>'; });
-        }
-        if (data.clauses_manquantes && data.clauses_manquantes.length > 0) {
-            html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin:12px 0 8px;">Clauses manquantes</div>';
-            data.clauses_manquantes.forEach(function(c) { html += '<div style="display:flex;gap:8px;font-size:13px;color:var(--navy-dark);margin-bottom:6px;"><span style="color:var(--orange);">!</span>' + c + '</div>'; });
-        }
-        document.getElementById('resultat-clauses').innerHTML = html;
-        document.getElementById('resultat-clauses').style.display = 'block';
-    } catch(e) {
-        document.getElementById('chargement-clauses').classList.remove('visible');
-        document.getElementById('etat-vide-clauses').style.display = 'block';
-        afficherMsg('msg-clauses', 'Erreur de connexion.', 'erreur');
-    }
-}
-
-// ── REGISTRE ──
-async function genererRegistre() {
-    var entreprise = document.getElementById('reg-entreprise').value.trim();
-    var activite = document.getElementById('reg-activite').value.trim();
-    if (!entreprise) { afficherMsg('msg-registre', 'Veuillez renseigner le nom de votre entreprise.', 'erreur'); return; }
-    if (!activite) { afficherMsg('msg-registre', "Veuillez sélectionner un secteur d'activité.", 'erreur'); return; }
-    var responsable = document.getElementById('reg-responsable').value.trim();
-    var destinataires = document.getElementById('reg-destinataires').value.trim();
-    var pays = document.getElementById('reg-pays').value;
-    var donneesCollectees = [];
-    ['identite','contact','paiement','navigation','sante','pro'].forEach(function(k) {
-        var el = document.getElementById('reg-data-'+k);
-        if (el && el.checked) donneesCollectees.push(el.value);
-    });
-    document.getElementById('etat-vide-registre').style.display = 'none';
-    document.getElementById('chargement-registre').classList.add('visible');
-    document.getElementById('resultat-registre').style.display = 'none';
-    try {
-        var res = await fetch(BACKEND + '/api/registre-traitements', {
-            method:'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ entreprise, activite, responsable, destinataires, pays, donneesCollectees, userId: utilisateur.id, plan: utilisateur.plan || 'essai' })
-        });
-        var data = await res.json();
-        document.getElementById('chargement-registre').classList.remove('visible');
-        if (!res.ok) { afficherMsg('msg-registre', data.error||'Erreur lors de la génération.', 'erreur'); document.getElementById('etat-vide-registre').style.display='block'; return; }
-        var html = '<div style="font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">' + (data.titre||'Registre des traitements') + '</div>';
-        html += '<div style="font-size:11px;color:var(--gris);margin-bottom:16px;">Généré le ' + (data.date_creation||new Date().toLocaleDateString('fr-FR')) + '</div>';
-        if (data.traitements && data.traitements.length > 0) {
-            data.traitements.forEach(function(t, i) {
-                html += '<div style="background:var(--creme);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">' + (i+1) + '. ' + (t.nom||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Finalité :</strong> ' + (t.finalite||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Base légale :</strong> ' + (t.base_legale||'') + '</div><div style="font-size:12px;color:var(--gris);margin-bottom:3px;"><strong>Conservation :</strong> ' + (t.duree_conservation||'') + '</div></div>';
-            });
-        }
-        html += '<div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:6px;padding:10px;font-size:12px;color:#8B6914;margin-top:12px;display:flex;align-items:flex-start;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ' + (data.avertissement||'Ce document est fourni à titre informatif. Faites-le valider par un professionnel du droit.') + '</div>';
-        html += '<div style="margin-top:14px;"><button class="doc-btn-action doc-btn-telecharger" onclick="telechargerRegistreGlobal()">Télécharger le registre</button></div>';
-        window._registreData = data;
-        document.getElementById('resultat-registre').innerHTML = html;
-        document.getElementById('resultat-registre').style.display = 'block';
-        await chargerDonnees();
-    } catch(e) {
-        document.getElementById('chargement-registre').classList.remove('visible');
-        document.getElementById('etat-vide-registre').style.display = 'block';
-        afficherMsg('msg-registre', 'Erreur de connexion.', 'erreur');
-    }
-}
-
-function telechargerRegistreGlobal() {
-    if (window._registreData) telechargerDoc(JSON.stringify(window._registreData, null, 2), 'registre-rgpd-audilix');
-}
-
-// ── PARAMÈTRES ──
-function afficherMsg(id, texte, ok) {
-    var el = document.getElementById(id);
-    el.textContent = texte;
-    el.style.color = ok ? 'var(--vert)' : 'var(--rouge)';
-    el.style.display = 'block';
-    setTimeout(function() { el.style.display = 'none'; }, 4000);
-}
-
-async function sauvegarderNom() {
-    var prenom = (document.getElementById('param-prenom') || {}).value || '';
-    var nom = (document.getElementById('param-nom') || {}).value || '';
-    try {
-        var r = await fetch(BACKEND + '/api/user/update-name', {
+        var res = await fetch(BACKEND + '/api/analyser-document', {
             method: 'POST',
-            headers: jsonHeaders(),
-            body: JSON.stringify({ userId: utilisateur.id, firstname: prenom, lastname: nom })
+            body: formData
         });
-        var data = await r.json();
-        if (r.ok) {
-            utilisateur.firstname = prenom; utilisateur.lastname = nom;
-            localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
-            // Mettre à jour l'affichage du nom en sidebar
-            var nomEl = document.getElementById('nom-utilisateur');
-            var nomComplet = (prenom + ' ' + nom).trim();
-            if (nomEl) { nomEl.textContent = nomComplet || utilisateur.email; nomEl.style.background = 'none'; nomEl.style.height = 'auto'; nomEl.style.width = 'auto'; }
-            afficherMsg('msg-nom', 'Nom enregistré.', 'ok');
-        } else {
-            afficherMsg('msg-nom', data.error || 'Erreur.', 'erreur');
-        }
+        var data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'analyse');
+
+        // Marquer l'essai comme utilisé
+
+        // Marquer l'essai comme utilisé
+        localStorage.setItem('audilix_essai_utilise', '1');
+
+        // Afficher les résultats
+        afficherResultats(data);
+
     } catch(e) {
-        afficherMsg('msg-nom', 'Erreur de connexion.', 'erreur');
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('zone-upload').style.display = 'block';
+        afficherMsgEssai('Erreur : ' + e.message + ' — Assurez-vous que votre document contient du texte lisible.', false);
     }
 }
 
-async function changerEmail() {
-    var nouvelEmail = document.getElementById('param-email-new').value.trim();
-    if (!nouvelEmail || !nouvelEmail.includes('@')) { afficherMsg('msg-email', 'Email invalide.', false); return; }
-    try {
-        var res = await fetch(BACKEND + '/api/user/update', {
-            method: 'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ userId: utilisateur.id, email: nouvelEmail })
-        });
-        var data = await res.json();
-        if (res.ok) {
-            utilisateur.email = nouvelEmail;
-            localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
-            document.getElementById('email-utilisateur').textContent = nouvelEmail;
-            afficherMsg('msg-email', 'Email mis à jour.', true);
-            document.getElementById('param-email-new').value = '';
-        } else { afficherMsg('msg-email', data.error || 'Erreur.', false); }
-    } catch(e) { afficherMsg('msg-email', 'Erreur de connexion.', false); }
-}
+function afficherResultats(data) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('resultats').style.display = 'block';
 
-async function changerMotDePasse() {
-    var actuel = document.getElementById('param-mdp-actuel').value;
-    var nouveau = document.getElementById('param-mdp-new').value;
-    var confirm = document.getElementById('param-mdp-confirm').value;
-    if (!actuel || !nouveau) { afficherMsg('msg-mdp', 'Remplissez tous les champs.', false); return; }
-    if (nouveau.length < 8) { afficherMsg('msg-mdp', 'Le mot de passe doit faire au moins 8 caractères.', false); return; }
-    if (nouveau !== confirm) { afficherMsg('msg-mdp', 'Les mots de passe ne correspondent pas.', false); return; }
-    try {
-        var res = await fetch(BACKEND + '/api/user/change-password', {
-            method: 'POST', headers: jsonHeaders(),
-            body: JSON.stringify({ userId: utilisateur.id, ancienMdp: actuel, nouveauMdp: nouveau })
-        });
-        var data = await res.json();
-        if (res.ok) {
-            afficherMsg('msg-mdp', 'Mot de passe modifié.', true);
-            document.getElementById('param-mdp-actuel').value = '';
-            document.getElementById('param-mdp-new').value = '';
-            document.getElementById('param-mdp-confirm').value = '';
-        } else { afficherMsg('msg-mdp', data.error || 'Mot de passe actuel incorrect.', false); }
-    } catch(e) { afficherMsg('msg-mdp', 'Erreur de connexion.', false); }
-}
+    var score = data.score || 50;
+    var problemes = data.problemes || [];
+    var positifs = data.points_positifs || [];
+    var resume = data.resume || '';
 
+    // Score couleur
+    var cercle = document.getElementById('score-cercle');
+    var couleur = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
+    cercle.style.borderColor = couleur;
+    document.getElementById('score-num').style.color = couleur;
+    document.getElementById('score-num').textContent = score;
 
-function confirmerSuppression() {
-    var ok = confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
-    if (!ok) return;
-    var ok2 = confirm('Dernière confirmation — toutes vos données seront définitivement supprimées.');
-    if (!ok2) return;
-    fetch(BACKEND + '/api/user/delete', {
-        method: 'DELETE', headers: jsonHeaders(),
-        body: JSON.stringify({ userId: utilisateur.id })
-    }).then(function() {
-        localStorage.removeItem('audilix_token');
-        localStorage.removeItem('audilix_user');
-        localStorage.removeItem('audilix_souvenir');
-        window.location.href = 'index.html';
-    }).catch(function() {
-        afficherMsg('msg-suppression', 'Erreur lors de la suppression. Contactez contact.audilix@gmail.com', 'erreur');
+    // Titre selon score
+    var titre = score >= 70 ? 'Bonne conformité générale' : score >= 40 ? 'Des risques importants détectés' : 'Risques critiques, action requise';
+    document.getElementById('score-titre').textContent = titre;
+    document.getElementById('score-resume').textContent = resume;
+
+    // Compteurs
+    var critiques = problemes.filter(function(p) { return p.gravite === 'critique'; });
+    var importants = problemes.filter(function(p) { return p.gravite === 'important'; });
+    var mineurs = problemes.filter(function(p) { return p.gravite === 'mineur'; });
+    document.getElementById('nb-critiques').textContent = critiques.length;
+    document.getElementById('nb-importants').textContent = importants.length;
+    document.getElementById('nb-mineurs').textContent = mineurs.length;
+    document.getElementById('badge-total').textContent = problemes.length + ' problème(s)';
+
+    // Afficher 2 premiers problèmes
+    var visibles = document.getElementById('problemes-visibles');
+    var shown = problemes.slice(0, 2);
+    shown.forEach(function(p) {
+        var el = document.createElement('div');
+        el.className = 'probleme-item';
+        el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+            + '<div><div class="probleme-titre">' + (p.titre || '') + '</div>'
+            + '<div class="probleme-desc">' + (p.description || '') + '</div></div>';
+        visibles.appendChild(el);
     });
+
+    // Problèmes bloqués (le reste)
+    if (problemes.length > 2) {
+        var bloqueEl = document.getElementById('problemes-flous');
+        var bloques = problemes.slice(2);
+        bloques.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'probleme-item';
+            el.style.marginBottom = '10px';
+            el.innerHTML = '<span class="probleme-gravite gravite-' + p.gravite + '">' + p.gravite + '</span>'
+                + '<div><div class="probleme-titre">' + (p.titre || '') + '</div></div>';
+            bloqueEl.appendChild(el);
+        });
+        document.getElementById('bloc-bloque').style.display = 'block';
+    }
+
+    // CTA urgence selon score
+    var tunnel = document.getElementById('tunnel-cta');
+    if (score >= 70) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '📋 ' + problemes.length + ' point(s) à optimiser';
+        tunnel.querySelector('h2').innerHTML = 'Obtenez les corrections complètes<br>et <em>maintenez votre conformité</em>';
+    } else if (score < 40) {
+        tunnel.querySelector('.tunnel-urgence').textContent = '🚨 Risques critiques — action urgente';
+        tunnel.querySelector('h2').innerHTML = 'Votre entreprise est exposée.<br><em>Protégez-vous maintenant.</em>';
+    }
+
+    // Points positifs
+    if (positifs && positifs.length > 0) {
+        var listEl = document.getElementById('positifs-liste');
+        positifs.forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'positif-item';
+            el.textContent = p;
+            listEl.appendChild(el);
+        });
+        document.getElementById('positifs-section').style.display = 'block';
+    }
+
+    // Scroll vers résultats
+    document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Stocker les données d'analyse pour l'inscription
+    window._analyseData = {
+        nom_fichier: fichierActuel ? fichierActuel.name : 'Document',
+        type_document: data.type_document || 'Document',
+        score: data.score || 0,
+        resume: data.resume || '',
+        problemes: data.problemes || [],
+        points_positifs: data.points_positifs || [],
+        recommandations: data.recommandations || []
+    };
 }
 
-// ════════════════════════════════════════
-// GÉNÉRATION PDF — RAPPORT D'ANALYSE
-// ════════════════════════════════════════
 function ajouterHeaderPage(doc, W, M, nomFichier, dateStr) {
     doc.setFillColor(11, 37, 69);
     doc.rect(0, 0, W, 14, 'F');
@@ -1986,116 +875,99 @@ function genererPDFAudilix(d, nomFichierSortie) {
 }
 
 
-function telechargerRapportPDF() {
+function telechargerRapportPDFEssai() {
     if (!dernierRapport) return;
     if (typeof window.jspdf === 'undefined') {
-        afficherMsg('msg-analyse', 'PDF en cours de chargement, réessayez dans 3 secondes.', false);
+        return; // PDF pas encore chargé
         return;
     }
-    genererPDFAudilix(dernierRapport, 'rapport-audilix');
+    genererPDFAudilix(window._analyseData, 'rapport-audilix-essai');
 }
 
-function telechargerDocumentPDF() {
-    if (!docGenereContenu) return;
-    if (typeof window.jspdf === 'undefined') { telechargerDocument(); return; }
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    var W = 210, M = 15, cW = W - M*2;
-    var y = 0;
-    var dateStr = new Date().toLocaleDateString('fr-FR');
 
-    doc.setFillColor(11, 37, 69); doc.rect(0, 0, W, 30, 'F');
-    doc.setFillColor(201, 168, 76); doc.rect(0, 30, W, 0.8, 'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(255,255,255);
-    doc.text('AUDILIX', M, 15);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(201,168,76);
-    doc.text('Document généré automatiquement', M, 23);
-    doc.setTextColor(148,163,184); doc.text(dateStr, W-M, 23, { align:'right' });
 
-    y = 42;
-    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(30,41,59);
-    var lignes = doc.splitTextToSize(docGenereContenu, cW);
-    lignes.forEach(function(l) {
-        if (y > 276) { doc.addPage(); y = 20; }
-        doc.text(l, M, y); y += 5.2;
-    });
 
-    y += 6;
-    if (y > 268) { doc.addPage(); y = 20; }
-    doc.setDrawColor(226,232,240); doc.setLineWidth(0.15);
-    doc.line(M, y, W-M, y); y += 6;
-    doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
-    var aw = doc.splitTextToSize("Ce document est généré automatiquement à titre informatif. Faites-le valider par un professionnel du droit pour les situations à fort enjeu.", cW);
-    doc.text(aw, M, y);
 
-    var nb = doc.getNumberOfPages();
-    for (var i = 1; i <= nb; i++) {
-        doc.setPage(i);
-        doc.setFillColor(248,250,252); doc.rect(0, 285, W, 12, 'F');
-        doc.setDrawColor(226,232,240); doc.line(0, 285, W, 285);
-        doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(148,163,184);
-        doc.text('Audilix — audilix.com', M, 292);
-        doc.text('Page ' + i + ' / ' + nb, W-M, 292, { align:'right' });
+async function inscrireEssai() {
+    var email = document.getElementById('essai-email').value.trim();
+    if (!email || !email.includes('@')) {
+        document.getElementById('essai-email').style.borderColor = 'var(--rouge)';
+        document.getElementById('essai-email').placeholder = 'Email invalide, réessayez';
+        return;
     }
-    doc.save('document-audilix.pdf');
+
+    document.getElementById('form-inscription').style.display = 'none';
+    document.getElementById('form-chargement').style.display = 'block';
+
+    try {
+        var res = await fetch(BACKEND + '/api/essai-inscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                analyseData: window._analyseData || null
+            })
+        });
+        var data = await res.json();
+        document.getElementById('form-chargement').style.display = 'none';
+
+        if (!res.ok) {
+            document.getElementById('form-inscription').style.display = 'block';
+            afficherMsgEssai('Une erreur est survenue. Réessayez.', false);
+            return;
+        }
+
+        if (data.dejaClient) {
+            document.getElementById('form-deja-client').style.display = 'block';
+            return;
+        }
+
+        // Succès — sauvegarder token et user
+        if (data.token && data.user) {
+            localStorage.setItem('audilix_token', data.token);
+            localStorage.setItem('audilix_user', JSON.stringify(data.user));
+            localStorage.setItem('audilix_souvenir', 'oui');
+        }
+
+        document.getElementById('email-confirme').textContent = email;
+        document.getElementById('form-succes').style.display = 'block';
+
+    } catch(e) {
+        document.getElementById('form-chargement').style.display = 'none';
+        document.getElementById('form-inscription').style.display = 'block';
+        afficherMsgEssai('Erreur de connexion. Réessayez.', false);
+    }
 }
 
+// Permettre validation avec Entrée
+document.addEventListener('DOMContentLoaded', function() {
+    var emailInput = document.getElementById('essai-email');
+    if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') inscrireEssai();
+        });
+    }
+});
 
-function seDeconnecter() {
-    localStorage.removeItem('audilix_token');
-    localStorage.removeItem('audilix_user');
-    localStorage.removeItem('audilix_souvenir');
-    window.location.href = 'login.html';
+function recommencer() {
+    document.getElementById('resultats').style.display = 'none';
+    document.getElementById('zone-upload').style.display = 'block';
+    document.getElementById('problemes-visibles').innerHTML = '';
+    document.getElementById('problemes-flous').innerHTML = '';
+    document.getElementById('positifs-liste').innerHTML = '';
+    document.getElementById('bloc-bloque').style.display = 'none';
+    document.getElementById('positifs-section').style.display = 'none';
+    document.getElementById('btn-analyser').style.display = 'none';
+    document.getElementById('file-selected').classList.remove('visible');
+    document.getElementById('file-input').value = '';
+    fichierActuel = null;
+    // Reset loading steps
+    ['step-1','step-2','step-3','step-4'].forEach(function(s, i) {
+        var el = document.getElementById(s);
+        el.classList.toggle('active', i === 0);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-<script src="cookies.js"></script>
-
-<!-- MODALE UPGRADE -->
-<div class="upgrade-overlay" id="upgrade-overlay" onclick="if(event.target===this)fermerUpgrade()">
-  <div class="upgrade-modal">
-    <button class="upgrade-modal-close" onclick="fermerUpgrade()">✕</button>
-    <h2 id="upgrade-titre">Passez à la vitesse supérieure</h2>
-    <p id="upgrade-desc">Cette fonctionnalité n'est pas disponible en essai gratuit. Choisissez un plan pour y accéder.</p>
-    <div class="upgrade-plans">
-      <div class="up-plan">
-        <div class="up-plan-name">Starter</div>
-        <div class="up-plan-price">69€<span> / mois</span></div>
-        <ul class="up-plan-features">
-          <li>10 analyses par mois</li>
-          <li>Score de conformité sur 100</li>
-          <li>3 documents générés</li>
-          <li>Alertes email</li>
-          <li>Espace de suivi</li>
-        </ul>
-        <button onclick="fermerUpgrade();payer('starter')" class="up-btn up-btn-outline">Choisir Starter</button>
-      </div>
-      <div class="up-plan vedette">
-        <div class="up-plan-name">Business</div>
-        <div class="up-plan-price">149€<span> / mois</span></div>
-        <ul class="up-plan-features">
-          <li>Analyses illimitées</li>
-          <li>Détection des clauses abusives</li>
-          <li>Documents corrigés automatiquement</li>
-          <li>Registre RGPD automatique</li>
-          <li>Assistant disponible à toute heure</li>
-          <li>Veille réglementaire automatique</li>
-        </ul>
-        <button onclick="fermerUpgrade();payer('business')" class="up-btn up-btn-gold">Choisir Business</button>
-      </div>
-      <div class="up-plan">
-        <div class="up-plan-name">Pro</div>
-        <div class="up-plan-price">299€<span> / mois</span></div>
-        <ul class="up-plan-features">
-          <li>Tout Business inclus</li>
-          <li>Plusieurs entreprises gérées</li>
-          <li>Documents mis à jour si loi change</li>
-          <li>Rapports PDF professionnels</li>
-          <li>Certificat de conformité Audilix</li>
-        </ul>
-        <button onclick="fermerUpgrade();payer('expert')" class="up-btn up-btn-outline">Choisir Pro</button>
-      </div>
-    </div>
-  </div>
-</div>
 </body>
 </html>
