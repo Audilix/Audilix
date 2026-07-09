@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions Générales de Vente — Audilix</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2545;--gold:#C9A84C;--cream:#FAF8F4;--gray:#6B7280;--border:rgba(11,37,69,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--navy);-webkit-font-smoothing:antialiased}
+h1,h2{font-family:'Playfair Display',serif}
+nav{background:white;border-bottom:1px solid var(--border);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo img{height:36px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-link{color:var(--gray);font-size:13px;text-decoration:none}
+.nav-link:hover{color:var(--navy)}
+.nav-btn{background:var(--gold);color:var(--navy);padding:9px 20px;border-radius:5px;font-size:13px;font-weight:700;text-decoration:none}
+.container{max-width:780px;margin:64px auto;padding:0 24px 80px}
+.page-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:36px;font-weight:700;margin-bottom:12px}
+.page-header p{font-size:14px;color:var(--gray)}
+.section{margin-bottom:36px}
+.section h2{font-size:18px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--navy)}
+.section p{font-size:14px;line-height:1.8;color:#374151;margin-bottom:10px}
+.section ul{padding-left:20px;margin-bottom:10px}
+.section ul li{font-size:14px;line-height:1.8;color:#374151;margin-bottom:4px}
+.highlight{background:var(--cream);border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 6px 6px 0;margin:16px 0}
+.highlight p{margin:0;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+table th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-size:13px;font-weight:600}
+table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border);color:#374151}
+table tr:nth-child(even) td{background:var(--cream)}
+footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padding:24px;font-size:12px}
+footer a{color:rgba(255,255,255,0.5);text-decoration:none}
+@media(max-width:640px){.container{padding:0 16px 60px}.page-header h1{font-size:26px}nav{padding:0 16px}}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-logo"><a href="index.html"><img src="logo.png" alt="Audilix"></a></div>
+<div class="nav-right">
+<a href="index.html" class="nav-link">Accueil</a>
+<a href="pricing.html" class="nav-link">Tarifs</a>
+<a href="login.html" class="nav-btn">Connexion</a>
+</div>
+</nav>
+
+<div class="container">
+
+<div class="page-header">
+<h1>Conditions Générales de Vente</h1>
+<p>Dernière mise à jour : juillet 2026 · En vigueur à compter du 1er juillet 2026</p>
+</div>
+
+<div class="section">
+<h2>1. Identification du vendeur</h2>
+<p>Le service Audilix est édité et commercialisé par :</p>
+<div class="highlight">
+<p><strong>Mohamed Azouzi</strong> — Micro-entrepreneur<br>
+SIRET : 10452924300016<br>
+Ariège (09), France<br>
+Email : contact@audilix.com<br>
+Site : audilix.com</p>
+</div>
+</div>
+
+<div class="section">
+<h2>2. Objet</h2>
+<p>Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des ventes de services numériques réalisées via le site audilix.com entre Audilix (ci-après "le Prestataire") et toute personne physique ou morale effectuant un achat (ci-après "le Client").</p>
+<p>Tout accès à un plan payant implique l'acceptation pleine et entière des présentes CGV. Le Client déclare avoir lu et accepté les présentes conditions avant de procéder au paiement.</p>
+</div>
+
+<div class="section">
+<h2>3. Description des services</h2>
+<p>Audilix est un logiciel SaaS (Software as a Service) d'analyse automatisée de conformité réglementaire pour les entreprises françaises. Il permet notamment :</p>
+<ul>
+<li>L'analyse de documents juridiques (CGV, contrats, politiques de confidentialité, mentions légales) par intelligence artificielle</li>
+<li>La détection automatique des non-conformités au regard du RGPD, de la loi Informatique et Libertés, du droit de la consommation et des réglementations applicables</li>
+<li>La génération automatique de documents juridiques conformes (politique de confidentialité, mentions légales, CGV types)</li>
+<li>Un assistant de conformité disponible en ligne</li>
+<li>La veille réglementaire automatique</li>
+</ul>
+<div class="highlight">
+<p><strong>Important :</strong> les analyses et documents générés par Audilix le sont à titre informatif et ne constituent pas un avis juridique professionnel. Ils ne remplacent pas l'intervention d'un avocat ou d'un juriste pour les situations à fort enjeu.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>4. Plans et tarifs</h2>
+<p>Les tarifs en vigueur sont les suivants (hors taxes, TVA non applicable — article 293 B du CGI) :</p>
+<table>
+<tr><th>Plan</th><th>Tarif mensuel</th><th>Engagement</th></tr>
+<tr><td>Starter</td><td>69 €</td><td>Sans engagement, mensuel</td></tr>
+<tr><td>Business</td><td>149 €</td><td>Sans engagement, mensuel</td></tr>
+<tr><td>Pro</td><td>299 €</td><td>Sans engagement, mensuel</td></tr>
+</table>
+<p>Les prix sont libellés en euros. Audilix se réserve le droit de modifier ses tarifs à tout moment, sous réserve d'en informer le Client par email avec un préavis de 30 jours.</p>
+</div>
+
+<div class="section">
+<h2>5. Modalités de paiement</h2>
+<p>Le paiement est effectué en ligne et en toute sécurité via la plateforme Stripe (Stripe Inc., certifiée PCI-DSS). Les moyens de paiement acceptés sont : carte bancaire Visa, Mastercard, American Express.</p>
+<p>L'abonnement est facturé mensuellement, à date anniversaire de la souscription. Le prélèvement est automatique jusqu'à résiliation. Aucune donnée bancaire n'est stockée sur les serveurs d'Audilix.</p>
+<p>En cas d'échec de paiement, l'accès au service peut être suspendu après un délai de 7 jours et une notification par email.</p>
+</div>
+
+<div class="section">
+<h2>6. Durée — Résiliation</h2>
+<p>Les abonnements Audilix sont sans engagement et sans durée minimale. Le Client peut résilier à tout moment depuis son espace client ou en contactant contact@audilix.com.</p>
+<p>La résiliation prend effet à la fin de la période mensuelle en cours. Aucun remboursement n'est effectué pour la période restante après résiliation, sauf dans le cadre du droit de rétractation (article 8).</p>
+</div>
+
+<div class="section">
+<h2>7. Accès au service</h2>
+<p>L'accès au service est personnel et non cessible. Le Client s'engage à ne pas partager ses identifiants de connexion. Chaque compte est associé à une seule entreprise sauf mention contraire dans le plan souscrit.</p>
+<p>Audilix s'engage à assurer une disponibilité du service de 99 % par mois, hors maintenances planifiées communiquées au préalable. En cas d'indisponibilité prolongée, le Client peut contacter contact@audilix.com.</p>
+</div>
+
+<div class="section">
+<h2>8. Droit de rétractation</h2>
+<p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques pleinement exécutés avant la fin du délai de rétractation, avec l'accord préalable du consommateur.</p>
+<p>Toutefois, si aucune analyse n'a été effectuée dans les 14 jours suivant la souscription, le Client particulier (non professionnel) peut exercer son droit de rétractation en contactant contact@audilix.com. Le remboursement sera effectué dans un délai de 14 jours.</p>
+</div>
+
+<div class="section">
+<h2>9. Données personnelles</h2>
+<p>Les données collectées lors de la souscription (nom, email, informations de paiement via Stripe) sont traitées conformément au Règlement Général sur la Protection des Données (RGPD) et à la politique de confidentialité d'Audilix disponible à l'adresse : <a href="confidentialite.html" style="color:var(--navy);font-weight:600;">audilix.com/confidentialite</a>.</p>
+<p>Les documents déposés pour analyse sont traités de manière confidentielle et supprimés des serveurs dans les 24 heures suivant l'analyse.</p>
+</div>
+
+<div class="section">
+<h2>10. Limitation de responsabilité</h2>
+<p>Audilix est un outil d'aide à la conformité basé sur l'intelligence artificielle. Le Prestataire ne peut être tenu responsable :</p>
+<ul>
+<li>Des décisions prises par le Client sur la base des analyses générées</li>
+<li>De l'exactitude à 100 % des analyses au regard de situations juridiques complexes ou spécifiques</li>
+<li>Des conséquences d'une utilisation du service non conforme aux présentes CGV</li>
+<li>Des interruptions de service liées à des tiers (hébergeur, opérateurs réseau)</li>
+</ul>
+<p>La responsabilité d'Audilix est limitée au montant des sommes effectivement versées par le Client au cours des 3 derniers mois précédant le fait générateur.</p>
+</div>
+
+<div class="section">
+<h2>11. Propriété intellectuelle</h2>
+<p>L'ensemble des éléments constitutifs du service Audilix (interface, algorithmes, marque, logo, contenus) sont la propriété exclusive de Mohamed Azouzi. Toute reproduction, représentation ou utilisation non autorisée est interdite.</p>
+<p>Les documents générés par le service à partir des données du Client appartiennent au Client. Le Prestataire conserve uniquement les droits nécessaires à la fourniture du service.</p>
+</div>
+
+<div class="section">
+<h2>12. Droit applicable — Litiges</h2>
+<p>Les présentes CGV sont soumises au droit français. En cas de litige, le Client s'adressera en priorité à Audilix par email à contact@audilix.com pour rechercher une solution amiable.</p>
+<p>À défaut de résolution amiable, les tribunaux compétents seront ceux du ressort du siège du Prestataire, sauf disposition légale contraire applicable aux consommateurs.</p>
+<p>Conformément à l'article L.616-1 du Code de la consommation, le Client consommateur peut recourir gratuitement au service de médiation de la consommation : <a href="https://www.mediation-conso.fr" target="_blank" rel="noopener" style="color:var(--navy);">mediation-conso.fr</a>.</p>
+</div>
+
+<div class="section">
+<h2>13. Contact</h2>
+<p>Pour toute question relative aux présentes CGV ou à votre abonnement :<br>
+<strong>Email :</strong> contact@audilix.com<br>
+<strong>SIRET :</strong> 10452924300016</p>
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Audilix · SIRET 10452924300016 ·
+<a href="mentions.html">Mentions légales</a> ·
+<a href="confidentialite.html">Confidentialité</a> ·
+<a href="pricing.html">Tarifs</a>
+</p>
+</footer>
+
+</body>
+</html>
