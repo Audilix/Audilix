@@ -583,306 +583,222 @@ function genererPDFAudilix(d, nomFichierSortie) {
     if (!d || typeof window.jspdf === 'undefined') return;
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    var W = 210, M = 14, cW = W - M * 2;
+    var W = 210, M = 18, cW = W - M * 2;
     var y = 0;
 
     var score     = typeof d.score === 'number' ? d.score : 0;
-    var problemes = (d.problemes || []).slice(0, 5);
+    var problemes = d.problemes || [];
     var positifs  = d.points_positifs || [];
-    var recos     = (d.recommandations || []).slice(0, 6);
-    var nomDoc    = (d.nomFichier || d.nom_fichier || 'Document').substring(0, 48);
-    var dateStr   = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
-    var nbC = problemes.filter(function(p){ return p.gravite === 'critique'; }).length;
-    var nbI = problemes.filter(function(p){ return p.gravite === 'important'; }).length;
+    var recos     = d.recommandations || [];
+    var nomDoc    = (d.nomFichier || d.nom_fichier || 'Document');
+    var nomDocCourt = nomDoc.length > 45 ? nomDoc.substring(0,42)+'…' : nomDoc;
+    var dateStr   = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    var nbC = problemes.filter(function(p){return p.gravite==='critique';}).length;
+    var nbI = problemes.filter(function(p){return p.gravite==='important';}).length;
 
-    // Design tokens
-    var NAVY   = [11, 37, 69];
-    var GOLD   = [201, 168, 76];
-    var GRAY1  = [248, 250, 252];  // fond section
-    var GRAY2  = [226, 232, 240];  // bordures
-    var GRAY3  = [100, 116, 139];  // texte secondaire
-    var DARK   = [15, 23, 42];     // texte principal
-    var GREEN  = [22, 163, 74];
-    var ORANGE = [234, 88, 12];
-    var RED    = [220, 38, 38];
+    var sCfg = score >= 80 ? {col:[22,163,74],  label:'Conforme',             hex:'#16a34a'}
+             : score >= 60 ? {col:[234,88,12],   label:'Conforme avec réserves',hex:'#ea580c'}
+             : score >= 40 ? {col:[161,98,7],    label:'Non conforme',          hex:'#a16207'}
+             :               {col:[220,38,38],   label:'Risque élevé',           hex:'#dc2626'};
 
-    var scoreCfg = score >= 80
-        ? { col: GREEN,  badge: 'CONFORME',           bg: [240, 253, 244] }
-        : score >= 60
-        ? { col: ORANGE, badge: 'RÉSERVES',            bg: [255, 247, 237] }
-        : score >= 40
-        ? { col: [161,98,7], badge: 'NON CONFORME',   bg: [254, 252, 232] }
-        : { col: RED,    badge: 'RISQUE ÉLEVÉ',        bg: [254, 242, 242] };
-
-    function gravCfg(g) {
-        if (g === 'critique')  return { col: RED,    label: 'CRITIQUE',  bg: [254,242,242], temps: '1-2h' };
-        if (g === 'important') return { col: ORANGE, label: 'IMPORTANT', bg: [255,247,237], temps: '30 min' };
-        return                        { col: [161,98,7], label: 'MODÉRÉ', bg: [254,252,232], temps: '15 min' };
+    function gCfg(g) {
+        return g==='critique'  ? {col:[220,38,38], label:'Critique',  bg:[254,242,242]}
+             : g==='important' ? {col:[234,88,12], label:'Important', bg:[255,247,237]}
+             :                   {col:[161,98,7],  label:'Modéré',    bg:[254,252,232]};
     }
 
-    function setFont(style, size, col) {
-        doc.setFont('helvetica', style || 'normal');
-        doc.setFontSize(size || 9);
-        doc.setTextColor((col || DARK)[0], (col || DARK)[1], (col || DARK)[2]);
+    function nP()          { doc.addPage(); y = 22; }
+    function chk(h)        { if (y + h > 274) nP(); }
+    function sep(col, lw)  {
+        doc.setDrawColor((col||[226,232,240])[0],(col||[226,232,240])[1],(col||[226,232,240])[2]);
+        doc.setLineWidth(lw||0.15);
+        doc.line(M, y, W-M, y);
+    }
+    function T(txt, x, yy, style, size, col, opt) {
+        doc.setFont('helvetica', style||'normal');
+        doc.setFontSize(size||9);
+        doc.setTextColor((col||[15,23,42])[0],(col||[15,23,42])[1],(col||[15,23,42])[2]);
+        doc.text(String(txt), x, yy, opt||{});
     }
 
-    function rect(x, yy, w, h, col, filled) {
-        if (filled) { doc.setFillColor(col[0], col[1], col[2]); doc.roundedRect(x, yy, w, h, 1.5, 1.5, 'F'); }
-        else { doc.setDrawColor(col[0], col[1], col[2]); doc.setLineWidth(0.15); doc.roundedRect(x, yy, w, h, 1.5, 1.5, 'S'); }
-    }
+    // ═══════════════════════════════════════
+    // HEADER — minimaliste
+    // ═══════════════════════════════════════
+    doc.setFillColor(11,37,69);
+    doc.rect(0, 0, W, 22, 'F');
+    doc.setFillColor(201,168,76);
+    doc.rect(0, 22, W, 0.5, 'F');
 
-    function line(yy, col) {
-        doc.setDrawColor((col || GRAY2)[0], (col || GRAY2)[1], (col || GRAY2)[2]);
-        doc.setLineWidth(0.15);
-        doc.line(M, yy, W - M, yy);
-    }
+    T('AUDILIX', M, 13, 'bold', 14, [255,255,255]);
+    T('Rapport de conformité', M, 19, 'normal', 8, [201,168,76]);
+    T(dateStr + '  ·  ' + nomDocCourt, W-M, 14, 'normal', 7.5, [148,163,184], {align:'right'});
 
-    function txt(text, x, yy, opt) { doc.text(String(text), x, yy, opt || {}); }
+    y = 34;
 
-    function badge(label, x, yy, col, bg) {
-        var padX = 4, padY = 2, h = 5.5;
-        setFont('bold', 6.5);
-        var w2 = doc.getTextWidth(label) + padX * 2;
-        doc.setFillColor(bg[0], bg[1], bg[2]);
-        doc.roundedRect(x, yy - h + padY, w2, h, 1, 1, 'F');
-        doc.setTextColor(col[0], col[1], col[2]);
-        txt(label, x + padX, yy);
-        return w2;
-    }
+    // ═══════════════════════════════════════
+    // SCORE — héro de la page
+    // ═══════════════════════════════════════
+    // Grand score centré avec accent coloré
+    var scoreStr = String(score);
+    T(scoreStr, W/2, y+22, 'bold', 56, sCfg.col, {align:'center'});
+    T('/100', W/2 + (scoreStr.length * 8), y+22, 'normal', 13, [148,163,184]);
 
-    function checkY(needed) {
-        if (y + needed > 278) { doc.addPage(); y = 18; }
-    }
+    // Statut sous le score
+    T(sCfg.label.toUpperCase(), W/2, y+32, 'bold', 8, sCfg.col, {align:'center'});
 
-    // ─────────────────────────────────────────
-    // HEADER
-    // ─────────────────────────────────────────
-    doc.setFillColor(NAVY[0], NAVY[1], NAVY[2]);
-    doc.rect(0, 0, W, 28, 'F');
-    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
-    doc.rect(0, 28, W, 0.6, 'F');
-
-    // Logo Audilix — texte stylisé
-    setFont('bold', 16, [255, 255, 255]);
-    txt('AUDILIX', M, 12);
-    setFont('normal', 7.5, GOLD);
-    txt('Conformité réglementaire', M, 19);
-
-    // Infos droite
-    setFont('normal', 7.5, [148, 163, 184]);
-    txt('Rapport de conformité', W - M, 11, { align: 'right' });
-    setFont('normal', 7, [100, 116, 139]);
-    txt(dateStr + '  ·  ' + nomDoc, W - M, 18, { align: 'right' });
-
-    y = 38;
-
-    // ─────────────────────────────────────────
-    // BLOC SCORE + KPIs (layout 2 colonnes)
-    // ─────────────────────────────────────────
-    var scoreW = 82, kpiW = cW - scoreW - 5;
-    var scoreH = 44;
-
-    // Fond score
-    doc.setFillColor(GRAY1[0], GRAY1[1], GRAY1[2]);
-    doc.roundedRect(M, y, scoreW, scoreH, 2, 2, 'F');
-
-    // Score chiffre grand
-    setFont('bold', 40, scoreCfg.col);
-    txt(String(score), M + 12, y + 26);
-    setFont('normal', 11, GRAY3);
-    txt('/100', M + 32, y + 26);
-
-    // Badge statut
-    badge(scoreCfg.badge, M + 8, y + 36, scoreCfg.col, scoreCfg.bg);
+    // Ligne décorative colorée sous le score
+    doc.setFillColor(sCfg.col[0],sCfg.col[1],sCfg.col[2]);
+    doc.rect(W/2-16, y+35, 32, 0.8, 'F');
 
     // Synthèse
-    setFont('normal', 7.5, GRAY3);
-    var synthText = d.resume || '';
-    var synthLines = doc.splitTextToSize(synthText, scoreW - 12);
-    synthLines.slice(0, 2).forEach(function(l, i) {
-        txt(l, M + 6, y + scoreH - 8 + i * 4);
-    });
+    if (d.resume) {
+        T(d.resume, W/2, y+42, 'normal', 8.5, [71,85,105], {align:'center', maxWidth:cW-20});
+        y += 50;
+    } else {
+        y += 42;
+    }
 
-    // KPIs droite
-    var kpiX = M + scoreW + 5;
+    // Barre conformité fine
+    y += 4;
+    doc.setFillColor(226,232,240);
+    doc.roundedRect(M, y, cW, 2, 1, 1, 'F');
+    doc.setFillColor(sCfg.col[0],sCfg.col[1],sCfg.col[2]);
+    doc.roundedRect(M, y, Math.max(3, cW*score/100), 2, 1, 1, 'F');
+    y += 8;
+
+    // 4 chiffres clés sur une ligne
     var kpis = [
-        { label: 'Problèmes', val: String(problemes.length), col: problemes.length > 0 ? RED : GREEN },
-        { label: 'Critiques',  val: String(nbC),             col: nbC > 0 ? RED : DARK },
-        { label: 'Importants', val: String(nbI),             col: nbI > 0 ? ORANGE : DARK },
-        { label: 'Conformes',  val: String(positifs.length), col: GREEN }
+        {v:String(problemes.length), l:'Problèmes', c:problemes.length>0?[220,38,38]:[22,163,74]},
+        {v:String(nbC),              l:'Critiques',  c:nbC>0?[220,38,38]:[100,116,139]},
+        {v:String(positifs.length),  l:'Conformes',  c:[22,163,74]},
+        {v:String(recos.length),     l:'Actions',    c:[99,102,241]}
     ];
-    var kpiH = (scoreH - 4) / kpis.length;
-    kpis.forEach(function(k, i) {
-        var ky = y + 2 + i * kpiH;
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(kpiX, ky, kpiW, kpiH - 2, 1.5, 1.5, 'F');
-        doc.setDrawColor(GRAY2[0], GRAY2[1], GRAY2[2]); doc.setLineWidth(0.1);
-        doc.roundedRect(kpiX, ky, kpiW, kpiH - 2, 1.5, 1.5, 'S');
-        setFont('bold', 14, k.col);
-        txt(k.val, kpiX + kpiW / 2, ky + kpiH * 0.55, { align: 'center' });
-        setFont('normal', 6.5, GRAY3);
-        txt(k.label, kpiX + kpiW / 2, ky + kpiH * 0.8, { align: 'center' });
+    var kW = cW/4;
+    kpis.forEach(function(k,i) {
+        var kx = M + i*kW + kW/2;
+        T(k.v, kx, y+8, 'bold', 18, k.c, {align:'center'});
+        T(k.l, kx, y+13, 'normal', 7, [100,116,139], {align:'center'});
     });
+    y += 20;
 
-    y += scoreH + 8;
-
-    // ─────────────────────────────────────────
-    // BARRE DE CONFORMITÉ
-    // ─────────────────────────────────────────
-    setFont('normal', 7.5, GRAY3);
-    txt('Conformité globale', M, y);
-    setFont('bold', 7.5, scoreCfg.col);
-    txt(score + ' %', W - M, y, { align: 'right' });
-    y += 3;
-    doc.setFillColor(GRAY2[0], GRAY2[1], GRAY2[2]);
-    doc.roundedRect(M, y, cW, 2.5, 1, 1, 'F');
-    doc.setFillColor(scoreCfg.col[0], scoreCfg.col[1], scoreCfg.col[2]);
-    doc.roundedRect(M, y, Math.max(2, cW * score / 100), 2.5, 1, 1, 'F');
-    y += 9;
-
-    // ─────────────────────────────────────────
+    // ═══════════════════════════════════════
     // PROBLÈMES
-    // ─────────────────────────────────────────
+    // ═══════════════════════════════════════
     if (problemes.length > 0) {
-        line(y); y += 6;
-        setFont('bold', 8.5, DARK);
-        txt('Problèmes à corriger', M, y);
-        setFont('normal', 7, GRAY3);
-        txt('(' + problemes.length + ' détecté' + (problemes.length > 1 ? 's' : '') + ')', M + doc.getTextWidth('Problèmes à corriger') + 3, y);
+        chk(20); y += 2;
+        sep(); y += 7;
+
+        T('Problèmes détectés', M, y, 'bold', 10, [15,23,42]);
+        y += 8;
+
+        problemes.forEach(function(p, i) {
+            var gc = gCfg(p.gravite);
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(8);
+            var descLines = doc.splitTextToSize(p.description||'', cW-8);
+            var descShown = descLines.slice(0,2);
+            var cardH = 6 + 5 + descShown.length*4.2 + 3;
+            chk(cardH+4);
+
+            // Barre colorée gauche ultra fine
+            doc.setFillColor(gc.col[0],gc.col[1],gc.col[2]);
+            doc.rect(M, y, 1.5, cardH, 'F');
+
+            // Numéro + titre
+            T((i+1)+'.', M+4, y+5.5, 'bold', 8.5, gc.col);
+            T(p.titre||'', M+10, y+5.5, 'bold', 8.5, [15,23,42]);
+
+            // Badge gravité petit
+            var bLabel = gc.label.toUpperCase();
+            doc.setFont('helvetica','bold');
+            doc.setFontSize(6);
+            var bW = doc.getTextWidth(bLabel)+6;
+            doc.setFillColor(gc.bg[0],gc.bg[1],gc.bg[2]);
+            doc.roundedRect(W-M-bW-1, y+1.5, bW+2, 5.5, 1, 1, 'F');
+            doc.setTextColor(gc.col[0],gc.col[1],gc.col[2]);
+            doc.text(bLabel, W-M-bW/2-2, y+5.5, {align:'center'});
+
+            // Description
+            var yy = y+10;
+            doc.setFont('helvetica','normal');
+            doc.setFontSize(8);
+            doc.setTextColor(71,85,105);
+            descShown.forEach(function(l) { doc.text(l, M+10, yy); yy+=4.2; });
+
+            y += cardH+4;
+        });
+    }
+
+    // ═══════════════════════════════════════
+    // PLAN D'ACTION
+    // ═══════════════════════════════════════
+    if (recos.length > 0) {
+        chk(20); y += 2;
+        sep(); y += 7;
+
+        T('Plan d\'action', M, y, 'bold', 10, [15,23,42]);
+        y += 8;
+
+        recos.slice(0,6).forEach(function(r,i) {
+            chk(8);
+            doc.setDrawColor(201,168,76); doc.setLineWidth(0.4);
+            doc.roundedRect(M, y-3.5, 4, 4, 0.8, 0.8, 'S');
+            T((i+1), M+2, y+0.2, 'bold', 6, [201,168,76], {align:'center'});
+            doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+            doc.setTextColor(30,41,59);
+            var rL = doc.splitTextToSize(r, cW-10);
+            doc.text(rL[0].length < r.length ? rL[0].substring(0,rL[0].length-1)+'…' : rL[0], M+7, y);
+            y += 6;
+        });
+        y += 2;
+    }
+
+    // ═══════════════════════════════════════
+    // POINTS CONFORMES — compact
+    // ═══════════════════════════════════════
+    if (positifs.length > 0) {
+        chk(18); y += 2;
+        sep(); y += 7;
+
+        T('Points conformes', M, y, 'bold', 10, [15,23,42]);
         y += 7;
 
-        problemes.forEach(function(p) {
-            var gc = gravCfg(p.gravite);
-            // Tronquer la description à 2 lignes max
-            setFont('normal', 7.5);
-            var descFull = p.description || '';
-            // Enlever les redites du titre dans la desc
-            var descLines = doc.splitTextToSize(descFull, cW - 10);
-            var descShown = descLines.slice(0, 2);
-            // Tronquer reco à 1 ligne
-            var recoText = '';
-            if (recos.length > 0) {
-                var matchReco = recos.find(function(r){ return r && p.titre && r.toLowerCase().indexOf(p.titre.toLowerCase().substring(0, 8)) > -1; });
-                if (matchReco) recoText = matchReco;
-            }
-
-            var cardH = 6 + 5 + (descShown.length * 4) + (p.article_reference ? 5 : 0) + 4;
-            cardH = Math.max(cardH, 20);
-            checkY(cardH + 4);
-
-            var yC = y;
-            // Fond carte
-            doc.setFillColor(gc.bg[0], gc.bg[1], gc.bg[2]);
-            doc.roundedRect(M, yC, cW, cardH, 2, 2, 'F');
-            // Barre couleur gauche
-            doc.setFillColor(gc.col[0], gc.col[1], gc.col[2]);
-            doc.roundedRect(M, yC, 2, cardH, 1, 1, 'F');
-
-            // Badge
-            var bW = badge(gc.label, W - M - 28, yC + 5.5, gc.col, [255,255,255]);
-
-            // Titre
-            setFont('bold', 8.5, DARK);
-            var titreDisp = (p.titre || '').substring(0, 55);
-            txt(titreDisp, M + 6, yC + 5.5);
-            var yy = yC + 5.5 + 4.5;
-
-            // Description tronquée
-            setFont('normal', 7.5, GRAY3);
-            descShown.forEach(function(l) { txt(l, M + 6, yy); yy += 4; });
-
-            // Référence légale si présente
-            if (p.article_reference) {
-                setFont('italic', 7, [99, 102, 241]);
-                txt('⚖ ' + p.article_reference.substring(0, 60), M + 6, yy);
-                yy += 5;
-            }
-
-            y = yC + cardH + 4;
-        });
-        y += 2;
-    }
-
-    // ─────────────────────────────────────────
-    // POINTS CONFORMES — compact inline
-    // ─────────────────────────────────────────
-    if (positifs.length > 0) {
-        checkY(16);
-        line(y); y += 6;
-        setFont('bold', 8.5, DARK);
-        txt('Points conformes', M, y);
-        y += 5;
-        // Afficher en ligne compacte, 2 colonnes
-        var col1 = [], col2 = [];
-        positifs.forEach(function(p, i) {
-            if (i % 2 === 0) col1.push(p); else col2.push(p);
-        });
-        var maxRows = Math.max(col1.length, col2.length);
-        for (var r = 0; r < maxRows; r++) {
-            checkY(5);
+        var col1 = positifs.filter(function(_,i){return i%2===0;});
+        var col2 = positifs.filter(function(_,i){return i%2===1;});
+        var rows = Math.max(col1.length, col2.length);
+        for (var r=0; r<rows; r++) {
+            chk(5.5);
             if (col1[r]) {
-                doc.setFillColor(GREEN[0], GREEN[1], GREEN[2]);
-                doc.circle(M + 2, y - 1.2, 1.2, 'F');
-                setFont('normal', 7.5, DARK);
-                var p1 = col1[r].substring(0, 44);
-                txt(p1, M + 5.5, y);
+                doc.setFillColor(22,163,74);
+                doc.circle(M+2, y-1, 1.2, 'F');
+                T(col1[r].substring(0,46), M+6, y, 'normal', 8, [30,41,59]);
             }
             if (col2[r]) {
-                doc.setFillColor(GREEN[0], GREEN[1], GREEN[2]);
-                doc.circle(M + cW/2 + 2, y - 1.2, 1.2, 'F');
-                setFont('normal', 7.5, DARK);
-                var p2 = col2[r].substring(0, 44);
-                txt(p2, M + cW/2 + 5.5, y);
+                doc.setFillColor(22,163,74);
+                doc.circle(M+cW/2+2, y-1, 1.2, 'F');
+                T(col2[r].substring(0,46), M+cW/2+6, y, 'normal', 8, [30,41,59]);
             }
-            y += 5;
-        }
-        y += 3;
-    }
-
-    // ─────────────────────────────────────────
-    // PLAN D'ACTION
-    // ─────────────────────────────────────────
-    if (recos.length > 0) {
-        checkY(16);
-        line(y); y += 6;
-        setFont('bold', 8.5, DARK);
-        txt('Plan d\'action', M, y);
-        y += 5;
-        recos.forEach(function(r, i) {
-            checkY(6);
-            // Checkbox
-            doc.setDrawColor(GRAY2[0], GRAY2[1], GRAY2[2]);
-            doc.setLineWidth(0.4);
-            doc.roundedRect(M, y - 4, 4, 4, 0.7, 0.7, 'S');
-            setFont('normal', 7.5, DARK);
-            var rLines = doc.splitTextToSize((i + 1) + '.  ' + r, cW - 8);
-            var rLine = rLines[0] || '';
-            if (rLines.length > 1) rLine = rLine.substring(0, rLine.length - 1) + '…';
-            txt(rLine, M + 6.5, y);
             y += 5.5;
-        });
-        y += 2;
+        }
     }
 
-    // ─────────────────────────────────────────
-    // FOOTER (toutes les pages)
-    // ─────────────────────────────────────────
+    // ═══════════════════════════════════════
+    // FOOTER
+    // ═══════════════════════════════════════
     var nb = doc.getNumberOfPages();
-    for (var p = 1; p <= nb; p++) {
+    for (var p=1; p<=nb; p++) {
         doc.setPage(p);
-        doc.setFillColor(GRAY1[0], GRAY1[1], GRAY1[2]);
-        doc.rect(0, 286, W, 11, 'F');
-        doc.setDrawColor(GRAY2[0], GRAY2[1], GRAY2[2]); doc.setLineWidth(0.1);
-        doc.line(0, 286, W, 286);
-        setFont('normal', 6.5, GRAY3);
-        txt('Audilix · audilix.com', M, 293);
-        txt('Rapport généré automatiquement à titre informatif. Validation juridique recommandée.', W / 2, 293, { align: 'center' });
-        txt('Page ' + p + ' / ' + nb, W - M, 293, { align: 'right' });
+        doc.setFillColor(248,250,252);
+        doc.rect(0, 284, W, 13, 'F');
+        doc.setDrawColor(226,232,240); doc.setLineWidth(0.1);
+        doc.line(0, 284, W, 284);
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(148,163,184);
+        doc.text('Audilix · audilix.com', M, 291);
+        doc.text('Rapport à titre informatif — ne remplace pas un conseil juridique professionnel.', W/2, 291, {align:'center'});
+        doc.text('Page '+p+' / '+nb, W-M, 291, {align:'right'});
     }
 
-    // Save
-    var nomOut = (nomFichierSortie + '-' + nomDoc.replace(/[^a-zA-Z0-9]/g, '-').substring(0, 30) + '.pdf').toLowerCase();
-    doc.save(nomOut);
+    doc.save((nomFichierSortie+'-'+nomDoc.replace(/[^a-zA-Z0-9]/g,'-').substring(0,28)+'.pdf').toLowerCase());
 }
 
 
