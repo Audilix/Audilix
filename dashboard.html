@@ -1085,9 +1085,9 @@ function ouvrirUpgrade(titre, desc) {
 }
 function payer(plan) {
     var STRIPE_PRICES = {
-        starter:  'price_1TBEp1L1yZKJczeCtlqQ4u3F',
-        business: 'price_1TBEt9L1yZKJczeC28lX4VMH',
-        expert:   'price_1TBEuYL1yZKJczeCXrgBEFcu'
+        starter:  'price_1TtQP2L1yZKJczeCPCdJ1zCQ',
+        business: 'price_1TtQQxL1yZKJczeC2Qcqy4Za',
+        expert:   'price_1TtQRRL1yZKJczeCBy9qXgsw'
     };
     var priceId = STRIPE_PRICES[plan];
     if (!priceId) { window.location.href = 'pricing.html'; return; }
