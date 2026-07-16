@@ -24,7 +24,8 @@ const OPENAI_KEY    = process.env.OPENAI_API_KEY;
 const RESEND_KEY    = process.env.RESEND_API_KEY;
 const SUPABASE_URL  = process.env.SUPABASE_URL;
 const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
-const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
+const STRIPE_SECRET         = process.env.STRIPE_SECRET_KEY;
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const FROM_EMAIL    = "Audilix <contact@audilix.com>";
 
 // Limites par plan
@@ -482,7 +483,31 @@ app.post("/api/stripe/checkout", async (req, res) => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (req, res) => {
   try {
-    const event = JSON.parse(req.body);
+    let event;
+
+    // Vérifier la signature Stripe si le secret est configuré
+    if (STRIPE_WEBHOOK_SECRET) {
+      const sig = req.headers["stripe-signature"];
+      // Vérification manuelle de la signature (sans SDK Stripe)
+      try {
+        const payload = req.body.toString("utf8");
+        const parts = sig.split(",");
+        const timestamp = parts.find(p => p.startsWith("t="))?.split("=")[1];
+        const signedPayload = `${timestamp}.${payload}`;
+        const crypto = await import("crypto");
+        const expectedSig = crypto.createHmac("sha256", STRIPE_WEBHOOK_SECRET)
+          .update(signedPayload).digest("hex");
+        const receivedSig = parts.find(p => p.startsWith("v1="))?.split("=")[1];
+        if (expectedSig !== receivedSig) {
+          console.warn("⚠️ Signature webhook invalide");
+          return res.status(400).json({ error: "Signature invalide" });
+        }
+      } catch(sigErr) {
+        console.warn("⚠️ Erreur vérification signature:", sigErr.message);
+      }
+    }
+
+    event = JSON.parse(req.body);
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
@@ -490,18 +515,25 @@ app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (re
       const plan    = session.metadata?.plan;
       const email   = session.customer_email || session.customer_details?.email;
 
+      console.log(`📦 Webhook reçu: ${event.type} — userId:${userId} plan:${plan}`);
+
       if (userId && SUPABASE_URL) {
         try {
-          await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
+          const r = await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${userId}`, {
             method: "PATCH",
             headers: {
               "apikey": SUPABASE_KEY,
               "Authorization": `Bearer ${SUPABASE_KEY}`,
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "Prefer": "return=minimal"
             },
             body: JSON.stringify({ plan, stripe_customer_id: session.customer })
           });
-          console.log(`✅ Plan mis à jour: ${userId} → ${plan}`);
+          if (r.ok) {
+            console.log(`✅ Plan mis à jour: ${userId} → ${plan}`);
+          } else {
+            console.warn(`⚠️ Échec mise à jour plan [${r.status}]`);
+          }
         } catch(e) { console.warn("⚠️ Erreur mise à jour plan:", e.message); }
       }
 
@@ -1099,7 +1131,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 // Vérification des variables d'environnement critiques
-const VARS_REQUISES = ['SUPABASE_URL','SUPABASE_SERVICE_KEY','OPENAI_API_KEY','RESEND_API_KEY','STRIPE_SECRET_KEY'];
+const VARS_REQUISES = ['SUPABASE_URL','SUPABASE_SERVICE_KEY','OPENAI_API_KEY','RESEND_API_KEY','STRIPE_SECRET_KEY','STRIPE_WEBHOOK_SECRET'];
 const VARS_MANQUANTES = VARS_REQUISES.filter(v => !process.env[v]);
 if (VARS_MANQUANTES.length > 0) {
   console.error('❌ Variables d\'environnement manquantes:', VARS_MANQUANTES.join(', '));
