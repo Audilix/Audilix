@@ -303,7 +303,7 @@
                 <div id="essai-cta-analyse" style="display:none;"></div>
                 <div id="essai-cta-upgrade" style="display:none;"></div>
             </div>
-            <button onclick="ouvrirUpgrade('Passez à un plan payant')" style="display:block;width:100%;padding:7px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Mettre à niveau →</button>
+            <a href="pricing.html" style="display:block;width:100%;padding:9px;background:var(--gold);color:var(--navy-dark);border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;text-decoration:none;transition:background .2s;margin-bottom:4px;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Voir les plans →</a>
         </div>
         <!-- BLOC PLAN NORMAL (starter / business / pro) -->
         <div id="bloc-plan-normal">
@@ -904,6 +904,10 @@ function authHeaders() { return { 'Authorization': 'Bearer ' + token }; }
 function jsonHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
 
 function initialiserDashboard() {
+    // Recharger le profil depuis le serveur si retour paiement
+    if (window.location.search.includes('payment=success')) {
+        setTimeout(function() { rechargerProfilDepuisServeur(); }, 2000);
+    }
     var prenom = utilisateur.firstname || utilisateur.prenom || utilisateur.nom || 'Client';
     document.getElementById('prenom-accueil').textContent = prenom;
     var nomComplet = ((utilisateur.firstname || utilisateur.prenom || '') + ' ' + (utilisateur.lastname || utilisateur.nom || '')).trim();
@@ -1569,6 +1573,22 @@ function afficherMsg(id, texte, ok) {
     setTimeout(function() { el.style.display = 'none'; }, 4000);
 }
 
+async function ouvrirPortailStripe() {
+    var msg = document.getElementById('msg-portal');
+    if (msg) { msg.style.display = 'block'; msg.textContent = 'Chargement du portail…'; msg.style.color = 'var(--gris)'; }
+    try {
+        var r = await fetch(BACKEND + '/api/stripe/portal', {
+            method: 'POST', headers: jsonHeaders(),
+            body: JSON.stringify({ userId: utilisateur.id })
+        });
+        var data = await r.json();
+        if (data.url) { window.open(data.url, '_blank'); if (msg) msg.style.display = 'none'; }
+        else { if (msg) { msg.textContent = data.error || "Erreur. Abonnez-vous d'abord à un plan."; msg.style.color = 'var(--rouge)'; } }
+    } catch(e) {
+        if (msg) { msg.textContent = 'Erreur de connexion.'; msg.style.color = 'var(--rouge)'; }
+    }
+}
+
 async function sauvegarderNom() {
     var prenom = (document.getElementById('param-prenom') || {}).value || '';
     var nom = (document.getElementById('param-nom') || {}).value || '';
@@ -1980,6 +2000,51 @@ function telechargerDocumentPDF() {
     doc.save('document-audilix.pdf');
 }
 
+
+async function rechargerProfilDepuisServeur() {
+    if (!utilisateur || !utilisateur.id) return;
+    try {
+        var r = await fetch(BACKEND + '/api/user/' + utilisateur.id, { headers: authHeaders() });
+        if (!r.ok) return;
+        var data = await r.json();
+        if (data.user && data.user.plan) {
+            utilisateur.plan = data.user.plan;
+            utilisateur.firstname = data.user.firstname || utilisateur.firstname;
+            utilisateur.lastname = data.user.lastname || utilisateur.lastname;
+            localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
+            // Rafraîchir l'affichage
+            initialiserSidebar();
+            chargerDonnees();
+            // Message de succès
+            afficherBanniereSucces();
+            // Nettoyer l'URL
+            window.history.replaceState({}, '', 'dashboard.html');
+        }
+    } catch(e) { console.warn('Erreur rechargement profil:', e); }
+}
+
+function afficherBanniereSucces() {
+    var b = document.createElement('div');
+    b.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#16a34a;color:white;padding:14px 28px;border-radius:8px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(22,163,74,0.3);';
+    b.textContent = '✓ Abonnement activé — bienvenue sur votre nouveau plan !';
+    document.body.appendChild(b);
+    setTimeout(function() { b.remove(); }, 5000);
+}
+
+// Auto-déconnexion après 60 min d'inactivité
+var _inactifTimer = null;
+function resetInactifTimer() {
+    clearTimeout(_inactifTimer);
+    _inactifTimer = setTimeout(function() {
+        var ok = confirm("Votre session est inactive depuis 60 minutes. Voulez-vous rester connecté ?");
+        if (!ok) seDeconnecter();
+        else resetInactifTimer();
+    }, 60 * 60 * 1000);
+}
+['click','keypress','mousemove','touchstart'].forEach(function(evt) {
+    document.addEventListener(evt, resetInactifTimer, { passive: true });
+});
+resetInactifTimer();
 
 function seDeconnecter() {
     localStorage.removeItem('audilix_token');
