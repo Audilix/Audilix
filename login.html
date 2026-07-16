@@ -164,6 +164,19 @@
 </div>
             <button class="btn-soumettre" id="btn-connexion" onclick="seConnecter()">Se connecter</button>
             <div class="lien-form">Pas encore de compte ? <a href="#" onclick="afficherOnglet('inscription')">Créer un compte</a></div>
+        <div style="text-align:center;margin-top:10px;">
+            <a href="#" onclick="afficherOubli()" style="font-size:12px;color:#9CA3AF;text-decoration:underline;text-underline-offset:2px;">Mot de passe oublié ?</a>
+        </div>
+
+        <!-- FORMULAIRE MOT DE PASSE OUBLIÉ -->
+        <div id="form-oubli" style="display:none;margin-top:20px;padding-top:20px;border-top:1px solid #E5E7EB;">
+            <div style="font-size:14px;font-weight:600;color:#0B2545;margin-bottom:6px;">Réinitialiser votre mot de passe</div>
+            <p style="font-size:13px;color:#9CA3AF;margin-bottom:14px;line-height:1.6;">Entrez votre email, vous recevrez un lien pour choisir un nouveau mot de passe.</p>
+            <div id="err-oubli" style="font-size:12px;font-weight:600;color:#DC2626;margin-bottom:8px;display:none;"></div>
+            <div id="ok-oubli" style="font-size:12px;font-weight:600;color:#16a34a;background:#F0FDF4;padding:10px;border-radius:6px;margin-bottom:8px;display:none;"></div>
+            <input type="email" id="email-oubli" placeholder="votre@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;">
+            <button onclick="envoyerReset()" style="width:100%;padding:12px;background:#0B2545;color:white;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='#C9A84C';this.style.color='#0B2545'" onmouseout="this.style.background='#0B2545';this.style.color='white'">Envoyer le lien de réinitialisation</button>
+        </div>
         </div>
 
         <!-- INSCRIPTION -->
@@ -398,6 +411,29 @@ document.addEventListener('keypress', function(e) {
         else sInscrire();
     }
 });
+function afficherOubli() {
+    var f = document.getElementById('form-oubli');
+    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+async function envoyerReset() {
+    var email = document.getElementById('email-oubli').value.trim();
+    var errEl = document.getElementById('err-oubli');
+    var okEl = document.getElementById('ok-oubli');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+    if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; errEl.style.display = 'block'; return; }
+    try {
+        var r = await fetch(BACKEND + '/api/auth/forgot-password', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        });
+        okEl.textContent = 'Si ce compte existe, vous recevrez un email dans quelques minutes. Vérifiez vos spams.';
+        okEl.style.display = 'block';
+    } catch(e) {
+        errEl.textContent = 'Erreur de connexion. Réessayez.'; errEl.style.display = 'block';
+    }
+}
+
 function toggleMdp(id, btn) {
     var input = document.getElementById(id);
     var eye = document.getElementById('eye-' + id);
