@@ -1020,6 +1020,16 @@ app.get("/api/envoyer-relances", async (req, res) => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 // Mettre à jour l'email
+app.get("/api/user/:userId", async (req, res) => {
+  try {
+    const users = await sbGet("users", `?id=eq.${req.params.userId}&select=id,email,firstname,lastname,plan,created_at`);
+    if (!users || users.length === 0) return res.status(404).json({ error: "Utilisateur introuvable" });
+    res.json({ user: users[0] });
+  } catch(e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 app.post("/api/user/update", async (req, res) => {
   try {
     const { userId, email } = req.body;
