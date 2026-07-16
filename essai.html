@@ -323,6 +323,14 @@ fetch(BACKEND + '/api/ping').catch(function(){});
 
 // Récupérer le fichier pré-chargé depuis la page d'accueil
 window.addEventListener('DOMContentLoaded', function() {
+    // Si déjà connecté → aller au dashboard
+    var _tok = localStorage.getItem('audilix_token');
+    var _usr = null;
+    try { _usr = JSON.parse(localStorage.getItem('audilix_user')); } catch(e){}
+    if (_tok && _usr && _usr.id) {
+        window.location.href = 'dashboard.html';
+        return;
+    }
     // Si essai déjà utilisé, montrer le message dès le chargement
     if (localStorage.getItem('audilix_essai_utilise')) {
         document.getElementById('zone-upload').style.display = 'none';
