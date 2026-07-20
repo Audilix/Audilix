@@ -203,7 +203,55 @@
         .ass-envoyer:hover { background:var(--gold); color:var(--navy-dark); }
 
         @media(max-width:1100px) { .stats{grid-template-columns:repeat(2,1fr)} .grille-2{grid-template-columns:1fr} }
-        @media(max-width:768px) { .barre-lat{display:none} .principal{margin-left:0} .contenu{padding:20px} }
+        
+/* ══════════════════════════════════════════
+   HAMBURGER BUTTON
+══════════════════════════════════════════ */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:1001;width:40px;height:40px;background:var(--navy-dark);border:none;border-radius:8px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 12px rgba(11,37,69,0.2);}
+.hamburger span{display:block;width:18px;height:2px;background:white;border-radius:2px;transition:all .25s;}
+.hamburger.ouvert span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.ouvert span:nth-child(2){opacity:0;}
+.hamburger.ouvert span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ══════════════════════════════════════════
+   OVERLAY MOBILE
+══════════════════════════════════════════ */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;backdrop-filter:blur(2px);}
+.sidebar-overlay.actif{display:block;}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE 768px
+══════════════════════════════════════════ */
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .barre-lat{position:fixed;top:0;left:0;height:100vh;z-index:1000;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(11,37,69,0.18);}
+  .barre-lat.ouvert{transform:translateX(0);}
+  .principal{margin-left:0;}
+  .topbar{padding:0 16px 0 64px;height:56px;}
+  .topbar-titre{font-size:14px;}
+  .topbar-date{display:none;}
+  .contenu{padding:16px 14px 80px;}
+  .stats{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .grille-2{grid-template-columns:1fr;}
+  .banniere{padding:20px;}
+  .page-titre{font-size:18px;}
+  .analyse-ligne{flex-wrap:wrap;gap:6px;}
+  .upgrade-plans{grid-template-columns:1fr;}
+  .modal-box{width:95vw;max-width:95vw;padding:20px;}
+  .params-grid{grid-template-columns:1fr;}
+  .stat{padding:14px;}
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV MOBILE
+══════════════════════════════════════════ */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:998;padding:0;box-shadow:0 -4px 20px rgba(11,37,69,0.08);}
+.bottom-nav-items{display:flex;height:58px;}
+.bottom-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;color:var(--gris);font-size:9px;font-weight:600;font-family:'DM Sans',sans-serif;transition:color .2s;text-transform:uppercase;letter-spacing:0.04em;}
+.bottom-nav-item.actif{color:var(--navy-dark);}
+.bottom-nav-item svg{transition:transform .2s;}
+.bottom-nav-item.actif svg{transform:scale(1.1);}
+@media(max-width:768px){.bottom-nav{display:block;}}
     
 /* ── PLAN ESSAI ── */
 
@@ -905,8 +953,10 @@ function jsonHeaders() { return { 'Content-Type': 'application/json', 'Authoriza
 
 function initialiserDashboard() {
     // Recharger le profil depuis le serveur si retour paiement
+    // Onboarding première connexion
+    setTimeout(verifierOnboarding, 800);
     if (window.location.search.includes('payment=success')) {
-        setTimeout(function() { rechargerProfilDepuisServeur(); }, 2000);
+        setTimeout(function() { rechargerProfilDepuisServeur(1); }, 3000);
     }
     var prenom = utilisateur.firstname || utilisateur.prenom || utilisateur.nom || 'Client';
     document.getElementById('prenom-accueil').textContent = prenom;
@@ -2001,26 +2051,70 @@ function telechargerDocumentPDF() {
 }
 
 
-async function rechargerProfilDepuisServeur() {
+async function rechargerProfilDepuisServeur(tentative) {
     if (!utilisateur || !utilisateur.id) return;
+    tentative = tentative || 1;
     try {
+        // Méthode directe : vérifier le paiement via Stripe (sans webhook)
+        var sessionId = new URLSearchParams(window.location.search).get('session_id');
+        if (sessionId && tentative === 1) {
+            var rv = await fetch(BACKEND + '/api/stripe/verify-payment', {
+                method: 'POST',
+                headers: jsonHeaders(),
+                body: JSON.stringify({ sessionId: sessionId, userId: utilisateur.id })
+            });
+            var vdata = await rv.json();
+            if (vdata.paid && vdata.plan) {
+                utilisateur.plan = vdata.plan;
+                localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
+                initialiserSidebar();
+                chargerDonnees();
+                afficherBanniereSucces();
+                window.history.replaceState({}, '', 'dashboard.html');
+                return;
+            }
+        }
+        // Fallback : récupérer le profil depuis Supabase
         var r = await fetch(BACKEND + '/api/user/' + utilisateur.id, { headers: authHeaders() });
-        if (!r.ok) return;
+        if (!r.ok) throw new Error('HTTP ' + r.status);
         var data = await r.json();
-        if (data.user && data.user.plan) {
+        if (data.user && data.user.plan && data.user.plan !== 'essai') {
             utilisateur.plan = data.user.plan;
             utilisateur.firstname = data.user.firstname || utilisateur.firstname;
             utilisateur.lastname = data.user.lastname || utilisateur.lastname;
             localStorage.setItem('audilix_user', JSON.stringify(utilisateur));
-            // Rafraîchir l'affichage
             initialiserSidebar();
             chargerDonnees();
-            // Message de succès
             afficherBanniereSucces();
-            // Nettoyer l'URL
             window.history.replaceState({}, '', 'dashboard.html');
+        } else if (tentative < 6) {
+            // Webhook pas encore traité — réessayer (max 6 fois, toutes les 5s)
+            console.log('Plan pas encore mis à jour, tentative ' + tentative + '/6 dans 5s...');
+            setTimeout(function() { rechargerProfilDepuisServeur(tentative + 1); }, 5000);
+        } else {
+            // Après 30s, afficher bouton manuel
+            afficherBoutonSync();
         }
-    } catch(e) { console.warn('Erreur rechargement profil:', e); }
+    } catch(e) {
+        console.warn('Erreur rechargement profil:', e);
+        if (tentative < 3) setTimeout(function() { rechargerProfilDepuisServeur(tentative + 1); }, 5000);
+        else afficherBoutonSync();
+    }
+}
+
+function afficherBoutonSync() {
+    var existing = document.getElementById('btn-sync-plan');
+    if (existing) return;
+    var btn = document.createElement('div');
+    btn.id = 'btn-sync-plan';
+    btn.style.cssText = 'position:fixed;bottom:80px;right:20px;background:#C9A84C;color:#0B2545;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;z-index:999;box-shadow:0 4px 16px rgba(201,168,76,0.4);';
+    btn.innerHTML = '🔄 Synchroniser mon abonnement';
+    btn.onclick = function() {
+        btn.textContent = 'Synchronisation…';
+        rechargerProfilDepuisServeur(1);
+        setTimeout(function() { if(document.getElementById('btn-sync-plan')) btn.remove(); }, 10000);
+    };
+    document.body.appendChild(btn);
 }
 
 function afficherBanniereSucces() {
@@ -2032,6 +2126,59 @@ function afficherBanniereSucces() {
 }
 
 // Auto-déconnexion après 60 min d'inactivité
+// ══════════════════════════════════════════
+// NAVIGATION MOBILE
+// ══════════════════════════════════════════
+function toggleSidebar() {
+    var s = document.getElementById('barre-lat');
+    var h = document.getElementById('hamburger');
+    var o = document.getElementById('sidebar-overlay');
+    var ouvert = s.classList.contains('ouvert');
+    if (ouvert) { s.classList.remove('ouvert'); h.classList.remove('ouvert'); o.classList.remove('actif'); }
+    else { s.classList.add('ouvert'); h.classList.add('ouvert'); o.classList.add('actif'); }
+}
+
+function fermerSidebar() {
+    document.getElementById('barre-lat').classList.remove('ouvert');
+    document.getElementById('hamburger').classList.remove('ouvert');
+    document.getElementById('sidebar-overlay').classList.remove('actif');
+}
+
+function naviguer(pageId, btnEl) {
+    fermerSidebar();
+    afficherPage(pageId);
+    // Mettre à jour bottom nav
+    document.querySelectorAll('.bottom-nav-item').forEach(function(b) { b.classList.remove('actif'); });
+    if (btnEl) btnEl.classList.add('actif');
+}
+
+// Fermer sidebar sur swipe gauche
+var _touchStartX = 0;
+document.addEventListener('touchstart', function(e) { _touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - _touchStartX;
+    if (dx < -60 && document.getElementById('barre-lat').classList.contains('ouvert')) { fermerSidebar(); }
+}, { passive: true });
+
+// ══════════════════════════════════════════
+// ONBOARDING PREMIÈRE CONNEXION
+// ══════════════════════════════════════════
+function verifierOnboarding() {
+    var key = 'audilix_onboarding_' + (utilisateur ? utilisateur.id : '');
+    if (!localStorage.getItem(key)) {
+        var modal = document.getElementById('modal-onboarding');
+        if (modal) { modal.style.display = 'flex'; }
+    }
+}
+
+function fermerOnboarding() {
+    var key = 'audilix_onboarding_' + (utilisateur ? utilisateur.id : '');
+    localStorage.setItem(key, '1');
+    var modal = document.getElementById('modal-onboarding');
+    if (modal) { modal.style.display = 'none'; }
+    afficherPage('analyser');
+}
+
 var _inactifTimer = null;
 function resetInactifTimer() {
     clearTimeout(_inactifTimer);
@@ -2102,6 +2249,36 @@ function seDeconnecter() {
       </div>
     </div>
   </div>
+
+<!-- MODAL ONBOARDING -->
+<div id="modal-onboarding" style="display:none;position:fixed;inset:0;background:rgba(11,37,69,0.6);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+  <div style="background:white;border-radius:16px;padding:48px 40px;max-width:480px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.2);">
+    <div style="width:64px;height:64px;background:rgba(201,168,76,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#0B2545;margin-bottom:10px;">Bienvenue sur Audilix</div>
+    <p style="font-size:14px;color:#6B7280;line-height:1.75;margin-bottom:28px;">Votre espace de conformité réglementaire est prêt. Commencez par analyser un document pour obtenir votre score et vos recommandations.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:12px;background:#F8FAFC;border-radius:8px;padding:12px 16px;text-align:left;">
+        <div style="width:28px;height:28px;background:#0B2545;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:800;color:#C9A84C;">1</div>
+        <div style="font-size:13px;color:#374151;">Déposez votre document (CGV, contrat, politique de confidentialité…)</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:#F8FAFC;border-radius:8px;padding:12px 16px;text-align:left;">
+        <div style="width:28px;height:28px;background:#0B2545;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:800;color:#C9A84C;">2</div>
+        <div style="font-size:13px;color:#374151;">Obtenez votre score de conformité en moins de 60 secondes</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:#F8FAFC;border-radius:8px;padding:12px 16px;text-align:left;">
+        <div style="width:28px;height:28px;background:#0B2545;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:800;color:#C9A84C;">3</div>
+        <div style="font-size:13px;color:#374151;">Téléchargez votre rapport PDF et corrigez vos documents</div>
+      </div>
+    </div>
+    <button onclick="fermerOnboarding()" style="background:#C9A84C;color:#0B2545;border:none;padding:14px 36px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .2s;" onmouseover="this.style.background='#E8C97A'" onmouseout="this.style.background='#C9A84C'">
+      Commencer mon analyse →
+    </button>
+    <div style="margin-top:12px;font-size:11px;color:#9CA3AF;">Ne plus afficher ce message</div>
+  </div>
+</div>
+
 </div>
 </body>
 </html>
